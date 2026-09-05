@@ -49,3 +49,15 @@ Why it matters: ...
 
 `sh scripts/install-hook.sh` installs the hook that checks it. Merge, fixup and revert
 commits pass without the block; `[no-customer]` in the message opts one commit out.
+
+## Releasing
+
+Maintainers only. One command; the workflow does the rest.
+
+1. Write the `## X.Y.Z (unreleased)` entry in `CHANGELOG.md` and merge it.
+2. On a clean, green `main`: `npm run release -- X.Y.Z` (or `patch`, `minor`, `major`; add `--dry-run` to see the plan). It dates the entry, sets the version in `package.json`, `CITATION.cff`, `.claude-plugin/plugin.json` and the pinned `uses:` line in the README, runs the tests, commits, tags `vX.Y.Z` and pushes.
+3. Watch the `release` workflow: it publishes to npm with provenance, creates the GitHub release from the CHANGELOG entry, and installs the published version from the registry on three operating systems.
+
+CI runs `scripts/release-gate.mjs` on every push: the version must agree across those files and `npm pack` may ship only the paths in `scripts/pack-allowlist.txt` (regenerate with `node scripts/release-gate.mjs --update` when the package layout changes on purpose).
+
+The workflow uses npm trusted publishing and holds no token. Before the first tagged release the maintainer configures the trusted publisher on npmjs.com: package settings, Trusted publishing, GitHub Actions, repository `Bubblegunn/product-engineer`, workflow `release.yml`, "Allow npm publish" ticked.

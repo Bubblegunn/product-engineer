@@ -19,6 +19,7 @@ skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
   --warn        report a missing block as a warning; always exit 0
   --lang <code> language of the block for the readability line: en (default) or tr
   -h, --help    this text
+  --version     print the version
 
 Exit codes: 0 no errors, 1 at least one error, 2 usage.`;
 
@@ -132,6 +133,10 @@ function readInput(argv) {
 }
 
 function main(argv) {
+  if (argv.includes("--version")) {
+    console.log(JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version);
+    return 0;
+  }
   if (argv.includes("-h") || argv.includes("--help")) {
     console.log(HELP);
     return 0;

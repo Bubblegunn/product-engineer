@@ -21,8 +21,11 @@
   "sideEffects": false,
   "private": false,
   "scripts": {
-    "test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs test/adapters.test.mjs test/score.test.mjs test/integrations.test.mjs test/readability.test.mjs && node scripts/generate-adapters.mjs --check",
-    "prepublishOnly": "npm test"
+    "test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs test/adapters.test.mjs test/score.test.mjs test/integrations.test.mjs test/readability.test.mjs && node scripts/generate-adapters.mjs --check test/release.test.mjs",
+    "prepublishOnly": "npm test",
+    "release": "node scripts/release.mjs",
+    "release-gate": "node scripts/release-gate.mjs",
+    "release:prepare": "node scripts/generate-adapters.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -54,5 +57,9 @@
   "homepage": "https://bubblegunn.github.io/product-engineer/",
   "bugs": {
     "url": "https://github.com/Bubblegunn/product-engineer/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

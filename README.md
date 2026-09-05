@@ -159,7 +159,7 @@ watching the thing behave, and the habit of writing down what was deliberately n
 ## Contributing
 
 Rule changes need one before/after pair and one eval task; see
-[CONTRIBUTING.md](CONTRIBUTING.md). The [roadmap](ROADMAP.md) is short on purpose.
+[CONTRIBUTING.md](CONTRIBUTING.md), which also describes the one-command release. The [roadmap](ROADMAP.md) is short on purpose.
 Translations and per-stack jargon tables are labelled `good first issue`.
 
 ## Stars
