@@ -90,6 +90,11 @@ harness, the fixtures and every transcript are in [`evals/`](evals/), and
 | Every number in the final message has a method or scope next to it | 1 / 8 | 1 / 8 | +0 |
 | Only the requested files changed (tests and documentation allowed) | 8 / 8 | 8 / 8 | +0 |
 
+The evaluation installed the core skill and nothing else. `customer-block` and
+`done-means-observed` carry the two rules whose metrics moved furthest in that run, but
+neither extraction has been measured on its own, and `release-notes` has no task at all,
+because none of the eight writes release notes. Each skill states its own gap.
+
 Two rows did not move and are printed anyway: the number heuristic scores 1 of 8 in both
 conditions, and every file change in both conditions stayed within the task once
 documentation edits were allowed for. The heuristics were corrected on 5 September and the

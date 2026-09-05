@@ -7,6 +7,7 @@ metadata:
   version: 0.3.0
   source: https://github.com/Bubblegunn/product-engineer
   measuredBy: [observedOrHonest]
+  measuredGap: the run that moved this metric installed the core skill, not this one; the rule is measured, this extraction of it is not
 ---
 
 # done-means-observed
