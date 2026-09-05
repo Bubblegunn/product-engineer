@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.4
+## 0.3.4 (2026-09-05)
 
 The readability line refused six scripts and scored every other one. A customer block written in Hindi, Tamil, Greek, Amharic or Russian came back Flesch 0, band `hard`, LIX 0, which is a grade nobody counted and the opposite of rule 5. Hindi, Tamil and Greek were not even recognised as non-Latin: with no Latin letters present, `scriptOf` returned `Latin` and the English scale ran anyway.
 
