@@ -1,0 +1,40 @@
+name: Rule proposal
+description: Propose a new rule or a change to one of the seven
+title: "rule: "
+labels: [rule-proposal]
+body:
+  - type: input
+    id: rule
+    attributes:
+      label: The rule, in one sentence
+    validations:
+      required: true
+  - type: textarea
+    id: before
+    attributes:
+      label: Before
+      description: What an agent writes today, on a realistic task (a commit message, a PR description, or a reply to the person who asked).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: after
+    attributes:
+      label: After
+      description: What it would write under your rule.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why the after is better for the customer
+    validations:
+      required: true
+  - type: textarea
+    id: cost
+    attributes:
+      label: What it costs
+      description: Extra tokens, extra questions, slower first response, or nothing. Say which.
+    validations:
+      required: true

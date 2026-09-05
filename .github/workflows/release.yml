@@ -3,13 +3,21 @@ on:
   push:
     tags: ["v*"]
 permissions:
-  contents: write
+  contents: read
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # the GitHub release
     steps:
-      - uses: actions/checkout@v7
-      - run: sh test/skill-structure.sh && sh test/commit-msg.test.sh
-      - uses: softprops/action-gh-release@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          generate_release_notes: true
+          persist-credentials: false
+      - run: sh test/skill-structure.sh && sh test/commit-msg.test.sh
+      - name: Release notes are the CHANGELOG entry, then the generated list of pull requests
+        run: |
+          awk '/^## /{n++} n==1' CHANGELOG.md > notes.md
+          gh release create "$TAG" --verify-tag --generate-notes --notes-file notes.md
+        env:
+          TAG: ${{ github.ref_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
