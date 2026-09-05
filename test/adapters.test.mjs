@@ -18,7 +18,7 @@ test("rulesFrom drops the frontmatter and the title and keeps the seven rules", 
   for (const n of [1, 2, 3, 4, 5, 6, 7]) assert.ok(new RegExp(`^## ${n}\\. `, "m").test(rules), `rule ${n}`);
 });
 
-test("adapters produce the nine files, each marked generated or copied and carrying the rules", () => {
+test("adapters produce the ten files, each marked generated or copied and carrying the rules", () => {
   const out = adapters(skill, "0.3.0");
   const paths = Object.keys(out).sort();
   assert.deepEqual(paths, [
@@ -31,9 +31,17 @@ test("adapters produce the nine files, each marked generated or copied and carry
     "GEMINI.md",
     "examples/cursor/.cursor/rules/product-engineer.mdc",
     "gemini-extension.json",
+    "scripts/commit-msg",
   ]);
+  // The hook is generated from the headings table rather than from the skill, so it carries
+  // neither the rules nor the skill's marker; it has its own assertions below.
+  const hook = out["scripts/commit-msg"];
+  assert.ok(hook.startsWith("#!/bin/sh\n"), "the hook is a shell script");
+  assert.ok(hook.includes("Generated from skills/product-engineer/references/headings.md"), "the hook says where it came from");
+  assert.ok(hook.includes("For the customer"), "the hook carries the English heading");
+  assert.ok(!hook.includes("—"), "the hook has no em dash");
   for (const [p, text] of Object.entries(out)) {
-    if (p.endsWith(".json")) continue;
+    if (p.endsWith(".json") || p === "scripts/commit-msg") continue;
     assert.ok(text.includes(p.startsWith("examples/") ? "Copied from Bubblegunn/product-engineer 0.3.0" : "Generated from skills/product-engineer/SKILL.md"), `${p} marked`);
     assert.ok(/^## 7\. /m.test(text), `${p} has rule 7`);
     assert.ok(!text.includes("—"), `${p} has no em dash`);

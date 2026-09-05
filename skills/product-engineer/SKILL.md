@@ -4,7 +4,7 @@ description: Use when building, changing, or describing software for other peopl
 license: MIT
 metadata:
   author: Efe Genc
-  version: 0.3.0
+  version: 0.3.1
   source: https://github.com/Bubblegunn/product-engineer
 ---
 
@@ -33,6 +33,10 @@ What changed: <one or two sentences, no jargon, what they can now do or no longe
 Why it matters: <the benefit, in their terms>
 Automation effect: <only if a manual step disappeared or the system now handles more alone; otherwise omit the line>
 ```
+
+Write the headings in the language your team writes: `references/headings.md` carries the
+shipped ones, English, Turkish, Japanese and Chinese, and how to add another. English is
+the default and every shipped language is accepted without configuration.
 
 Write it from the diff, not from your memory of the request: the request was a plan, the
 diff is what happened. `references/from-the-diff.md` derives the three answers, what

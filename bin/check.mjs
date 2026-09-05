@@ -7,6 +7,7 @@ import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readability } from "./readability.mjs";
+import { acceptedHeadings, preferredHeadings, isHeading, headingWithText, normalise } from "./headings.mjs";
 
 const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--warn] [--lang <code>] [--format text|github] [--comment]
        product-engineer doctor
@@ -64,12 +65,24 @@ export function analyse(text, opts = {}) {
     return { skipped: true, findings: [{ level: "ok", message: "merge, fixup, squash, revert or [no-customer]: the block is not required" }] };
   }
 
-  const blockStart = lines.findIndex((l) => /^For the customer:\s*$/.test(l));
-  const hasWhat = lines.some((l) => /^What changed:\s*\S/.test(l));
+  // The block may be written in the team's language: any row of references/headings.md is
+  // accepted, and .product-engineer.json adds a language the table does not ship.
+  const sets = opts.headings ? [opts.headings] : acceptedHeadings(opts.cwd);
+  const preferred = opts.headings ?? preferredHeadings(opts.cwd);
+  let blockStart = -1;
+  let heading = preferred;
+  for (let i = 0; i < lines.length && blockStart < 0; i++) {
+    const set = sets.find((s) => isHeading(lines[i], s.block));
+    if (set) {
+      blockStart = i;
+      heading = set;
+    }
+  }
+  const hasWhat = lines.some((l) => headingWithText(l, heading.what));
   if (blockStart < 0 || !hasWhat) {
-    add(opts.warn ? "warn" : "error", blockStart < 0 ? 'no "For the customer:" block' : '"For the customer:" block has no "What changed:" line');
+    add(opts.warn ? "warn" : "error", blockStart < 0 ? `no "${preferred.block}" block` : `"${heading.block}" block has no "${heading.what}" line`);
   } else {
-    add("ok", '"For the customer:" block with "What changed:"');
+    add("ok", `"${heading.block}" block with "${heading.what}"`);
   }
 
   // The block runs from its heading to the next blank line or the end.
@@ -80,13 +93,13 @@ export function analyse(text, opts = {}) {
   const blockText = block.join("\n");
 
   if (blockStart >= 0) {
-    if (/^Why it matters:\s*\S/m.test(blockText)) add("ok", '"Why it matters:" present');
-    else add("warn", '"Why it matters:" missing or empty');
+    if (block.some((l) => headingWithText(l, heading.why))) add("ok", `"${heading.why}" present`);
+    else add("warn", `"${heading.why}" missing or empty`);
 
-    const auto = block.find((l) => /^Automation effect:/.test(l));
-    if (!auto) add("ok", '"Automation effect:" omitted (fine when no manual step disappeared)');
-    else if (/^Automation effect:\s*$/.test(auto)) add("error", '"Automation effect:" is present but empty; omit the line or say what became automatic');
-    else add("ok", '"Automation effect:" present');
+    const auto = block.find((l) => normalise(l).startsWith(normalise(heading.automation)));
+    if (!auto) add("ok", `"${heading.automation}" omitted (fine when no manual step disappeared)`);
+    else if (!headingWithText(auto, heading.automation)) add("error", `"${heading.automation}" is present but empty; omit the line or say what became automatic`);
+    else add("ok", `"${heading.automation}" present`);
 
     const terms = jargonTerms(opts.tablePath);
     const lower = blockText.toLowerCase();
@@ -100,18 +113,29 @@ export function analyse(text, opts = {}) {
       add("warn", "the block offers passing tests as the evidence; rule 3 asks for something observed (logs, the data, a device) or a line saying what you could not check");
     }
 
-    const r = readability(blockText.replace(/^[A-Z][a-z ]+:\s*/gm, ""), opts.lang ?? "en");
+    // Strip this block's own labels, whatever language they are in, so the score reads the
+    // prose rather than the scaffolding.
+    const labels = [heading.what, heading.why, heading.automation].map((h) => normalise(h));
+    const prose = blockText
+      .split("\n")
+      .map((l) => {
+        const n = normalise(l);
+        const label = labels.find((h) => n.startsWith(h));
+        return label ? n.slice(label.length).trim() : l;
+      })
+      .join("\n");
+    const r = readability(prose, opts.lang ?? (heading.language !== "custom" ? heading.language : "en"));
     add("info", `readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}`);
   }
 
-  const ns = lines.findIndex((l) => /^Not shipped:\s*$/.test(l));
+  const ns = lines.findIndex((l) => isHeading(l, heading.notShipped));
   if (ns >= 0) {
     const items = [];
     for (let i = ns + 1; i < lines.length && lines[i].trim() !== ""; i++) items.push(lines[i]);
     const bad = items.filter((l) => !/^- .+:.+/.test(l));
-    if (!items.length) add("warn", '"Not shipped:" has no items');
-    else if (bad.length) add("warn", `"Not shipped:" items should read "- <thing>: <why not now>" (${bad.length} do not)`);
-    else add("ok", `"Not shipped:" lists ${items.length} item${items.length === 1 ? "" : "s"} with reasons`);
+    if (!items.length) add("warn", `"${heading.notShipped}" has no items`);
+    else if (bad.length) add("warn", `"${heading.notShipped}" items should read "- <thing>: <why not now>" (${bad.length} do not)`);
+    else add("ok", `"${heading.notShipped}" lists ${items.length} item${items.length === 1 ? "" : "s"} with reasons`);
   }
 
   const sentences = text.split(/(?<=[.!?])\s+|\n+/).filter((s) => /\d/.test(s) && !/^\s*(Co-Authored-By|Claude-Session|Signed-off-by)/.test(s));
@@ -138,19 +162,26 @@ export function render(result, format = "text") {
 
 export const COMMENT_MARKER = "<!-- product-engineer -->";
 
-const TEMPLATE = `For the customer:
-What changed: <what they can now do, or no longer suffer>
-Why it matters: <the benefit, in their terms>
-Automation effect: <only when a manual step disappeared or the system handles more alone; otherwise omit the line>`;
+/** The block to paste, in the heading language the team writes. */
+export function template(heading) {
+  return [
+    heading.block,
+    `${heading.what} <what they can now do, or no longer suffer>`,
+    `${heading.why} <the benefit, in their terms>`,
+    `${heading.automation} <only when a manual step disappeared or the system handles more alone; otherwise omit the line>`,
+  ].join("\n");
+}
 
 /** The sticky pull request comment: the verdict, the findings, and the block to paste when it is missing. */
-export function commentBody(result, version) {
-  const missing = result.findings.some((f) => f.level === "error" && /^no "For the customer:" block/.test(f.message));
+export function commentBody(result, version, opts = {}) {
+  const heading = opts.headings ?? preferredHeadings(opts.cwd);
+  const isMissing = (f) => f.level === "error" && f.message.startsWith("no \"") && f.message.endsWith("\" block");
+  const missing = result.findings.some(isMissing);
   const lines = [COMMENT_MARKER, ""];
   if (result.skipped) lines.push("product-engineer check: skipped, the block is not required for this description.");
-  else if (missing) lines.push("product-engineer check: the description has no \"For the customer\" block.", "", "Paste this at the end of the description and fill it in:", "", "```", TEMPLATE, "```");
-  else lines.push("product-engineer check: the \"For the customer\" block is present.");
-  const notes = result.findings.filter((f) => f.level === "error" || f.level === "warn").filter((f) => !(missing && /^no "For the customer:" block/.test(f.message)));
+  else if (missing) lines.push(`product-engineer check: the description has no ${JSON.stringify(heading.block.replace(/:$/, ""))} block.`, "", "Paste this at the end of the description and fill it in:", "", "```", template(heading), "```");
+  else lines.push(`product-engineer check: the ${JSON.stringify(heading.block.replace(/:$/, ""))} block is present.`);
+  const notes = result.findings.filter((f) => f.level === "error" || f.level === "warn").filter((f) => !(missing && isMissing(f)));
   if (notes.length) {
     lines.push("");
     for (const f of notes) lines.push(`- ${f.level === "error" ? "error" : "warning"}: ${f.message}`);

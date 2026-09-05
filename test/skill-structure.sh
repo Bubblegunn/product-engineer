@@ -21,7 +21,7 @@ for n in 1 2 3 4 5 6 7; do
   grep -q "^## $n\. " "$f" || fail "rule $n heading missing"
 done
 grep -q 'For the customer:' "$f" || fail "block heading missing"
-for r in commit-template five-questions definition-of-done plain-language not-shipped press-release ship-show-ask appetite; do
+for r in commit-template five-questions definition-of-done plain-language not-shipped press-release ship-show-ask appetite headings; do
   p="skills/product-engineer/references/$r.md"
   [ -f "$p" ] || fail "$p missing"
 done
@@ -39,6 +39,12 @@ for j in .claude-plugin/marketplace.json .claude-plugin/plugin.json; do
   node -e "JSON.parse(require('fs').readFileSync('$j','utf8'))" || fail "$j is not valid JSON"
 done
 grep -q '"name": "product-engineer"' .claude-plugin/plugin.json || fail "plugin name"
-grep -q '"version": "0.3.0"' .claude-plugin/plugin.json || fail "plugin version 0.3.0"
+v=$(node -p "require('./package.json').version")
+grep -q "\"version\": \"$v\"" .claude-plugin/plugin.json || fail "plugin version must equal package.json ($v)"
 [ -f AGENTS.md ] || fail "AGENTS.md missing"
+# The hook is generated from the headings table; every shipped block heading must be in it.
+sed -n 's/^| \([a-z][a-z]\) | \([^|]*\) |.*/\2/p' skills/product-engineer/references/headings.md | while read -r h; do
+  h=$(printf '%s' "$h" | sed 's/[[:space:]]*$//; s/:$//')
+  grep -qF "$h" scripts/commit-msg || fail "commit-msg hook does not carry the heading: $h"
+done
 echo "ok: skill structure (4 skills)"

@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { analyse, exitCode, render } from "../bin/check.mjs";
+import { mkdtempSync, writeFileSync, rmSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { analyse, exitCode, render, commentBody } from "../bin/check.mjs";
+import { shippedHeadings } from "../bin/headings.mjs";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
 const levels = (r) => r.findings.map((f) => f.level);
@@ -132,4 +135,60 @@ test("describing added tests is not offering them as evidence", () => {
     "What changed: Accountants can download all bookings for a month as a spreadsheet, covered by 7 new tests.",
   );
   assert.ok(!has(analyse(describes), "warn", /offers passing tests as the evidence/));
+});
+
+// --- the block may be written in the team's language ---
+
+const trBlock = `feat(rapor): aylık rezervasyonları CSV olarak dışa aktar
+
+Müşteri için:
+Ne değişti: Muhasebeciler bir aylık rezervasyonu tablo olarak indirebiliyor.
+Neden önemli: Bunu her ay elle yazıyorlardı.
+`;
+
+test("a shipped language is accepted with no configuration", () => {
+  const r = analyse(trBlock);
+  assert.equal(exitCode(r), 0, JSON.stringify(r.findings));
+  assert.ok(has(r, "ok", /"Müşteri için:" block with "Ne değişti:"/));
+  assert.ok(has(r, "ok", /"Neden önemli:" present/));
+});
+
+test("a fullwidth colon is the same heading", () => {
+  const zh = "feat: x\n\n给客户：\n改动内容： 会计可以下载一个月的预订记录。\n";
+  const r = analyse(zh);
+  assert.equal(exitCode(r), 0, JSON.stringify(r.findings));
+});
+
+test("English is unchanged and is still what a missing block is named after", () => {
+  const r = analyse("feat: nothing here\n");
+  assert.ok(has(r, "error", /^no "For the customer:" block$/));
+});
+
+test("a team configures a heading the table does not ship", () => {
+  const dir = mkdtempSync(join(tmpdir(), "pe-headings-"));
+  writeFileSync(join(dir, ".product-engineer.json"), JSON.stringify({ headings: { block: "Für den Kunden:", what: "Was sich geändert hat:", why: "Warum es wichtig ist:" } }));
+  const de = "feat: x\n\nFür den Kunden:\nWas sich geändert hat: Buchungen lassen sich laden.\nWarum es wichtig ist: Das war Handarbeit.\n";
+  assert.equal(exitCode(analyse(de, { cwd: dir })), 0);
+  // the shipped rows stay accepted beside it
+  assert.equal(exitCode(analyse(full, { cwd: dir })), 0);
+  // and a missing block is named after the team's own heading
+  assert.ok(has(analyse("feat: nothing\n", { cwd: dir }), "error", /^no "Für den Kunden:" block$/));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("the paste template follows the configured heading", () => {
+  const de = { language: "custom", block: "Für den Kunden:", what: "Was sich geändert hat:", why: "Warum es wichtig ist:", automation: "Automatisierungseffekt:", notShipped: "Nicht geliefert:" };
+  const body = commentBody(analyse("feat: nothing\n", { headings: de }), "0.0.0", { headings: de });
+  assert.match(body, /Für den Kunden:\nWas sich geändert hat: </);
+  assert.doesNotMatch(body, /For the customer/);
+});
+
+test("the hook, the table and the check agree on every shipped heading", () => {
+  const hook = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "scripts", "commit-msg"), "utf8");
+  for (const row of shippedHeadings()) {
+    assert.ok(hook.includes(row.block.replace(/:$/, "")), `hook is missing ${row.block}`);
+    assert.ok(hook.includes(row.what.replace(/:$/, "")), `hook is missing ${row.what}`);
+    const message = `feat: x\n\n${row.block}\n${row.what} something a person notices.\n`;
+    assert.equal(exitCode(analyse(message)), 0, `check rejects ${row.language}`);
+  }
 });
