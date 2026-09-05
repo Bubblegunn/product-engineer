@@ -9,6 +9,10 @@ repository. With no range it reads the staged change, which is what the commit-m
 about to record. The flag is opt-in and every finding is a warning, so an existing run cannot
 turn red on the upgrade and the output without it is byte-identical.
 
+A phrase inside backticks or quotation marks is named rather than claimed, so a message that
+describes these checks is not read as making them. Found by running the new flag on its own
+commit, which is the first thing it caught.
+
 The checks are deliberately narrow. A refactor claiming no behaviour change is not tested
 against the source it touches; a number is read as a file count only when its sentence also
 carries a verb of changing; and a named path that exists but is untouched is ordinary context,

@@ -169,6 +169,10 @@ The fourth is the one worth having. A path that exists but is untouched is ordin
 and is never reported; a path that is in neither place is a reference to a file that was
 renamed, or never existed, which is a shape agent-written messages leave behind.
 
+A phrase inside backticks or quotation marks is being named, not asserted, so a message that
+describes these checks does not trip them. That was the first thing the flag caught, on the
+commit that added it.
+
 Each check is conservative on purpose. A refactor claiming no behaviour change is not
 checked against the source it touches, because that claim is usually true, and a number is
 only read as a file count when its sentence also carries a verb of changing. Nothing here

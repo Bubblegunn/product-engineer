@@ -87,7 +87,16 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   const findings = [];
   const add = (level, message) => findings.push({ level, message });
   const files = diff.files;
+  // A phrase inside backticks or quotation marks is being named, not asserted. Without this,
+  // a message describing the checks ("reports \"documentation only\" over a source change")
+  // is read as making the claim it describes. Found by running this on its own commit.
   const body = text.replace(/^\s*(Co-Authored-By|Claude-Session|Signed-off-by):.*$/gim, "");
+  // Claims are read from a masked copy; paths are read from the body, because a path is
+  // normally written in backticks and naming one is not the same as quoting a phrase.
+  const claims = body
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`\n]*`/g, " ")
+    .replace(/"[^"\n]{0,120}"|\u201c[^\u201d\n]{0,120}\u201d/g, " ");
 
   if (!files.length) {
     add("info", `the change at ${diff.range} touches no files, so nothing was cross-checked`);
@@ -100,7 +109,7 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   add("info", `cross-checked against ${files.length} file${files.length === 1 ? "" : "s"} at ${diff.range}: ${source.length} source, ${tests.length} test, ${docs.length} documentation`);
 
   // 1. A claim that tests were written, with no test file gaining a line.
-  if (TEST_CLAIM.test(body)) {
+  if (TEST_CLAIM.test(claims)) {
     const written = tests.filter((f) => f.added > 0);
     if (!written.length) {
       add("warn", `the message says tests were added; no test file gains a line in this change (${files.length} file${files.length === 1 ? "" : "s"} counted, ${tests.length} of them under a test path)`);
@@ -110,7 +119,7 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   }
 
   // 2. A claim that only documentation changed, with source or tests in the diff.
-  if (DOCS_ONLY_CLAIM.test(body)) {
+  if (DOCS_ONLY_CLAIM.test(claims)) {
     const other = [...source, ...tests];
     if (other.length) {
       const named = other.slice(0, 3).map((f) => f.path).join(", ");
@@ -121,7 +130,7 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   }
 
   // 3. A stated file count that the diff contradicts.
-  for (const s of sentencesWith(body, /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i)) {
+  for (const s of sentencesWith(claims, /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i)) {
     if (!CHANGE_VERB.test(s)) continue;
     const m = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i.exec(s);
     const claimed = /^\d+$/.test(m[1]) ? Number(m[1]) : WORDS[m[1].toLowerCase()];

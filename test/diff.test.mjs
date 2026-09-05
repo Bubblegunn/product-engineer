@@ -140,3 +140,23 @@ test("the flag is opt-in, reports warnings only, and survives a range git does n
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("a phrase in quotes or backticks is named, not claimed", () => {
+  // Found by running this check on its own commit: a message describing the checks was read
+  // as making the claims it described. A path in backticks is still a path, because naming a
+  // file is not the same as quoting a phrase.
+  const { dir } = repo({ "src/a.ts": "code\n" });
+  try {
+    const d = readDiff({ cwd: dir });
+    const describing = 'The check reports "documentation only" over a source change, and warns when `tests` are claimed.';
+    const f = crossCheck(describing, d, { cwd: dir });
+    assert.ok(!has(f, "warn", /documentation only/), JSON.stringify(f));
+    assert.ok(!has(f, "warn", /tests were added/), JSON.stringify(f));
+    // The claim itself, unquoted, is still caught.
+    assert.ok(has(crossCheck("Documentation only.", d, { cwd: dir }), "warn", /documentation only/));
+    // And a backticked path is still read.
+    assert.ok(has(crossCheck("Touched `src/gone.ts`.", d, { cwd: dir }), "warn", /src\/gone\.ts/));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
