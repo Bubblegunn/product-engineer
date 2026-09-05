@@ -143,6 +143,49 @@ Not shipped:
 - Marking items read from the bell: not asked for, and it needs a decision on where notification state lives.
 ```
 
+## Check a message or a pull request
+
+`product-engineer check` reads a commit message or PR description and reports whether it
+carries the block and whether the block reads the way the skill asks: `What changed`, `Why it
+matters`, an `Automation effect` line that is either meaningful or absent, a well-formed
+`Not shipped:` list, numbers without a method next to them, and jargon from the plain-language
+table used without an explanation.
+
+```
+node bin/check.mjs check .git/COMMIT_EDITMSG     # or: product-engineer check <file|->
+node bin/check.mjs check --pr 12                 # fetches the body with gh
+```
+
+```
+ok    "For the customer:" block with "What changed:"
+ok    "Why it matters:" present
+ok    "Automation effect:" present
+ok    "Not shipped:" lists 1 item with reasons
+no errors, 0 warnings
+```
+
+Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
+it reports no errors and one warning (a sentence quoting the eval counts without a method
+word next to it).
+
+## Use it in CI
+
+```yaml
+name: customer block
+on: [pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Bubblegunn/product-engineer@v0.2.0
+        # with: { warn: "true" }   # report instead of failing
+```
+
+The action fails the pull request when its description has no "For the customer" block and
+prints the other findings as warnings. Nothing is posted to the PR; the check log is the
+report.
+
 ## The seven rules
 
 1. **Restate before building.** One sentence of customer outcome, or one question.

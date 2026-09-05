@@ -1,0 +1,28 @@
+name: product-engineer check
+description: Fails a pull request whose description has no "For the customer" block, and warns on the rest.
+author: Efe Genc
+branding:
+  icon: check-square
+  color: blue
+inputs:
+  pr:
+    description: Pull request number to check. Defaults to the event's pull request.
+    required: false
+    default: ${{ github.event.pull_request.number }}
+  warn:
+    description: Set to "true" to report a missing block as a warning instead of failing.
+    required: false
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Check the pull request description
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        if [ "${{ inputs.warn }}" = "true" ]; then
+          node "${{ github.action_path }}/bin/check.mjs" check --pr "${{ inputs.pr }}" --warn
+        else
+          node "${{ github.action_path }}/bin/check.mjs" check --pr "${{ inputs.pr }}"
+        fi
