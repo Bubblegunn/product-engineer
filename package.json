@@ -1,10 +1,15 @@
 {
   "name": "product-engineer",
-  "version": "0.2.0",
-  "description": "Your agent ships code. product-engineer makes it ship outcomes. An agent skill plus a check that reads a commit message or PR description for the For-the-customer block.",
+  "version": "0.3.0",
+  "description": "Your agent ships code. product-engineer makes it ship outcomes. Four agent skills plus a zero-dependency check for the For-the-customer block in commit messages and pull requests.",
   "type": "module",
   "bin": {
     "product-engineer": "bin/check.mjs"
+  },
+  "exports": {
+    ".": "./bin/check.mjs",
+    "./commitlint": "./integrations/commitlint/config.mjs",
+    "./commitlint/plugin": "./integrations/commitlint/index.mjs"
   },
   "files": [
     "bin",
@@ -13,6 +18,7 @@
     "README.md",
     "LICENSE"
   ],
+  "sideEffects": false,
   "private": false,
   "scripts": {
     "test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs test/adapters.test.mjs test/score.test.mjs test/integrations.test.mjs test/readability.test.mjs && node scripts/generate-adapters.mjs --check",
@@ -23,12 +29,21 @@
   },
   "keywords": [
     "agent-skills",
+    "skills",
     "claude-code",
     "codex",
     "cursor",
+    "copilot",
+    "gemini-cli",
+    "ai-agents",
     "commit-message",
     "pull-request",
-    "product-engineering"
+    "commitlint",
+    "pre-commit",
+    "git-hooks",
+    "product-engineering",
+    "plain-language",
+    "release-notes"
   ],
   "author": "Efe Genc",
   "license": "MIT",
@@ -36,10 +51,8 @@
     "type": "git",
     "url": "git+https://github.com/Bubblegunn/product-engineer.git"
   },
-  "homepage": "https://github.com/Bubblegunn/product-engineer#readme",
-  "exports": {
-    ".": "./bin/check.mjs",
-    "./commitlint": "./integrations/commitlint/config.mjs",
-    "./commitlint/plugin": "./integrations/commitlint/index.mjs"
+  "homepage": "https://bubblegunn.github.io/product-engineer/",
+  "bugs": {
+    "url": "https://github.com/Bubblegunn/product-engineer/issues"
   }
 }
