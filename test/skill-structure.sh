@@ -21,7 +21,7 @@ for n in 1 2 3 4 5 6 7; do
   grep -q "^## $n\. " "$f" || fail "rule $n heading missing"
 done
 grep -q 'For the customer:' "$f" || fail "block heading missing"
-for r in commit-template five-questions definition-of-done plain-language not-shipped; do
+for r in commit-template five-questions definition-of-done plain-language not-shipped press-release ship-show-ask appetite; do
   p="skills/product-engineer/references/$r.md"
   [ -f "$p" ] || fail "$p missing"
 done

@@ -12,7 +12,8 @@ examples live in `references/`.
 Before touching code, write the request as one sentence of customer outcome, in the
 customer's words: who gets what, and how they will notice. "A host sees a new booking
 within a second without refreshing." If you cannot write that sentence, ask one question.
-One, not five. See `references/five-questions.md`.
+One, not five. See `references/five-questions.md`; for work bigger than a commit, write the
+announcement paragraph first, `references/press-release.md`.
 
 ## 2. For the customer, every time
 
@@ -60,7 +61,8 @@ not there, explain it in one sentence the first time and move on.
 Before proposing a design, write one ledger line: what it costs (time, complexity, new
 moving parts) against what the customer gets. Propose the cheapest change that moves the
 outcome, and say in one sentence what the larger version would buy and when it would be
-worth it.
+worth it. Decide the appetite before the design (`references/appetite.md`) and how much
+ceremony the change needs (`references/ship-show-ask.md`).
 
 ## When to skip this skill
 

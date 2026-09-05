@@ -10,5 +10,6 @@ empty list.
 - [ ] The customer-facing text was read by someone who did not write it, or I read it aloud.
 - [ ] The "For the customer" block is in the commit and the PR.
 - [ ] Anything I deliberately did not do is under "Not shipped" with a reason.
+- [ ] One sentence on what I would do differently next time (the lean habit of hansei, https://www.lean.org/lexicon-terms/hansei/).
 
 Tests passing is the entry ticket to this list, not an item on it.
