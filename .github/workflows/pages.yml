@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p _site && cp -R site/. _site/ && mkdir -p _site/assets && cp assets/wordmark.svg _site/assets/
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
       - id: deployment
