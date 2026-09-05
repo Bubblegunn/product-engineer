@@ -20,6 +20,12 @@ Not shipped:
 - Scheduled email of the export: nobody has asked; worth it when two customers do.
 `;
 
+test("the block gets a readability line as information only", () => {
+  assert.ok(has(analyse(full), "info", /Flesch \d+/));
+  assert.ok(has(analyse(full, { lang: "tr" }), "info", /Ateşman/));
+  assert.equal(exitCode(analyse(full)), 0);
+});
+
 test("a full block passes with no errors", () => {
   const r = analyse(full);
   assert.equal(exitCode(r), 0);

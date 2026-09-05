@@ -6,8 +6,9 @@ import { readFileSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readability } from "./readability.mjs";
 
-const HELP = `usage: product-engineer check [file|-] [--pr <number>] [--warn]
+const HELP = `usage: product-engineer check [file|-] [--pr <number>] [--warn] [--lang <code>]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -16,6 +17,7 @@ skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
   file          path to a message, or - for stdin
   --pr <n>      fetch the pull request body with gh pr view
   --warn        report a missing block as a warning; always exit 0
+  --lang <code> language of the block for the readability line: en (default) or tr
   -h, --help    this text
 
 Exit codes: 0 no errors, 1 at least one error, 2 usage.`;
@@ -37,7 +39,7 @@ const METHOD = /`|\b(count(ed)?|git|ran|measured|out of|of the|in the (file|data
 
 /**
  * Analyse a message. Returns { skipped, findings: [{ level, message }] }.
- * level is "error", "warn" or "ok".
+ * level is "error", "warn", "ok" or "info".
  */
 export function analyse(text, opts = {}) {
   const findings = [];
@@ -79,6 +81,9 @@ export function analyse(text, opts = {}) {
     const unexplained = used.filter((t) => !explained(t));
     if (unexplained.length) add("warn", `jargon in the customer block without a plain explanation: ${unexplained.join(", ")}`);
     else if (used.length) add("ok", "jargon in the block is explained");
+
+    const r = readability(blockText.replace(/^[A-Z][a-z ]+:\s*/gm, ""), opts.lang ?? "en");
+    add("info", `readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}`);
   }
 
   const ns = lines.findIndex((l) => /^Not shipped:\s*$/.test(l));
@@ -117,7 +122,8 @@ function readInput(argv) {
     if (!n) throw new Error("--pr needs a number");
     return execFileSync("gh", ["pr", "view", n, "--json", "body", "--jq", ".body"], { encoding: "utf8" });
   }
-  const positional = argv.filter((a) => !a.startsWith("-") || a === "-").filter((a) => a !== "check");
+  const langIndex = argv.indexOf("--lang");
+  const positional = argv.filter((a, i) => (!a.startsWith("-") || a === "-") && i !== langIndex + 1).filter((a) => a !== "check");
   const file = positional[0];
   if (file === "-") return readFileSync(0, "utf8");
   if (file) return readFileSync(file, "utf8");
@@ -142,7 +148,8 @@ function main(argv) {
     console.error(err instanceof Error ? err.message : String(err));
     return 2;
   }
-  const result = analyse(text, { warn: argv.includes("--warn") });
+  const langIndex = argv.indexOf("--lang");
+  const result = analyse(text, { warn: argv.includes("--warn"), lang: langIndex >= 0 ? argv[langIndex + 1] : undefined });
   console.log(render(result));
   return argv.includes("--warn") ? 0 : exitCode(result);
 }

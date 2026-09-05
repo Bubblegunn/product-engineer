@@ -909,7 +909,7 @@ Commit: `docs(references): plain-language tables in Turkish, Japanese and Chines
 - Create: `bin/readability.mjs`, `test/readability.test.mjs`
 - Modify: `bin/check.mjs` (info line, `--lang`), `test/check.test.mjs` (one test), `README.md` (one sentence under Check)
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 `test/readability.test.mjs`:
 
@@ -937,7 +937,7 @@ test("Turkish uses Atesman", () => {
 });
 ```
 
-- [ ] **Step 2: Implement `bin/readability.mjs`**
+- [x] **Step 2: Implement `bin/readability.mjs`**
 
 ```js
 // Readability of a short text, no dependencies. Flesch reading ease for English,
@@ -992,7 +992,7 @@ export function readability(text, lang = "en") {
 
 In `bin/check.mjs`: import `readability`; accept `--lang <code>` in `parse`; after the jargon findings inside `if (blockStart >= 0)`, `const r = readability(blockText, opts.lang ?? "en"); add("info", \`readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}\`);`. `render` already pads levels; `exitCode` ignores `info`. Add to `test/check.test.mjs`: `assert.ok(has(analyse(full), "info", /Flesch \d+/))` and with `{ lang: "tr" }` `/Ateşman/`. README, under Check: one sentence that the block gets a readability line (Flesch or Ateşman, plus LIX) as information only.
 
-- [ ] **Step 3: Test and commit**
+- [x] **Step 3: Test and commit**
 
 Run: `node --test test/readability.test.mjs test/check.test.mjs`
 Commit: `feat(check): readability of the customer block, Flesch or Ateşman plus LIX, as an info line`

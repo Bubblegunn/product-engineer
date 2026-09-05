@@ -133,7 +133,8 @@ node bin/check.mjs check .git/COMMIT_EDITMSG     # or: product-engineer check <f
 node bin/check.mjs check --pr 12                 # fetches the body with gh
 ```
 
-Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
+The block also gets a readability line, Flesch for English or Ateşman with `--lang tr`, plus
+LIX, as information only. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
 it reports no errors and one warning (a sentence quoting the eval counts without a method
 word next to it). As a CI step:
 
