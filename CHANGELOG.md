@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 (unreleased)
+## 0.3.0 (2026-09-05)
 
 - `references/from-the-diff.md`: derive the customer block from `git diff` rather than from memory of the request, including who the call path affects and what a reader would expect to be there and is not
 - `check` warns when the customer block offers a passing test suite as its evidence and the message names no observation anywhere; describing tests that were added is not flagged
