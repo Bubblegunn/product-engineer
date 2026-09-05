@@ -23,6 +23,11 @@ skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
                 request, updated in place on later runs; a failed post is a warning
   --format      text (default) or github: errors and warnings as ::error:: and
                 ::warning:: workflow commands, so they annotate the run
+  --diff [range] also read the change itself and report where the message and the
+                diff disagree: tests claimed but no test file touched, "documentation
+                only" over a source change, a stated file count that is wrong, a path
+                named that is neither in the change nor in the repository. With no
+                range it reads the staged change. Reports warnings only
   --warn        report a missing block as a warning; always exit 0
   --lang <code> language of the block for the readability line: en (default) or tr
   -h, --help    this text
@@ -246,6 +251,14 @@ export function exitCode(result) {
   return result.findings.some((f) => f.level === "error") ? 1 : 0;
 }
 
+/** Index of --diff when the next argument is its range rather than another flag or a file. */
+function diffRangeIndex(argv) {
+  const i = argv.indexOf("--diff");
+  if (i < 0) return -1;
+  const next = argv[i + 1];
+  return next && !next.startsWith("-") && !existsSync(next) ? i : -1;
+}
+
 function prNumber(argv) {
   const prIndex = argv.indexOf("--pr");
   if (prIndex < 0) return null;
@@ -257,7 +270,7 @@ function prNumber(argv) {
 async function readInput(argv) {
   const pr = prNumber(argv);
   if (pr) return fetchPrBody(pr);
-  const valued = [argv.indexOf("--lang"), argv.indexOf("--format")].filter((i) => i >= 0).map((i) => i + 1);
+  const valued = [argv.indexOf("--lang"), argv.indexOf("--format"), diffRangeIndex(argv)].filter((i) => i >= 0).map((i) => i + 1);
   const positional = argv.filter((a, i) => (!a.startsWith("-") || a === "-") && !valued.includes(i)).filter((a) => a !== "check");
   const file = positional[0];
   if (file === "-" || argv.includes("--stdin")) return readFileSync(0, "utf8");
@@ -303,6 +316,18 @@ async function main(argv) {
   }
   const langIndex = argv.indexOf("--lang");
   const result = analyse(text, { warn: argv.includes("--warn"), lang: langIndex >= 0 ? argv[langIndex + 1] : undefined });
+  if (argv.includes("--diff")) {
+    const ri = diffRangeIndex(argv);
+    try {
+      const { readDiff, crossCheck } = await import("./diff.mjs");
+      const diff = readDiff({ range: ri >= 0 ? argv[ri + 1] : undefined });
+      result.findings.push(...crossCheck(text, diff, { cwd: process.cwd() }));
+    } catch (err) {
+      // Outside a repository, or a range git does not know: say so and check the message alone.
+      const message = `--diff could not read the change: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`;
+      result.findings.push({ level: "warn", message });
+    }
+  }
   console.log(render(result, format));
   if (argv.includes("--comment")) {
     const pr = prNumber(argv);

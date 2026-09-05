@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.2 (unreleased)
+
+`check --diff` reads the change and reports where the message and the diff disagree: tests
+claimed with no test file gaining a line, "documentation only" over a source change, a stated
+file count the change contradicts, and a path named that is in neither the change nor the
+repository. With no range it reads the staged change, which is what the commit-msg hook is
+about to record. The flag is opt-in and every finding is a warning, so an existing run cannot
+turn red on the upgrade and the output without it is byte-identical.
+
+The checks are deliberately narrow. A refactor claiming no behaviour change is not tested
+against the source it touches; a number is read as a file count only when its sentence also
+carries a verb of changing; and a named path that exists but is untouched is ordinary context,
+so only a broken reference is reported.
+
 ## 0.3.1 (2026-09-05)
 
 A skill joins the pack only when the eval measures it. Every skill in `skills/` now declares `metadata.measuredBy`, naming metrics that `evals/score.mjs` scores, and `test/skill-structure.sh` fails when a skill in the pack declares none or names a metric that does not exist. A skill without that mapping belongs in `skills/.experimental/`, which is documented rather than implied: `npx skills add` walks the repository to a depth of five and skips only `node_modules`, `.git`, `dist`, `build` and `__pycache__`, read from `skills@1.5.23`, so an experimental skill is still installed and the only marker that travels with it is its own description, which must open with `Experimental:`.

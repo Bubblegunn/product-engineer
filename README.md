@@ -144,6 +144,37 @@ node bin/check.mjs check --pr 12                 # the body through the GitHub A
 node bin/check.mjs check --pr 12 --comment       # and one comment on the pull request, updated in place
 ```
 
+### Does the message match the change?
+
+Everything above reads the message alone, so it can tell whether you said the right shapes.
+It cannot tell whether what you said is true, and in 2026 that is the gap that hurts: the
+description reads clean, the change is large, and the reviewer has no way to know which
+sentences were checked. `--diff` reads the change itself and reports where the two disagree.
+
+```
+node bin/check.mjs check .git/COMMIT_EDITMSG --diff        # the staged change
+node bin/check.mjs check --pr 12 --diff main...HEAD        # a branch
+```
+
+Four disagreements are reported, each naming what was counted:
+
+| the message says | and the change shows | reported |
+|---|---|---|
+| tests were added | no test file gains a line | a warning, with the file counts |
+| documentation only | a source or test file changed | a warning, naming the files |
+| a file count | a different number of files | a warning, with both numbers |
+| a path | it is in neither the change nor the repository | a warning, naming the path |
+
+The fourth is the one worth having. A path that exists but is untouched is ordinary context
+and is never reported; a path that is in neither place is a reference to a file that was
+renamed, or never existed, which is a shape agent-written messages leave behind.
+
+Each check is conservative on purpose. A refactor claiming no behaviour change is not
+checked against the source it touches, because that claim is usually true, and a number is
+only read as a file count when its sentence also carries a verb of changing. Nothing here
+reports an error, so a run that passed yesterday cannot fail today; without `--diff` the
+output is byte-identical to before.
+
 Write the block in the language your team writes. English, Turkish, Japanese and Chinese
 headings are accepted with no configuration, and a heading for any other language goes in
 `.product-engineer.json`; the table and the format are in
