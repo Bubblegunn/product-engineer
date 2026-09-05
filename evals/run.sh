@@ -5,19 +5,56 @@
 #   sh evals/run.sh              # all tasks, both conditions
 #   sh evals/run.sh 03 skill     # one task prefix, one condition
 #   PE_EVAL_RUNS=3 sh evals/run.sh   # three runs per arm, results/<task>/<condition>/run-N
+#   sh evals/run.sh --yes --overwrite   # replace the published run in evals/results
 #
-# Requires the `claude` CLI, logged in. Each run costs real tokens.
+# Requires the `claude` CLI, logged in. Each run costs real tokens, so the script
+# prints what it is about to spend and stops unless you pass --yes (or set
+# PE_EVAL_YES=1). The model is pinned so a rerun compares like with like; override
+# with PE_EVAL_MODEL to measure a different one.
 # Only project-level settings are loaded (--setting-sources project) so the
 # machine's own CLAUDE.md and skills cannot leak into the bare condition.
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 tasks_dir="$root/evals/tasks"
-results_dir="$root/evals/results"
+# A rerun writes to its own directory. evals/results holds the run published in
+# RESULTS.md, and overwriting it by accident destroys the evidence behind the table.
+published_dir="$root/evals/results"
+results_dir="${PE_EVAL_OUT:-$root/evals/results-$(date -u +%Y%m%dT%H%M%SZ)}"
 filter="${1:-}"
 only_condition="${2:-}"
-model="${PE_EVAL_MODEL:-}"
+case "$filter" in --*) filter="" ;; esac
+case "$only_condition" in --*) only_condition="" ;; esac
+# Pinned: the published numbers in RESULTS.md were produced with this model, and an
+# unpinned run silently compares against whatever the CLI defaults to that week.
+model="${PE_EVAL_MODEL:-claude-opus-5}"
 runs="${PE_EVAL_RUNS:-1}"
+yes="${PE_EVAL_YES:-}"
+overwrite=""
+for arg in "$@"; do
+  [ "$arg" = "--yes" ] && yes=1
+  [ "$arg" = "--overwrite" ] && overwrite=1
+done
+[ -n "$overwrite" ] && results_dir="$published_dir"
 mkdir -p "$results_dir"
+
+cli_version=$(claude --version 2>/dev/null | head -1 || echo "unknown")
+task_count=$(find "$tasks_dir" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d " ")
+run_count=$((task_count * 2 * runs))
+cat <<INFO
+product-engineer evals
+  tasks       $task_count
+  conditions  bare, skill
+  runs/arm    $runs
+  total runs  $run_count
+  model       $model
+  cli         $cli_version
+  results     $results_dir
+The 16-run baseline in evals/RESULTS.md cost about \$7. This run costs real tokens.
+INFO
+if [ -z "$yes" ]; then
+  echo "Nothing has run. Add --yes (or PE_EVAL_YES=1) to spend it."
+  exit 1
+fi
 
 for task in "$tasks_dir"/*/; do
   name=$(basename "$task")
@@ -63,8 +100,8 @@ for task in "$tasks_dir"/*/; do
       let d = {};
       try { d = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); } catch {}
       fs.writeFileSync(process.argv[2], (d.result || "") + "\n");
-      fs.writeFileSync(process.argv[3], JSON.stringify({ model: Object.keys(d.modelUsage || {}).join(",") || null, cost_usd: d.total_cost_usd || null, turns: d.num_turns || null, duration_ms: d.duration_ms || null }) + "\n");
-    ' "$out/transcript.json" "$out/final.md" "$out/meta.json"
+      fs.writeFileSync(process.argv[3], JSON.stringify({ model: Object.keys(d.modelUsage || {}).join(",") || null, requested_model: process.argv[4] || null, cli: process.argv[5] || null, cost_usd: d.total_cost_usd || null, turns: d.num_turns || null, duration_ms: d.duration_ms || null }) + "\n");
+    ' "$out/transcript.json" "$out/final.md" "$out/meta.json" "$model" "$cli_version"
     (
       cd "$work"
       if [ "$(git rev-list --count HEAD)" -gt 1 ]; then
@@ -80,3 +117,7 @@ for task in "$tasks_dir"/*/; do
   done
 done
 echo "done: results in $results_dir"
+if [ "$results_dir" != "$published_dir" ]; then
+  echo "score this run:      node evals/score.mjs $results_dir"
+  echo "the published run:   node evals/score.mjs"
+fi

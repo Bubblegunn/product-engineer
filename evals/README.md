@@ -9,10 +9,24 @@ A small, reproducible before/after of what the skill changes in a coding agent.
 - `BENCHMARK.md` is the design for a fifty-diff measurement on public commits. Design only.
 
 ```
-sh evals/run.sh                 # 16 headless runs, costs real tokens
-PE_EVAL_RUNS=3 sh evals/run.sh  # 48 runs
-node evals/score.mjs            # table + per-task rows
-node evals/judge.mjs            # pair count and cost; add --yes to judge
+sh evals/run.sh                        # prints the plan and the cost, runs nothing
+sh evals/run.sh --yes                  # 16 headless runs into evals/results-<timestamp>
+PE_EVAL_RUNS=3 sh evals/run.sh --yes   # 48 runs
+sh evals/run.sh --yes --overwrite      # replace the published run in evals/results
+node evals/score.mjs                   # table, per-task rows, and every failing cell
+node evals/score.mjs evals/results-... # score your own run instead
+node evals/judge.mjs                   # pair count and cost; add --yes to judge
 ```
+
+Three things make a rerun comparable with the published one. The model is pinned to
+`claude-opus-5` in `run.sh`, because an unpinned run silently compares against whatever
+the CLI defaults to that week; override it with `PE_EVAL_MODEL`. The `claude --version`
+string and the requested model are written into every `meta.json`, so a result carries
+the versions that produced it. And a rerun writes to `evals/results-<timestamp>` rather
+than over `evals/results`, which holds the run the table in `RESULTS.md` is built from.
+
+`node evals/score.mjs --failures` prints every cell that failed together with the
+evidence: the commit line that had no block, the sentence that carried a bare number,
+the files a run touched that the task did not list.
 
 The heuristics are regular expressions over the agent's own words and `git diff --name-only`. They are cheap and blunt on purpose; `RESULTS.md` lists what they miss.
