@@ -1,10 +1,7 @@
+---
+trigger: always_on
+---
 <!-- Generated from skills/product-engineer/SKILL.md by scripts/generate-adapters.mjs. Edit the skill, then run: node scripts/generate-adapters.mjs -->
-
-# For agents working in this repository, and for agents that installed it
-
-The skill lives in `skills/product-engineer/SKILL.md`; the rules below are copied from it. Every commit in
-this repository carries the "For the customer" block; `scripts/commit-msg` enforces it.
-Other agents: `npx skills add Bubblegunn/product-engineer` places the skill for you.
 
 # product-engineer
 

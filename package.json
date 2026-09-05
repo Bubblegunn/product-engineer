@@ -3,16 +3,36 @@
   "version": "0.2.0",
   "description": "Your agent ships code. product-engineer makes it ship outcomes. An agent skill plus a check that reads a commit message or PR description for the For-the-customer block.",
   "type": "module",
-  "bin": { "product-engineer": "bin/check.mjs" },
-  "files": ["bin", "skills", "README.md", "LICENSE"],
+  "bin": {
+    "product-engineer": "bin/check.mjs"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
   "private": false,
   "scripts": {
-    "test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs"
+    "test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs test/adapters.test.mjs && node scripts/generate-adapters.mjs --check"
   },
-  "engines": { "node": ">=20" },
-  "keywords": ["agent-skills", "claude-code", "codex", "cursor", "commit-message", "pull-request", "product-engineering"],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "cursor",
+    "commit-message",
+    "pull-request",
+    "product-engineering"
+  ],
   "author": "Efe Genc",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/Bubblegunn/product-engineer.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bubblegunn/product-engineer.git"
+  },
   "homepage": "https://github.com/Bubblegunn/product-engineer#readme"
 }
