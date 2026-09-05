@@ -5,7 +5,7 @@
 `check --diff` now has a measured baseline. `npm run baseline` mutates the real commits of
 whatever repository it runs in so each message contradicts its own diff, then asks whether the
 checker notices, and writes `evals/baseline/RESULTS.md`. On this repository at 200 commits:
-**specificity 100% over 58 real messages with zero false alarms**, and recall 100% on the four
+**specificity 100% over 59 real messages at `25dcce7`, with zero false alarms**, and recall 100% on the four
 kinds of inconsistency any check can reach, 0% on the one deliberately included that none can.
 
 Running it found three false alarms on real commits, all now fixed. A file count is only read as

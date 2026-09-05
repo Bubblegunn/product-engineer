@@ -168,18 +168,20 @@ the two should never be put in the same table without that sentence attached.
 
 ## Measured result
 
-Run on `product-engineer` at 200 commits, of which 63 carry file changes; 58 scored for
-specificity and 5 held out as harness artefacts, as the limits section above requires.
+Run on `product-engineer` at `25dcce7`, 200 commits deep, of which 64 carry file changes;
+59 scored for specificity and 5 held out as harness artefacts, as the limits section above
+requires. The commit is named because the corpus grows with the history, so these are the
+figures of one run rather than a property of the tool.
 
 | measure | value |
 |---|---:|
-| commits scored | 58 |
+| commits scored | 59 |
 | false alarms | 0 |
 | specificity | 100% |
-| `file-path` recall | 100% (25 of 25) |
+| `file-path` recall | 100% (26 of 26) |
 | `extra-tests` recall | 100% (30 of 30) |
 | `extra-docs-only` recall | 100% (47 of 47) |
-| `file-count` recall | 100% (55 of 55) |
+| `file-count` recall | 100% (56 of 56) |
 | `operation` recall | 0% (0 of 4) |
 
 The shape the design predicted, including the zero. `evals/baseline/RESULTS.md` carries the

@@ -6,7 +6,7 @@ and a byte-for-byte freshness check could never pass. CI runs `--check` instead,
 fails when there is a false alarm on a real message, when a kind marked reachable is not
 caught every time, or when the kind marked unreachable is caught at all.
 
-Run on `product-engineer` at `613d9ee`, 63 non-merge commits with file changes, product-engineer 0.3.3.
+Run on `product-engineer` at `25dcce7`, 64 non-merge commits with file changes, product-engineer 0.3.3.
 
 ## Specificity: false alarms on real messages
 
@@ -15,8 +15,8 @@ checker being wrong about something a person wrote, which is the failure that ma
 
 | measure | value |
 |---|---:|
-| commits scored | 58 |
-| no warning (correct) | 58 |
+| commits scored | 59 |
+| no warning (correct) | 59 |
 | warned (false alarm) | 0 |
 | **specificity** | **100.0%** |
 
@@ -34,11 +34,11 @@ whether the checker notices. `candidates` is how many commits could carry that m
 
 | type | CodeFuse-CommitEval type | reachable by design | candidates | caught | recall |
 |---|---|---|---:|---:|---:|
-| `file-path` | File Path Mismatch | yes | 25 | 25 | 100.0% |
+| `file-path` | File Path Mismatch | yes | 26 | 26 | 100.0% |
 | `operation` | Operation Type Mismatch | **no** | 4 | 0 | 0.0% |
 | `extra-tests` | Extra Feature Description | yes | 30 | 30 | 100.0% |
 | `extra-docs-only` | Extra Feature Description | yes | 47 | 47 | 100.0% |
-| `file-count` | *ours, not theirs* | yes | 55 | 55 | 100.0% |
+| `file-count` | *ours, not theirs* | yes | 56 | 56 | 100.0% |
 
 No blended recall is reported. `operation` is in the corpus knowing no check reads
 operation verbs, so its row is a zero by design: a blind spot that shows in the results is

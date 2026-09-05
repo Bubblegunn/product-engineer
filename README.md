@@ -111,7 +111,7 @@ contradicts its own diff, asks whether the checker notices, and writes
 [`evals/baseline/RESULTS.md`](evals/baseline/RESULTS.md). CI reruns it on every push and fails
 on a false alarm, on a reachable kind going uncaught, or on the unreachable kind being caught.
 
-On this repository, 200 commits, 58 of them scored:
+Run on this repository at `25dcce7`, 200 commits deep, 59 of them scored:
 
 | measure | value |
 |---|---:|
@@ -119,6 +119,9 @@ On this repository, 200 commits, 58 of them scored:
 | specificity | 100% |
 | recall, the four kinds any check can reach | 100% |
 | recall, `operation` | 0% |
+
+The counts move as the history grows, which is why the run is named. Rerun it and you get
+your own numbers, on your own repository.
 
 That last row is in the corpus on purpose. No check reads operation verbs, so swapping
 `added` for `removed` goes unnoticed, and a blind spot printed as a zero is one you can see.
