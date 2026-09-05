@@ -139,8 +139,17 @@ node bin/check.mjs check --pr 12                 # the body through the GitHub A
 node bin/check.mjs check --pr 12 --comment       # and one comment on the pull request, updated in place
 ```
 
-The block also gets a readability line, Flesch for English or Ateşman with `--lang tr`, plus
-LIX, as information only. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
+Write the block in the language your team writes. English, Turkish, Japanese and Chinese
+headings are accepted with no configuration, and a heading for any other language goes in
+`.product-engineer.json`; the table and the format are in
+[`skills/product-engineer/references/headings.md`](skills/product-engineer/references/headings.md),
+and the commit-msg hook is generated from it so the two cannot disagree.
+
+The block also gets a readability line, Flesch (1948) for English or Ateşman (1997) with
+`--lang tr`, plus LIX (Björnsson, 1968), as information only. All three count syllables or
+word lengths in an alphabet whose words are separated by spaces, so for a block written in
+Japanese, Chinese, Korean, Arabic, Hebrew or Thai the tool says it is not scoring and why,
+rather than printing the zero those formulas produce. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
 it reports no errors and one warning (a sentence quoting the eval counts without a method
 word next to it). `--format github` turns the findings into run annotations. As a CI step
 (needs `pull-requests: write` for the comment, see [`docs/install.md`](docs/install.md)):

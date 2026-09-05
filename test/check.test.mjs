@@ -192,3 +192,11 @@ test("the hook, the table and the check agree on every shipped heading", () => {
     assert.equal(exitCode(analyse(message)), 0, `check rejects ${row.language}`);
   }
 });
+
+test("a block in a script the formulas cannot read gets a refusal, not a score", () => {
+  const ja = "feat: x\n\nお客さまへ:\n変わったこと: 経理担当者が一か月分の予約を取得できます。\n";
+  const r = analyse(ja);
+  assert.equal(exitCode(r), 0, JSON.stringify(r.findings));
+  assert.ok(has(r, "info", /not scored, because Japanese/));
+  assert.ok(!has(r, "info", /Flesch 0/));
+});

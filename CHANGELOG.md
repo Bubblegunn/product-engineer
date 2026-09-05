@@ -4,6 +4,8 @@
 
 The customer block may be written in the language the team writes. `node bin/check.mjs check` on a message headed `Müşteri için:` reported `no "For the customer:" block` and exited 1, in a repository that ships plain-language tables in Turkish, Japanese and Chinese and therefore invites teams who do not write English. English, Turkish, Japanese and Chinese headings are now accepted with no configuration, a fullwidth colon reads as a colon, and `.product-engineer.json` names a heading for a language the table does not ship. The headings live in `skills/product-engineer/references/headings.md`, the commit-msg hook is generated from that table, and two tests fail if the table, the hook and the check drift apart.
 
+The readability line refuses to score a script its formulas cannot read. A block written in Japanese returned `Flesch 0 (hard), LIX 0`, and so did Chinese, Korean, Arabic and Hebrew: a confident wrong number, on the languages whose plain-language tables this repository ships, from a skill whose fifth rule is that a number comes from a count. Flesch, Ateşman and LIX all count syllables or word lengths in an alphabet whose words are separated by spaces; for those scripts the check now says it is not scoring and why. English and Turkish output is unchanged.
+
 ## 0.3.0 (2026-09-05)
 
 - `references/from-the-diff.md`: derive the customer block from `git diff` rather than from memory of the request, including who the call path affects and what a reader would expect to be there and is not

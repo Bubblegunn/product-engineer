@@ -125,7 +125,12 @@ export function analyse(text, opts = {}) {
       })
       .join("\n");
     const r = readability(prose, opts.lang ?? (heading.language !== "custom" ? heading.language : "en"));
-    add("info", `readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}`);
+    add(
+      "info",
+      r.name
+        ? `readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}`
+        : `readability of the block: not scored, because ${r.reason}. Rule 5: a number comes from a count.`,
+    );
   }
 
   const ns = lines.findIndex((l) => isHeading(l, heading.notShipped));
