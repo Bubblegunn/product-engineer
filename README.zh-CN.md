@@ -94,6 +94,15 @@ Not shipped:
 规则改动需要一组之前/之后的对照和一个评测任务；见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 [路线图](ROADMAP.md) 有意保持简短。翻译和按技术栈的术语表标为 `good first issue`。
 
+## 引用
+
+每个版本都在 Zenodo 上以 DOI 归档。
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22395211.svg)](https://doi.org/10.5281/zenodo.22395211)
+
+这是**概念** DOI，始终解析到最新版本。要引用某个具体版本，请在该页面的侧栏中选择版本并使用那里显示的
+DOI。仓库中的 `CITATION.cff` 带有同一标识符。
+
 ## Star 数
 
 <a href="https://star-history.com/#Bubblegunn/product-engineer&Date"><img src="https://api.star-history.com/svg?repos=Bubblegunn/product-engineer&type=Date" width="520" alt="Star history"></a>

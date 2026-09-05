@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/skills-4-111111?style=flat-square" alt="four skills">
   <img src="https://img.shields.io/github/actions/workflow/status/Bubblegunn/product-engineer/ci.yml?style=flat-square&color=111111&label=ci" alt="ci">
   <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT">
+  <a href="https://doi.org/10.5281/zenodo.22395211"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22395211-111111?style=flat-square" alt="DOI"></a>
 </p>
 
 An agent skill that makes an AI coding agent think like a product engineer instead of a
@@ -247,6 +248,18 @@ watching the thing behave, and the habit of writing down what was deliberately n
 Rule changes need one before/after pair and one eval task; see
 [CONTRIBUTING.md](CONTRIBUTING.md), which also describes the one-command release. The [roadmap](ROADMAP.md) is short on purpose.
 Translations and per-stack jargon tables are labelled `good first issue`.
+
+## Cite this
+
+Every release is archived on Zenodo with a DOI, so a paper or a report can point at the
+exact skill definition it ran.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22395211.svg)](https://doi.org/10.5281/zenodo.22395211)
+
+That is the **concept** DOI: it always resolves to the newest version. To cite the exact
+version you ran, open that page, pick the version in the sidebar, and use the DOI shown
+there. `CITATION.cff` in this repository carries the same identifier, so GitHub's "Cite this
+repository" button produces correct BibTeX and APA without any copying by hand.
 
 ## Stars
 

@@ -97,6 +97,15 @@ Kural değişiklikleri bir öncesi/sonrası çifti ister; bkz. [CONTRIBUTING.md]
 [Yol haritası](ROADMAP.md) bilerek kısa. Çeviriler ve dile özgü jargon tabloları
 `good first issue` etiketli.
 
+## Atıf
+
+Her sürüm Zenodo'da bir DOI ile arşivleniyor.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22395211.svg)](https://doi.org/10.5281/zenodo.22395211)
+
+Bu **kavram** DOI'si: her zaman en yeni sürüme çözümlenir. Belirli bir sürümü atıflamak için
+o sayfada yan çubuktan sürümü seçin. Depodaki `CITATION.cff` aynı tanımlayıcıyı taşıyor.
+
 ## Yıldızlar
 
 <a href="https://star-history.com/#Bubblegunn/product-engineer&Date"><img src="https://api.star-history.com/svg?repos=Bubblegunn/product-engineer&type=Date" width="520" alt="Star history"></a>
