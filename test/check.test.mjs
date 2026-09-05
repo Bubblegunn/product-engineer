@@ -200,3 +200,10 @@ test("a block in a script the formulas cannot read gets a refusal, not a score",
   assert.ok(has(r, "info", /not scored, because Japanese/));
   assert.ok(!has(r, "info", /Flesch 0/));
 });
+
+test("a sentence ends at an ideographic full stop too", () => {
+  const ja = "feat: x\n\nお客さまへ:\n変わったこと: 経理担当者が3か月分の予約を取得できます。これは毎月の手作業でした。\n";
+  const warn = analyse(ja).findings.find((f) => /sentence with a number/.test(f.message));
+  assert.ok(warn, "the heuristic still fires");
+  assert.ok(!warn.message.includes("これは毎月"), "the excerpt stops at the full stop instead of swallowing the block");
+});

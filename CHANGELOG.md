@@ -6,6 +6,8 @@ The customer block may be written in the language the team writes. `node bin/che
 
 The readability line refuses to score a script its formulas cannot read. A block written in Japanese returned `Flesch 0 (hard), LIX 0`, and so did Chinese, Korean, Arabic and Hebrew: a confident wrong number, on the languages whose plain-language tables this repository ships, from a skill whose fifth rule is that a number comes from a count. Flesch, Ateşman and LIX all count syllables or word lengths in an alphabet whose words are separated by spaces; for those scripts the check now says it is not scoring and why. English and Turkish output is unchanged.
 
+A sentence ends at an ideographic full stop as well as a period, so the warning about a number without a method quotes one Japanese or Chinese sentence rather than the whole block, and counts them correctly. The Devanagari danda closes a sentence too. English splitting is unchanged, since none of those characters appear in it.
+
 ## 0.3.0 (2026-09-05)
 
 - `references/from-the-diff.md`: derive the customer block from `git diff` rather than from memory of the request, including who the call path affects and what a reader would expect to be there and is not

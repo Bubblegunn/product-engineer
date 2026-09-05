@@ -143,7 +143,10 @@ export function analyse(text, opts = {}) {
     else add("ok", `"${heading.notShipped}" lists ${items.length} item${items.length === 1 ? "" : "s"} with reasons`);
   }
 
-  const sentences = text.split(/(?<=[.!?])\s+|\n+/).filter((s) => /\d/.test(s) && !/^\s*(Co-Authored-By|Claude-Session|Signed-off-by)/.test(s));
+  // A sentence ends at a full stop in any of the scripts this tool accepts a block in:
+  // the ideographic stop closes Japanese and Chinese sentences, the danda closes Devanagari.
+  // Without them a Japanese block is one long sentence and the count in the warning is wrong.
+  const sentences = text.split(/(?<=[.!?])\s+|(?<=[。！？।])\s*|\n+/).filter((s) => /\d/.test(s) && !/^\s*(Co-Authored-By|Claude-Session|Signed-off-by)/.test(s));
   const bare = sentences.filter((s) => !METHOD.test(s) && !/^(#|\s*-\s|\w+\(.*\):)/.test(s) && !/\b(v?\d+\.\d+(\.\d+)?|#\d+|20\d\d)\b/.test(s));
   if (bare.length) add("warn", `${bare.length} sentence${bare.length === 1 ? "" : "s"} with a number and no method or scope next to it: "${bare[0].trim().slice(0, 80)}"`);
 

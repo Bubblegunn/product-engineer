@@ -24,6 +24,11 @@ Why it matters: <the benefit, in their terms>
 Automation effect: <only if a manual step disappeared or the system now handles more alone; otherwise omit the line>
 ```
 
+Write the headings in the language your team writes. English, Turkish, Japanese and
+Chinese are accepted as they are; for another language the team names its headings in
+`.product-engineer.json`. The table is in the product-engineer skill,
+`references/headings.md`.
+
 Rules: no jargon a non-engineer would have to look up; a pure refactor gets one line
 under `What changed`; a bug fix says what the customer saw before and sees now; never
 invent an automation effect. Merge, fixup, squash and revert commits do not need the
