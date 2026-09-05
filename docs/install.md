@@ -78,6 +78,46 @@ The action fails the pull request when its description has no "For the customer"
 prints the other findings as warnings. Nothing is posted to the PR; the check log is the
 report.
 
-## pre-commit, lefthook, husky, commitlint
+## pre-commit
 
-See the headings below once 0.3.0 ships; until then the git hook above is the way.
+`.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/Bubblegunn/product-engineer
+    rev: v0.3.0
+    hooks:
+      - id: product-engineer-check
+```
+
+Then `pre-commit install --hook-type commit-msg`.
+
+## lefthook
+
+`lefthook.yml`:
+
+```yaml
+commit-msg:
+  commands:
+    customer-block:
+      run: npx product-engineer check {1}
+```
+
+## husky
+
+`.husky/commit-msg`:
+
+```sh
+npx product-engineer check "$1"
+```
+
+## commitlint
+
+`commitlint.config.mjs`:
+
+```js
+export { default } from "product-engineer/commitlint";
+```
+
+One rule, `customer-block`, as an error. To add it to a config you already have, see
+[`integrations/commitlint/`](../integrations/commitlint/README.md).

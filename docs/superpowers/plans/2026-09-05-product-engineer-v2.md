@@ -693,7 +693,7 @@ Run in a temp dir: `git init -q && npx -y skills add Bubblegunn/product-engineer
 - Create: `integrations/commitlint/index.mjs`, `integrations/commitlint/config.mjs`, `integrations/commitlint/README.md`, `.pre-commit-hooks.yaml`, `scripts/pre-commit-check.sh`, `test/integrations.test.mjs`
 - Modify: `docs/install.md`, `package.json` (`files`, `prepublishOnly`, `exports`)
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 `test/integrations.test.mjs`:
 
@@ -732,7 +732,7 @@ test("the pre-commit entry runs check on the message file", () => {
 });
 ```
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 `integrations/commitlint/index.mjs`:
 
@@ -782,7 +782,7 @@ exec node "$(dirname "$0")/../bin/check.mjs" check "$1"
 
 `integrations/commitlint/README.md` shows `commitlint.config.mjs` with `export { default } from "product-engineer/commitlint";` and the inline alternative. `package.json` adds `"exports": { ".": "./bin/check.mjs", "./commitlint": "./integrations/commitlint/config.mjs", "./commitlint/plugin": "./integrations/commitlint/index.mjs" }`, `"files"` gains `"integrations"`, and `"scripts.prepublishOnly": "npm test"`. `docs/install.md` gets the pre-commit, lefthook (`commit-msg: commands: customer-block: run: npx product-engineer check {1}`) and husky (`npx product-engineer check "$1"`) snippets and the commitlint line.
 
-- [ ] **Step 3: Test, publint, commit**
+- [x] **Step 3: Test, publint, commit**
 
 Run: `node --test test/integrations.test.mjs && npx -y publint`
 Commit: `feat(check): commitlint plugin, pre-commit hook and lefthook and husky snippets`
