@@ -20,9 +20,15 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+        ACTION_PATH: ${{ github.action_path }}
+        PR_NUMBER: ${{ inputs.pr }}
+        WARN: ${{ inputs.warn }}
       run: |
-        if [ "${{ inputs.warn }}" = "true" ]; then
-          node "${{ github.action_path }}/bin/check.mjs" check --pr "${{ inputs.pr }}" --warn
+        case "$PR_NUMBER" in
+          ''|*[!0-9]*) echo "pr must be a number, got: $PR_NUMBER" >&2; exit 2 ;;
+        esac
+        if [ "$WARN" = "true" ]; then
+          node "$ACTION_PATH/bin/check.mjs" check --pr "$PR_NUMBER" --warn
         else
-          node "${{ github.action_path }}/bin/check.mjs" check --pr "${{ inputs.pr }}"
+          node "$ACTION_PATH/bin/check.mjs" check --pr "$PR_NUMBER"
         fi
