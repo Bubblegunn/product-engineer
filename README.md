@@ -1,5 +1,7 @@
 <p align="center"><img src="assets/wordmark.svg" width="520" alt="product-engineer"></p>
 
+<p align="center">English | <a href="README.tr.md">Türkçe</a></p>
+
 <p align="center"><em>Your agent ships code. product-engineer makes it ship outcomes.</em></p>
 
 <p align="center">
@@ -20,14 +22,30 @@ it did not count.
 npx skills add Bubblegunn/product-engineer
 ```
 
-Claude Code:
+That is the [skills.sh](https://skills.sh) installer. It detects the agents in the current
+project and places the skill for each; `--all` targets every supported agent, `-g` installs
+for your user instead of the project.
+
+### Where it lands
+
+| agent | path after `npx skills add` |
+|---|---|
+| Claude Code | `.claude/skills/product-engineer/` |
+| Codex, Cursor, Copilot, Gemini CLI and other agents that read the shared skills directory | `.agents/skills/product-engineer/` |
+| Windsurf, Roo, Kiro, Trae, Goose and others with their own directory | `.<agent>/skills/product-engineer/` |
+
+Verified on 5 September 2026 with `npx skills add Bubblegunn/product-engineer --all --copy`
+in an empty repository: one skill found, placed for 56 agent directories.
+
+Claude Code, as a plugin (these two commands were run and verified; `claude plugin validate .`
+passes):
 
 ```
 /plugin marketplace add Bubblegunn/product-engineer
 /plugin install product-engineer@bubblegunn
 ```
 
-By hand: copy `skills/product-engineer/` into `.claude/skills/`, `.cursor/rules/`, or your
+By hand: copy `skills/product-engineer/` into `.claude/skills/`, `.agents/skills/`, or your
 agent's skills directory. Optional git hook that stops commits without the block:
 `sh scripts/install-hook.sh`.
 
@@ -91,5 +109,15 @@ hospitality platform and as the sole author of a proactive assistant: a commit c
 that explains every change to a non-technical reader, a definition of done that means
 watching the thing behave, and the habit of writing down what was deliberately not built
 ([The feature I chose not to ship](https://efe-genc-portfolio.vercel.app/writing/the-feature-i-chose-not-to-ship/)).
+
+## Contributing
+
+Rule changes need one before/after pair; see [CONTRIBUTING.md](CONTRIBUTING.md). The
+[roadmap](ROADMAP.md) is short on purpose. Translations and per-stack jargon tables are
+labelled `good first issue`.
+
+## Stars
+
+<a href="https://star-history.com/#Bubblegunn/product-engineer&Date"><img src="https://api.star-history.com/svg?repos=Bubblegunn/product-engineer&type=Date" width="520" alt="Star history"></a>
 
 MIT.
