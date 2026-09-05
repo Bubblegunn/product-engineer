@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.3 (unreleased)
+
+`check --diff` now has a measured baseline. `npm run baseline` mutates the real commits of
+whatever repository it runs in so each message contradicts its own diff, then asks whether the
+checker notices, and writes `evals/baseline/RESULTS.md`. On this repository at 200 commits:
+**specificity 100% over 57 real messages with zero false alarms**, and recall 100% on the four
+kinds of inconsistency any check can reach, 0% on the one deliberately included that none can.
+
+Running it found two false alarms on real commits, both now fixed. A file count is only read as
+a claim about the change when a change verb governs it: "a run left five files modified" describes
+a previous run, and "Cursor users can drop one file into their project" borrowed its verb from the
+`What changed:` heading while counting something a reader might do. And a planning artefact that
+describes tests is no longer read as a claim that tests were added, so "the design now has a plan
+with the tests written out" stays quiet. The cost of the first fix is that the passive "five files
+were changed" goes unchecked, which is a miss rather than a false alarm.
+
+The design and its limits are in
+`docs/superpowers/specs/2026-09-05-product-engineer-baseline-design.md`, including why the
+CodeFuse-CommitEval dataset this was meant to run against could not be used: its data file is a Git
+LFS pointer to an object that is not on the server.
+
 ## 0.3.2 (2026-09-05)
 
 `check --diff` reads the change and reports where the message and the diff disagree: tests

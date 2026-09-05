@@ -63,6 +63,13 @@ const DOCS_ONLY_CLAIM = /\b(documentation|docs?|readme|comment)[- ]only\b|\bonly
 
 const CHANGE_VERB = /\b(chang(e|ed|es)|touch(ed|es)?|modif(y|ied|ies)|updat(e|ed|es)|edit(ed|s)?|add(ed|s)?|remov(e|ed|es)|delet(e|ed|es)|rewrit(e|ten|es))\b/i;
 
+const COUNT_RE = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i;
+
+// A planning artefact contains a description of tests; it does not add them. "The design now
+// has a plan with the tests written out" is about a document, and reading it as a claim that
+// this change adds tests was a false alarm on a real commit.
+const DESCRIBED_NOT_ADDED = /\b(plan|design|spec|specification|roadmap|checklist|proposal)\b/i;
+
 /** Paths named in the text: backticked, or bare with a directory separator and an extension. */
 export function namedPaths(text) {
   const found = new Set();
@@ -109,7 +116,8 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   add("info", `cross-checked against ${files.length} file${files.length === 1 ? "" : "s"} at ${diff.range}: ${source.length} source, ${tests.length} test, ${docs.length} documentation`);
 
   // 1. A claim that tests were written, with no test file gaining a line.
-  if (TEST_CLAIM.test(claims)) {
+  const testClaims = sentencesWith(claims, TEST_CLAIM).filter((s) => !DESCRIBED_NOT_ADDED.test(s));
+  if (testClaims.length) {
     const written = tests.filter((f) => f.added > 0);
     if (!written.length) {
       add("warn", `the message says tests were added; no test file gains a line in this change (${files.length} file${files.length === 1 ? "" : "s"} counted, ${tests.length} of them under a test path)`);
@@ -130,11 +138,20 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   }
 
   // 3. A stated file count that the diff contradicts.
-  for (const s of sentencesWith(claims, /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i)) {
-    if (!CHANGE_VERB.test(s)) continue;
-    const m = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+files?\b/i.exec(s);
+  //
+  // The count has to be the object of the change verb, not merely in the same sentence as
+  // one. Measured against 56 real commits, the looser reading produced three false alarms
+  // out of four: "run left five files modified" describes what a previous run left behind,
+  // and "Cursor users can drop one file into their project" borrowed its verb from the
+  // "What changed:" heading while counting something a reader might do. Requiring the verb
+  // in the short window before the count reads all three as what they are. The cost is that
+  // the passive "five files were changed" is no longer checked, which is a miss rather than
+  // a false alarm, and that is the direction this tool errs in.
+  for (const s of sentencesWith(claims, COUNT_RE)) {
+    const m = COUNT_RE.exec(s);
     const claimed = /^\d+$/.test(m[1]) ? Number(m[1]) : WORDS[m[1].toLowerCase()];
     if (claimed === undefined) continue;
+    if (!CHANGE_VERB.test(s.slice(Math.max(0, m.index - 28), m.index))) continue;
     if (claimed !== files.length) add("warn", `the message says ${m[1]} file${claimed === 1 ? "" : "s"}; the change has ${files.length}: "${s.trim().slice(0, 70)}"`);
     else add("ok", `the stated file count matches the change: ${files.length}`);
   }

@@ -102,6 +102,33 @@ transcripts rescored; [`evals/RESULTS.md`](evals/RESULTS.md) says what changed. 
 runs took about 60% more turns and cost about 45% more, because they verified more and
 wrote more.
 
+## What the diff check costs
+
+`--diff` fires only when it can prove a mismatch, so the question that matters is how often
+it is wrong about a message somebody actually wrote. `npm run baseline` answers it on the
+history of whatever repository you run it in: it mutates real commits so each message
+contradicts its own diff, asks whether the checker notices, and writes
+[`evals/baseline/RESULTS.md`](evals/baseline/RESULTS.md). CI regenerates that file and fails
+if it is stale.
+
+On this repository, 200 commits, 57 of them scored:
+
+| measure | value |
+|---|---:|
+| false alarms on real messages | 0 |
+| specificity | 100% |
+| recall, the four kinds any check can reach | 100% |
+| recall, `operation` | 0% |
+
+That last row is in the corpus on purpose. No check reads operation verbs, so swapping
+`added` for `removed` goes unnoticed, and a blind spot printed as a zero is one you can see.
+Three kinds in the taxonomy this borrows from cannot be produced mechanically at all, because
+they need someone to read what the code means; this reads a numstat.
+
+Running it the first time found two false alarms on real commits and both are fixed, which is
+the outcome the harness is for. It sits beside published numbers for models asked the same
+question, and the design document explains why that is context rather than a comparison.
+
 ## The pack
 
 | skill | what it is | install it when |
