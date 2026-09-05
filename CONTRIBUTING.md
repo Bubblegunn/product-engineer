@@ -9,6 +9,9 @@ Open an issue with the "Rule proposal" template. One before/after pair is requir
 what an agent writes today and what it would write under your rule, on a realistic task.
 A rule that cannot be shown in a before/after is not ready.
 
+A new rule, or a change to one, ships with an eval task under `evals/tasks/` and a
+before/after pair in `references/`; a reference-only change needs the pair.
+
 Changes to `skills/product-engineer/SKILL.md` keep it under 120 lines. Long material goes
 into `references/`.
 

@@ -1,6 +1,6 @@
 <p align="center"><img src="assets/wordmark.svg" width="520" alt="product-engineer"></p>
 
-<p align="center"><a href="README.md">English</a> | Türkçe</p>
+<p align="center"><a href="README.md">English</a> | Türkçe | <a href="README.zh-CN.md">简体中文</a></p>
 
 <p align="center"><em>Ajanınız kod gönderiyor. product-engineer sonuç göndermesini sağlar.</em></p>
 

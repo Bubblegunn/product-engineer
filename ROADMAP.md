@@ -2,25 +2,24 @@
 
 Small on purpose. Each item ships when it has a before/after that shows it earns its place.
 
-## 0.2
+## Shipped in 0.3
 
-- Per-language plain-language tables: `references/plain-language.<lang>.md`, starting with
-  Turkish, then whatever contributors bring. English stays the source.
+- Per-language plain-language tables: Turkish, Japanese and Chinese in
+  `references/plain-language.<lang>.md`. English stays the source.
+- `product-engineer check`: a zero-dependency CLI for a commit message or a pull request
+  description, usable as a CI step, a git hook, a commitlint rule and a pre-commit hook.
+- Agent-specific install notes in `docs/install.md`, and generated instruction files for
+  agents that do not read a skills directory.
+- Measured results: `evals/` runs a fixed set of tasks with and without the skill and
+  reports the rates; the README's numbers come from that run and nowhere else.
+- A stakeholder mode: the `release-notes` skill for agents that write status updates and
+  release notes, not code.
+
+## Next
+
 - Per-stack jargon tables: a Python flavour and a mobile flavour of the plain-language table,
   because "idempotent" is the same everywhere but "hydration" is not.
-- `product-engineer check`: a small CLI that lints a pull request description or a commit
-  message for the block, the `Not shipped:` list, and numbers without a source. Zero
-  dependencies, usable as a CI step and as a pre-push hook.
-- Agent-specific install notes for Codex, Cursor, Copilot and Gemini: where the file lands,
-  how the agent discovers it, how to confirm it is active.
-
-## 0.3
-
-- Measured results: a reproducible evaluation that runs a fixed set of tasks with and
-  without the skill and reports the rate of customer blocks, unverified "done" claims and
-  unrequested scope changes. Numbers in the README come from that run and nowhere else.
-- A stakeholder mode: a shorter set of rules for agents that only write status updates
-  and release notes, not code.
+- The fifty-diff benchmark designed in `evals/BENCHMARK.md`, once the spend is approved.
 
 ## Not planned
 
