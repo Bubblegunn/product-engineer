@@ -12,4 +12,10 @@ for n in 1 2 3 4 5 6 7; do
 done
 grep -q 'For the customer:' "$f" || fail "block heading missing"
 grep -c '—' "$f" | grep -q '^0$' || fail "em dash found"
+for r in commit-template five-questions definition-of-done plain-language not-shipped; do
+  p="skills/product-engineer/references/$r.md"
+  [ -f "$p" ] || fail "$p missing"
+  grep -c '—' "$p" | grep -q '^0$' || fail "em dash in $p"
+done
+grep -q '^| idempotent' skills/product-engineer/references/plain-language.md || fail "plain-language table missing idempotent row"
 echo "ok: skill structure"
