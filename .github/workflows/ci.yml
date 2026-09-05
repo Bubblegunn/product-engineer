@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: sh test/skill-structure.sh
       - run: sh test/commit-msg.test.sh
       - uses: actions/setup-node@v7
