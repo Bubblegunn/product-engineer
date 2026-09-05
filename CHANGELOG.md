@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.1 (unreleased)
+## 0.3.1 (2026-09-05)
 
 A skill joins the pack only when the eval measures it. Every skill in `skills/` now declares `metadata.measuredBy`, naming metrics that `evals/score.mjs` scores, and `test/skill-structure.sh` fails when a skill in the pack declares none or names a metric that does not exist. A skill without that mapping belongs in `skills/.experimental/`, which is documented rather than implied: `npx skills add` walks the repository to a depth of five and skips only `node_modules`, `.git`, `dist`, `build` and `__pycache__`, read from `skills@1.5.23`, so an experimental skill is still installed and the only marker that travels with it is its own description, which must open with `Experimental:`.
 
