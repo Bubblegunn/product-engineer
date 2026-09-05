@@ -1009,4 +1009,4 @@ Commit: `docs: Chinese README, the eval-task rule for contributions, 0.3.0 chang
 
 ### Task 12: Final push and verification
 
-- [ ] `npm test`, lint every changed prose file, `git pull --rebase origin main && git push origin main`, wait for `ci`, `zizmor`, `pages`; run `node scripts/generate-adapters.mjs --check` once more on the pushed tree; check `gh pr list` for outside pull requests and handle them per the directive.
+- [x] `npm test`, lint every changed prose file, `git pull --rebase origin main && git push origin main`, wait for `ci`, `zizmor`, `pages`; run `node scripts/generate-adapters.mjs --check` once more on the pushed tree; check `gh pr list` for outside pull requests and handle them per the directive.

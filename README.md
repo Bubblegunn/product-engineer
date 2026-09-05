@@ -7,7 +7,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/Bubblegunn/product-engineer?style=flat-square&color=111111" alt="stars">
-  <img src="https://img.shields.io/badge/works%20with-21%20agents-111111?style=flat-square" alt="works with 21 agents">
+  <img src="https://img.shields.io/badge/dependencies-0-111111?style=flat-square" alt="zero dependencies">
   <img src="https://img.shields.io/badge/skills-4-111111?style=flat-square" alt="four skills">
   <img src="https://img.shields.io/github/actions/workflow/status/Bubblegunn/product-engineer/ci.yml?style=flat-square&color=111111&label=ci" alt="ci">
   <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT">
