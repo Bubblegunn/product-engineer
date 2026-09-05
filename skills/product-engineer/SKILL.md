@@ -6,6 +6,7 @@ metadata:
   author: Efe Genc
   version: 0.3.1
   source: https://github.com/Bubblegunn/product-engineer
+  measuredBy: [customerBlock, observedOrHonest, notShipped, numbersWithMethod, scopeRespected]
 ---
 
 # product-engineer

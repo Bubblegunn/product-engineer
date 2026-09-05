@@ -34,6 +34,26 @@ for t in plain-language plain-language.tr plain-language.ja plain-language.zh; d
   grep -q '^| idempotent' "$p" || fail "$p missing idempotent row"
   [ "$(grep '^| ' "$p" | grep -vc '^| term')" -eq 15 ] || fail "$p must have 15 rows"
 done
+# The pack gate: a skill in skills/ must name metrics that evals/score.mjs actually scores,
+# and a skill in skills/.experimental/ must name none and say so in its own description. Without
+# this a contributed skill joins the pack by being copied into the directory.
+metrics=$(node -e "import('./evals/score.mjs').then(m => console.log(Object.keys(m.metrics).join(' ')))")
+for f in skills/*/SKILL.md; do
+  dir=$(basename "$(dirname "$f")")
+  line=$(grep '^  measuredBy: \[' "$f" || true)
+  [ -n "$line" ] || fail "$f: a skill in the pack must declare metadata.measuredBy naming metrics from evals/score.mjs, or live in skills/.experimental/"
+  names=$(printf '%s' "$line" | sed 's/^  measuredBy: \[//; s/\]$//; s/,/ /g')
+  [ -n "$names" ] || fail "$f: measuredBy is empty; move the skill to skills/.experimental/"
+  for m in $names; do
+    case " $metrics " in *" $m "*) ;; *) fail "$f: measuredBy names $m, which evals/score.mjs does not score" ;; esac
+  done
+done
+for f in skills/.experimental/*/SKILL.md; do
+  [ -e "$f" ] || continue
+  grep -q '^  measuredBy:' "$f" && fail "$f: an experimental skill is not measured; drop measuredBy or move it into the pack"
+  grep -q '^description: Experimental:' "$f" || fail "$f: description must open with 'Experimental:', because that marker is what travels with the file once installed"
+done
+
 for j in .claude-plugin/marketplace.json .claude-plugin/plugin.json; do
   [ -f "$j" ] || fail "$j missing"
   node -e "JSON.parse(require('fs').readFileSync('$j','utf8'))" || fail "$j is not valid JSON"

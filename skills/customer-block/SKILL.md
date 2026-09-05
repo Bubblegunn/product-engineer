@@ -6,6 +6,7 @@ metadata:
   author: Efe Genc
   version: 0.3.0
   source: https://github.com/Bubblegunn/product-engineer
+  measuredBy: [customerBlock]
 ---
 
 # customer-block

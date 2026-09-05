@@ -21,6 +21,29 @@ into `references/`.
 `references/definition-of-done.md` and `references/not-shipped.md` take pull requests directly.
 Keep the tone: plain sentences, no jargon left unexplained, no em dashes.
 
+## Add a skill
+
+`skills/` is the pack. A skill joins it when an eval task measures what it claims, and lives in
+`skills/.experimental/` until then. `test/skill-structure.sh` enforces this: a skill in the pack
+must declare `metadata.measuredBy` naming metrics that `evals/score.mjs` actually scores, and the
+test fails on a missing declaration or an invented metric name. Copying a directory into `skills/`
+is not enough to join the pack.
+
+An experimental skill is still installed. `npx skills add` walks the repository to a depth of five
+and skips only `node_modules`, `.git`, `dist`, `build` and `__pycache__`, verified by reading
+`skills@1.5.23`, so a dotted directory hides nothing. The only marker that travels with the file is
+its own description, which is why a skill in `.experimental/` must open its description with
+`Experimental:` and must not declare `measuredBy`.
+
+To promote one: add a task under `evals/tasks/` that exercises the skill, run `sh evals/run.sh`,
+put the numbers in `evals/RESULTS.md`, then move the directory up and declare the metrics.
+
+What the eval covers today is narrower than the pack, and the gate does not pretend otherwise:
+`evals/run.sh` copies only `skills/product-engineer` into the work tree, so the other three are
+measured through the rules they share with it rather than on their own. `release-notes` is the
+weakest case and says so in its own `measuredGap`. A task that writes release notes is the most
+useful contribution this repository could take.
+
 ## Translate
 
 A `README.<lang>.md` next to `README.md`, and, if you want, a `plain-language.<lang>.md` in
