@@ -18,4 +18,10 @@ for r in commit-template five-questions definition-of-done plain-language not-sh
   grep -c '—' "$p" | grep -q '^0$' || fail "em dash in $p"
 done
 grep -q '^| idempotent' skills/product-engineer/references/plain-language.md || fail "plain-language table missing idempotent row"
+for j in .claude-plugin/marketplace.json .claude-plugin/plugin.json; do
+  [ -f "$j" ] || fail "$j missing"
+  python3 -c "import json,sys; json.load(open('$j'))" 2>/dev/null || node -e "JSON.parse(require('fs').readFileSync('$j','utf8'))" || fail "$j is not valid JSON"
+done
+grep -q '"name": "product-engineer"' .claude-plugin/plugin.json || fail "plugin name"
+[ -f AGENTS.md ] || fail "AGENTS.md missing"
 echo "ok: skill structure"
