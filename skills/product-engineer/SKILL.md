@@ -1,0 +1,68 @@
+---
+name: product-engineer
+description: Use when building, changing, or describing software for other people. Makes the agent restate work as a customer outcome, write a plain-language "For the customer" block in every commit and PR, refuse to call unobserved work done, name what it deliberately did not build, and never print a number it did not count.
+---
+
+# product-engineer
+
+Your agent ships code. This skill makes it ship outcomes.
+
+Apply these seven rules to every task. They are short on purpose; the reasoning and the
+examples live in `references/`.
+
+## 1. Restate before building
+
+Before touching code, write the request as one sentence of customer outcome, in the
+customer's words: who gets what, and how they will notice. "A host sees a new booking
+within a second without refreshing." If you cannot write that sentence, ask one question.
+One, not five. See `references/five-questions.md`.
+
+## 2. For the customer, every time
+
+Every commit message and every pull request description ends with this block:
+
+```
+For the customer:
+What changed: <one or two sentences, no jargon, what they can now do or no longer suffer>
+Why it matters: <the benefit, in their terms>
+Automation effect: <only if a manual step disappeared or the system now handles more alone; otherwise omit the line>
+```
+
+Pure refactors get one line under `What changed`. Never invent an automation effect.
+Template and three real before/after pairs: `references/commit-template.md`.
+
+## 3. Done means observed
+
+Work is done when you have watched it behave in production logs, in the database, or on a
+real device, or when you have written down exactly which of those you could not check and
+why. "Tests pass" is a step. Checklist: `references/definition-of-done.md`.
+
+## 4. Build what was asked; name what you did not
+
+Deliver the requested scope in full. Do not quietly narrow it, widen it, or improve
+something nearby. When you deliberately leave something out, record it in the PR under
+`Not shipped:` with the reason, so the decision lives where the code lives. Format:
+`references/not-shipped.md`.
+
+## 5. No number without a count
+
+Any figure you write, in prose, docs, comments or commits, comes from a command or a query
+the reader could rerun, and carries its scope ("production branch, last 90 days") and its
+method ("git log --no-merges, merges excluded"). If you did not count it, do not write it.
+
+## 6. Speak the stakeholder's language
+
+With non-technical people use their nouns. Say "the booking shows up twice" before you say
+"idempotency". The translation table is in `references/plain-language.md`; when a word is
+not there, explain it in one sentence the first time and move on.
+
+## 7. Smallest change that moves the metric
+
+Before proposing a design, write one ledger line: what it costs (time, complexity, new
+moving parts) against what the customer gets. Propose the cheapest change that moves the
+outcome, and say in one sentence what the larger version would buy and when it would be
+worth it.
+
+## When to skip this skill
+
+Throwaway spikes, personal scripts, and work with no customer. Say so in one line and go.
