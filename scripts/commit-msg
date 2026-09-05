@@ -1,0 +1,16 @@
+#!/bin/sh
+# product-engineer commit-msg hook: every commit explains itself to the customer.
+# Install: sh scripts/install-hook.sh   (copies this file to .git/hooks/commit-msg)
+# Opt out for one commit: put [no-customer] anywhere in the message.
+file="$1"
+first=$(sed -n '1p' "$file")
+case "$first" in
+  Merge*|fixup!*|squash!*|Revert*) exit 0 ;;
+esac
+if grep -q '\[no-customer\]' "$file"; then exit 0; fi
+if grep -q '^For the customer:' "$file" && grep -q '^What changed:' "$file"; then exit 0; fi
+cat >&2 <<'MSG'
+product-engineer: the commit message has no "For the customer:" block.
+Add:  For the customer:  /  What changed: ...  /  Why it matters: ...   (or put [no-customer] in the message)
+MSG
+exit 1
