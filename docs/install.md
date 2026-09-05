@@ -82,7 +82,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: Bubblegunn/product-engineer@v0.2.0
+      - uses: Bubblegunn/product-engineer@v0
         # with: { warn: "true" }      # report instead of failing
         # with: { comment: "false" }  # no pull request comment
 ```

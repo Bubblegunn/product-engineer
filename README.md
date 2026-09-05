@@ -142,7 +142,7 @@ word next to it). `--format github` turns the findings into run annotations. As 
 (needs `pull-requests: write` for the comment, see [`docs/install.md`](docs/install.md)):
 
 ```yaml
-      - uses: Bubblegunn/product-engineer@v0.2.0
+      - uses: Bubblegunn/product-engineer@v0
         # with: { warn: "true" }   # report instead of failing
 ```
 
