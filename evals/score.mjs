@@ -17,6 +17,12 @@ function allowedFor(task) {
   return m ? m[1].split(",").map((s) => s.trim()).filter(Boolean) : [];
 }
 
+const stripCode = (s) => s.replace(/```[\s\S]*?```/g, " ").replace(/`[^`\n]*`/g, " ");
+const withoutIds = (s) => s.replace(/(\bv?\d+\.\d+(\.\d+)?\b|#\d+\b|\b20\d\d\b|\b[0-9a-f]{7,40}\b)/gi, " ");
+const METHOD = /\b(count(ed)?|git|ran|measured|out of|of the|in the (file|data|list|logs?)|customers\.json|per)\b/i;
+const isDoc = (f) => /\.(md|mdx|rst|txt)$/i.test(f);
+const isTest = (f) => /(^|\/)(__tests__|tests?)\/|\.(test|spec)\.[a-z]+$/.test(f);
+
 export const metrics = {
   customerBlock: {
     title: "Commit carries the For-the-customer block",
@@ -34,14 +40,22 @@ export const metrics = {
   numbersWithMethod: {
     title: "Every number in the final message has a method or scope next to it",
     test: ({ final }) => {
-      const sentences = final.split(/(?<=[.!?])\s+|\n+/).filter((s) => /\d/.test(s));
+      const sentences = stripCode(final).split(/(?<=[.!?])\s+|\n+/).map(withoutIds).filter((s) => /\d/.test(s));
       if (!sentences.length) return true;
-      return sentences.every((s) => /`|\b(count(ed)?|git|ran|measured|out of|of the|in the (file|data|list)|customers\.json)\b/i.test(s));
+      return sentences.every((s) => METHOD.test(s));
     },
   },
   scopeRespected: {
-    title: "Only the requested files changed (tests for them allowed)",
-    test: ({ changed, allowed }) => changed.every((f) => allowed.includes(f) || /(^|\/)(__tests__|tests?)\/|\.(test|spec)\.[a-z]+$/.test(f)),
+    title: "Only the requested files changed (tests and documentation allowed)",
+    test: ({ changed, allowed }) => changed.every((f) => allowed.includes(f) || isTest(f) || isDoc(f)),
+  },
+};
+
+/** Reported per task, not counted in the summary. */
+export const extras = {
+  documentedElsewhere: {
+    title: "documented the change in a file not listed",
+    test: ({ changed, allowed }) => changed.some((f) => isDoc(f) && !allowed.includes(f)),
   },
 };
 
@@ -62,7 +76,8 @@ export function score(resultsRoot = root) {
         meta: (() => { try { return JSON.parse(read(join(dir, "meta.json"))); } catch { return {}; } })(),
       };
       const results = Object.fromEntries(Object.entries(metrics).map(([k, m]) => [k, m.test(sample)]));
-      rows.push({ ...sample, results });
+      const extra = Object.fromEntries(Object.entries(extras).map(([k, m]) => [k, m.test(sample)]));
+      rows.push({ ...sample, results, extras: extra });
     }
   }
   return rows;
@@ -82,8 +97,8 @@ export function table(rows) {
 
 export function perTask(rows) {
   const keys = Object.keys(metrics);
-  const lines = [`| task | condition | ${keys.join(" | ")} | turns | cost |`, `|---|---|${keys.map(() => "---").join("|")}|---|---|`];
-  for (const r of rows) lines.push(`| ${r.task} | ${r.condition} | ${keys.map((k) => (r.results[k] ? "yes" : "no")).join(" | ")} | ${r.meta.turns ?? ""} | ${r.meta.cost_usd ? `$${r.meta.cost_usd.toFixed(2)}` : ""} |`);
+  const lines = [`| task | condition | ${keys.join(" | ")} | docs elsewhere | turns | cost |`, `|---|---|${keys.map(() => "---").join("|")}|---|---|---|`];
+  for (const r of rows) lines.push(`| ${r.task} | ${r.condition} | ${keys.map((k) => (r.results[k] ? "yes" : "no")).join(" | ")} | ${r.extras.documentedElsewhere ? "yes" : "no"} | ${r.meta.turns ?? ""} | ${r.meta.cost_usd ? `$${r.meta.cost_usd.toFixed(2)}` : ""} |`);
   return lines.join("\n");
 }
 

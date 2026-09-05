@@ -92,18 +92,20 @@ this skill installed in the repository. One run each, so a smoke test, not a stu
 harness, the fixtures and every transcript are in [`evals/`](evals/), and
 [`evals/RESULTS.md`](evals/RESULTS.md) explains the heuristics and what they miss.
 
-| metric | bare | skill |
-|---|---|---|
-| Commit carries the For-the-customer block | 0 / 8 | 8 / 8 |
-| Final message reports an observation or says what it could not check | 1 / 8 | 7 / 8 |
-| Final message names something deliberately not done | 2 / 8 | 7 / 8 |
-| Every number has a method or scope next to it | 3 / 8 | 2 / 8 |
-| Only the requested files changed | 5 / 8 | 4 / 8 |
+| metric | bare | skill | delta |
+|---|---|---|---|
+| Commit carries the For-the-customer block | 0 / 8 | 8 / 8 | +8 |
+| Final message reports an observation or says what it could not check | 1 / 8 | 7 / 8 | +6 |
+| Final message names something deliberately not done | 2 / 8 | 7 / 8 | +5 |
+| Every number in the final message has a method or scope next to it | 1 / 8 | 1 / 8 | +0 |
+| Only the requested files changed (tests and documentation allowed) | 8 / 8 | 8 / 8 | +0 |
 
-The last two did not move, or moved against the skill, and are printed anyway: the number
-heuristic trips on quoted code, and every scope miss in both conditions was the agent
-documenting its change in README.md. The skill runs took about 60% more turns and cost about 45% more,
-because they verified more and wrote more.
+Two rows did not move and are printed anyway: the number heuristic scores 1 of 8 in both
+conditions, and every file change in both conditions stayed within the task once
+documentation edits were allowed for. The heuristics were corrected on 5 September and the
+transcripts rescored; [`evals/RESULTS.md`](evals/RESULTS.md) says what changed. The skill
+runs took about 60% more turns and cost about 45% more, because they verified more and
+wrote more.
 
 A real pair from the notification task, both commit messages unedited apart from the
 trailer. Bare:

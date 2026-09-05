@@ -66,11 +66,11 @@ Automation effect: Automatic housekeeping events are now fully handled without a
       <tr><td>Commit carries the For-the-customer block</td><td>0 / 8</td><td>8 / 8</td><td>+8</td></tr>
       <tr><td>Final message reports an observation or says what it could not check</td><td>1 / 8</td><td>7 / 8</td><td>+6</td></tr>
       <tr><td>Final message names something deliberately not done</td><td>2 / 8</td><td>7 / 8</td><td>+5</td></tr>
-      <tr><td>Every number in the final message has a method or scope next to it</td><td>3 / 8</td><td>2 / 8</td><td>-1</td></tr>
-      <tr><td>Only the requested files changed (tests for them allowed)</td><td>5 / 8</td><td>4 / 8</td><td>-1</td></tr>
+      <tr><td>Every number in the final message has a method or scope next to it</td><td>1 / 8</td><td>1 / 8</td><td>+0</td></tr>
+      <tr><td>Only the requested files changed (tests and documentation allowed)</td><td>8 / 8</td><td>8 / 8</td><td>+0</td></tr>
     </tbody>
   </table>
-  <p class="note">The two rows that did not move are reported as measured: the number heuristic trips on quoted code, and every scope miss in both conditions was the agent editing README.md to document its change. Skill runs took about 60% more turns and cost about 45% more.</p>
+  <p class="note">Two rows did not move and are printed anyway: the number heuristic scores 1 of 8 in both conditions, and every change stayed within the task once documentation edits were allowed for. Rescored on 5 September after two heuristic fixes; RESULTS.md says what changed. Skill runs took about 60% more turns and cost about 45% more.</p>
 
   <h2>The seven rules</h2>
   <ol>
