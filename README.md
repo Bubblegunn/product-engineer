@@ -131,13 +131,15 @@ table used without an explanation.
 
 ```
 node bin/check.mjs check .git/COMMIT_EDITMSG     # or: product-engineer check <file|->
-node bin/check.mjs check --pr 12                 # fetches the body with gh
+node bin/check.mjs check --pr 12                 # the body through the GitHub API, or gh outside Actions
+node bin/check.mjs check --pr 12 --comment       # and one comment on the pull request, updated in place
 ```
 
 The block also gets a readability line, Flesch for English or Ateşman with `--lang tr`, plus
 LIX, as information only. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
 it reports no errors and one warning (a sentence quoting the eval counts without a method
-word next to it). As a CI step:
+word next to it). `--format github` turns the findings into run annotations. As a CI step
+(needs `pull-requests: write` for the comment, see [`docs/install.md`](docs/install.md)):
 
 ```yaml
       - uses: Bubblegunn/product-engineer@v0.2.0

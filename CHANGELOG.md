@@ -19,6 +19,11 @@
 - Plain-language tables in Turkish, Japanese and Chinese.
 - Readability of the customer block (Flesch or Ateşman, plus LIX) as an info line in `check`.
 - Chinese README.
+- `check --pr` reads the pull request through the GitHub API with the token Actions
+  provides (gh stays the fallback), `--comment` leaves one comment on the pull request
+  with the verdict and the block to paste, updated in place on later runs, and
+  `--format github` turns errors and warnings into run annotations; the action uses all
+  three, with `comment` and `token` inputs.
 - A Cursor rule file to copy, `examples/cursor/`, generated with the other adapters, and
   `docs/cursor.md` on the rule versus the skill.
 

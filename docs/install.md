@@ -75,18 +75,25 @@ commits pass, and `[no-customer]` anywhere in the message opts one commit out.
 ```yaml
 name: customer block
 on: [pull_request]
+permissions:
+  contents: read
+  pull-requests: write   # for the comment; drop it and set comment: "false" to keep the log as the only report
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - uses: Bubblegunn/product-engineer@v0.2.0
-        # with: { warn: "true" }   # report instead of failing
+        # with: { warn: "true" }      # report instead of failing
+        # with: { comment: "false" }  # no pull request comment
 ```
 
-The action fails the pull request when its description has no "For the customer" block and
-prints the other findings as warnings. Nothing is posted to the PR; the check log is the
-report.
+The action fails the pull request when its description has no "For the customer" block,
+annotates the run with the other findings, and leaves one comment on the pull request: the
+verdict, the findings, and the block to paste when it is missing. The comment is updated in
+place on every push, never duplicated. A pull request from a fork runs with a read-only
+token, so there the comment becomes a warning in the log and the check still runs.
+
+Inputs: `pr` (defaults to the event's pull request), `warn`, `comment`, `token`.
 
 ## pre-commit
 

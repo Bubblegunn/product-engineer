@@ -1,5 +1,5 @@
 name: product-engineer check
-description: Fails a pull request whose description has no "For the customer" block, and warns on the rest.
+description: Fails a pull request whose description has no "For the customer" block, warns on the rest, and says so in one comment on the pull request.
 author: Efe Genc
 branding:
   icon: check-square
@@ -13,22 +13,30 @@ inputs:
     description: Set to "true" to report a missing block as a warning instead of failing.
     required: false
     default: "false"
+  comment:
+    description: Set to "false" to skip the pull request comment. With "true" the job needs `pull-requests: write`; a read-only token (a pull request from a fork) turns the post into a warning.
+    required: false
+    default: "true"
+  token:
+    description: Token for reading the pull request and posting the comment.
+    required: false
+    default: ${{ github.token }}
 runs:
   using: composite
   steps:
     - name: Check the pull request description
       shell: bash
       env:
-        GH_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ inputs.token }}
         ACTION_PATH: ${{ github.action_path }}
         PR_NUMBER: ${{ inputs.pr }}
         WARN: ${{ inputs.warn }}
+        COMMENT: ${{ inputs.comment }}
       run: |
         case "$PR_NUMBER" in
           ''|*[!0-9]*) echo "pr must be a number, got: $PR_NUMBER" >&2; exit 2 ;;
         esac
-        if [ "$WARN" = "true" ]; then
-          node "$ACTION_PATH/bin/check.mjs" check --pr "$PR_NUMBER" --warn
-        else
-          node "$ACTION_PATH/bin/check.mjs" check --pr "$PR_NUMBER"
-        fi
+        set -- check --pr "$PR_NUMBER" --format github
+        [ "$WARN" = "true" ] && set -- "$@" --warn
+        [ "$COMMENT" != "false" ] && set -- "$@" --comment
+        node "$ACTION_PATH/bin/check.mjs" "$@"

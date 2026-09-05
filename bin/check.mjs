@@ -8,14 +8,19 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readability } from "./readability.mjs";
 
-const HELP = `usage: product-engineer check [file|-] [--pr <number>] [--warn] [--lang <code>]
+const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--warn] [--lang <code>] [--format text|github] [--comment]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
 skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
 
-  file          path to a message, or - for stdin
-  --pr <n>      fetch the pull request body with gh pr view
+  file, --stdin path to a message, or - / --stdin for standard input
+  --pr <n>      fetch the pull request body: through the GitHub API when GITHUB_TOKEN
+                and GITHUB_REPOSITORY are set (as in Actions), otherwise with gh pr view
+  --comment     with --pr and a token: post the result as one comment on the pull
+                request, updated in place on later runs; a failed post is a warning
+  --format      text (default) or github: errors and warnings as ::error:: and
+                ::warning:: workflow commands, so they annotate the run
   --warn        report a missing block as a warning; always exit 0
   --lang <code> language of the block for the readability line: en (default) or tr
   -h, --help    this text
@@ -104,37 +109,117 @@ export function analyse(text, opts = {}) {
   return { skipped: false, findings };
 }
 
-export function render(result) {
-  const out = result.findings.map((f) => `${f.level.padEnd(5)} ${f.message}`);
+function summary(result) {
   const errors = result.findings.filter((f) => f.level === "error").length;
   const warns = result.findings.filter((f) => f.level === "warn").length;
-  out.push(errors ? `${errors} error${errors === 1 ? "" : "s"}, ${warns} warning${warns === 1 ? "" : "s"}` : `no errors, ${warns} warning${warns === 1 ? "" : "s"}`);
-  return out.join("\n");
+  return errors ? `${errors} error${errors === 1 ? "" : "s"}, ${warns} warning${warns === 1 ? "" : "s"}` : `no errors, ${warns} warning${warns === 1 ? "" : "s"}`;
+}
+
+/** Text output, or GitHub workflow commands with `format: "github"` so errors and warnings annotate the run. */
+export function render(result, format = "text") {
+  const line =
+    format === "github"
+      ? (f) => (f.level === "error" ? `::error title=product-engineer::${f.message}` : f.level === "warn" ? `::warning title=product-engineer::${f.message}` : `${f.level.padEnd(5)} ${f.message}`)
+      : (f) => `${f.level.padEnd(5)} ${f.message}`;
+  return [...result.findings.map(line), summary(result)].join("\n");
+}
+
+export const COMMENT_MARKER = "<!-- product-engineer -->";
+
+const TEMPLATE = `For the customer:
+What changed: <what they can now do, or no longer suffer>
+Why it matters: <the benefit, in their terms>
+Automation effect: <only when a manual step disappeared or the system handles more alone; otherwise omit the line>`;
+
+/** The sticky pull request comment: the verdict, the findings, and the block to paste when it is missing. */
+export function commentBody(result, version) {
+  const missing = result.findings.some((f) => f.level === "error" && /^no "For the customer:" block/.test(f.message));
+  const lines = [COMMENT_MARKER, ""];
+  if (result.skipped) lines.push("product-engineer check: skipped, the block is not required for this description.");
+  else if (missing) lines.push("product-engineer check: the description has no \"For the customer\" block.", "", "Paste this at the end of the description and fill it in:", "", "```", TEMPLATE, "```");
+  else lines.push("product-engineer check: the \"For the customer\" block is present.");
+  const notes = result.findings.filter((f) => f.level === "error" || f.level === "warn").filter((f) => !(missing && /^no "For the customer:" block/.test(f.message)));
+  if (notes.length) {
+    lines.push("");
+    for (const f of notes) lines.push(`- ${f.level === "error" ? "error" : "warning"}: ${f.message}`);
+  }
+  lines.push("", `<sub>${summary(result)} · product-engineer ${version} · updated on every push</sub>`);
+  return lines.join("\n");
+}
+
+/** The body field of a pull request JSON document; an absent or null body is an empty description. */
+export function prBodyFrom(json) {
+  const pr = JSON.parse(json);
+  return typeof pr.body === "string" ? pr.body : "";
+}
+
+function github(env) {
+  const token = env.GITHUB_TOKEN || env.GH_TOKEN;
+  const repo = env.GITHUB_REPOSITORY;
+  if (!token || !repo) return null;
+  const api = (env.GITHUB_API_URL || "https://api.github.com").replace(/\/$/, "");
+  const call = async (method, path, body) => {
+    const res = await fetch(`${api}/repos/${repo}${path}`, {
+      method,
+      headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "user-agent": "product-engineer", ...(body ? { "content-type": "application/json" } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const text = await res.text();
+    if (!res.ok) throw new Error(`${method} ${path}: ${res.status} ${text.slice(0, 200)}`);
+    return text;
+  };
+  return { call };
+}
+
+/** The pull request description through the API when a token is in the environment, otherwise through gh. */
+export async function fetchPrBody(number, env = process.env) {
+  const gh = github(env);
+  if (gh) return prBodyFrom(await gh.call("GET", `/pulls/${number}`));
+  return execFileSync("gh", ["pr", "view", String(number), "--json", "body", "--jq", ".body"], { encoding: "utf8", shell: process.platform === "win32" });
+}
+
+/** Post the comment, or update the one carrying the marker. Returns "created" or "updated". */
+export async function upsertComment(number, body, env = process.env) {
+  const gh = github(env);
+  if (!gh) throw new Error("--comment needs GITHUB_TOKEN (or GH_TOKEN) and GITHUB_REPOSITORY");
+  const existing = JSON.parse(await gh.call("GET", `/issues/${number}/comments?per_page=100`)).find((c) => typeof c.body === "string" && c.body.startsWith(COMMENT_MARKER));
+  if (existing) {
+    await gh.call("PATCH", `/issues/comments/${existing.id}`, { body });
+    return "updated";
+  }
+  await gh.call("POST", `/issues/${number}/comments`, { body });
+  return "created";
 }
 
 export function exitCode(result) {
   return result.findings.some((f) => f.level === "error") ? 1 : 0;
 }
 
-function readInput(argv) {
+function prNumber(argv) {
   const prIndex = argv.indexOf("--pr");
-  if (prIndex >= 0) {
-    const n = argv[prIndex + 1];
-    if (!n) throw new Error("--pr needs a number");
-    return execFileSync("gh", ["pr", "view", n, "--json", "body", "--jq", ".body"], { encoding: "utf8" });
-  }
-  const langIndex = argv.indexOf("--lang");
-  const positional = argv.filter((a, i) => (!a.startsWith("-") || a === "-") && i !== langIndex + 1).filter((a) => a !== "check");
+  if (prIndex < 0) return null;
+  const n = argv[prIndex + 1];
+  if (!n || !/^\d+$/.test(n)) throw new Error("--pr needs a number");
+  return n;
+}
+
+async function readInput(argv) {
+  const pr = prNumber(argv);
+  if (pr) return fetchPrBody(pr);
+  const valued = [argv.indexOf("--lang"), argv.indexOf("--format")].filter((i) => i >= 0).map((i) => i + 1);
+  const positional = argv.filter((a, i) => (!a.startsWith("-") || a === "-") && !valued.includes(i)).filter((a) => a !== "check");
   const file = positional[0];
-  if (file === "-") return readFileSync(0, "utf8");
+  if (file === "-" || argv.includes("--stdin")) return readFileSync(0, "utf8");
   if (file) return readFileSync(file, "utf8");
   if (existsSync(".git/COMMIT_EDITMSG")) return readFileSync(".git/COMMIT_EDITMSG", "utf8");
   throw new Error("nothing to check: pass a file, -, or --pr <number> (see --help)");
 }
 
-function main(argv) {
+const version = () => JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
+
+async function main(argv) {
   if (argv.includes("--version")) {
-    console.log(JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version);
+    console.log(version());
     return 0;
   }
   if (argv.includes("-h") || argv.includes("--help")) {
@@ -146,21 +231,39 @@ function main(argv) {
     console.error(HELP);
     return 2;
   }
+  const formatIndex = argv.indexOf("--format");
+  const format = formatIndex >= 0 ? argv[formatIndex + 1] : "text";
+  if (format !== "text" && format !== "github") {
+    console.error(`--format must be text or github, got: ${format}`);
+    return 2;
+  }
   let text;
   try {
-    text = readInput(argv);
+    text = await readInput(argv);
   } catch (err) {
     console.error(err instanceof Error ? err.message : String(err));
     return 2;
   }
   const langIndex = argv.indexOf("--lang");
   const result = analyse(text, { warn: argv.includes("--warn"), lang: langIndex >= 0 ? argv[langIndex + 1] : undefined });
-  console.log(render(result));
+  console.log(render(result, format));
+  if (argv.includes("--comment")) {
+    const pr = prNumber(argv);
+    if (!pr) {
+      console.error("--comment needs --pr <number>");
+      return 2;
+    }
+    try {
+      const what = await upsertComment(pr, commentBody(result, version()));
+      console.log(`comment ${what} on pull request #${pr}`);
+    } catch (err) {
+      // A read-only token (a pull request from a fork) cannot comment; the check still reports.
+      const message = `could not post the comment: ${err instanceof Error ? err.message : String(err)}`;
+      console.log(format === "github" ? `::warning title=product-engineer::${message}` : `warn  ${message}`);
+    }
+  }
   return argv.includes("--warn") ? 0 : exitCode(result);
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  process.exit(main(process.argv.slice(2)));
-} else if (process.argv[1] && /product-engineer$/.test(process.argv[1])) {
-  process.exit(main(process.argv.slice(2)));
-}
+const invoked = process.argv[1] && (fileURLToPath(import.meta.url) === process.argv[1] || /product-engineer$/.test(process.argv[1]));
+if (invoked) main(process.argv.slice(2)).then((code) => process.exit(code));
