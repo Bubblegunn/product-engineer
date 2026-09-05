@@ -99,6 +99,18 @@ corpus. The fix goes in `bin/diff.mjs`, not in the write-up. This already happen
 `documentation only` while describing the check, which is recorded in the changelog and
 fixed by masking quoted spans.
 
+That rule has one boundary, and it was found by hitting it. This commit's own message
+first read "the documentation-only check matched", in bare prose, on a change that touches
+source. The checker warned, correctly by its own lights: an unquoted claim phrase next to a
+source change is exactly what it is built to find. The repository's convention is that a
+named phrase goes in backticks or quotation marks, and the masking in `crossCheck`
+implements that convention, so the message was breaking a rule the tool already enforces.
+The message was fixed and the checker was not. The line between the two cases is whether
+the phrase is ordinary English or a term of art: "a run left five files modified" and
+"Cursor users can drop one file into their project" are sentences anybody might write and
+were checker bugs, while a message that discusses this check by name is a message about the
+tool, and widening the checker for every such message is a regress with no floor.
+
 If recall on a mechanical type is below 100%, the mutation is producing something the
 checker was never meant to catch, and either the mutation or the claim about that type is
 wrong.
@@ -124,8 +136,13 @@ already cite. Cheap and externally anchored comes first.
   out, and writes `evals/baseline/RESULTS.md`.
 - `test/baseline.test.mjs` asserts that each mutation produces the inconsistency it claims to, each
   refuses a commit it cannot mutate, and the scoring arithmetic is right.
-- CI regenerates the results and fails if the committed file is stale, the way
-  `bench/PRECISION.md` works in the sibling repository.
+- CI reruns the harness on every push and fails on the claim rather than on the bytes. A
+  byte-for-byte freshness check is what `bench/PRECISION.md` uses in the sibling repository
+  and it cannot work here: the corpus is the last N commits of a moving history, so the
+  commit that records the table is inside the next run's corpus and the file is stale the
+  moment it is written. `--check` asserts what the README claims instead, which is that no
+  real message draws a false alarm, every kind marked reachable is caught every time, and
+  the kind marked unreachable is caught never.
 
 `crossCheck` takes `(text, diff, { cwd })` and `readDiff` is the only part that shells out
 to git, so the harness constructs the diff object itself from `git show --numstat` per
@@ -151,28 +168,43 @@ the two should never be put in the same table without that sentence attached.
 
 ## Measured result
 
-Run on `product-engineer` at 200 commits, 57 of them carrying file changes and scored.
+Run on `product-engineer` at 200 commits, of which 63 carry file changes; 58 scored for
+specificity and 5 held out as harness artefacts, as the limits section above requires.
 
 | measure | value |
 |---|---:|
-| commits scored | 57 |
+| commits scored | 58 |
 | false alarms | 0 |
 | specificity | 100% |
-| `file-path` recall | 100% (24 of 24) |
+| `file-path` recall | 100% (25 of 25) |
 | `extra-tests` recall | 100% (30 of 30) |
 | `extra-docs-only` recall | 100% (47 of 47) |
 | `file-count` recall | 100% (55 of 55) |
 | `operation` recall | 0% (0 of 4) |
 
-The shape the design predicted, including the zero.
+The shape the design predicted, including the zero. `evals/baseline/RESULTS.md` carries the
+same figures against the commit that produced them, and reruns from a clean checkout.
 
-Two things the first run changed. It found two false alarms on real commits, which by this
-document's own rule are bugs, and both were fixed in `bin/diff.mjs` rather than written up:
-a file count is now only read as a claim when a change verb governs it, and a planning
-artefact that describes tests is no longer read as adding them.
+Three things the run changed, and they are the reason it was worth running.
 
-It also corrected the scoring. The first run scored `operation` at 25% because one mutated
-message tripped the path check on a file that had been moved since that commit, which has
-nothing to do with the swapped verb. A mutation now counts as caught only when it produces
-a warning the unmutated message did not, which is the difference between measuring the
-mutation and measuring the corpus. That correction is the reason the row reads zero.
+**It found three false alarms on real commits**, which by this document's own rule are bugs
+in the checker rather than facts about the corpus. All three were fixed in `bin/diff.mjs`.
+A file count is only read as a claim when a change verb governs it: "a run left five files
+modified" describes a previous run, and "Cursor users can drop one file into their project"
+borrowed its verb from the "What changed:" heading. A planning artefact that describes tests
+is no longer read as adding them. And a claim phrase inside a longer hyphenated identifier
+is a name rather than an assertion: the type name `extra-docs-only`, written in a commit
+message about this very corpus, was read as a claim that the change was documentation only.
+That third one is the same use-mention confusion as the quoted-phrase bug recorded in the
+changelog, which is worth noting: the class recurs, and each fix has been narrower than the
+class. The cost of the file-count fix is that the passive "five files were changed" is no
+longer checked, a miss rather than a false alarm, which is the direction this tool errs in.
+
+**It corrected its own scoring.** The first run scored `operation` at 25% because one
+mutated message tripped the path check on a file that had been moved since that commit,
+which has nothing to do with the swapped verb. A mutation now counts as caught only when it
+produces a warning the unmutated message did not, which is the difference between measuring
+the mutation and measuring the corpus. That correction is why the row reads zero.
+
+**It corrected the CI design.** The first version diffed the committed table against a fresh
+run, which can never pass on a moving corpus. See the implementation section above.

@@ -108,10 +108,10 @@ wrote more.
 it is wrong about a message somebody actually wrote. `npm run baseline` answers it on the
 history of whatever repository you run it in: it mutates real commits so each message
 contradicts its own diff, asks whether the checker notices, and writes
-[`evals/baseline/RESULTS.md`](evals/baseline/RESULTS.md). CI regenerates that file and fails
-if it is stale.
+[`evals/baseline/RESULTS.md`](evals/baseline/RESULTS.md). CI reruns it on every push and fails
+on a false alarm, on a reachable kind going uncaught, or on the unreachable kind being caught.
 
-On this repository, 200 commits, 57 of them scored:
+On this repository, 200 commits, 58 of them scored:
 
 | measure | value |
 |---|---:|
@@ -125,8 +125,8 @@ That last row is in the corpus on purpose. No check reads operation verbs, so sw
 Three kinds in the taxonomy this borrows from cannot be produced mechanically at all, because
 they need someone to read what the code means; this reads a numstat.
 
-Running it the first time found two false alarms on real commits and both are fixed, which is
-the outcome the harness is for. It sits beside published numbers for models asked the same
+Running it found three false alarms on real commits and all three are fixed, which is the
+outcome the harness is for. It sits beside published numbers for models asked the same
 question, and the design document explains why that is context rather than a comparison.
 
 ## The pack

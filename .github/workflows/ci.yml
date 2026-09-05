@@ -53,8 +53,9 @@ jobs:
       - run: npm run build --if-present
       - run: node scripts/release-gate.mjs
   baseline:
-    # The measured claim in evals/baseline/RESULTS.md, regenerated from the history in this
-    # checkout. A stale table is a claim nobody checked, so it fails the build.
+    # The claim evals/baseline/RESULTS.md makes, re-measured against the history in this
+    # checkout. The table itself cannot be diffed: its corpus is the last 200 commits, so the
+    # commit that writes it moves the numbers. What is checked is what the README promises.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -64,10 +65,8 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
-      - name: The committed results match a fresh run
-        run: |
-          node evals/baseline/run.mjs --commits 200
-          git diff --exit-code -- evals/baseline/RESULTS.md
+      - name: No false alarm on a real message, every reachable kind caught
+        run: node evals/baseline/run.mjs --commits 200 --check
   ci-ok:
     # The one check the branch ruleset requires; it fails if any job above failed or was cancelled.
     if: always()

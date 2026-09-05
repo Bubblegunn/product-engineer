@@ -71,3 +71,13 @@ test("a plan that describes tests is not a claim that tests were added", () => {
   // A plain claim on a change with no test file still reports.
   assert.ok(warns("Added regression tests covering this.", diffOf("src/a.ts")).some((w) => /tests were added/.test(w.message)));
 });
+
+test("a hyphenated identifier that contains a claim is a name, not a claim", () => {
+  const src = diffOf("src/a.ts", "src/b.ts");
+  // The corpus type name `extra-docs-only` in a message about the corpus was the third false
+  // alarm this run found: "docs-only" sat inside a longer token and was read as an assertion.
+  assert.deepEqual(warns("Recall is 100% on extra-docs-only and file-count.", src), []);
+  // The claim itself still reports, hyphenated or spaced.
+  assert.ok(warns("This change is documentation only.", src).some((w) => /documentation only/.test(w.message)));
+  assert.ok(warns("A docs-only change.", src).some((w) => /documentation only/.test(w.message)));
+});

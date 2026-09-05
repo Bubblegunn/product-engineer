@@ -59,7 +59,10 @@ const TEST_CLAIM = /\b(add(ed|s|ing)?|wrote|writes?|writing|introduc(e|ed|es)|in
 
 // Only the "only" family: a refactor may legitimately touch source while claiming no
 // behaviour change, so that phrasing is deliberately not checked.
-const DOCS_ONLY_CLAIM = /\b(documentation|docs?|readme|comment)[- ]only\b|\bonly (the )?(documentation|docs?|readme|comments?)\b|\bno (code|source) changes?\b/i;
+// The lookbehind keeps a hyphenated identifier from reading as a claim: the corpus type
+// name `extra-docs-only` contains "docs-only" and named it in a commit message here, which
+// the baseline caught as a false alarm. A token inside a longer compound is a name.
+const DOCS_ONLY_CLAIM = /(?<![-\w])(documentation|docs?|readme|comment)[- ]only\b|\bonly (the )?(documentation|docs?|readme|comments?)\b|\bno (code|source) changes?\b/i;
 
 const CHANGE_VERB = /\b(chang(e|ed|es)|touch(ed|es)?|modif(y|ied|ies)|updat(e|ed|es)|edit(ed|s)?|add(ed|s)?|remov(e|ed|es)|delet(e|ed|es)|rewrit(e|ten|es))\b/i;
 
