@@ -218,9 +218,12 @@ and the commit-msg hook is generated from it so the two cannot disagree.
 
 The block also gets a readability line, Flesch (1948) for English or Ateşman (1997) with
 `--lang tr`, plus LIX (Björnsson, 1968), as information only. All three count syllables or
-word lengths in an alphabet whose words are separated by spaces, so for a block written in
-Japanese, Chinese, Korean, Arabic, Hebrew or Thai the tool says it is not scoring and why,
-rather than printing the zero those formulas produce. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
+word lengths in the Latin alphabet, so for a block written in any other script the tool names
+the script, says it is not scoring and why, and prints no number. Japanese, Chinese, Korean,
+Arabic, Hebrew and Thai each get their own reason; Cyrillic, Greek and Devanagari are refused
+because no calibration for them is implemented here, not because the language resists one; and
+a script the tool cannot name is still refused. Before that, a block in Hindi, Tamil, Greek or
+Amharic came back Flesch 0, graded hard, which is a number nobody counted. Exit 1 on a missing block, 0 with `--warn`. Run on this repository's own last five commits
 it reports no errors and one warning (a sentence quoting the eval counts without a method
 word next to it). `--format github` turns the findings into run annotations. As a CI step
 (needs `pull-requests: write` for the comment, see [`docs/install.md`](docs/install.md)):

@@ -45,6 +45,31 @@ test("a script these formulas cannot read is refused, not scored zero", () => {
   }
 });
 
+test("every script but Latin is refused, not just the five with tables", () => {
+  // The five above are the languages this repository ships plain-language tables for, and
+  // they were the only ones checked. Everything else fell through to "Latin" or was scored
+  // by a scale calibrated for English: a Hindi, Tamil, Greek or Amharic block came back
+  // Flesch 0, band "hard", which is a grade nobody counted.
+  const cases = [
+    ["यह सुविधा ग्राहकों को अपने ऑर्डर की स्थिति देखने देती है।", "Devanagari"],
+    ["Эта функция позволяет клиентам видеть статус заказа.", "Cyrillic"],
+    ["Αυτή η λειτουργία επιτρέπει στους πελάτες να βλέπουν την κατάσταση.", "Greek"],
+    ["இந்த வசதி வாடிக்கையாளர்கள் தங்கள் ஆர்டர் நிலையைப் பார்க்க அனுமதிக்கிறது.", "Tamil"],
+    ["ይህ ባህሪ ደንበኞች የትዕዛዛቸውን ሁኔታ እንዲያዩ ያስችላቸዋል።", "Ethiopic"],
+  ];
+  for (const [text, script] of cases) {
+    const r = readability(text);
+    assert.equal(r.script, script, text);
+    assert.equal(r.name, null, `${script} must not be given a scale`);
+    assert.equal(r.score, null);
+    assert.match(r.reason, /Latin/);
+  }
+  // A script the list does not name is still refused rather than scored.
+  const r = readability("ᓄᓇᕗᑦ ᐃᓄᐃᑦ ᐊᒃᑐᐊᓂᖏᑦ ᑕᑯᔭᒃᓴᐅᔪᑦ.");
+  assert.equal(r.name, null);
+  assert.equal(r.script, "another script");
+});
+
 test("kana anywhere means Japanese, even when kanji outnumber it", () => {
   assert.equal(scriptOf("経理担当者が予約を取得できます"), "Japanese");
   assert.equal(scriptOf("会计可以下载记录"), "Han");
