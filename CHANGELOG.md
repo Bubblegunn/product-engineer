@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.3 (unreleased)
+## 0.3.3 (2026-09-05)
 
 `check --diff` now has a measured baseline. `npm run baseline` mutates the real commits of
 whatever repository it runs in so each message contradicts its own diff, then asks whether the
