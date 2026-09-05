@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.2 (unreleased)
+## 0.3.2 (2026-09-05)
 
 `check --diff` reads the change and reports where the message and the diff disagree: tests
 claimed with no test file gaining a line, "documentation only" over a source change, a stated
