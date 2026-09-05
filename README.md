@@ -60,6 +60,10 @@ The check, on a message without the block and then with it (the two fixtures are
 
 A longer pair, unedited, from the evaluation: [`docs/examples.md`](docs/examples.md).
 
+One real defect in a public repository, fixed twice by the same model on the same commit,
+with the skill and without, both commit messages quoted whole:
+[`docs/case-study.md`](docs/case-study.md).
+
 ## Install
 
 ```
