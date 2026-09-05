@@ -68,7 +68,8 @@ npx skills add Bubblegunn/product-engineer
 
 That places the skills for the agents in your project (Claude Code, Codex, Cursor, Copilot,
 Gemini CLI and the rest). Where each file lands, the Claude Code plugin commands, the git
-hook and the CI action are in [`docs/install.md`](docs/install.md).
+hook and the CI action are in [`docs/install.md`](docs/install.md); Cursor as a rule file
+rather than a skill is in [`docs/cursor.md`](docs/cursor.md).
 
 ## Measured
 

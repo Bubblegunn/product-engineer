@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Writes the seven rules from skills/product-engineer/SKILL.md into every instruction
-// file the surveyed agents read, so an agent that never loads SKILL.md still gets them.
+// file the surveyed agents read, so an agent that never loads SKILL.md still gets them,
+// and into examples/cursor/, a copy people drop into their own project.
 //   node scripts/generate-adapters.mjs            # write the files
 //   node scripts/generate-adapters.mjs --check    # exit 1 when any file is out of date
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -27,6 +28,7 @@ export function adapters(skillText, version) {
   const description = descriptionFrom(skillText);
   const body = `# product-engineer\n\n${rules}\n`;
   const marked = `<!-- ${NOTE} -->\n\n${body}`;
+  const copied = `<!-- Copied from Bubblegunn/product-engineer ${version}, source ${SOURCE}. Newer rules: copy the file again from a newer release. -->\n\n${body}`;
   const preface = [
     "# For agents working in this repository, and for agents that installed it",
     "",
@@ -37,6 +39,7 @@ export function adapters(skillText, version) {
   ].join("\n");
   return {
     ".cursor/rules/product-engineer.mdc": `---\ndescription: ${JSON.stringify(description)}\nalwaysApply: true\n---\n${marked}`,
+    "examples/cursor/.cursor/rules/product-engineer.mdc": `---\ndescription: ${JSON.stringify(description)}\nalwaysApply: true\n---\n${copied}`,
     ".github/copilot-instructions.md": marked,
     "GEMINI.md": marked,
     "gemini-extension.json": `${JSON.stringify({ name: "product-engineer", version, description, contextFileName: "GEMINI.md" }, null, 2)}\n`,

@@ -18,7 +18,7 @@ test("rulesFrom drops the frontmatter and the title and keeps the seven rules", 
   for (const n of [1, 2, 3, 4, 5, 6, 7]) assert.ok(new RegExp(`^## ${n}\\. `, "m").test(rules), `rule ${n}`);
 });
 
-test("adapters produce the eight files, each marked generated and carrying the rules", () => {
+test("adapters produce the nine files, each marked generated or copied and carrying the rules", () => {
   const out = adapters(skill, "0.3.0");
   const paths = Object.keys(out).sort();
   assert.deepEqual(paths, [
@@ -29,16 +29,21 @@ test("adapters produce the eight files, each marked generated and carrying the r
     ".windsurf/rules/product-engineer.md",
     "AGENTS.md",
     "GEMINI.md",
+    "examples/cursor/.cursor/rules/product-engineer.mdc",
     "gemini-extension.json",
   ]);
   for (const [p, text] of Object.entries(out)) {
     if (p.endsWith(".json")) continue;
-    assert.ok(text.includes("Generated from skills/product-engineer/SKILL.md"), `${p} marked`);
+    assert.ok(text.includes(p.startsWith("examples/") ? "Copied from Bubblegunn/product-engineer 0.3.0" : "Generated from skills/product-engineer/SKILL.md"), `${p} marked`);
     assert.ok(/^## 7\. /m.test(text), `${p} has rule 7`);
     assert.ok(!text.includes("—"), `${p} has no em dash`);
   }
   assert.ok(out[".cursor/rules/product-engineer.mdc"].startsWith("---\ndescription: "));
   assert.ok(out[".cursor/rules/product-engineer.mdc"].includes("alwaysApply: true"));
+  const example = out["examples/cursor/.cursor/rules/product-engineer.mdc"];
+  assert.ok(example.startsWith("---\ndescription: "));
+  assert.ok(example.includes("alwaysApply: true"));
+  assert.ok(!example.includes("scripts/generate-adapters.mjs"), "the copy does not point at this repository's generator");
   assert.ok(out[".kiro/steering/product-engineer.md"].startsWith("---\ninclusion: always\n---"));
   assert.ok(out[".windsurf/rules/product-engineer.md"].startsWith("---\ntrigger: always_on\n---"));
   const manifest = JSON.parse(out["gemini-extension.json"]);

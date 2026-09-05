@@ -19,6 +19,8 @@
 - Plain-language tables in Turkish, Japanese and Chinese.
 - Readability of the customer block (Flesch or Ateşman, plus LIX) as an info line in `check`.
 - Chinese README.
+- A Cursor rule file to copy, `examples/cursor/`, generated with the other adapters, and
+  `docs/cursor.md` on the rule versus the skill.
 
 ## 0.1.0 (2026-09-05)
 

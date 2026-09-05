@@ -40,6 +40,16 @@ a skills folder: `.cursor/rules/product-engineer.mdc`, `.github/copilot-instruct
 are generated from `skills/product-engineer/SKILL.md` by `scripts/generate-adapters.mjs`
 and CI refuses a commit where they differ.
 
+| agent | copy this file | notes |
+|---|---|---|
+| Cursor | [`examples/cursor/.cursor/rules/product-engineer.mdc`](../examples/cursor/.cursor/rules/product-engineer.mdc) | `alwaysApply: true`; see [`cursor.md`](cursor.md) for the globs variant |
+| Copilot | `.github/copilot-instructions.md` | |
+| Gemini CLI | `GEMINI.md` with `gemini-extension.json` | |
+| Cline | `.clinerules/product-engineer.md` | |
+| Kiro | `.kiro/steering/product-engineer.md` | `inclusion: always` |
+| Windsurf | `.windsurf/rules/product-engineer.md` | `trigger: always_on` |
+| Codex and others | `AGENTS.md` | |
+
 ## Claude Code plugin
 
 ```
