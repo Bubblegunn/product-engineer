@@ -43,6 +43,10 @@ export function jargonTerms(tablePath = TABLE) {
 
 const METHOD = /`|\b(count(ed)?|git|ran|measured|out of|of the|in the (file|data|list|logs?)|per|of [0-9])\b/i;
 
+// Rule 3: a passing test suite is a step, not an observation of what the customer gets.
+const TEST_EVIDENCE = /\b(all\s+)?(\d[\d,]*\s+)?tests?\s+(pass\w*|green|succeed\w*)\b|\btest suite\s+(passes|is green)\b|\b(CI|the suite)\s+(is\s+)?green\b/i;
+const OBSERVED = /\b(watched|saw|observed|checked (it|the|that)|verified (by|in|it|that)|in (the|production) (logs?|database|dashboard|output|data)|on (a|my|the) (device|phone|staging|server)|reproduced|measured|could not (check|verify|observe)|did not (check|verify|run)|unable to (check|verify))\b/i;
+
 /**
  * Analyse a message. Returns { skipped, findings: [{ level, message }] }.
  * level is "error", "warn", "ok" or "info".
@@ -87,6 +91,10 @@ export function analyse(text, opts = {}) {
     const unexplained = used.filter((t) => !explained(t));
     if (unexplained.length) add("warn", `jargon in the customer block without a plain explanation: ${unexplained.join(", ")}`);
     else if (used.length) add("ok", "jargon in the block is explained");
+
+    if (TEST_EVIDENCE.test(blockText) && !OBSERVED.test(text)) {
+      add("warn", "the block offers passing tests as the evidence; rule 3 asks for something observed (logs, the data, a device) or a line saying what you could not check");
+    }
 
     const r = readability(blockText.replace(/^[A-Z][a-z ]+:\s*/gm, ""), opts.lang ?? "en");
     add("info", `readability of the block: ${r.name} ${r.score} (${r.band}), LIX ${r.lix}`);

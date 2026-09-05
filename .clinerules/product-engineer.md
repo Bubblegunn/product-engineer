@@ -26,14 +26,20 @@ Why it matters: <the benefit, in their terms>
 Automation effect: <only if a manual step disappeared or the system now handles more alone; otherwise omit the line>
 ```
 
-Pure refactors get one line under `What changed`. Never invent an automation effect.
-Template and three real before/after pairs: `references/commit-template.md`.
+Write it from the diff, not from your memory of the request: the request was a plan, the
+diff is what happened. `references/from-the-diff.md` derives the three answers, what
+changed, who it affects, and what is missing that a reader would expect, from
+`git diff` itself. Pure refactors get one line under `What changed`. Never invent an
+automation effect. Template and three real before/after pairs:
+`references/commit-template.md`.
 
 ## 3. Done means observed
 
 Work is done when you have watched it behave in production logs, in the database, or on a
 real device, or when you have written down exactly which of those you could not check and
-why. "Tests pass" is a step. Checklist: `references/definition-of-done.md`. Lean practice
+why. "Tests pass" is a step, and a test count is never the evidence in the customer block:
+`product-engineer check` warns when a block leans on a green suite and the message names
+no observation. Checklist: `references/definition-of-done.md`. Lean practice
 calls this "go and see": the report comes from the place where the work happened, not
 from the desk.
 

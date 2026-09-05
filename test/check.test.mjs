@@ -104,3 +104,32 @@ test("the CLI exits 1 on a missing block, 0 with --warn, 2 on usage, and reads s
   assert.match(help, /usage: product-engineer check/);
   assert.match(render(analyse(full)), /no errors/);
 });
+
+const testsAsEvidence = `fix: badge count
+
+For the customer:
+What changed: The bell no longer counts things the system handled by itself.
+Why it matters: All 42 tests pass, so the count is right now.
+`;
+
+test("passing tests in the block are not an observation", () => {
+  const r = analyse(testsAsEvidence);
+  assert.ok(has(r, "warn", /offers passing tests as the evidence/));
+});
+
+test("a real observation next to the test count clears it", () => {
+  const withObservation = testsAsEvidence.replace(
+    "All 42 tests pass, so the count is right now.",
+    "I watched the badge on a staging device: it stayed at two while the system wrote three of its own events. All 42 tests pass as well.",
+  );
+  const r = analyse(withObservation);
+  assert.ok(!has(r, "warn", /offers passing tests as the evidence/));
+});
+
+test("describing added tests is not offering them as evidence", () => {
+  const describes = full.replace(
+    "What changed: Accountants can download all bookings for a month as a spreadsheet.",
+    "What changed: Accountants can download all bookings for a month as a spreadsheet, covered by 7 new tests.",
+  );
+  assert.ok(!has(analyse(describes), "warn", /offers passing tests as the evidence/));
+});
