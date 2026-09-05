@@ -25,7 +25,7 @@
   `--format github` turns errors and warnings into run annotations; the action uses all
   three, with `comment` and `token` inputs.
 - The release command moves the `v0` tag to every release, so Actions pin
-  `Bubblegunn/product-engineer@v0`; the README and the install page use it.
+  `Bubblegunn/product-engineer@v0`; the README and the install page use it. The release workflow starts on full version tags only, so the moving tag cannot start a second publish.
 - A Cursor rule file to copy, `examples/cursor/`, generated with the other adapters, and
   `docs/cursor.md` on the rule versus the skill.
 
