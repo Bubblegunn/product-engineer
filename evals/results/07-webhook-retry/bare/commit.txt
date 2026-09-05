@@ -1,0 +1,15 @@
+Retry the accounting webhook on transient failures
+
+Payouts were going unrecorded in accounting whenever a single POST
+failed. Retry up to 4 times with exponential backoff + jitter on
+network errors, 429s, and 5xx. 4xx responses other than 429 fail fast
+since a retry cannot help.
+
+Two related behavior changes:
+- Send an idempotency-key header (payout.id) so accounting can collapse
+  duplicates when a retry follows a request that actually landed.
+- Throw once attempts are exhausted instead of only logging, so callers
+  can see the failure rather than silently dropping the payout.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

@@ -1,0 +1,18 @@
+Fix broken check-in reminders for guests with unresolved time zones
+
+reminderHour() looked the guest's zone up in a hardcoded two-entry table
+and returned `9 - undefined` on a miss, so the 4 guests with a null
+timezone (ids 3, 6, 9, 12) were scheduled at hour NaN.
+
+Read offsets from the IANA database via Intl instead. This fixes the miss
+and also makes offsets DST-correct: the table had Europe/London pinned at
++1, which is wrong for the winter half of the year.
+
+Guests whose zone cannot be resolved are now skipped by schedule() rather
+than sent at a guessed hour, and are listed by the new unresolved() export
+so the data can be corrected. Reminder times also carry minutes, for zones
+at a half-hour offset, and wrap correctly when 09:00 local falls on the
+adjacent UTC day.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

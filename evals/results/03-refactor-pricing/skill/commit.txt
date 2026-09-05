@@ -1,0 +1,16 @@
+refactor: split pricing into a rule list and a calculator
+
+Each pricing rule is now a self-contained entry in src/rules.js with its own
+`applies` condition and multiplier. src/pricing.js applies whatever is in the
+list, in order, and rounds to cents; it knows nothing about individual rules.
+Adding or retiring a rule is a one-entry edit that cannot disturb the others.
+
+Added test/pricing.test.js, which re-prices 23,360 bookings (4 base rates x 365
+dates in 2026 x 4 loyalty values x 4 lengths of stay) against a copy of the
+pre-refactor function and asserts identical output.
+
+For the customer:
+What changed: Nothing visible; every booking prices exactly as it did before. The next pricing change marketing asks for is a one-line edit instead of a rewrite of the whole calculation.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

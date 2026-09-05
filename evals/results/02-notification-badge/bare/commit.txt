@@ -1,0 +1,12 @@
+Show count of notifications needing a person on the bell
+
+Add countNeedsPerson() and render it as a badge on the bell, hidden when
+the count is zero.
+
+The data has no "handled" flag, so the count treats `read` as the proxy
+for handled: an item counts only when needsPerson is true and read is
+false. That makes "Invoice 88 paid" (needsPerson, already read) drop out
+of the badge.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

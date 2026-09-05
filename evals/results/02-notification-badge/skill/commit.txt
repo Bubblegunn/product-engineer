@@ -1,0 +1,22 @@
+feat(notifications): show a count on the bell for items awaiting a person
+
+Count items flagged as needing a person that nobody has read yet. Items the
+system handled on its own, and items already read, are excluded. The badge is
+hidden entirely at zero so the number always means "something needs you".
+
+For the customer:
+What changed: The bell in the menu now carries a number showing how many notifications are still waiting for someone at the desk to act. When nothing is waiting, there is no number at all.
+Why it matters: Front desk staff can see at a glance whether anything needs them, instead of opening the list to find out.
+
+Assumption to confirm: a notification stops counting once someone has read it.
+In the sample data this excludes "Invoice 88 paid", which is flagged as needing
+a person but already read. If reading is not what marks an item handled, the
+rule is one line in countNeedsAction.
+
+Not shipped:
+- Styling for the count: this repo has no stylesheet, so the number renders as plain text next to "Bell"; worth doing alongside whoever owns the menu's CSS.
+- A "99+" cap for large counts: no evidence of how high real counts go; worth it once the number is wide enough to break the menu layout.
+- Marking items read from the bell: not asked for, and it needs a decision on where notification state lives.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

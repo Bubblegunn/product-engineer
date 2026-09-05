@@ -1,0 +1,12 @@
+fix(invoice): correct "welcom" to "welcome" in the footer
+
+For the customer:
+What changed: The closing line of every guest invoice used to read "We hope to welcom you again." It now reads "We hope to welcome you again."
+Why it matters: A misspelling on the invoice is the last thing a guest reads after their stay, and it makes the hotel look careless.
+
+Not shipped:
+- The file's TODO about moving to the template engine. Out of scope for a typo fix; it would change how every invoice line is rendered and needs its own testing.
+- The unused `hotel.vatNumber` variable and the `var` loop counter in `total()`. Real cleanups, but unrelated to the guest-reported typo; keeping this commit to one reviewable change.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

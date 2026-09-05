@@ -1,0 +1,37 @@
+Fix check-in reminders that never fired for guests with no time zone
+
+reminderHour looked the guest's time zone up in a two-entry hardcoded table
+(Europe/Istanbul, Europe/London). Anything else — including a null timezone —
+returned undefined, and `9 - undefined` produced NaN as the send hour.
+
+Replaced the table with the zone database via Intl.DateTimeFormat, which
+resolves any IANA zone and follows daylight saving. Guests with a missing or
+unresolvable zone now fall back to 09:00 UTC and are marked `fallback: true`
+rather than silently producing NaN. Reminder times now carry minutes too, so
+half-hour zones such as Asia/Kolkata land on 09:00 local rather than 08:30.
+
+Counts below: `node --test` on this commit, and schedule() run against
+data/customers.json (12 guests, the full roster) on 2026-09-05.
+  - 4 of 12 guests had a NaN send hour before this change; 0 after.
+  - 8 of 12 (all Europe/Istanbul) were unaffected and still resolve to 06:00 UTC.
+
+For the customer:
+What changed: Four of the twelve guests were never getting their check-in
+reminder at all, because we had no time zone saved for them and the reminder
+had no valid time to go out at. All twelve now get one. Guests in a country
+that changes its clocks in spring and autumn will also stop getting the
+reminder an hour off after a clock change.
+Why it matters: A guest who misses the check-in reminder turns up without
+knowing how to get in, and that becomes a phone call to the host.
+Automation effect: Adding a new country no longer needs a code change — the
+reminder time is worked out from the guest's time zone directly, instead of a
+hand-maintained list of two cities.
+
+Not shipped: the four guests without a saved time zone get 09:00 UTC, which is
+a real time but not necessarily 09:00 where they are. Fixing that properly
+means capturing the time zone at booking, which is a change to the booking
+flow and outside this fix. The `fallback: true` flag marks exactly those rows
+so they can be found and backfilled.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

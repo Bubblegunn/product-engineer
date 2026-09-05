@@ -1,0 +1,13 @@
+Split pricing rules into an independent rule list
+
+Every pricing change meant editing the one price() function, where the
+rules were interleaved and a mistake in one could affect another.
+
+Rules now live one-per-entry in src/rules.js as { id, description,
+applies, multiplier }. price() just folds the list, so adding, removing
+or editing a rule touches only that rule's entry. Also adds explain(),
+which reports which rules fired for a given stay.
+
+Behaviour is unchanged: the tests pin the new implementation against the
+original formula across a matrix of dates, guests and base rates.
+

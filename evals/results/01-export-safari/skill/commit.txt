@@ -1,0 +1,19 @@
+fix(export): fall back to a plain download where the save picker is missing
+
+exportBookings called window.showSaveFilePicker unconditionally. Safari does
+not implement the File System Access API on any platform, so on iPad the
+property is undefined and the call threw. The function is async, so the throw
+became a rejected promise the button handler never surfaced, and the tap
+appeared to do nothing at all.
+
+Feature-detect the picker and otherwise download the CSV through a Blob object
+URL and an anchor. Chrome and Edge keep the save dialog. The fallback stays
+synchronous, is attached to the document before it is clicked, and defers
+revoking the object URL, all of which Safari requires.
+
+For the customer:
+What changed: Tapping Export on an iPad now saves the day's bookings as a CSV file. Before, the button appeared to do nothing at all. On Chrome it still asks where to put the file, exactly as it did.
+Why it matters: Reception staff at the two hotels that reported this can export the day's bookings from the iPad at the desk, instead of finding a computer running Chrome.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

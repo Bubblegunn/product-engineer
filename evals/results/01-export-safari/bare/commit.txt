@@ -1,0 +1,14 @@
+Fix CSV export doing nothing on Safari
+
+exportBookings called window.showSaveFilePicker unconditionally. The File
+System Access API is Chromium-only, so on Safari (including the iPads used
+at reception) the call threw, the returned promise rejected unhandled, and
+the Export button appeared to do nothing.
+
+Feature-detect the picker and fall back to a Blob object URL on a download
+anchor, which every target browser supports. A cancelled picker is treated
+as a no-op rather than an error; any other picker failure falls through to
+the download path so the export still reaches the user.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

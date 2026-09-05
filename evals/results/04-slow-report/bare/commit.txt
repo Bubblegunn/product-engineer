@@ -1,0 +1,21 @@
+Speed up monthlyReport by ~14x
+
+The inner loop re-parsed checkOut on every night and built a full ISO
+timestamp per night just to slice off the date. Both scale with total
+nights, and nights land on a small set of dates, so nearly all of that
+string work was redundant.
+
+Tally occupancy into a Map keyed by integer UTC day number, then format
+each distinct date once at the end. Map iteration order preserves the
+original object's first-seen key order.
+
+20k bookings / ~150k nights: 94ms -> 6.8ms.
+
+Output is unchanged: verified against the previous implementation over
+5000 randomized fuzz trials (random times of day, 1968-2028) plus edge
+cases now covered by test/report.test.js. Note the night count is
+ceil((checkOut - checkIn) / 1 day), not the span of dates touched --
+a 14:00 to 10:00 stay covers the nights slept, not the checkout day.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

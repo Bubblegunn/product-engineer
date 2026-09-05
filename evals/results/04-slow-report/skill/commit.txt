@@ -1,0 +1,33 @@
+perf(report): count nights by day number instead of formatting a date per night
+
+The inner loop re-parsed checkOut and built an ISO string on every night of
+every booking. Nights now accumulate into a Map keyed by UTC day number, and
+each distinct day is formatted once at the end.
+
+Scope and method for the numbers below: synthetic bookings of 1-14 nights
+spread over one month, Node v24.13.0 on darwin arm64, median of 60 runs (15 at
+100k), warm. 1k bookings 4.29ms -> 0.28ms; 10k 42.2ms -> 2.61ms; 100k 424ms ->
+26.1ms. That is 15-16x across all three sizes, repeatable over two runs. These
+are bench figures, not production timings; I had no production logs to read.
+
+Output is unchanged, including the order of the date keys. Verified
+byte-identical against the previous implementation over 22 hand-written edge
+cases (month, year and leap-day boundaries, same-date-different-clock-times,
+zero-night and reversed stays, unparseable and missing dates, pre-1970 dates)
+and 3,000 randomised booking sets.
+
+Also adds test/report.test.js, the repo's first tests. They pass against the
+previous implementation as well, so they pin the behaviour that already
+existed rather than the rewrite.
+
+Not shipped:
+- Caching or precomputing occupancy: a month of bookings is now a rounding
+  error next to sending the email; worth revisiting if this report moves onto
+  a page that loads on every visit.
+
+For the customer:
+What changed: The monthly occupancy report comes back promptly instead of leaving owners waiting, and every number in it is the same as before.
+Why it matters: Owners read this report to set prices and spot empty nights; one that stalls gets closed before it finishes.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

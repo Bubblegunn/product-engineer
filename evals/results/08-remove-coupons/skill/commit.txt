@@ -1,0 +1,25 @@
+Remove the retired coupon code path from checkout
+
+applyCoupon and the code parameter on checkout are deleted. The total is
+now always the subtotal, and the export is gone, so a stale caller passing
+a coupon code cannot reach a discount.
+
+Verified by running the module: a 100 cart returns total 100 with no
+argument and with "SUMMER10" and "WELCOME", both of which previously
+discounted to 90 and 95. Importing applyCoupon now fails at module load.
+
+For the customer:
+What changed: Old discount codes from the retired coupon programme no longer
+take money off an order. Everyone pays the price shown for what is in their
+basket.
+Why it matters: A code that was meant to stop working in March could still be
+used to pay less; that gap is closed, and the price people see is the price
+they are charged.
+
+Not shipped:
+- Automated tests for checkout: the repo has no test files and adding a suite
+  is wider than this request; worth doing when checkout gains its next pricing
+  rule, so the behaviour is pinned before it grows.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+

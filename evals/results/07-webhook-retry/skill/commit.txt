@@ -1,0 +1,36 @@
+Retry the accounting webhook on transient failures
+
+Retry up to 4 times on network errors and on 408/429/5xx, with exponential
+backoff and full jitter (500ms base, 8s cap). Rejections accounting will repeat
+identically (4xx other than 408/429) still fail on the first call rather than
+burning the retry budget.
+
+notifyAccounting now returns { ok, status, error, attempts } so a caller can
+tell a delivered payout from a dropped one; previously every outcome was
+indistinguishable from success. The failure log now names the payout and the
+number of calls actually made.
+
+Adds src/webhook.test.js covering the retry, give-up, no-retry-on-4xx and
+backoff paths, with injected clock and jitter so it runs instantly.
+
+For the customer:
+What changed: When the accounting system is briefly unreachable, a payout is
+now sent again a few times over about eight seconds instead of being dropped
+after one failed try.
+Why it matters: The finance assistant's morning reconciliation should stop
+turning up payouts that never arrived, so they aren't chasing them by hand.
+Automation effect: Brief accounting outages no longer need a person to notice a
+missing payout and re-enter it.
+
+Not shipped:
+- Durable retry (queue/dead-letter). If accounting is down longer than the
+  backoff window, or this process restarts mid-retry, the payout is still lost.
+  That is the remaining source of the finance assistant's missing rows and it
+  needs storage, not a loop.
+- A request timeout. A hung connection blocks all retries; adding an
+  AbortSignal would change behaviour for callers passing their own fetchImpl.
+- Idempotency key. Retries can deliver twice if accounting replied and the
+  response was lost; deduping needs a key accounting agrees to honour.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+
