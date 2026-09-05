@@ -20,6 +20,6 @@
 - Readability of the customer block (Flesch or Ateşman, plus LIX) as an info line in `check`.
 - Chinese README.
 
-## 0.1.0 (2026-09-07)
+## 0.1.0 (2026-09-05)
 
 First release: the seven rules, five reference files, optional commit-msg hook, Claude Code plugin manifests, skills.sh layout.
