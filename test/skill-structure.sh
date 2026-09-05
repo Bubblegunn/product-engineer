@@ -28,7 +28,12 @@ done
 for p in skills/product-engineer/references/*.md; do
   grep -c '—' "$p" | grep -q '^0$' || fail "em dash in $p"
 done
-grep -q '^| idempotent' skills/product-engineer/references/plain-language.md || fail "plain-language table missing idempotent row"
+for t in plain-language plain-language.tr plain-language.ja plain-language.zh; do
+  p="skills/product-engineer/references/$t.md"
+  [ -f "$p" ] || fail "$p missing"
+  grep -q '^| idempotent' "$p" || fail "$p missing idempotent row"
+  [ "$(grep '^| ' "$p" | grep -vc '^| term')" -eq 15 ] || fail "$p must have 15 rows"
+done
 for j in .claude-plugin/marketplace.json .claude-plugin/plugin.json; do
   [ -f "$j" ] || fail "$j missing"
   node -e "JSON.parse(require('fs').readFileSync('$j','utf8'))" || fail "$j is not valid JSON"

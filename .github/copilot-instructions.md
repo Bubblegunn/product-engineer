@@ -53,8 +53,9 @@ method ("git log --no-merges, merges excluded"). If you did not count it, do not
 ## 6. Speak the stakeholder's language
 
 With non-technical people use their nouns. Say "the booking shows up twice" before you say
-"idempotency". The translation table is in `references/plain-language.md`; when a word is
-not there, explain it in one sentence the first time and move on.
+"idempotency". The translation table is in `references/plain-language.md`, with Turkish,
+Japanese and Chinese versions in `plain-language.<lang>.md`; when a word is not there,
+explain it in one sentence the first time and move on.
 
 ## 7. Smallest change that moves the metric
 
