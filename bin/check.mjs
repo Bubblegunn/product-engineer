@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { readability } from "./readability.mjs";
 
 const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--warn] [--lang <code>] [--format text|github] [--comment]
+       product-engineer doctor
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -26,7 +27,10 @@ skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
   -h, --help    this text
   --version     print the version
 
-Exit codes: 0 no errors, 1 at least one error, 2 usage.`;
+doctor lists the agents on this machine that carry the skill, in this project and
+in your home directory, and whether each copy still matches the packaged rules.
+
+Exit codes: 0 no errors, 1 at least one error (doctor: a copy is out of date), 2 usage.`;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const TABLE = join(here, "..", "skills", "product-engineer", "references", "plain-language.md");
@@ -235,6 +239,12 @@ async function main(argv) {
     return 0;
   }
   const command = argv[0];
+  if (command === "doctor") {
+    const { doctor, render: renderDoctor } = await import("./doctor.mjs");
+    const report = doctor();
+    console.log(renderDoctor(report));
+    return report.stale ? 1 : 0;
+  }
   if (command && command !== "check" && !command.startsWith("-") && !existsSync(command)) {
     console.error(HELP);
     return 2;

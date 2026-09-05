@@ -138,3 +138,15 @@ export { default } from "product-engineer/commitlint";
 
 One rule, `customer-block`, as an error. To add it to a config you already have, see
 [`integrations/commitlint/`](../integrations/commitlint/README.md).
+
+## Checking what is installed
+
+```
+npx product-engineer doctor
+```
+
+It looks in this project and in your home directory for the places the surveyed agents
+keep their copy, and reports each one as current or out of date by comparing its rules
+against the packaged `SKILL.md`. Agents keep their own copies, so a project updated months
+ago keeps running the rules it was given. The command exits 1 when a copy is out of date,
+which is enough for a scheduled job to notice.

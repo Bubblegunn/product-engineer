@@ -6,6 +6,7 @@
 - `check` warns when the customer block offers a passing test suite as its evidence and the message names no observation anywhere; describing tests that were added is not flagged
 - Evals: the model is pinned, the requested model and the `claude --version` string are recorded in every `meta.json`, the runner prints the cost and does nothing without `--yes`, and a rerun writes to `evals/results-<timestamp>` instead of over the published evidence
 - `node evals/score.mjs --failures` prints every failing cell with the evidence behind it; `RESULTS.md` publishes that list and a section on what eight tasks cannot prove
+- `product-engineer doctor` lists the agents on this machine carrying the skill, in the project and in your home directory, and whether each copy still matches the packaged rules; it exits 1 when one is out of date
 - `npm test` ran neither `test/release.test.mjs` nor `test/judge.test.mjs`; both run now, and `test/suite.test.mjs` fails when a test file is not named in the script
 
 - A pack of four skills: `product-engineer` (the seven rules), `customer-block`,
