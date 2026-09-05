@@ -25,3 +25,18 @@ test("markdown files no longer break scope, and are reported separately", () => 
   assert.equal(extras.documentedElsewhere.test({ changed: ["src/a.js"], allowed: ["src/a.js"] }), false);
   assert.equal(metrics.scopeRespected.test({ changed: ["src/b.js"], allowed: ["src/a.js"] }), false);
 });
+
+import { bootstrapDelta, mulberry32 } from "../evals/score.mjs";
+
+test("bootstrapDelta is seeded and brackets an obvious effect", () => {
+  const deltas = [1, 1, 1, 0, 1, 1, 1, 1];
+  const a = bootstrapDelta(deltas, 2000, 7);
+  const b = bootstrapDelta(deltas, 2000, 7);
+  assert.deepEqual(a, b);
+  assert.ok(a.low > 0 && a.high <= 1 && a.mean > 0.8);
+});
+
+test("mulberry32 is deterministic", () => {
+  const r1 = mulberry32(1), r2 = mulberry32(1);
+  assert.equal(r1(), r2());
+});

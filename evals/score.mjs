@@ -59,16 +59,27 @@ export const extras = {
   },
 };
 
+/** Run directories under a condition: run-1, run-2, ... or the condition directory itself as run 1. */
+function runsOf(conditionDir) {
+  const runs = readdirSync(conditionDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && /^run-\d+$/.test(d.name))
+    .map((d) => ({ run: Number(d.name.slice(4)), dir: join(conditionDir, d.name) }))
+    .sort((a, b) => a.run - b.run);
+  return runs.length ? runs : [{ run: 1, dir: conditionDir }];
+}
+
 export function score(resultsRoot = root) {
   const tasks = readdirSync(resultsRoot).filter((t) => existsSync(join(resultsRoot, t, "bare")) || existsSync(join(resultsRoot, t, "skill"))).sort();
   const rows = [];
   for (const task of tasks) {
     for (const condition of ["bare", "skill"]) {
-      const dir = join(resultsRoot, task, condition);
-      if (!existsSync(dir)) continue;
+      const conditionDir = join(resultsRoot, task, condition);
+      if (!existsSync(conditionDir)) continue;
+      for (const { run, dir } of runsOf(conditionDir)) {
       const sample = {
         task,
         condition,
+        run,
         final: read(join(dir, "final.md")),
         commit: read(join(dir, "commit.txt")),
         changed: read(join(dir, "changed.txt")).split("\n").map((s) => s.trim()).filter(Boolean),
@@ -78,27 +89,71 @@ export function score(resultsRoot = root) {
       const results = Object.fromEntries(Object.entries(metrics).map(([k, m]) => [k, m.test(sample)]));
       const extra = Object.fromEntries(Object.entries(extras).map(([k, m]) => [k, m.test(sample)]));
       rows.push({ ...sample, results, extras: extra });
+      }
     }
   }
   return rows;
 }
 
+export function mulberry32(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Bootstrap 95% interval on the mean of paired deltas (one per task), seeded. */
+export function bootstrapDelta(deltas, resamples = 10000, seed = 1) {
+  const rand = mulberry32(seed);
+  const n = deltas.length;
+  const means = [];
+  for (let i = 0; i < resamples; i++) {
+    let s = 0;
+    for (let j = 0; j < n; j++) s += deltas[Math.floor(rand() * n)];
+    means.push(s / n);
+  }
+  means.sort((x, y) => x - y);
+  return { mean: deltas.reduce((s, d) => s + d, 0) / n, low: means[Math.floor(0.025 * resamples)], high: means[Math.ceil(0.975 * resamples) - 1] };
+}
+
+/** Mean pass rate over runs, per task and arm, for one metric. */
+function taskMeans(rows, key) {
+  const byTask = new Map();
+  for (const r of rows) {
+    if (!byTask.has(r.task)) byTask.set(r.task, { bare: [], skill: [] });
+    byTask.get(r.task)[r.condition].push(r.results[key] ? 1 : 0);
+  }
+  const mean = (xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : null);
+  return [...byTask.entries()].map(([task, arms]) => ({ task, bare: mean(arms.bare), skill: mean(arms.skill), runs: Math.min(arms.bare.length, arms.skill.length) }));
+}
+
 export function table(rows) {
   const conditions = ["bare", "skill"];
   const n = Object.fromEntries(conditions.map((c) => [c, rows.filter((r) => r.condition === c).length]));
-  const lines = [`| metric | bare (n=${n.bare}) | skill (n=${n.skill}) | delta |`, `|---|---|---|---|`];
+  const repeated = rows.length > 0 && Object.keys(metrics).length > 0 && taskMeans(rows, Object.keys(metrics)[0]).every((t) => t.runs >= 2);
+  const lines = [`| metric | bare (n=${n.bare}) | skill (n=${n.skill}) | delta | 95% CI on the mean delta |`, `|---|---|---|---|---|`];
   for (const [key, m] of Object.entries(metrics)) {
     const count = (c) => rows.filter((r) => r.condition === c && r.results[key]).length;
     const b = count("bare"), s = count("skill");
-    lines.push(`| ${m.title} | ${b} / ${n.bare} | ${s} / ${n.skill} | ${s - b >= 0 ? "+" : ""}${s - b} |`);
+    let ci = "n/a (one run per arm)";
+    if (repeated) {
+      const deltas = taskMeans(rows, key).filter((t) => t.bare !== null && t.skill !== null).map((t) => t.skill - t.bare);
+      const { low, high } = bootstrapDelta(deltas);
+      ci = `${low.toFixed(2)} to ${high.toFixed(2)}`;
+    }
+    lines.push(`| ${m.title} | ${b} / ${n.bare} | ${s} / ${n.skill} | ${s - b >= 0 ? "+" : ""}${s - b} | ${ci} |`);
   }
   return lines.join("\n");
 }
 
 export function perTask(rows) {
   const keys = Object.keys(metrics);
-  const lines = [`| task | condition | ${keys.join(" | ")} | docs elsewhere | turns | cost |`, `|---|---|${keys.map(() => "---").join("|")}|---|---|---|`];
-  for (const r of rows) lines.push(`| ${r.task} | ${r.condition} | ${keys.map((k) => (r.results[k] ? "yes" : "no")).join(" | ")} | ${r.extras.documentedElsewhere ? "yes" : "no"} | ${r.meta.turns ?? ""} | ${r.meta.cost_usd ? `$${r.meta.cost_usd.toFixed(2)}` : ""} |`);
+  const lines = [`| task | condition | run | ${keys.join(" | ")} | docs elsewhere | turns | cost |`, `|---|---|---|${keys.map(() => "---").join("|")}|---|---|---|`];
+  for (const r of rows) lines.push(`| ${r.task} | ${r.condition} | ${r.run} | ${keys.map((k) => (r.results[k] ? "yes" : "no")).join(" | ")} | ${r.extras.documentedElsewhere ? "yes" : "no"} | ${r.meta.turns ?? ""} | ${r.meta.cost_usd ? `$${r.meta.cost_usd.toFixed(2)}` : ""} |`);
   return lines.join("\n");
 }
 

@@ -793,7 +793,7 @@ Commit: `feat(check): commitlint plugin, pre-commit hook and lefthook and husky 
 - Modify: `evals/run.sh`, `evals/score.mjs`, `evals/README.md`
 - Create: `evals/judge.mjs`, `evals/BENCHMARK.md`, `test/judge.test.mjs`, `test/fixtures/fake-claude.sh`; extend `test/score.test.mjs`
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 Append to `test/score.test.mjs`:
 
@@ -839,7 +839,7 @@ test("judgePair maps the answer back through the random order", async () => {
 
 `test/fixtures/fake-claude.sh`: `#!/bin/sh\necho '{"result":"A"}'`.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 `evals/run.sh`: read `runs="${PE_EVAL_RUNS:-1}"`; wrap the per-condition body in `for run in $(seq 1 "$runs")`; set `out="$results_dir/$name/$condition"` when `runs` is 1, else `out="$results_dir/$name/$condition/run-$run"`.
 
@@ -878,7 +878,7 @@ export function bootstrapDelta(deltas, resamples = 10000, seed = 1) {
 
 `evals/BENCHMARK.md`: the CommitSuite subset design from the spec (50 diffs whose messages carry both what and why, permissive licences, two raters, Cohen's kappa reported, cost estimate 50 pairs x 2 arms x 3 runs at $0.45 = $135, plus judging at $0.05 per pair), with the dataset URLs from the research report.
 
-- [ ] **Step 3: Test and commit**
+- [x] **Step 3: Test and commit**
 
 Run: `node --test test/score.test.mjs test/judge.test.mjs`
 Commit: `feat(evals): runs per arm, seeded bootstrap interval on paired deltas, a pairwise judge and the benchmark design`

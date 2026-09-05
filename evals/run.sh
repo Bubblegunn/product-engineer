@@ -4,6 +4,7 @@
 #
 #   sh evals/run.sh              # all tasks, both conditions
 #   sh evals/run.sh 03 skill     # one task prefix, one condition
+#   PE_EVAL_RUNS=3 sh evals/run.sh   # three runs per arm, results/<task>/<condition>/run-N
 #
 # Requires the `claude` CLI, logged in. Each run costs real tokens.
 # Only project-level settings are loaded (--setting-sources project) so the
@@ -15,6 +16,7 @@ results_dir="$root/evals/results"
 filter="${1:-}"
 only_condition="${2:-}"
 model="${PE_EVAL_MODEL:-}"
+runs="${PE_EVAL_RUNS:-1}"
 mkdir -p "$results_dir"
 
 for task in "$tasks_dir"/*/; do
@@ -22,7 +24,8 @@ for task in "$tasks_dir"/*/; do
   case "$name" in "$filter"*) ;; *) continue ;; esac
   for condition in bare skill; do
     if [ -n "$only_condition" ] && [ "$condition" != "$only_condition" ]; then continue; fi
-    out="$results_dir/$name/$condition"
+    for run in $(seq 1 "$runs"); do
+    if [ "$runs" = 1 ]; then out="$results_dir/$name/$condition"; else out="$results_dir/$name/$condition/run-$run"; fi
     mkdir -p "$out"
     work=$(mktemp -d)
     cp -R "$task"/. "$work"/
@@ -39,7 +42,7 @@ for task in "$tasks_dir"/*/; do
     )
     # The request is the body of TASK.md after the front matter.
     prompt=$(awk 'BEGIN{fm=0} /^---$/{fm++; next} fm>=2{print}' "$task/TASK.md")
-    echo "== $name / $condition"
+    if [ "$runs" = 1 ]; then echo "== $name / $condition"; else echo "== $name / $condition / run $run"; fi
     set +e
     (
       cd "$work"
@@ -73,6 +76,7 @@ for task in "$tasks_dir"/*/; do
       fi
     )
     rm -rf "$work"
+    done
   done
 done
 echo "done: results in $results_dir"
