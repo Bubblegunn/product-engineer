@@ -10,8 +10,8 @@ what it writes after this change.
 
 ## Checks
 
-- [ ] `sh test/skill-structure.sh` prints `ok: skill structure`
-- [ ] `sh test/commit-msg.test.sh` prints `0 failed`
+- [ ] `npm test` passes (structure, hook, check, adapters, scorer, integrations, readability)
+- [ ] `node scripts/generate-adapters.mjs` was run if `skills/product-engineer/SKILL.md` changed
 - [ ] No em dashes in changed files
 
 For the customer:

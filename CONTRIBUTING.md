@@ -30,11 +30,12 @@ what agents actually emit. Add your language to the language line at the top of 
 ## Before you push
 
 ```
-sh test/skill-structure.sh
-sh test/commit-msg.test.sh
+npm test
 ```
 
-Both must print their `ok` / `passed` line. CI runs the same two scripts on Ubuntu and macOS.
+That runs the structure script, the hook test, the check, adapter, scorer, integration and
+readability tests, and refuses generated adapters that disagree with `SKILL.md` (run
+`node scripts/generate-adapters.mjs` after editing it). CI runs the same on Ubuntu and macOS.
 
 ## Commits
 

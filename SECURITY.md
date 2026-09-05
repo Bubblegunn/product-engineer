@@ -13,4 +13,9 @@ behind; if the problem reproduces on the latest release, report it.
 
 ## Scope
 
-The skill is text plus a POSIX shell hook. In scope: the hook (`scripts/commit-msg`, `scripts/install-hook.sh`) and the eval runner (`evals/run.sh`), which executes Claude Code on fixture repositories.
+The skills are text. The code is small and has no dependencies. In scope: the check CLI
+(`bin/check.mjs`, `bin/readability.mjs`), the composite GitHub Action (`action.yml`), the
+commitlint plugin and pre-commit entry (`integrations/`, `scripts/pre-commit-check.sh`),
+the git hook (`scripts/commit-msg`, `scripts/install-hook.sh`), the adapter generator
+(`scripts/generate-adapters.mjs`) and the eval runner (`evals/run.sh`, `evals/judge.mjs`),
+which execute Claude Code on fixture repositories and spend money when run with `--yes`.
