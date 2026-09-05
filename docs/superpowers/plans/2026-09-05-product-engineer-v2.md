@@ -34,7 +34,7 @@
 **Interfaces:**
 - Produces: four directories under `skills/`, each with a spec-complete `SKILL.md`; the structure test iterates `skills/*/SKILL.md`.
 
-- [ ] **Step 1: Extend the structure test so it fails on the missing skills and fields**
+- [x] **Step 1: Extend the structure test so it fails on the missing skills and fields**
 
 Replace `test/skill-structure.sh` with:
 
@@ -80,11 +80,11 @@ grep -q '"version": "0.3.0"' .claude-plugin/plugin.json || fail "plugin version 
 echo "ok: skill structure (4 skills)"
 ```
 
-- [ ] **Step 2: Run it, expect FAIL on `skills/customer-block/SKILL.md missing`**
+- [x] **Step 2: Run it, expect FAIL on `skills/customer-block/SKILL.md missing`**
 
 Run: `sh test/skill-structure.sh`
 
-- [ ] **Step 3: Update the core skill's frontmatter and rule 3**
+- [x] **Step 3: Update the core skill's frontmatter and rule 3**
 
 Frontmatter of `skills/product-engineer/SKILL.md` becomes:
 
@@ -102,7 +102,7 @@ metadata:
 
 Rule 3 gains one closing sentence after "Checklist: `references/definition-of-done.md`.": `Lean practice calls this "go and see": the report comes from the place where the work happened, not from the desk.`
 
-- [ ] **Step 4: Write the three sibling skills**
+- [x] **Step 4: Write the three sibling skills**
 
 `skills/customer-block/SKILL.md`:
 
@@ -315,15 +315,15 @@ conventional commit titles instead. The full seven-rule skill is `product-engine
 the same repository.
 ```
 
-- [ ] **Step 5: Bump the plugin manifests**
+- [x] **Step 5: Bump the plugin manifests**
 
 `.claude-plugin/plugin.json`: `"version": "0.3.0"`, and `"description": "Your agent ships code. product-engineer makes it ship outcomes. Four skills: the seven rules, the customer block alone, done means observed, and release notes."`. `.claude-plugin/marketplace.json`: the plugin description gains ", plus three subset skills: customer-block, done-means-observed and release-notes".
 
-- [ ] **Step 6: Run the structure test and the plugin validator, expect both to pass**
+- [x] **Step 6: Run the structure test and the plugin validator, expect both to pass**
 
 Run: `sh test/skill-structure.sh && claude plugin validate .`
 
-- [ ] **Step 7: Lint prose and commit**
+- [x] **Step 7: Lint prose and commit**
 
 Run: `for f in skills/*/SKILL.md; do node /Users/efe/Desktop/ai-slop-linter/dist/src/cli.js "$f"; done`
 Commit: `feat(skills): a pack of four, customer-block, done-means-observed and release-notes beside the core skill`
@@ -338,7 +338,7 @@ Commit: `feat(skills): a pack of four, customer-block, done-means-observed and r
 **Interfaces:**
 - Produces: `adapters(skillText: string, version: string): Record<string, string>` (path to content), `rulesFrom(skillText): string`, and the CLI `node scripts/generate-adapters.mjs [--check] [--root <dir>]`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `test/adapters.test.mjs`:
 
@@ -408,11 +408,11 @@ test("the CLI writes into --root, and --check passes then fails after an edit", 
 });
 ```
 
-- [ ] **Step 2: Run it, expect FAIL with "Cannot find module"**
+- [x] **Step 2: Run it, expect FAIL with "Cannot find module"**
 
 Run: `node --test test/adapters.test.mjs`
 
-- [ ] **Step 3: Write the generator**
+- [x] **Step 3: Write the generator**
 
 `scripts/generate-adapters.mjs`:
 
@@ -495,17 +495,17 @@ function main(argv) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) process.exit(main(process.argv.slice(2)));
 ```
 
-- [ ] **Step 4: Run the test, expect PASS; generate the files in the repository**
+- [x] **Step 4: Run the test, expect PASS; generate the files in the repository**
 
 Run: `node --test test/adapters.test.mjs && node scripts/generate-adapters.mjs && node scripts/generate-adapters.mjs --check`
 
-- [ ] **Step 5: Wire CI and the test script**
+- [x] **Step 5: Wire CI and the test script**
 
 `package.json` test script: `"test": "sh test/skill-structure.sh && sh test/commit-msg.test.sh && node --test test/check.test.mjs test/adapters.test.mjs && node scripts/generate-adapters.mjs --check"`.
 
 `.github/workflows/ci.yml`: replace `- run: node --test test/check.test.mjs` with `- run: npm test`, and remove the two separate `sh test/...` steps (npm test runs them). Keep the Node setup step before it.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Commit: `feat(adapters): generate Cursor, Copilot, Gemini, Cline, Kiro, Windsurf and AGENTS.md from SKILL.md`
 
@@ -518,7 +518,7 @@ Commit: `feat(adapters): generate Cursor, Copilot, Gemini, Cline, Kiro, Windsurf
 **Interfaces:**
 - Produces: `metrics.numbersWithMethod.test`, `metrics.scopeRespected.test` (changed behaviour), `extras.documentedElsewhere` printed as a per-task column.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `test/score.test.mjs`:
 
@@ -552,11 +552,11 @@ test("markdown files no longer break scope, and are reported separately", () => 
 });
 ```
 
-- [ ] **Step 2: Run it, expect FAIL (extras is not exported; the code-span case is false)**
+- [x] **Step 2: Run it, expect FAIL (extras is not exported; the code-span case is false)**
 
 Run: `node --test test/score.test.mjs`
 
-- [ ] **Step 3: Change the two heuristics and add extras**
+- [x] **Step 3: Change the two heuristics and add extras**
 
 In `evals/score.mjs`, above `export const metrics`:
 
@@ -601,15 +601,15 @@ export const extras = {
 
 In `score()`, after `results`, add `extras: Object.fromEntries(Object.entries(extras).map(([k, m]) => [k, m.test(sample)]))` to the row. In `perTask()`, add a column: header `| ${keys.join(" | ")} | docs elsewhere | turns | cost |`, separator gets one more `---`, and each row inserts `${r.extras.documentedElsewhere ? "yes" : "no"}` before turns.
 
-- [ ] **Step 4: Run the test, expect PASS; rescore**
+- [x] **Step 4: Run the test, expect PASS; rescore**
 
 Run: `node --test test/score.test.mjs && node evals/score.mjs`
 
-- [ ] **Step 5: Rewrite the numbers**
+- [x] **Step 5: Rewrite the numbers**
 
 Paste the new summary table into `evals/RESULTS.md` (replace the old table and the per-task table), and replace the paragraph on the two metrics with one that says the heuristics were changed on 5 September (code spans stripped, identifiers ignored, documentation files allowed) and links the commit. Put the same summary rows into `README.md` under Measured and into `site/index.html`, and rewrite the sentence after the table in both to describe what still did not move, if anything, using only the rescored counts.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Commit: `fix(evals): strip code and identifiers from the number heuristic, allow documentation in scope, rescore`
 
@@ -619,7 +619,7 @@ Commit: `fix(evals): strip code and identifiers from the number heuristic, allow
 - Create: `docs/install.md`, `assets/check-demo.svg`, `test/fixtures/without-block.txt`, `test/fixtures/with-block.txt`, `scripts/demo.tape`
 - Modify: `README.md`, `README.tr.md` (install section shortened, link to docs/install.md), `site/index.html` (pack mention, demo image), `llms.txt`
 
-- [ ] **Step 1: Fixtures and the real output**
+- [x] **Step 1: Fixtures and the real output**
 
 `test/fixtures/without-block.txt`:
 
@@ -643,7 +643,7 @@ Not shipped:
 
 Run both through `node bin/check.mjs check test/fixtures/<file>` and copy the exact output into the SVG.
 
-- [ ] **Step 2: Draw `assets/check-demo.svg`**
+- [x] **Step 2: Draw `assets/check-demo.svg`**
 
 A 760 by 300 SVG: dark background `#111`, monospace 13px, three faux window dots, then the two sessions as `<text>` lines, `$ product-engineer check without-block.txt` in `#9aa`, the `error` line in `#f28b82`, `ok` lines in `#8fd18f`, the closing counts in white, and `exit 1` / `exit 0` after each. No text that is not the literal output.
 
@@ -658,19 +658,19 @@ Type "product-engineer check test/fixtures/without-block.txt" Enter Sleep 2s
 Type "product-engineer check test/fixtures/with-block.txt" Enter Sleep 3s
 ```
 
-- [ ] **Step 3: Write `docs/install.md`**
+- [x] **Step 3: Write `docs/install.md`**
 
 Move the "Where it lands" table, the verification sentence, the plugin commands, the by-hand copy and the hook line out of the README into `docs/install.md` under headings: Install with skills.sh, Where it lands, Claude Code plugin, By hand, The pack (a table of the four skills with one-line "install when"), Git hook, CI (the action snippet), Pre-commit, lefthook and husky (added in Task 5, leave a heading now with the hook line).
 
-- [ ] **Step 4: Reorder the README**
+- [x] **Step 4: Reorder the README**
 
 New order: wordmark, site link, language line, tagline, badges (add `skills-4`), one paragraph, `## See it` (the commit pair, the final-message pair, the demo image `<img src="assets/check-demo.svg" width="760" alt="product-engineer check on a message without the block, then with it">`), `## Install` (one-liner, one sentence pointing to `docs/install.md`, one line on the plugin), `## Measured` (unchanged table, rescored), `## The pack` (four rows), `## The seven rules`, `## Check a message or a pull request` (shortened), `## Use it in CI`, `## What it does not do`, `## Where it comes from`, `## Contributing`, `## Stars`. Drop the long real pair from the notification task (it stays in `references/commit-template.md`? No: move it to `docs/examples.md` and link it from See it in one line).
 
-- [ ] **Step 5: Sync the Turkish README, the site and llms.txt**
+- [x] **Step 5: Sync the Turkish README, the site and llms.txt**
 
 `README.tr.md`: replace the "Nereye kurulur" table and plugin block with one sentence linking `docs/install.md`; add a "Paket" line naming the four skills. `site/index.html`: add the demo image under the before/after, and one sentence naming the four skills. `llms.txt`: add the pack and `docs/install.md` to the Docs list, and change "Not an npm package" to "Also a zero-dependency check CLI (bin/check.mjs)".
 
-- [ ] **Step 6: Lint, test, commit**
+- [x] **Step 6: Lint, test, commit**
 
 Run: `for f in README.md README.tr.md docs/install.md docs/examples.md; do node /Users/efe/Desktop/ai-slop-linter/dist/src/cli.js "$f"; done && npm test`
 Commit: `docs(readme): show it before explaining it, move the install matrix to docs/install.md`

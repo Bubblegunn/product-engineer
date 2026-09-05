@@ -25,28 +25,10 @@ Bu, [skills.sh](https://skills.sh) kurucusudur. Projedeki ajanları algılar ve 
 için yerleştirir; `--all` desteklenen bütün ajanları hedefler, `-g` proje yerine kullanıcı
 düzeyine kurar.
 
-### Nereye kurulur
-
-| ajan | `npx skills add` sonrası yol |
-|---|---|
-| Claude Code | `.claude/skills/product-engineer/` |
-| Codex, Cursor, Copilot, Gemini CLI ve ortak skills dizinini okuyan diğer ajanlar | `.agents/skills/product-engineer/` |
-| Windsurf, Roo, Kiro, Trae, Goose ve kendi dizini olan diğerleri | `.<ajan>/skills/product-engineer/` |
-
-5 Eylül 2026'da boş bir depoda `npx skills add Bubblegunn/product-engineer --all --copy` ile
-doğrulandı: bir skill bulundu, 56 ajan dizinine yerleştirildi.
-
-Claude Code'da plugin olarak (bu iki komut çalıştırılıp doğrulandı; `claude plugin validate .`
-geçiyor):
-
-```
-/plugin marketplace add Bubblegunn/product-engineer
-/plugin install product-engineer@bubblegunn
-```
-
-Elle: `skills/product-engineer/` klasörünü `.claude/skills/`, `.agents/skills/` ya da
-ajanınızın skills dizinine kopyalayın. Bloksuz commit'leri durduran isteğe bağlı git kancası:
-`sh scripts/install-hook.sh`.
+Her ajanda dosyanın nereye düştüğü, Claude Code plugin komutları, git kancası ve CI adımı
+[`docs/install.md`](docs/install.md) içinde. Depo dört skill taşır: `product-engineer` (yedi
+kural), `customer-block` (yalnız müşteri bloğu), `done-means-observed` (yalnız gözlemlenmiş
+"bitti" raporu) ve `release-notes` (kod yazmayan, sürüm notu yazan ajan için).
 
 ## Öncesi ve sonrası
 
@@ -84,13 +66,13 @@ Not shipped:
 
 ## Yedi kural
 
-1. **Yapmadan önce yeniden yaz.** Tek cümlelik müşteri sonucu, ya da tek soru.
-2. **Her seferinde müşteri için.** Ne değişti, neden önemli, otomasyon etkisi yalnızca gerçekse.
-3. **Bitti demek gözlemlemektir.** Log, veri ya da gerçek cihaz; ya da neyi kontrol edemediğini söyle.
-4. **İsteneni yap, yapmadığını adıyla söyle.** Gerekçeli bir `Not shipped:` listesi.
-5. **Sayılmamış rakam yok.** Her rakamın arkasında bir komut ve bir kapsam var.
-6. **Paydaşın dilinde konuş.** Skill ile birlikte jargon-sade dil tablosu gelir.
-7. **Metriği hareket ettiren en küçük değişiklik.** Her tasarımdan önce tek satırlık bir defter kaydı.
+1. Yapmadan önce yeniden yaz. Tek cümlelik müşteri sonucu, ya da tek soru.
+2. Her seferinde müşteri için. Ne değişti, neden önemli, otomasyon etkisi yalnızca gerçekse.
+3. Bitti demek gözlemlemektir. Log, veri ya da gerçek cihaz; ya da neyi kontrol edemediğini söyle.
+4. İsteneni yap, yapmadığını adıyla söyle. Gerekçeli bir `Not shipped:` listesi.
+5. Sayılmamış rakam yok. Her rakamın arkasında bir komut ve bir kapsam var.
+6. Paydaşın dilinde konuş. Skill ile birlikte jargon-sade dil tablosu gelir.
+7. Metriği hareket ettiren en küçük değişiklik. Her tasarımdan önce tek satırlık bir defter kaydı.
 
 Tam metin: [`skills/product-engineer/SKILL.md`](skills/product-engineer/SKILL.md). Şablon,
 beş soru, bitti listesi, sade dil tablosu ve not-shipped biçimi

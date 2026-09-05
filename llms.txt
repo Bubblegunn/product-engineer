@@ -3,12 +3,13 @@
 > An agent skill that makes AI coding agents restate work as a customer outcome, write a plain-language For-the-customer block in every commit and PR, and never call unobserved work done.
 
 Install: `npx skills add Bubblegunn/product-engineer`. Licence: MIT. Repository: https://github.com/Bubblegunn/product-engineer
-Not an npm package; it is an agent skill installed by copying skills/product-engineer/ into an agent skills directory.
+Four skills (product-engineer, customer-block, done-means-observed, release-notes) installed by copying skills/<name>/ into an agent skills directory, plus a zero-dependency check CLI (bin/check.mjs).
 
 ## Docs
 
 - [README](README.md): install, before/after, the seven rules, measured results
-- [SKILL.md](skills/product-engineer/SKILL.md): the skill text agents load
+- [SKILL.md](skills/product-engineer/SKILL.md): the skill text agents load; the three subset skills are beside it under skills/
+- [Install](docs/install.md): where each agent finds the files, plugin, hook, CI
 - [References](skills/product-engineer/references/): commit template, five questions, definition of done, plain-language table, not-shipped format
 - [Evals](evals/RESULTS.md): 8 tasks x 2 conditions, Claude Code headless, results and method
 - [Contributing](CONTRIBUTING.md): rule proposals need a before/after pair; translations welcome
