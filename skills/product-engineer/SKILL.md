@@ -1,6 +1,11 @@
 ---
 name: product-engineer
 description: Use when building, changing, or describing software for other people. Makes the agent restate work as a customer outcome, write a plain-language "For the customer" block in every commit and PR, refuse to call unobserved work done, name what it deliberately did not build, and never print a number it did not count.
+license: MIT
+metadata:
+  author: Efe Genc
+  version: 0.3.0
+  source: https://github.com/Bubblegunn/product-engineer
 ---
 
 # product-engineer
@@ -35,7 +40,9 @@ Template and three real before/after pairs: `references/commit-template.md`.
 
 Work is done when you have watched it behave in production logs, in the database, or on a
 real device, or when you have written down exactly which of those you could not check and
-why. "Tests pass" is a step. Checklist: `references/definition-of-done.md`.
+why. "Tests pass" is a step. Checklist: `references/definition-of-done.md`. Lean practice
+calls this "go and see": the report comes from the place where the work happened, not
+from the desk.
 
 ## 4. Build what was asked; name what you did not
 
