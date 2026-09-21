@@ -8,6 +8,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readability } from "./readability.mjs";
 import { acceptedHeadings, preferredHeadings, isHeading, headingWithText, normalise } from "./headings.mjs";
+import { referenceFindings } from "./references.mjs";
 
 const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--warn] [--lang <code>] [--format text|github] [--comment]
        product-engineer doctor
@@ -29,6 +30,8 @@ skill asks. With no file it reads .git/COMMIT_EDITMSG when present.
                 named that is neither in the change nor in the repository. With no
                 range it reads the staged change. Reports warnings only
   --warn        report a missing block as a warning; always exit 0
+--references <mode>  resolve the paths and run URLs the message cites: warn (default),
+              error, or off. A message that cites nothing is never a failure.
   --lang <code> language of the block for the readability line: en (default) or tr
   -h, --help    this text
   --version     print the version
@@ -155,6 +158,10 @@ export function analyse(text, opts = {}) {
   const bare = sentences.filter((s) => !METHOD.test(s) && !/^(#|\s*-\s|\w+\(.*\):)/.test(s) && !/\b(v?\d+\.\d+(\.\d+)?|#\d+|20\d\d)\b/.test(s));
   if (bare.length) add("warn", `${bare.length} sentence${bare.length === 1 ? "" : "s"} with a number and no method or scope next to it: "${bare[0].trim().slice(0, 80)}"`);
 
+  // Evidence that points somewhere is checked against that somewhere. Whole message, not the block:
+  // the path or run URL behind a claim usually sits in the technical body above it.
+  for (const f of referenceFindings(text, { mode: opts.references, cwd: opts.cwd })) findings.push(f);
+
   return { skipped: false, findings };
 }
 
@@ -270,7 +277,7 @@ function prNumber(argv) {
 async function readInput(argv) {
   const pr = prNumber(argv);
   if (pr) return fetchPrBody(pr);
-  const valued = [argv.indexOf("--lang"), argv.indexOf("--format"), diffRangeIndex(argv)].filter((i) => i >= 0).map((i) => i + 1);
+  const valued = [argv.indexOf("--lang"), argv.indexOf("--format"), argv.indexOf("--references"), diffRangeIndex(argv)].filter((i) => i >= 0).map((i) => i + 1);
   const positional = argv.filter((a, i) => (!a.startsWith("-") || a === "-") && !valued.includes(i)).filter((a) => a !== "check");
   const file = positional[0];
   if (file === "-" || argv.includes("--stdin")) return readFileSync(0, "utf8");
@@ -315,7 +322,12 @@ async function main(argv) {
     return 2;
   }
   const langIndex = argv.indexOf("--lang");
-  const result = analyse(text, { warn: argv.includes("--warn"), lang: langIndex >= 0 ? argv[langIndex + 1] : undefined });
+  const refIndex = argv.indexOf("--references");
+  const result = analyse(text, {
+    warn: argv.includes("--warn"),
+    lang: langIndex >= 0 ? argv[langIndex + 1] : undefined,
+    references: refIndex >= 0 ? argv[refIndex + 1] : undefined,
+  });
   if (argv.includes("--diff")) {
     const ri = diffRangeIndex(argv);
     try {
