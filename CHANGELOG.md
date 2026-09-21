@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 (unreleased)
+## 0.4.0 (2026-09-21)
 
 **A message can cite a file that is not there, and until now nothing noticed.** `check` resolves
 every `path/to/file.ext` and GitHub Actions run URL in a message against the working tree. A missing
