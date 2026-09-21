@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.4.0 (unreleased)
+
+**A message can cite a file that is not there, and until now nothing noticed.** `check` resolves
+every `path/to/file.ext` and GitHub Actions run URL in a message against the working tree. A missing
+file, a directory where a file was claimed, or a line number past the end of a real file is a
+warning; `--references error` makes it an error, `--references off` turns it off. A line number is
+the part of a citation that rots while the sentence around it stays still, which is why it is checked
+rather than trusted.
+
+A message that cites nothing is reported as citing nothing, at info level, and passes in every mode.
+That is the design rather than an omission: a check that required a link would be satisfied by a link
+typed from memory, and the reader who followed it would be the one to find out. What is checkable is
+the citation that is already there.
+
+From outside the project: the request came from [@raju_dandigam](https://dev.to/raju_dandigam) in the
+dev.to comments on the skill, who asked whether the observed evidence could be made machine-checkable
+in CI, each claim linked to a test, a screenshot or a trace artifact, without turning the block into
+boilerplate. The second half of his question is what shaped the default.
+
+Offline by construction: a run URL is checked for shape, never fetched, and a test holds that with a
+`fetch` that throws. Ten tests cover the rest, including the false positives that would make the
+check ignorable (`v0.3.4`, `1.5x`, `e.g.`, `3/4`).
+
 ## 0.3.4 (2026-09-05)
 
 The readability line refused six scripts and scored every other one. A customer block written in Hindi, Tamil, Greek, Amharic or Russian came back Flesch 0, band `hard`, LIX 0, which is a grade nobody counted and the opposite of rule 5. Hindi, Tamil and Greek were not even recognised as non-Latin: with no Latin letters present, `scriptOf` returned `Latin` and the English scale ran anyway.

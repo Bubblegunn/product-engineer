@@ -210,6 +210,18 @@ only read as a file count when its sentence also carries a verb of changing. Not
 reports an error, so a run that passed yesterday cannot fail today; without `--diff` the
 output is byte-identical to before.
 
+**The paths a message cites are checked against the working tree.** A message that says the fix is
+in `src/gate.ts:120` is claiming something a reader will act on, and the line number is the part that
+rots while the sentence stays still. Every `path/to/file.ext` and every GitHub Actions run URL in the
+message is resolved: a missing file, a directory, or a line past the end of a real file is a warning,
+`--references error` makes it an error and `--references off` turns it off. A message that cites
+nothing is reported as citing nothing, at info level, and passes in every mode. That is deliberate:
+a check that demanded a link would be satisfied by a link typed from memory, and the first person to
+learn it was wrong would be the reader who followed it. Suggested by
+[@raju_dandigam](https://dev.to/raju_dandigam), who asked for machine-checkable evidence without the
+block turning into boilerplate. Nothing here makes a network request, so a run URL is checked for
+shape only and says so.
+
 Write the block in the language your team writes. English, Turkish, Japanese and Chinese
 headings are accepted with no configuration, and a heading for any other language goes in
 `.product-engineer.json`; the table and the format are in
