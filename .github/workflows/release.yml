@@ -59,20 +59,40 @@ jobs:
           # So six exhausted retries against a registry that was still processing the publish
           # printed "smoke ok" and the job went green. Installing is now tracked separately from
           # what was printed, and the printed version must equal the released one exactly.
+          #
+          # The retry gates on npx's exit status, but the comparison below read a variable with
+          # stderr merged into it, so whatever npm printed last decided the verdict. Emulated with
+          # npm's update notifier, which writes to stderr as the command exits: the comparison read
+          # "npmnotice" and failed a release that had installed and printed the right version.
+          # Reported by @build996. stderr is captured apart from the output now, and is still shown
+          # on every path that fails.
           v="${TAG#v}"
           installed=""
-          for i in 1 2 3 4 5 6; do
-            if out=$(npx --yes "$PKG@$v" --version 2>&1); then installed=yes; break; fi
-            echo "attempt $i did not install:"; echo "$out"; sleep 20
+          err=$(mktemp)
+          # Six attempts over two minutes was not enough. product-engineer 0.4.0 published cleanly on
+          # 2026-09-21 and the registry was still answering ETARGET when the window closed, so a
+          # release that had worked went red and the only real check on it reported nothing. The
+          # budget is named once and the message is computed from it, because the old message spelled
+          # "six" and "two minutes" in words that nothing would have updated.
+          attempts=15
+          delay=20
+          i=1
+          while [ "$i" -le "$attempts" ]; do
+            if out=$(npx --yes "$PKG@$v" --version 2>"$err"); then installed=yes; break; fi
+            echo "attempt $i of $attempts did not install:"; cat "$err"
+            i=$((i + 1))
+            if [ "$i" -le "$attempts" ]; then sleep "$delay"; fi
           done
           if [ -z "$installed" ]; then
-            echo "the registry never served $PKG@$v: six attempts over two minutes all failed"
+            echo "the registry never served $PKG@$v: $attempts attempts over about $((attempts * delay / 60)) minutes all failed"
+            cat "$err"
             exit 1
           fi
           echo "$out"
           printed=$(printf '%s' "$out" | tr -d '\r' | tail -n 1 | tr -d '[:space:]')
           if [ "$printed" != "$v" ]; then
             echo "installed, but --version printed '$printed' where $v was expected"
+            echo "stderr from that run:"; cat "$err"
             exit 1
           fi
           echo "smoke ok: $PKG@$v"
