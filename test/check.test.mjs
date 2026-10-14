@@ -205,7 +205,7 @@ test("a sentence ends at an ideographic full stop too", () => {
   const ja = "feat: x\n\nお客さまへ:\n変わったこと: 経理担当者が3か月分の予約を取得できます。これは毎月の手作業でした。\n";
   const warn = analyse(ja).findings.find((f) => /sentence with a number/.test(f.message));
   assert.ok(warn, "the heuristic still fires");
-  assert.ok(!warn.message.includes("这是毎月") && !warn.message.includes("これは毎月"), "the excerpt stops at the full stop instead of swallowing the block");
+  assert.ok(!warn.message.includes("これは毎月"), "the excerpt stops at the full stop instead of swallowing the block");
 });
 
 test("template command prints the block in English, --lang, and configured language", () => {
