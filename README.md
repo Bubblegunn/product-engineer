@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/github/actions/workflow/status/Bubblegunn/product-engineer/ci.yml?style=flat-square&color=111111&label=ci" alt="ci">
   <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT">
   <a href="https://doi.org/10.5281/zenodo.22395211"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22395211-111111?style=flat-square" alt="DOI"></a>
+  <a href="https://github.com/marketplace/actions/product-engineer-check"><img src="https://img.shields.io/badge/GitHub_Marketplace-product--engineer--check-111111?style=flat-square&logo=github" alt="GitHub Marketplace"></a>
 </p>
 
 An agent skill that makes an AI coding agent think like a product engineer instead of a
@@ -75,6 +76,9 @@ That places the skills for the agents in your project (Claude Code, Codex, Curso
 Gemini CLI and the rest). Where each file lands, the Claude Code plugin commands, the git
 hook and the CI action are in [`docs/install.md`](docs/install.md); Cursor as a rule file
 rather than a skill is in [`docs/cursor.md`](docs/cursor.md).
+
+The skills are text files and need nothing installed. The `product-engineer` command (`check`,
+`doctor`, the pre-commit entry) needs Node 22 or newer; the commit-msg hook itself is POSIX sh.
 
 ## Measured
 
@@ -173,7 +177,17 @@ table used without an explanation.
 node bin/check.mjs check .git/COMMIT_EDITMSG     # or: product-engineer check <file|->
 node bin/check.mjs check --pr 12                 # the body through the GitHub API, or gh outside Actions
 node bin/check.mjs check --pr 12 --comment       # and one comment on the pull request, updated in place
+node bin/check.mjs template                      # print an empty block to fill in (supports --lang)
 ```
+
+To configure git to use the block as your commit template (the `template` command was contributed by
+[@Enard52](https://github.com/Enard52) in [#41](https://github.com/Bubblegunn/product-engineer/pull/41)):
+
+```sh
+product-engineer template > .gitmessage.txt
+git config commit.template .gitmessage.txt
+```
+
 
 ### Does the message match the change?
 

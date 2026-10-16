@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/github/stars/Bubblegunn/product-engineer?style=flat-square&color=111111" alt="stars">
   <img src="https://img.shields.io/badge/dependencies-0-111111?style=flat-square" alt="zero dependencies">
   <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT">
+  <a href="https://github.com/marketplace/actions/product-engineer-check"><img src="https://img.shields.io/badge/GitHub_Marketplace-product--engineer--check-111111?style=flat-square&logo=github" alt="GitHub Marketplace"></a>
 </p>
 
 一个智能体技能，让 AI 编码智能体像产品工程师一样思考，而不是像打印代码的机器。动手之前，
@@ -28,6 +29,9 @@ npx skills add Bubblegunn/product-engineer
 [`docs/install.md`](docs/install.md)。仓库带四个技能：`product-engineer`（七条规则）、
 `customer-block`（只要客户说明块）、`done-means-observed`（只要有据可查的"完成"报告）和
 `release-notes`（给写发布说明、不写代码的智能体）。
+
+技能本身是文本文件，不需要安装任何东西。`product-engineer` 命令（`check`、`doctor`、
+pre-commit 入口）需要 Node 22 或更新版本；commit-msg 钩子本身是 POSIX sh。
 
 ## 之前和之后
 

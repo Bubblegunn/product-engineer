@@ -20,15 +20,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
+      # npm runs scripts through cmd.exe on Windows; the test script calls `sh`, and the
+      # commit-msg hook it tests is POSIX sh, which is what Git for Windows runs hooks with.
+      # Git Bash is the shell, so the hook is tested the way a Windows user's git runs it.
+      - name: Run npm scripts with Git Bash (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: npm config set script-shell "C:\\Program Files\\Git\\bin\\bash.exe"
       - run: npm test
+        shell: bash
   package:
     # The tarball people install, checked before a tag exists: files, bin, and a real install.
     runs-on: ubuntu-latest
@@ -36,12 +44,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: npm
       - run: npm ci --ignore-scripts
-      - run: npx publint --strict
+      - run: npx --yes publint@0.3.25 --strict # exact version: an unpinned npx runs whatever the registry serves that day
       - name: Install the packed tarball in an empty project and run it
         run: sh scripts/smoke-tarball.sh
   release-gate:
@@ -51,7 +59,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: npm
@@ -68,17 +76,69 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
       - name: No false alarm on a real message, every reachable kind caught
         run: node evals/baseline/run.mjs --commits 200 --check
+  action:
+    # action.yml itself, through `uses: ./`, the way a consuming workflow runs it: inputs, the
+    # ACTION_PATH wiring and the node on the runner. A composite step exposes only success or
+    # failure, so the exact exit codes (0, 1, 2) are pinned by test/action.test.mjs, which runs the
+    # same shell step locally. `body-file` gives the Action fixed text, so nothing is fetched.
+    # `./` stays rather than zizmor's `$/`: GitHub's workflow-syntax page (read 2026-10-14) shows
+    # `$/path/to/action` and no form for an action.yml at the repository root, and `body-file` needs
+    # the checkout anyway.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: A description with the block passes
+        id: with-block
+        continue-on-error: true
+        uses: ./ # zizmor: ignore[self-repository] GitHub documents $/path/to/action, not $/ for an action.yml at the root
+        with:
+          body-file: test/fixtures/with-block.txt
+          comment: "false"
+      - name: A description without the block fails
+        id: without-block
+        continue-on-error: true
+        uses: ./ # zizmor: ignore[self-repository] GitHub documents $/path/to/action, not $/ for an action.yml at the root
+        with:
+          body-file: test/fixtures/without-block.txt
+          comment: "false"
+      - name: Without the block and warn set, it passes
+        id: warned
+        continue-on-error: true
+        uses: ./ # zizmor: ignore[self-repository] GitHub documents $/path/to/action, not $/ for an action.yml at the root
+        with:
+          body-file: test/fixtures/without-block.txt
+          warn: "true"
+          comment: "false"
+      - name: A pr that is not a number fails, even with a description that would pass
+        id: bad-pr
+        continue-on-error: true
+        uses: ./ # zizmor: ignore[self-repository] GitHub documents $/path/to/action, not $/ for an action.yml at the root
+        with:
+          pr: "12a"
+          body-file: test/fixtures/with-block.txt
+          comment: "false"
+      - name: Each step ended the way it should
+        env:
+          WITH_BLOCK: ${{ steps.with-block.outcome }}
+          WITHOUT_BLOCK: ${{ steps.without-block.outcome }}
+          WARNED: ${{ steps.warned.outcome }}
+          BAD_PR: ${{ steps.bad-pr.outcome }}
+        run: |
+          echo "with-block: $WITH_BLOCK (want success)  without-block: $WITHOUT_BLOCK (want failure)  warned: $WARNED (want success)  bad-pr: $BAD_PR (want failure)"
+          test "$WITH_BLOCK" = success && test "$WITHOUT_BLOCK" = failure && test "$WARNED" = success && test "$BAD_PR" = failure
   ci-ok:
     # The one check the branch ruleset requires; it fails if any job above failed or was cancelled.
     if: always()
-    needs: [test, package, release-gate, baseline]
+    needs: [test, package, release-gate, baseline, action]
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "test: ${{ needs.test.result }}  package: ${{ needs.package.result }}  release-gate: ${{ needs.release-gate.result }}  baseline: ${{ needs.baseline.result }}"
-          test "${{ needs.test.result }}" = success && test "${{ needs.package.result }}" = success && test "${{ needs.release-gate.result }}" = success && test "${{ needs.baseline.result }}" = success
+          echo "test: ${{ needs.test.result }}  package: ${{ needs.package.result }}  release-gate: ${{ needs.release-gate.result }}  baseline: ${{ needs.baseline.result }}  action: ${{ needs.action.result }}"
+          test "${{ needs.test.result }}" = success && test "${{ needs.package.result }}" = success && test "${{ needs.release-gate.result }}" = success && test "${{ needs.baseline.result }}" = success && test "${{ needs.action.result }}" = success

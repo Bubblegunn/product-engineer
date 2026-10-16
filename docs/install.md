@@ -70,6 +70,23 @@ directory.
 without the block is refused with a two-line explanation. Merge, fixup, squash and revert
 commits pass, and `[no-customer]` anywhere in the message opts one commit out.
 
+## Commit template
+
+Use `product-engineer template` to set up a git commit template for your repository or editor:
+
+```sh
+npx product-engineer template > .gitmessage.txt
+git config commit.template .gitmessage.txt
+```
+
+To output another language from `skills/product-engineer/references/headings.md`, pass `--lang`:
+
+```sh
+npx product-engineer template --lang tr > .gitmessage.txt
+```
+
+A heading set configured in `.product-engineer.json` is also honoured automatically without `--lang`.
+
 ## CI
 
 ```yaml
@@ -93,7 +110,7 @@ verdict, the findings, and the block to paste when it is missing. The comment is
 place on every push, never duplicated. A pull request from a fork runs with a read-only
 token, so there the comment becomes a warning in the log and the check still runs.
 
-Inputs: `pr` (defaults to the event's pull request), `warn`, `comment`, `token`.
+Inputs: `pr` (defaults to the event's pull request), `warn`, `comment`, `token`, and `body-file` (check a file instead of fetching the pull request; nothing is fetched or posted, which is how this repository's CI runs the Action on fixed text).
 
 ## pre-commit
 
@@ -102,7 +119,7 @@ Inputs: `pr` (defaults to the event's pull request), `warn`, `comment`, `token`.
 ```yaml
 repos:
   - repo: https://github.com/Bubblegunn/product-engineer
-    rev: v0.3.0
+    rev: v0.6.0
     hooks:
       - id: product-engineer-check
 ```

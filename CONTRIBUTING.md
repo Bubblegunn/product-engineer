@@ -52,13 +52,15 @@ what agents actually emit. Add your language to the language line at the top of 
 
 ## Before you push
 
+Node 22 or newer (`engines.node` in `package.json`; CI tests on 22, the floor).
+
 ```
 npm test
 ```
 
 That runs the structure script, the hook test, the check, adapter, scorer, integration and
 readability tests, and refuses generated adapters that disagree with `SKILL.md` (run
-`node scripts/generate-adapters.mjs` after editing it). CI runs the same on Ubuntu and macOS.
+`node scripts/generate-adapters.mjs` after editing it). CI runs the same on Ubuntu, macOS and Windows; on Windows the scripts run in Git Bash, the shell Git for Windows runs hooks with, so `npm test` there needs Git Bash too (`npm config set script-shell "C:\\Program Files\\Git\\bin\\bash.exe"`). Two judge tests are skipped on Windows and say why: their fake judge is a shell script.
 
 ## Commits
 
@@ -78,10 +80,10 @@ commits pass without the block; `[no-customer]` in the message opts one commit o
 Maintainers only. One command; the workflow does the rest.
 
 1. Write the `## X.Y.Z (unreleased)` entry in `CHANGELOG.md` and merge it.
-2. On a clean, green `main`: `npm run release -- X.Y.Z` (or `patch`, `minor`, `major`; add `--dry-run` to see the plan). It dates the entry, sets the version in `package.json`, `CITATION.cff`, `.claude-plugin/plugin.json` and the pinned `uses:` line in the README, runs the tests, commits, tags `vX.Y.Z`, pushes, and then moves the major tag (`v0` today) to the release and force-pushes it, so `uses: Bubblegunn/product-engineer@v0` follows the newest release in that major. The major tag moves from this command and not from the workflow because release tags are admin-only by ruleset; a workflow token could not move it.
+2. On a clean, green `main`: `npm run release -- X.Y.Z` (or `patch`, `minor`, `major`; add `--dry-run` to see the plan). It dates the entry, sets the version in `package.json`, `CITATION.cff`, `.claude-plugin/plugin.json`, the pinned `uses:` line in the README and every file listed in `scripts/versioned-files.json` (the four `SKILL.md` files, `gemini-extension.json`, the pre-commit `rev:` in `docs/install.md`), runs the tests, commits, tags `vX.Y.Z`, pushes, and then moves the major tag (`v0` today) to the release and force-pushes it, so `uses: Bubblegunn/product-engineer@v0` follows the newest release in that major. The major tag moves from this command and not from the workflow because release tags are admin-only by ruleset; a workflow token could not move it.
 3. Watch the `release` workflow: it publishes to npm with provenance, creates the GitHub release from the CHANGELOG entry, and installs the published version from the registry on three operating systems.
 
-CI runs `scripts/release-gate.mjs` on every push: the version must agree across those files and `npm pack` may ship only the paths in `scripts/pack-allowlist.txt` (regenerate with `node scripts/release-gate.mjs --update` when the package layout changes on purpose).
+CI runs `scripts/release-gate.mjs` on every push: the version must agree across those files, read from the same list, so a file that states the version goes into `scripts/versioned-files.json` or neither script knows it is there, and `npm pack` may ship only the paths in `scripts/pack-allowlist.txt` (regenerate with `node scripts/release-gate.mjs --update` when the package layout changes on purpose).
 
 The workflow uses npm trusted publishing and holds no token. Before the first tagged release the maintainer configures the trusted publisher on npmjs.com: package settings, Trusted publishing, GitHub Actions, repository `Bubblegunn/product-engineer`, workflow `release.yml`, "Allow npm publish" ticked.
 

@@ -1,5 +1,5 @@
 // The block headings, read from one table so the check, the commit-msg hook and the skill
-// cannot disagree. Zero dependencies, Node 20 or newer.
+// cannot disagree. Zero dependencies, Node 22 or newer.
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -78,9 +78,11 @@ export function preferredHeadings(cwd = process.cwd(), tablePath = TABLE) {
 /** True when `line` is this heading, allowing a fullwidth colon and trailing space. */
 export const isHeading = (line, heading) => normalise(line) === normalise(heading);
 
-/** True when `line` opens this heading and carries text after it. */
+/** True when `line` opens this heading and carries text after it (not an unfilled placeholder). */
 export function headingWithText(line, heading) {
   const n = normalise(line);
   const h = normalise(heading);
-  return n.startsWith(h) && n.slice(h.length).trim().length > 0;
+  if (!n.startsWith(h)) return false;
+  const rest = n.slice(h.length).trim();
+  return rest.length > 0 && !/^<[^>]+>$/.test(rest);
 }

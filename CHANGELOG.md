@@ -1,5 +1,86 @@
 # Changelog
 
+## 0.6.0 (2026-10-14)
+
+**`product-engineer template` prints the block to fill in.** In English by default, in a shipped language
+with `--lang tr|ja|zh`, or in the heading set from `.product-engineer.json`; an unknown `--lang` exits 2.
+`product-engineer template > .gitmessage.txt` plus `git config commit.template .gitmessage.txt` makes git
+open every commit with the block. `check` now reads a heading followed only by an unfilled
+`<placeholder>` as empty, so a half-filled template fails: on 0.5.2 a leftover
+`Automation effect: <…>` line passed with no errors, and now it is reported. A line that merely starts
+with an angle bracket, such as `What changed: <video> embeds play again.`, still passes. Written by
+[@Enard52](https://github.com/Enard52) ([#41](https://github.com/Bubblegunn/product-engineer/pull/41), closes
+[#25](https://github.com/Bubblegunn/product-engineer/issues/25)).
+
+## 0.5.2 (2026-10-14)
+
+**A long run of `.`, `!` or `?` no longer stalls the check.** The sentence splitter in
+`bin/readability.mjs` used `[.!?]+(\s|$)`, which retried a run of punctuation from every position
+inside it. A block holding 40,000 exclamation marks between two letters took 2,051 ms to score, and
+time grew with the square of the run, so a pull request body could hold the Action for as long as
+its author liked. The split now happens at the whitespace after a punctuation mark: the same input
+takes 0.3 ms. Readability results are byte-identical before and after on 101 texts (the test
+fixtures, `examples/`, every commit message in this repository and eight punctuation edge cases).
+`test/readability.test.mjs` fails if 50,000 exclamation marks take 250 ms or more; before the fix
+they took 3,244 ms.
+
+The release workflow's `smoke` job, which installs the published package on three operating
+systems, no longer restores an npm cache: `package-manager-cache: false` on its `setup-node`, as the
+`publish` job already had. A cache written by another workflow run could otherwise reach a job that
+runs on a release tag. zizmor 1.30.1 reported it as `cache-poisoning` and reports nothing now.
+
+Dependabot waits seven days after a release before proposing it, for both GitHub Actions and npm
+(`cooldown.default-days: 7`), so a version that is pulled soon after publishing is less likely to
+reach this repository.
+
+## 0.5.1 (2026-10-14)
+
+**The Action can be listed on GitHub Marketplace.** Marketplace accepts a description of fewer than 125 characters; this
+one was 138. It is now 119, and a test fails on a description of 125 characters or more. Nothing a workflow uses changes.
+
+## 0.5.0 (2026-10-14)
+
+**Breaking: Node 22 or newer.** `engines.node` moves from `>=20` to `>=22`, because Node 20 reached
+end of life on 2026-04-30 and receives no security fixes. The code did not change for it, and the
+suite still passes on Node 20.20.2 today (106 tests, run once in `node:20`), but no workflow here has
+ever run on Node 20, so nothing would notice when that stops being true. npm prints an engine
+warning on Node 20 and installs anyway unless `engine-strict` is set. The skills themselves are text
+and are not affected; the GitHub Action runs on whatever Node the runner provides.
+
+**The version a file states is now checked everywhere the release sets it.** The package was 0.4.0
+while `skills/product-engineer/SKILL.md` said 0.3.2, the other three skills said 0.3.0, and the
+pre-commit snippet in `docs/install.md` pinned `rev: v0.3.0`, so a reader copying it installed the
+hook as it was in 0.3.0. `product-engineer doctor` printed the 0.3.2 as the installed version. Nothing
+failed, because neither `scripts/release.mjs` nor `scripts/release-gate.mjs` knew those files
+existed. Both now read one list, `scripts/versioned-files.json`; the release sets every file on it
+and the gate fails on any one that disagrees with `package.json`. A test changes each listed file in
+a copy of the repository in turn and requires the gate to refuse it. `doctor` reports the package's
+own version.
+
+**`action.yml` has not been valid YAML since 0.3.0, and nothing ran it.** The `comment` input's
+description said `pull-requests: write` without quotes, and YAML reads the second `: ` as a nested
+mapping. PyYAML, `yaml@2` and actionlint (Go YAML) all refuse the file at line 17; GitHub's own
+parser was not observed here, but a workflow using `Bubblegunn/product-engineer@v0` should expect the
+same refusal until this ships. The description is quoted now. CI gains an `action` job that runs the
+Action through `uses: ./` on a description with the block, one without, one without but with `warn`,
+and a non-numeric `pr`, and requires each outcome; `test/action.test.mjs` runs the Action's shell step
+with bash and pins the exit codes 0, 1 and 2, and fails on any unquoted value containing `: `.
+
+New Action input `body-file`: check a file instead of fetching the pull request. Nothing is fetched
+and no comment is posted. It exists so CI can run the Action on fixed text.
+
+**The commit-msg hook refused a Chinese block when no UTF-8 locale was set.** The heading pattern
+put the ASCII and fullwidth colons in one bracket, `[:：]`, and without a UTF-8 locale grep reads
+`：` as three bytes, of which a bracket matches one. `给客户：` therefore failed under `LC_ALL=C` with
+both BSD grep (macOS) and GNU grep (Debian). A Git Bash on Windows with no `LANG` set should behave
+the same way; that was reasoned, not observed. The colon is an alternation now, `(:|：)`, and the hook test runs every case a second
+time under `LC_ALL=C`.
+
+CI runs the tests on Windows as well as Ubuntu and macOS, in Git Bash, which is the shell Git for
+Windows runs the hook with. A new `.gitattributes` checks every text file out with LF on all
+platforms, since Git for Windows converts to CRLF by default and the hook, the shell tests and the
+version patterns match line ends.
+
 ## 0.4.0 (2026-09-21)
 
 **A message can cite a file that is not there, and until now nothing noticed.** `check` resolves

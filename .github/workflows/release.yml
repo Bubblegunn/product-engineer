@@ -4,6 +4,12 @@ on:
     tags: ["v*.*.*"] # release tags only; the moving major tag (v0) must not start a publish
 permissions:
   contents: read
+# GitHub has delivered one tag push twice (product-engineer v0.5.0, 2026-10-14: two runs one second
+# apart; the second failed with npm E409 on a version the first had published). Runs for one tag
+# now queue instead of racing, and each step below is safe to run a second time.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -14,7 +20,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
@@ -27,11 +33,29 @@ jobs:
           TAG: ${{ github.ref_name }}
       - run: npm ci --ignore-scripts
       - run: npm test
-      - run: npm publish --access public
+      - name: Publish, unless this exact package is already on npm
+        run: |
+          # A second run for the same tag must not fail on a version the first one published, and
+          # must not pass over a version published with different contents. The integrity of the
+          # tarball built here is compared with what the registry already holds.
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          published=$(npm view "$name@$version" dist.integrity 2>/dev/null || true)
+          if [ -z "$published" ]; then
+            npm publish --access public
+            exit 0
+          fi
+          local_integrity=$(npm pack --dry-run --json 2>/dev/null | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const p=Array.isArray(j)?j[0]:Object.values(j)[0];console.log(p.integrity)})')
+          if [ "$published" = "$local_integrity" ]; then
+            echo "$name@$version is already on npm with identical contents ($published); not publishing again"
+          else
+            echo "$name@$version is already on npm with different contents: registry $published, this build $local_integrity"
+            exit 1
+          fi
       - name: Release notes are the CHANGELOG entry, then the generated list of pull requests
         run: |
           awk '/^## /{n++} n==1' CHANGELOG.md > notes.md
-          gh release create "$TAG" --verify-tag --generate-notes --notes-file notes.md
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --verify-tag --generate-notes --notes-file notes.md
         env:
           TAG: ${{ github.ref_name }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,9 +68,10 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
+          package-manager-cache: false # this job runs on a release tag; no cache may reach a release job
       - name: npx the released version from the registry
         shell: bash
         run: |
@@ -74,7 +99,7 @@ jobs:
           # release that had worked went red and the only real check on it reported nothing. The
           # budget is named once and the message is computed from it, because the old message spelled
           # "six" and "two minutes" in words that nothing would have updated.
-          attempts=15
+          attempts=30 # 15 (five minutes) ran out on three releases on 2026-10-14 while npm was still propagating
           delay=20
           i=1
           while [ "$i" -le "$attempts" ]; do
