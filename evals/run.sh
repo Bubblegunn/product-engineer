@@ -48,11 +48,13 @@ mkdir -p "$results_dir"
 cli_version=$(claude --version 2>/dev/null | head -1 || echo "unknown")
 task_count=$(find "$tasks_dir" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d " ")
 run_count=$((task_count * 2 * runs))
-if [ -n "${PE_EVAL_SKILL:-}" ]; then echo "  skill       $skill (installed in the skill arm only)"; fi
+skill_line=""
+[ -n "${PE_EVAL_SKILL:-}" ] && skill_line="
+  skill       $skill (installed in the skill arm only)"
 cat <<INFO
 product-engineer evals
   tasks       $task_count
-  conditions  bare, skill
+  conditions  bare, skill$skill_line
   runs/arm    $runs
   total runs  $run_count
   model       $model

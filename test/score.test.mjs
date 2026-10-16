@@ -47,4 +47,7 @@ test("table refuses runs of different skills in one table", () => {
   const row = (condition, skill) => ({ task: "01", condition, run: 1, results: {}, extras: {}, meta: { skill }, final: "", commit: "", changed: [], allowed: [] });
   assert.throws(() => table([row("skill", "customer-block"), row("skill", "release-notes")]), /different skills/);
   assert.doesNotThrow(() => table([row("bare", null), row("skill", "customer-block")]));
+  // A run recorded before meta.json named the skill installed the core pack, so it tables with one that names it.
+  assert.doesNotThrow(() => table([row("skill", undefined), row("skill", "product-engineer")]));
+  assert.throws(() => table([row("skill", undefined), row("skill", "customer-block")]), /different skills/);
 });
