@@ -1275,3 +1275,8 @@ run folders). Remaining lost criteria, as general classes (no fixture value is n
 3. A note about a changed limit omits the old or the new value (set c X5 c2, run 3). Rule (skill rule 2): a note about a changed limit or price states the old and the
    new value.
 Not acted on: rewrite added-definition and kept-jargon misses (set b X3 c2, c3: rule 6 already forbids them; 3 runs cannot separate this from variance), set b X2 run 3 "no commit was created".
+
+## Round 7, iteration 3 outcome (2026-10-23)
+Iteration 3 code is `00109d7` (three skill sentences; `npm test` 730 passed, 0 failed). The development gate rerun could not run: the API returned 400 (first `thinking.type.enabled`
+not supported, then `tool_use ids must be unique`, also for a plain two-command prompt) on every call through the SDK shim, 15 of 15 cells of set c and 4 of 4 probes. No iteration 3 score exists.
+The gate is not passed (iteration 2 data stands), so set d, the public set, F9 and F6 were not run. Details: `bench/head-to-head/results/round7/SUMMARY.md`.

@@ -57,3 +57,12 @@ Iteration 1: set c X1, X4 fail; set b passes where a rival exists; X4 of set b h
 ## Cost (sum of the cost files in this folder)
 54 sessions 4.1520 USD; 54 grader calls 1.9069 USD; held-out set d author 0.2610 USD; billing check 0.0026 USD; total 6.3225 USD (cost cap 30 USD). The subagents' own cost
 (best-rival document, review) is not recorded in these files.
+
+## Iteration 3 (commit `00109d7`): code committed, gate rerun could NOT be completed
+Design: `docs/HEAD-TO-HEAD.md` "Round 7 development gate, iteration 3 design" (committed before the code). Rules added to the skill: reader-first commit subject for a
+non-technical reader, old and new value of a changed limit, code check before a rewrite is saved (Sonnet review: 3 findings applied). `npm test`: 730 passed, 0 failed.
+The rerun produced no valid cell. Attempt 1: every call returned `API Error: 400 ... "thinking.type.enabled" is not supported for this model` (settings in the owner's
+user file set MAX_THINKING_TOKENS and CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING; cost about 0). Attempt 2, with a `--settings` override of those values in the run's settings file:
+all 15 set-c cells returned `API Error: 400 ... "tool_use ids must be unique"`, cost 1.1023 USD. A plain two-command Bash prompt through the SDK shim on claude-sonnet-5-5 gave the same
+400 in 4 of 4 tries over about 5 minutes. The real CLI was not called (owner rule). No score from iteration 3 exists; the failed cells are not in the tables, and set b was not started.
+The gate stays "not passed" on the iteration 2 data above. Total spend in the cost files, with these failed attempts: 7.4248 USD (the first attempt's near-zero cells were not summed).
