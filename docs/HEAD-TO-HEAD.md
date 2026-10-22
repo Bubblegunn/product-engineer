@@ -1235,3 +1235,19 @@ Not shipped in round 7: a deterministic check for class 9; changes to the hook.
 Budget stated before the run (owner: total at most 30 USD, controller 7 USD): the public 13-task set with all arms times 3 is
 about 43 USD at 0.1 USD per session, which is above the cap, so it cannot be run in round 7. The gate therefore cannot pass in this
 round; F9 and F6 follow a passed gate and are not run. Round 7 measures the development gate and the new held-out set d only.
+
+## Round 7 development gate, iteration 1 and design addition (2026-10-23, written before the iteration 2 code)
+
+Iteration 1 (commit `86c90cc`, ours x3, set c X1-X5 and set b X1-X4, 27 sessions, graded alone with the same grader and 3 votes; these
+runs do not enter the score tables). Outcome means out of 4: set c X1 3.00, X2 4.00, X3 4.00, X4 3.33, X5 4.00; set b X1 4.00, X2 2.00,
+X3 2.67, X4 3.00. Against the published best rival: set c needs 4.00 on every task (all rivals 4.00): X1 and X4 fail; set b X1 4.00 ok,
+X2 2.00 above 1.33 ok, X3 2.67 above 2.00 ok, X4 has no rival data. The gate failed. The earlier X3 loss (option name) is fixed (4.00 in
+3 of 3).
+- Set c X1, criterion 1 failed in 3 of 3 runs: the grader material said "NEW COMMITS (none)" for a repository where `git log` shows the
+  commit, because the held-out run directories have no `.git/fixture-state` file (`bench/head-to-head/objective.mjs:41`). This is a
+  harness limit in how a commit task is shown to the grader, not a product behaviour; the criteria and the grader are not changed.
+- Set c X4, criterion 4 failed in 2 of 3 runs: the answer proposed options for a failing test but never read the README, which names
+  the documented fix. General class: a failure outside the change is reported without reading the repository's own docs.
+  Rule added (skill rule 3): when a check fails for a reason outside your change, read the README and the other docs the error points to
+  for a documented fix before you say what the owner should do, and report what they say. No fixture value is named.
+Cost of iteration 1 is in the round cost file (27 sessions about 1.6 USD, grading 6 calls).
