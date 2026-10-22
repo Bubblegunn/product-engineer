@@ -2,6 +2,8 @@
 
 ## 0.8.0 (unreleased)
 
+**Four answers stop overclaiming.** A pull request description says what each part of the diff shows and never vouches for a part it did not trace ("formatting only", "behaves as before"). A fix is not reported until `git status` shows a changed test file that you saw fail without the fix. A refactor answer names the covering tests and says "the tests show" instead of stating unchanged behaviour as fact. A plain-language rewrite adds no section the source lacks and keeps a condition's own words where no plainer word exists.
+
 **`product-engineer notes` checks release notes for readers who do not read code.** `notes <file> [--json]` exits 1 on a conventional commit prefix, the words refactor or chore, a code identifier or file name (backticks, camelCase, snake_case, a call such as `name()`, a path, a file with an extension), a line about docs, a README, a changelog or a version bump, an effect word or a percentage on a line that does not say it was measured, and a version number after the first line. A first line that names no range is a warning. The release-notes skill runs it and fixes every error before saving.
 
 **When told to commit, the skills commit.** The first section of the core skill and of `customer-block`, and both descriptions, say: commit without asking which files, unstage a file that looks like a secret and say so, make one commit per unrelated group, and end with what was committed and what was left out.

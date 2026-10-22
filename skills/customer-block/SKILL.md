@@ -42,6 +42,8 @@ Chinese are accepted as they are; for another language the team names its headin
 `.product-engineer.json`. The table is in the product-engineer skill,
 `references/headings.md`.
 
+In a pull request description, say what each part of the diff shows. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it.
+
 Rules: no jargon a non-engineer would have to look up; a pure refactor gets one line
 under `What changed`; a bug fix says what the customer saw before and sees now; never
 invent an automation effect. Merge, fixup, squash and revert commits do not need the
@@ -49,7 +51,7 @@ block.
 
 ## Fixes and refactors
 
-A fix ships with its test. If the change is a fix and no test file changes, write the test in the same commit: it fails before the fix and passes after it. A docs-only fix needs none. A refactor says in its block only that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless you measured it.
+A fix ships with its test. If the change is a fix and no test file changes, write the test in the same commit: it fails before the fix and passes after it. Check `git status` before you report: if no test file changed, add the test first. A docs-only fix needs none. A refactor says in its block only that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless you measured it.
 
 The final answer for a refactor is exactly three lines, with no benefit word anywhere
 (faster, cleaner, safer, more reliable, easier):
@@ -59,6 +61,8 @@ Ran: <command>: <result>.
 Changed for users: nothing; only <the tests> pin that.
 Not checked: <what you did not check>.
 ```
+
+In the first line, `<the tests>` are the covering tests named by their test names. State that behaviour is unchanged only as "the tests show" it, never as a flat fact. If no test covers the moved code, say so on the third line.
 
 ## The observed result
 

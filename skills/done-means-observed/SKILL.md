@@ -58,6 +58,8 @@ Never write "done" with an empty `Watched` line. If nothing could be observed, s
    Changed for users: nothing; only <the tests> pin that.
    Not checked: <what you did not check>.
    ```
+
+   In the first line, `<the tests>` are the covering tests named by their test names. State that behaviour is unchanged only as "the tests show" it, never as a flat fact. If no test covers the moved code, say so on the third line.
 2. Before you say done, read the added lines of `git diff` and any new files for TODO and FIXME
    markers, empty function bodies, tests that assert nothing, and skipped tests, and name every hit
    in the report. `product-engineer stubs` does this mechanically (from version 0.8.0). Where the command is not installed, `npx product-engineer stubs` runs the same check.
