@@ -57,6 +57,7 @@ runs:
         REFERENCES: ${{ inputs.references }}
         SKIP_AUTHORS: ${{ inputs.skip-authors }}
         PR_AUTHOR: ${{ inputs.author }}
+        PRODUCT_ENGINEER_NO_STAR_HINT: "1"
       run: |
         case "$PR_NUMBER" in
           '') [ -n "$BODY_FILE" ] || { echo "pr must be a number, got: (empty)" >&2; exit 2; } ;;
@@ -93,6 +94,8 @@ runs:
           set -- check --pr "$PR_NUMBER" --format github
           [ "$COMMENT" != "false" ] && set -- "$@" --comment
         fi
+        # The body is a pull request description, so the block must come first (check --kind pr).
+        set -- "$@" --kind pr
         [ -n "$DIFF" ] && set -- "$@" --diff "$DIFF"
         [ -n "$REFERENCES" ] && set -- "$@" --references "$REFERENCES"
         [ "$WARN" = "true" ] && set -- "$@" --warn

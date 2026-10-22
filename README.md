@@ -2,11 +2,25 @@
 
 product-engineer is an agent skill and command-line checker that makes AI coding agents explain each commit and pull request in plain language, and warns when the message contradicts the diff.
 
+Skills for the agents in your project (Claude Code, Codex, Cursor and the rest):
+
+```
+npx skills add Bubblegunn/product-engineer
+```
+
+The same skills as a Claude Code plugin (Claude Code 2.1.275 or later):
+
+```
+/plugin install product-engineer --marketplace Bubblegunn/product-engineer
+```
+
+The command-line checker, which needs Node 22 or newer:
+
 ```
 npx product-engineer check msg.txt --diff
 ```
 
-`msg.txt` holds the commit message and the change is what you staged with `git add`. For a pull request: `npx product-engineer check --pr 12 --diff main...HEAD` (needs `gh`). To make the agent write the plain-language block in the first place: `npx skills add Bubblegunn/product-engineer`.
+`msg.txt` holds the commit message and the change is what you staged with `git add`. For a pull request: `npx product-engineer check --pr 12 --diff main...HEAD` (needs `gh`).
 
 ![The check warns that the message says tests were added and the change has none, then passes once a test file is staged](docs/demo-diff.gif)
 
@@ -61,6 +75,10 @@ The checker was last run on the same inputs as other tools on 2026-10-21 (produc
 | Only the requested files changed (tests and documentation allowed) | 8 / 8 | 7 / 8 | 7 / 8 |
 
 The headline feature of `changelog-generator`, writing a changelog from commits, was not measured. None of the eight tasks asks for one.
+
+## Compared on the same tasks
+
+The next comparison runs thirteen tasks on eight arms, three runs each: the bare model, product-engineer, and three directory competitors, each also run in a session where its skill is called by name. The method, the pinned competitor commits and the win rule are in [`docs/HEAD-TO-HEAD.md`](docs/HEAD-TO-HEAD.md).
 
 ## See it
 
@@ -166,7 +184,7 @@ question, and the design document explains why that is context rather than a com
 | [`done-means-observed`](skills/done-means-observed/SKILL.md) | rule 3 alone: what was watched, what could not be checked | you only want honest completion reports |
 | [`release-notes`](skills/release-notes/SKILL.md) | the rules for an agent that writes about software instead of writing it | release notes, changelogs, status updates |
 
-The installer offers all four; pick what you need. Agents that read instruction files
+The installer offers all four; pick what you need. `release-notes` leaves out docs-only, version-bump and test-only commits, lists under `Not in this release:` only what a reader would expect from the commits, and states the commit range on its first line. Agents that read instruction files
 rather than skills (Cursor rules, Copilot instructions, Gemini, Cline, Kiro, Windsurf) get
 the same seven rules from files generated out of `SKILL.md`; see
 [`docs/install.md`](docs/install.md).
@@ -196,9 +214,22 @@ table used without an explanation.
 ```
 node bin/check.mjs check .git/COMMIT_EDITMSG     # or: product-engineer check <file|->
 node bin/check.mjs check --pr 12                 # the body through the GitHub API, or gh outside Actions
+node bin/check.mjs check --pr 12 --kind pr       # a pull request: the block must start within the first 12 lines
 node bin/check.mjs check --pr 12 --comment       # and one comment on the pull request, updated in place
 node bin/check.mjs template                      # print an empty block to fill in (supports --lang)
+node bin/check.mjs stubs                          # TODOs, empty bodies and decorative tests in the working tree and new files (the default)
+node bin/check.mjs stubs --staged                # the same for the index only
+node bin/check.mjs stubs --range HEAD~1..HEAD    # the same for a committed range
+node bin/check.mjs stubs --json                  # the findings as one object: { count, findings }
+node bin/check.mjs stubs --warn                  # report the findings but exit 0
+product-engineer facts source.txt rewrite.txt  # a rewrite keeps every number; sentences stay short
 ```
+
+`stubs` reads only the lines a change adds: the working tree against `HEAD` and new files by default. It flags TODO, FIXME and XXX markers, empty or placeholder function bodies, tests that assert nothing or compare an expression with itself, and newly skipped tests.
+
+`facts` checks a plain-language rewrite against its source: the same numbers, the obligations carried over, legal phrases left in, and sentences of at most 20 words on average and 35 at most. See [docs/check-reference.md](docs/check-reference.md).
+
+With `--kind pr` the block must start within the first 12 lines, so a pull request opens with the part for the customer; a later block is a warning (`block-not-first`). The command prints a one-time star request on the first run in an interactive terminal. `--quiet` or `PRODUCT_ENGINEER_NO_STAR_HINT=1` turns it off, and it never appears in CI, in pipes, in agent sessions or in git hooks.
 
 To configure git to use the block as your commit template (the `template` command was contributed by
 [@Enard52](https://github.com/Enard52) in [#41](https://github.com/Bubblegunn/product-engineer/pull/41)):
@@ -233,6 +264,8 @@ Four disagreements are reported, each naming what was counted:
 The fourth is the one worth having. A path that exists but is untouched is ordinary context
 and is never reported; a path that is in neither place is a reference to a file that was
 renamed, or never existed, which is a shape agent-written messages leave behind.
+
+`--diff` also reports two things the message does not claim. A changed file whose name says it holds a credential, such as `.env` or a key file, is named. An added line that assigns a long value to a secret-like name is reported by file and line, and the value is never printed. A change whose lines fall into two or more unrelated groups, with no group holding 80 percent of them, gets a warning to split it.
 
 A phrase inside backticks or quotation marks is being named, not asserted, so a message that
 describes these checks does not trip them. That was the first thing the flag caught, on the

@@ -17,9 +17,32 @@ function allowedFor(task) {
   return m ? m[1].split(",").map((s) => s.trim()).filter(Boolean) : [];
 }
 
+/** The kind a task declares in its TASK.md front matter: "notes" for a task that commits nothing, else "code". */
+export function kindOf(task) {
+  const fm = read(join(tasksRoot, task, "TASK.md")).split("---")[1] ?? "";
+  return fm.match(/^kind:\s*(\S+)/m)?.[1] ?? "code";
+}
+const isNotes = (task) => kindOf(task) === "notes";
+/** Rows the core metrics apply to. A notes task has none, so the eight-task tables never see it. */
+export const coreRows = (rows) => rows.filter((r) => !isNotes(r.task));
+
 const stripCode = (s) => s.replace(/```[\s\S]*?```/g, " ").replace(/`[^`\n]*`/g, " ");
 const withoutIds = (s) => s.replace(/(\bv?\d+\.\d+(\.\d+)?\b|#\d+\b|\b20\d\d\b|\b[0-9a-f]{7,40}\b)/gi, " ");
 const METHOD = /\b(count(ed)?|git|ran|measured|out of|of the|in the (file|data|list|logs?)|customers\.json|per)\b/i;
+// Commit-type prefixes (feat(, fix:), the fixture's own identifiers, a file path, a camelCase
+// identifier (roundMinutes, waitingCount; "iPad" has one lowercase letter before its capital and passes),
+// a docs or README line, and a version bump. Code spans are not stripped: a backticked identifier still leaks.
+// The camel-case test is case-sensitive; under /i every word would look like one.
+const RELEASE_NOTES_WORDS = /\b(feat|fix|perf|refactor|chore|docs?|test|build|ci|style)(\([^)]*\))?:|\bbump(ed|s)?\b|\b5\.0\.1\b|\bversion\s+(number|bump)\b|\bdocs?\b|\bdocumentation\b|\breadme\b|\broundMinutes\b|\bwaitingCount\b|\bsrc\/|\.(js|mjs|json)\b/i;
+const CAMEL_CASE = /\b[a-z]{2,}[A-Z][a-z]+\b/;
+const RELEASE_NOTES_LEAK = { test: (s) => RELEASE_NOTES_WORDS.test(s) || CAMEL_CASE.test(s) };
+// A speed word or a percentage is an effect nobody measured in the fixture; a count of items is not.
+const UNMEASURED = /\b(faster|quicker|speed\w*|snappier|instant(ly)?|percent(age)?)\b|%/i;
+// A line that says the effect was not measured is an honest statement, not a claim. Blunt: a line that
+// carries both an exemption phrase and a claim is exempted whole.
+const NOT_MEASURED = /\b(not measured|did not measure|unmeasured|no measurement)\b/i;
+const claimLines = (notes) => notes.split("\n").filter((l) => !NOT_MEASURED.test(l)).join("\n");
+const firstLeak = (notes, re) => notes.split("\n").find((l) => re.test(l)) ?? "";
 const isDoc = (f) => /\.(md|mdx|rst|txt)$/i.test(f);
 const isTest = (f) => /(^|\/)(__tests__|tests?)\/|\.(test|spec)\.[a-z]+$/.test(f);
 
@@ -61,6 +84,32 @@ export const metrics = {
   },
 };
 
+/**
+ * Heuristics that apply to one task only. They read RELEASE_NOTES.md, which run.sh copies into the
+ * results directory. They are kept out of the core table so the eight published tasks keep the table
+ * RESULTS.md was built from; failing cells and taskTable() report them.
+ */
+export const taskMetrics = {
+  "09-release-notes": {
+    releaseNotesClean: {
+      title: "Release notes name no commit type, identifier, file, docs or version-bump line",
+      test: ({ notes = "" }) => notes.trim() !== "" && !RELEASE_NOTES_LEAK.test(notes),
+      why: ({ notes = "" }) =>
+        notes.trim() === ""
+          ? "no RELEASE_NOTES.md was written"
+          : `a line the owner should not read: \`${firstLeak(notes, RELEASE_NOTES_LEAK).trim().replace(/[`|]/g, "").slice(0, 110)}\``,
+    },
+    noUnmeasuredEffect: {
+      title: "Release notes make no speed claim and no percentage",
+      test: ({ notes = "" }) => notes.trim() !== "" && !UNMEASURED.test(claimLines(notes)),
+      why: ({ notes = "" }) =>
+        notes.trim() === ""
+          ? "no RELEASE_NOTES.md was written"
+          : `an effect or percentage with no measurement: \`${firstLeak(claimLines(notes), UNMEASURED).trim().replace(/[`|]/g, "").slice(0, 110)}\``,
+    },
+  },
+};
+
 /** Reported per task, not counted in the summary. */
 export const extras = {
   documentedElsewhere: {
@@ -94,9 +143,11 @@ export function score(resultsRoot = root) {
         commit: read(join(dir, "commit.txt")),
         changed: read(join(dir, "changed.txt")).split("\n").map((s) => s.trim()).filter(Boolean),
         allowed: allowedFor(task),
+        notes: read(join(dir, "RELEASE_NOTES.md")),
         meta: (() => { try { return JSON.parse(read(join(dir, "meta.json"))); } catch { return {}; } })(),
       };
-      const results = Object.fromEntries(Object.entries(metrics).map(([k, m]) => [k, m.test(sample)]));
+      const defs = isNotes(task) ? (taskMetrics[task] ?? {}) : { ...metrics, ...(taskMetrics[task] ?? {}) };
+      const results = Object.fromEntries(Object.entries(defs).map(([k, m]) => [k, m.test(sample)]));
       const extra = Object.fromEntries(Object.entries(extras).map(([k, m]) => [k, m.test(sample)]));
       rows.push({ ...sample, results, extras: extra });
       }
@@ -141,7 +192,8 @@ function taskMeans(rows, key) {
   return [...byTask.entries()].map(([task, arms]) => ({ task, bare: mean(arms.bare), skill: mean(arms.skill), runs: Math.min(arms.bare.length, arms.skill.length) }));
 }
 
-export function table(rows) {
+export function table(allRows) {
+  const rows = coreRows(allRows);
   // Runs from different skills measure different things; a table of them would mislead.
   // Runs recorded before meta.json named the skill all installed the core pack.
   const skills = new Set(rows.filter((r) => r.condition === "skill").map((r) => r.meta?.skill ?? "product-engineer"));
@@ -164,10 +216,28 @@ export function table(rows) {
   return lines.join("\n");
 }
 
-export function perTask(rows) {
+export function perTask(allRows) {
+  const rows = coreRows(allRows);
   const keys = Object.keys(metrics);
   const lines = [`| task | condition | run | ${keys.join(" | ")} | docs elsewhere | turns | cost |`, `|---|---|---|${keys.map(() => "---").join("|")}|---|---|---|`];
   for (const r of rows) lines.push(`| ${r.task} | ${r.condition} | ${r.run} | ${keys.map((k) => (r.results[k] ? "yes" : "no")).join(" | ")} | ${r.extras.documentedElsewhere ? "yes" : "no"} | ${r.meta.turns ?? ""} | ${r.meta.cost_usd ? `$${r.meta.cost_usd.toFixed(2)}` : ""} |`);
+  return lines.join("\n");
+}
+
+/** Pass counts for the task-scoped heuristics, over the runs of the tasks they apply to. Empty when none ran. */
+export function taskTable(rows) {
+  const lines = [];
+  for (const [task, defs] of Object.entries(taskMetrics)) {
+    const mine = rows.filter((r) => r.task === task);
+    if (!mine.length) continue;
+    const keys = Object.keys(defs);
+    lines.push(`| ${task} | ${keys.map((k) => defs[k].title).join(" | ")} |`, `|---|${keys.map(() => "---").join("|")}|`);
+    for (const condition of ["bare", "skill"]) {
+      const cell = mine.filter((r) => r.condition === condition);
+      if (!cell.length) continue;
+      lines.push(`| ${condition} (n=${cell.length}) | ${keys.map((k) => `${cell.filter((r) => r.results[k]).length} / ${cell.length}`).join(" | ")} |`);
+    }
+  }
   return lines.join("\n");
 }
 
@@ -175,7 +245,8 @@ export function perTask(rows) {
 export function failures(rows) {
   const lines = [];
   for (const r of rows) {
-    const failed = Object.entries(metrics).filter(([k]) => !r.results[k]);
+    const defs = isNotes(r.task) ? (taskMetrics[r.task] ?? {}) : { ...metrics, ...(taskMetrics[r.task] ?? {}) };
+    const failed = Object.entries(defs).filter(([k]) => !r.results[k]);
     if (!failed.length) continue;
     for (const [key, m] of failed) {
       const why = m.why ? m.why(r) : "no evidence recorded";
@@ -194,6 +265,11 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     console.log(table(rows));
     console.log();
     console.log(perTask(rows));
+    if (taskTable(rows)) {
+      console.log();
+      console.log("## Task-scoped heuristics\n");
+      console.log(taskTable(rows));
+    }
     console.log();
     console.log("## Every failing cell\n");
     console.log(failures(rows));

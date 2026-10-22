@@ -1,6 +1,6 @@
 ---
 name: done-means-observed
-description: Use when reporting that a piece of software work is finished. Makes the agent report what it watched happen in logs, data or on a real device, and say exactly what it could not check, instead of calling work done because tests pass.
+description: Use when reporting that a piece of software work is finished. Makes the agent report what it watched happen in logs, data or on a real device, and say exactly what it could not check, instead of calling work done because tests pass. When part of the work cannot run yet, it returns an explicit 501 or 503, not a success.
 license: MIT
 metadata:
   author: Efe Genc
@@ -14,6 +14,12 @@ metadata:
 Rule 3 of the product-engineer skill on its own. Work is done when you have watched it
 behave, or when you have written down which observation you could not make and why.
 "Tests pass" is the entry ticket, not the report.
+
+## Part of the work cannot run yet
+
+When a gateway, service or integration that the request needs is not wired up, do not return success, and do not return a fake "pending" success. Return an explicit not-available response: HTTP 501 or 503, or a thrown error with a clear message. Put the reason in the response body or in the docs. Add a test that pins that response. Leave no TODO, FIXME or `return null` marker in the code. In the answer, say plainly that nothing happens yet and what is missing.
+
+Example: an invoice export endpoint whose PDF service is not connected returns `501 Not Implemented` with the body `{"error": "invoice export is not available yet: the PDF service is not connected"}`, and a test asserts that status and message. The answer then reads: "Invoice export does nothing yet. The PDF service is not connected, so no file is created and no email is sent. Still missing: the connection to the PDF service."
 
 ## The report
 
@@ -34,6 +40,15 @@ Could not check: <what, and why>
 
 Never write "done" with an empty `Watched` line. If nothing could be observed, say
 "Not observed yet" as the first words of the report and list what would let you observe it.
+
+## Two rules for the answer
+
+1. A question about whether the work is finished, or whether it is ready to hand over, is answered
+   with what you watched and what still fails. While you answer, do not edit code, delete or weaken a
+   test, or commit. Offer the fix as the next step.
+2. Before you say done, read the added lines of `git diff` and any new files for TODO and FIXME
+   markers, empty function bodies, tests that assert nothing, and skipped tests, and name every hit
+   in the report. `product-engineer stubs` does this mechanically (from version 0.8.0). Where the command is not installed, `npx product-engineer stubs` runs the same check.
 
 ## Before and after
 

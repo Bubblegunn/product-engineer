@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-// Runs each competing skill from scripts/comparison/pins.json on the eight eval tasks, skill arm only,
-// one run per task, through evals/run.sh. The bare arm and the product-engineer arm are not rerun: they
-// are the published 17 October run.
+// Runs each competing skill from scripts/comparison/pins.json on the comparison tasks, skill arm only,
+// one run per task, through evals/run.sh. The comparison tasks are every task in evals/tasks except those
+// that declare `kind: notes` (task 09 commits nothing and is scored by its own heuristics), so there are
+// eight, the same eight as the reference directory. The bare arm and the product-engineer arm are not
+// rerun: they are the published 17 October run.
 //
 //   node scripts/comparison/run-skills.mjs          # prints the plan and the estimated cost, runs nothing
 //   node scripts/comparison/run-skills.mjs --yes    # spends the money
@@ -14,7 +16,7 @@ import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readPins } from "./fetch-upstream.mjs";
-import { score } from "../../evals/score.mjs";
+import { score, kindOf } from "../../evals/score.mjs";
 import { REFERENCE } from "../../evals/comparison/skills.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -34,12 +36,20 @@ export function estimate({ meanCostUsd, tasks, rivals, runs = 1 }) {
   return Math.round(meanCostUsd * tasks * rivals * runs * 100) / 100;
 }
 
+/** The tasks the comparison runs: every task directory that is not `kind: notes`, sorted. */
+export function plannedTasks() {
+  return readdirSync(join(root, "evals", "tasks"), { withFileTypes: true })
+    .filter((d) => d.isDirectory() && kindOf(d.name) !== "notes")
+    .map((d) => d.name)
+    .sort();
+}
+
 /** Where a skill's directory is once fetch-upstream.mjs has run. */
 export const skillDir = (s) => join(root, "_upstream", s.repo.split("/")[1], s.path);
 
 export function main(argv) {
   const pins = readPins();
-  const tasks = readdirSync(join(root, "evals", "tasks"), { withFileTypes: true }).filter((d) => d.isDirectory()).length;
+  const tasks = plannedTasks().length;
   const mean = meanSkillCost(join(root, REFERENCE));
   const cost = estimate({ meanCostUsd: mean, tasks, rivals: pins.skills.length });
   console.log(`skills to run   ${pins.skills.map((s) => s.id).join(", ")}`);
@@ -50,14 +60,17 @@ export function main(argv) {
     return 1;
   }
   for (const s of pins.skills) {
-    const r = spawnSync("sh", ["evals/run.sh", "", "skill", "--yes"], {
-      cwd: root,
-      stdio: "inherit",
-      env: { ...process.env, PE_EVAL_SKILL_PATH: skillDir(s), PE_EVAL_SKILL_SOURCE: `${s.repo}@${s.commit.slice(0, 7)}`, PE_EVAL_OUT: join(root, "_upstream", "results", s.id) },
-    });
-    if (r.status !== 0) {
-      console.error(`evals/run.sh failed for ${s.id}`);
-      return 1;
+    for (const task of plannedTasks()) {
+      // One run.sh call per task: its filter is a name prefix, so a notes task is never reached.
+      const r = spawnSync("sh", ["evals/run.sh", task, "skill", "--yes"], {
+        cwd: root,
+        stdio: "inherit",
+        env: { ...process.env, PE_EVAL_SKILL_PATH: skillDir(s), PE_EVAL_SKILL_SOURCE: `${s.repo}@${s.commit.slice(0, 7)}`, PE_EVAL_OUT: join(root, "_upstream", "results", s.id) },
+      });
+      if (r.status !== 0) {
+        console.error(`evals/run.sh failed for ${s.id} on ${task}`);
+        return 1;
+      }
     }
   }
   return 0;

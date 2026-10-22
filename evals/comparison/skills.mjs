@@ -11,14 +11,14 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { metrics, score } from "../score.mjs";
+import { metrics, score, coreRows } from "../score.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..");
 export const OUT = join(here, "skills-results.json");
 export const SNAPSHOTS = join(here, "results");
 export const REFERENCE = "evals/results-2026-10-17/core";
-const KEEP = ["final.md", "commit.txt", "changed.txt", "meta.json", "exit.txt"];
+const KEEP = ["final.md", "commit.txt", "changed.txt", "meta.json", "exit.txt", "RELEASE_NOTES.md"];
 
 /** Copies the scorable files of every <task>/skill run from src to dest. Returns how many runs were copied. */
 export function snapshot(src, dest) {
@@ -39,8 +39,9 @@ const meanCost = (rows) => {
   return costs.length ? Math.round((costs.reduce((s, c) => s + c, 0) / costs.length) * 10000) / 10000 : null;
 };
 
-function arm(id, label, rows, condition) {
-  const mine = rows.filter((r) => r.condition === condition);
+function arm(id, label, allRows, condition) {
+  // A notes task has no core metrics, so its runs are not counted in any arm.
+  const mine = coreRows(allRows).filter((r) => r.condition === condition);
   const counts = Object.fromEntries(Object.keys(metrics).map((k) => [k, mine.filter((r) => r.results[k]).length]));
   const meta = mine.find((r) => r.meta?.requested_model)?.meta ?? {};
   return { id, label, n: mine.length, counts, meanCostUsd: meanCost(mine), model: meta.requested_model ?? null, cli: meta.cli ?? null, source: meta.source ?? null };

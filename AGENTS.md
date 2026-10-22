@@ -23,7 +23,8 @@ announcement paragraph first, `references/press-release.md`.
 
 ## 2. For the customer, every time
 
-Every commit message and every pull request description ends with this block:
+Every commit message ends with this block. Every pull request description opens with it,
+right after the title, so the first screen is the part for the customer:
 
 ```
 For the customer:
@@ -49,7 +50,12 @@ Work is done when you have watched it behave in production logs, in the database
 real device, or when you have written down exactly which of those you could not check and
 why. "Tests pass" is a step, and a test count is never the evidence in the customer block:
 `product-engineer check` warns when a block leans on a green suite and the message names
-no observation. Checklist: `references/definition-of-done.md`. Lean practice
+no observation. Before a fix is committed, write the observed result of the project's test
+command outside the block (`ran npm test: 212 passed, 0 failed`), or `not run` and why. Before saying done, run the project's test command.
+Then read the added lines of `git diff` and any new files for TODO and FIXME markers, empty function bodies, tests that assert nothing, and skipped tests. `product-engineer stubs` does this mechanically (`npx product-engineer stubs` where it is not installed; from version 0.8.0).
+
+A fix ships with a test that fails before the fix and passes after it, in the same commit; a docs-only fix needs none. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
+Checklist: `references/definition-of-done.md`. Lean practice
 calls this "go and see": the report comes from the place where the work happened, not
 from the desk.
 
@@ -58,7 +64,7 @@ from the desk.
 Deliver the requested scope in full. Do not quietly narrow it, widen it, or improve
 something nearby. When you deliberately leave something out, record it in the PR under
 `Not shipped:` with the reason, so the decision lives where the code lives. Format:
-`references/not-shipped.md`.
+`references/not-shipped.md`. If part of the request cannot work yet, because a gateway or service is not wired up, return an explicit HTTP 501 or 503 with a test, never a success or a pending success, and say plainly that nothing happens yet.
 
 ## 5. No number without a count
 
@@ -72,6 +78,8 @@ With non-technical people use their nouns. Say "the booking shows up twice" befo
 "idempotency". The translation table is in `references/plain-language.md`, with Turkish,
 Japanese and Chinese versions in `plain-language.<lang>.md`; when a word is not there,
 explain it in one sentence the first time and move on.
+
+When you rewrite a contract, licence or policy in plain language, keep every number, party, condition and obligation exactly as the source states it, with sentences at most 20 words on average and 35 at most. Run `product-engineer facts source rewrite` and fix what it reports before you save; without the command, check the numbers and the sentence lengths by hand. Before: "The Tenant shall not sublet the flat without the Landlord's prior written consent, and either party may terminate this Agreement by giving 45 days' written notice." After: "The tenant must not sublet the flat without the landlord's written permission. Either side can end the agreement by giving 45 days' written notice."
 
 ## 7. Smallest change that moves the metric
 

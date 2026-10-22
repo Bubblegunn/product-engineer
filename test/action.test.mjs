@@ -124,6 +124,24 @@ test("diff is passed on as --diff <range>, and left out when empty", SHELL_ONLY,
   assert.ok(!args(none).includes("--diff"));
 });
 
+test("the description is checked as a pull request: --kind pr is always passed on", SHELL_ONLY, () => {
+  const action = echoingAction();
+  const body = args(run({ ACTION_PATH: action, BODY_FILE: fixture("with-block.txt") }));
+  assert.equal(body[body.indexOf("--kind") + 1], "pr");
+  const live = args(run({ ACTION_PATH: action, PR_NUMBER: "12" }));
+  assert.equal(live[live.indexOf("--kind") + 1], "pr");
+});
+
+test("a description whose block sits at the end passes, with a block-not-first warning", SHELL_ONLY, () => {
+  const dir = mkdtempSync(join(tmpdir(), "pe-action-kind-"));
+  const body = join(dir, "body.txt");
+  const filler = Array.from({ length: 14 }, (_, i) => `Technical detail ${i + 1} about the change.`).join("\n");
+  writeFileSync(body, `feat: export\n\n${filler}\n\nFor the customer:\nWhat changed: Accountants can download bookings.\nWhy it matters: They stopped copying them by hand.\n`);
+  const r = run({ BODY_FILE: body });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /::warning title=product-engineer::the For the customer block starts on line 18/);
+});
+
 test("diff that is not a plain revision range exits 2 before anything runs", SHELL_ONLY, () => {
   const action = echoingAction();
   for (const diff of ["--stat", "-x", "main; ls", "$(id)", "a b", "`id`", "main|cat"]) {

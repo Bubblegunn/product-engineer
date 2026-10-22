@@ -152,3 +152,36 @@ test("the skills section prints a loss as a loss, a note when the CLI differs, a
 test("with no skills results the section says the runs have not been made", () => {
   assert.match(renderSkills(null, { considered: [] }), /Not run yet/);
 });
+
+// Fix round 1. The comparison runs the reference directory's eight tasks; a notes task is never planned, and
+// a notes run that happens to sit in a snapshot is not counted in any arm.
+import { plannedTasks } from "../scripts/comparison/run-skills.mjs";
+import { readPins } from "../scripts/comparison/fetch-upstream.mjs";
+import { readdirSync as listDirs } from "node:fs";
+
+test("the planned tasks are the reference directory's tasks, and the notes task is not one of them", () => {
+  const ref = listDirs(join(root, "evals", "results-2026-10-17", "core"), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+  assert.equal(ref.length, 8);
+  assert.deepEqual(plannedTasks(), ref);
+  assert.ok(!plannedTasks().includes("09-release-notes"));
+});
+
+test("run-skills plans one run per planned task and skill", () => {
+  const n = plannedTasks().length;
+  const skills = readPins().skills.length;
+  const r = spawnSync("node", ["scripts/comparison/run-skills.mjs"], { cwd: root, encoding: "utf8" });
+  assert.match(r.stdout, new RegExp(`runs\\s+${n * skills} \\(${n} tasks`));
+});
+
+test("a notes run in a snapshot is not counted in the arm", () => {
+  const snaps = tmp("snap");
+  const files = (dir, extra = {}) => {
+    mkdirSync(dir, { recursive: true });
+    for (const [f, text] of Object.entries({ "final.md": "Done.\n", "commit.txt": "", "changed.txt": "x\n", "meta.json": "{}", "exit.txt": "0\n", ...extra })) writeFileSync(join(dir, f), text);
+  };
+  files(join(snaps, "rival", "01-export-safari", "skill"));
+  files(join(snaps, "rival", "09-release-notes", "skill"), { "RELEASE_NOTES.md": "You can see 50 bookings at a time.\n" });
+  const out = collect({ pins: { skills: [{ id: "rival", name: "Rival", licence: "MIT" }] }, date: "2030-01-02", ourVersion: "9.9.9", snapshotsDir: snaps });
+  const arm = out.arms.find((a) => a.id === "rival");
+  assert.equal(arm.n, 1);
+});

@@ -5,7 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { mkdtempSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { analyse, exitCode, render, commentBody } from "../bin/check.mjs";
+import { analyse, exitCode, render, commentBody, kindFrom } from "../bin/check.mjs";
 import { shippedHeadings } from "../bin/headings.mjs";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
@@ -246,3 +246,157 @@ test("an unfilled template fails check, and passes once filled in", () => {
   assert.equal(exitCode(resFilled), 0, "filled template must pass check");
 });
 
+
+// --- --kind pr: in a pull request description the block comes first, so the first screen is the customer's ---
+
+const techBody = Array.from({ length: 14 }, (_, i) => `Technical detail line ${i + 1} about the change.`).join("\n");
+const prBlockAtEnd = `feat: export bookings\n\n${techBody}\n\nFor the customer:\nWhat changed: Accountants can download bookings.\nWhy it matters: They stopped copying them by hand.\n`;
+const prBlockFirst = `feat: export bookings\n\nFor the customer:\nWhat changed: Accountants can download bookings.\nWhy it matters: They stopped copying them by hand.\n\n${techBody}\n`;
+
+test("commit kind is the default and does not look at where the block starts", () => {
+  const r = analyse(prBlockAtEnd);
+  assert.ok(!has(r, "warn", /starts on line/), JSON.stringify(r.findings));
+  assert.ok(!r.findings.some((f) => f.code === "block-not-first"));
+  assert.ok(!r.findings.some((f) => f.code === "block-first"));
+  assert.equal(exitCode(analyse(prBlockAtEnd, { kind: "commit" })), 0);
+});
+
+test("pr kind: a block that starts within the first 12 lines is an ok finding", () => {
+  const r = analyse(prBlockFirst, { kind: "pr" });
+  assert.equal(exitCode(r), 0);
+  assert.ok(has(r, "ok", /block within the first 12 lines|block starts on line 3/), JSON.stringify(r.findings));
+  assert.ok(!r.findings.some((f) => f.code === "block-not-first"));
+});
+
+test("pr kind: a block at the end warns block-not-first with its line number, and still exits 0", () => {
+  const r = analyse(prBlockAtEnd, { kind: "pr" });
+  const w = r.findings.find((f) => f.code === "block-not-first");
+  assert.ok(w, JSON.stringify(r.findings));
+  assert.equal(w.level, "warn");
+  assert.match(w.message, /the For the customer block starts on line 18; in a pull request description put it first/);
+  assert.equal(exitCode(r), 0);
+  assert.ok(!r.findings.some((f) => f.level === "error"));
+});
+
+test("pr kind: a block starting on line 12 is still first, and line 13 is not", () => {
+  const onTwelve = `feat: x\n${Array.from({ length: 10 }, (_, i) => `t${i}`).join("\n")}\nFor the customer:\nWhat changed: A.\nWhy it matters: B.\n`;
+  assert.equal(onTwelve.split("\n").findIndex((l) => l === "For the customer:") + 1, 12);
+  assert.ok(analyse(onTwelve, { kind: "pr" }).findings.some((f) => f.code === "block-first"));
+  const onThirteen = `feat: x\n${Array.from({ length: 11 }, (_, i) => `t${i}`).join("\n")}\nFor the customer:\nWhat changed: A.\nWhy it matters: B.\n`;
+  assert.equal(onThirteen.split("\n").findIndex((l) => l === "For the customer:") + 1, 13);
+  assert.ok(analyse(onThirteen, { kind: "pr" }).findings.some((f) => f.code === "block-not-first"));
+});
+
+test("pr kind: a missing block is still an error, not a placement warning", () => {
+  const r = analyse(`feat: x\n\n${techBody}\n`, { kind: "pr" });
+  assert.equal(exitCode(r), 1);
+  assert.ok(has(r, "error", /no "For the customer:" block/));
+  assert.ok(!r.findings.some((f) => f.code === "block-not-first"));
+});
+
+test("the CLI takes --kind pr, rejects any other value with exit 2, and warns without failing", () => {
+  const pr = spawnSync("node", [cli, "check", "-", "--kind", "pr"], { input: prBlockAtEnd, encoding: "utf8" });
+  assert.equal(pr.status, 0, pr.stdout + pr.stderr);
+  assert.match(pr.stdout, /starts on line 18/);
+  const commit = spawnSync("node", [cli, "check", "-"], { input: prBlockAtEnd, encoding: "utf8" });
+  assert.equal(commit.status, 0);
+  assert.doesNotMatch(commit.stdout, /starts on line/);
+  const bad = spawnSync("node", [cli, "check", "-", "--kind", "issue"], { input: prBlockAtEnd, encoding: "utf8" });
+  assert.equal(bad.status, 2);
+  assert.match(bad.stderr, /--kind must be commit or pr, got: issue/);
+  const flagFirst = spawnSync("node", [cli, "check", "--kind", "pr", "-"], { input: prBlockFirst, encoding: "utf8" });
+  assert.equal(flagFirst.status, 0, flagFirst.stdout + flagFirst.stderr);
+  assert.match(flagFirst.stdout, /block within the first 12 lines|block starts on line 3/);
+});
+
+test("the help text documents --kind", () => {
+  const help = execFileSync("node", [cli, "--help"], { encoding: "utf8" });
+  assert.match(help, /--kind commit\|pr/);
+  assert.match(help, /block-not-first|first 12 lines/);
+});
+
+// Fix round, final review. --kind takes its value after a space or with an equals sign, names the
+// missing value, and --pr implies pr unless --kind is given.
+test("kindFrom reads --kind with a space or an equals sign, says when the value is missing, and --pr implies pr", () => {
+  assert.equal(kindFrom(["--kind", "pr"]), "pr");
+  assert.equal(kindFrom(["--kind=pr"]), "pr");
+  assert.equal(kindFrom(["-"]), "commit");
+  assert.equal(kindFrom(["--pr", "12"]), "pr");
+  assert.equal(kindFrom(["--pr", "12", "--kind", "commit"]), "commit");
+  assert.throws(() => kindFrom(["--kind"]), /--kind needs a value \(commit or pr\)/);
+  assert.throws(() => kindFrom(["--kind", "--warn"]), /--kind needs a value \(commit or pr\)/);
+  assert.throws(() => kindFrom(["--kind=issue"]), /--kind must be commit or pr, got: issue/);
+});
+
+test("the CLI reports a missing --kind value with exit 2, and accepts --kind=pr", () => {
+  const missing = spawnSync("node", [cli, "check", "-", "--kind"], { input: prBlockAtEnd, encoding: "utf8" });
+  assert.equal(missing.status, 2);
+  assert.match(missing.stderr, /--kind needs a value \(commit or pr\)/);
+  const eq = spawnSync("node", [cli, "check", "-", "--kind=pr"], { input: prBlockAtEnd, encoding: "utf8" });
+  assert.equal(eq.status, 0, eq.stdout + eq.stderr);
+  assert.match(eq.stdout, /starts on line 18/);
+});
+
+test("the help text states the hint rules as the code applies them: doctor prints it unless -q is given", () => {
+  const help = execFileSync("node", [cli, "--help"], { encoding: "utf8" });
+  assert.match(help, /doctor \(which otherwise prints it\)/);
+  assert.match(help, /stubs \(which accepts -q for this only\)/);
+  assert.match(help, /--pr <n> implies --kind pr unless --kind is given/);
+  assert.match(help, /product-engineer stubs \[--staged \| --range <a\.\.b>\] \[--json\] \[--warn\] \[-q\]/);
+  assert.doesNotMatch(help, /doctor ignores it and prints no hint/);
+});
+
+// A refactor shows users no change, so its customer block may only say so. A benefit word there is
+// a claim nobody measured.
+const refactor = (what) => `refactor: move the price table into its own module
+
+For the customer:
+What changed: ${what}
+Why it matters: Nothing you see changes; the team can find the prices more easily when they edit them.
+`;
+
+test("a refactor whose customer block claims a benefit warns refactor-benefit-claim and names the word", () => {
+  const r = analyse(refactor("Nothing you see changes, but the pricing code is faster to read and cleaner."));
+  const f = r.findings.filter((x) => x.code === "refactor-benefit-claim");
+  assert.equal(f.length, 2, JSON.stringify(f));
+  assert.ok(f.every((x) => x.level === "warn"));
+  assert.ok(f.some((x) => /"faster"/.test(x.message)), JSON.stringify(f));
+  assert.ok(f.some((x) => /"cleaner"/.test(x.message)), JSON.stringify(f));
+});
+
+test("a refactor whose customer block says only that users see no change does not warn refactor-benefit-claim", () => {
+  const r = analyse(refactor("Users see no change."));
+  assert.ok(!r.findings.some((x) => x.code === "refactor-benefit-claim"), JSON.stringify(r.findings));
+});
+
+test("a benefit word outside the customer block, or in a feature commit, is not a refactor claim", () => {
+  const body = "feat: add a faster export\n\nFor the customer:\nWhat changed: The export is faster now.\nWhy it matters: Reception saves time.\n";
+  assert.ok(!analyse(body).findings.some((x) => x.code === "refactor-benefit-claim"));
+  const technical = refactor("Users see no change.") + "\nThe new lookup is faster, so the table is read once.\n";
+  assert.ok(!analyse(technical).findings.some((x) => x.code === "refactor-benefit-claim"));
+});
+
+test("a benefit word that is part of a hyphenated name, or that a negation governs, is not a refactor claim", () => {
+  const hyphen = analyse(refactor("Users see no change. The storage uses better-sqlite3 now."));
+  assert.ok(!hyphen.findings.some((x) => x.code === "refactor-benefit-claim"), "a hyphenated name is not a claim: " + JSON.stringify(hyphen.findings));
+  const negated = analyse(refactor("Users see no change in speed."));
+  assert.ok(!negated.findings.some((x) => x.code === "refactor-benefit-claim"), "no change in speed is a negation");
+  const nothing = analyse(refactor("Nothing is faster or slower for guests."));
+  assert.ok(!nothing.findings.some((x) => x.code === "refactor-benefit-claim"), "nothing is faster is a negation");
+  const plain = analyse(refactor("The screens are faster to load."));
+  assert.ok(plain.findings.some((x) => x.code === "refactor-benefit-claim"), "an unnegated benefit still warns");
+});
+
+test("the --diff usage text names the fix-without-test check", () => {
+  const help = execFileSync("node", [cli, "--help"], { encoding: "utf8" });
+  assert.match(help, /a fix title with no test file touched/);
+});
+
+test("the negation window stops at punctuation and at but, just and only: a real claim after a negation still warns", () => {
+  for (const what of ["no change, just faster.", "It is not slower, but faster.", "It is not slower but faster.", "No change. Faster.", "now faster and not slower", "the page is not slow, only faster."]) {
+    const r = analyse(refactor(what));
+    assert.ok(r.findings.some((x) => x.code === "refactor-benefit-claim"), what + " must warn");
+  }
+  const none = analyse(refactor("nothing is faster or slower"));
+  assert.ok(!none.findings.some((x) => x.code === "refactor-benefit-claim"), "nothing is faster or slower must not warn");
+});

@@ -8,15 +8,23 @@
 // Every check here is mechanical and reports at warning level only, so no existing run turns
 // red on an upgrade. Each finding names what was counted, because rule five applies to this
 // tool as much as to the messages it reads.
+//
+// The secret-file and mixed-change checks are adapted from Smart Commits by Stefan Petrovici,
+// MIT licence, Copyright (c) 2026 Stefan Petrovici (text in THIRD_PARTY_NOTICES.md). The ideas
+// were taken; the code here is written for this tool.
 import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-const git = (args, cwd) =>
+// 256 MB: a large generated or vendored change must not overflow the default 1 MB output buffer.
+const PATCH_BUFFER = 256 * 1024 * 1024;
+
+const git = (args, cwd, maxBuffer = PATCH_BUFFER) =>
   execFileSync("git", ["-c", "core.quotepath=false", ...args], {
     cwd,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer,
   });
 
 /** A path that holds tests, by the conventions the common runners use. */
@@ -28,11 +36,17 @@ export const isDocPath = (p) => /\.(md|mdx|markdown|rst|txt|adoc)$/i.test(p) || 
 /**
  * Read a change as a list of files with line counts.
  * range: a git range such as "main...HEAD"; omit for the staged change, which is what the
- * commit-msg hook is about to record.
+ * commit-msg hook is about to record. The result says which of the two it read (isRange).
  */
-export function readDiff({ range, cwd = process.cwd() } = {}) {
-  const args = ["diff", "--numstat", "-z", ...(range ? [range] : ["--cached"])];
-  const raw = git(args, cwd);
+// Explicit prefixes and no external diff, so a user's diff.mnemonicPrefix or diff.noprefix
+// setting cannot change the paths read from the patch.
+const PREFIX_FLAGS = ["--src-prefix=a/", "--dst-prefix=b/", "--no-ext-diff"];
+
+export function readDiff({ range, cwd = process.cwd(), patchBuffer = PATCH_BUFFER } = {}) {
+  const rangeArgs = range ? [range] : ["--cached"];
+  const raw = git(["diff", "--numstat", "-z", ...PREFIX_FLAGS, ...rangeArgs], cwd);
+  // A deleted path is listed separately, so the secret-file check can skip a removal.
+  const deleted = new Set(git(["diff", "--name-only", "--diff-filter=D", "-z", ...PREFIX_FLAGS, ...rangeArgs], cwd).split("\0").filter(Boolean));
   const fields = raw.split("\0").filter((f) => f !== "");
   const files = [];
   for (let i = 0; i < fields.length; i++) {
@@ -46,9 +60,136 @@ export function readDiff({ range, cwd = process.cwd() } = {}) {
       i += 2;
     }
     if (!path) continue;
-    files.push({ path, added: add === "-" ? 0 : Number(add), removed: del === "-" ? 0 : Number(del), binary: add === "-" });
+    files.push({ path, added: add === "-" ? 0 : Number(add), removed: del === "-" ? 0 : Number(del), binary: add === "-", deleted: deleted.has(path) });
   }
-  return { files, range: range ?? "--cached" };
+  // The added lines, read with no context, for the secret-content check. Only the path and the
+  // line number are kept from a hit; the matched text is never stored. If even this read fails
+  // (too large, or git refuses), the check is skipped and says so; the other checks still run.
+  let secretHits = [];
+  let secretSkipped = false;
+  try {
+    secretHits = secretHitsIn(git(["diff", ...rangeArgs, "-U0", "--no-color", ...PREFIX_FLAGS], cwd, patchBuffer));
+  } catch {
+    secretSkipped = true;
+  }
+  return { files, range: range ?? "--cached", isRange: Boolean(range), secretHits, secretSkipped };
+}
+
+/** A path whose name says it holds a credential. A `.env` example or sample is a template, not a secret. */
+export const isSecretPath = (p) => {
+  const base = p.split("/").pop();
+  if (/^\.env(\..+)?$/.test(base)) return !/^\.env\.(example|sample|template)$/.test(base);
+  return /\.(pem|key|p12|pfx)$/i.test(base) || /^(id_rsa|id_ed25519)$/.test(base) || /^credentials\./i.test(base);
+};
+
+// A long value assigned to a name a reader would call a secret. A value counts when it is quoted,
+// or when it is unquoted, holds a digit and ends the token (a space, comma, semicolon, closing
+// bracket or the end of the line). A call such as `createSessionTokenForUser(user)` and an
+// identifier such as `request_headers_value` are code, not values, so neither is reported.
+const SECRET_ASSIGNMENT = /(?:api[_-]?key|apikey|secret|token|password|passwd)["']?\s*[:=]\s*(?:["'][A-Za-z0-9_\-+/=]{16,}["']|(?=[A-Za-z0-9_\-+/=]*\d)[A-Za-z0-9_\-+/=]{16,}(?=[\s,;)\]}]|$))/i;
+const PRIVATE_KEY_HEADER = /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/;
+
+/** The first secret-shaped kind a single added line matches, or undefined. */
+function secretKind(text) {
+  if (PRIVATE_KEY_HEADER.test(text)) return "a private key header";
+  if (SECRET_ASSIGNMENT.test(text)) return "a long value assigned to a secret-like name";
+  return undefined;
+}
+
+/**
+ * Walk a zero-context patch and return { path, line, kind } for each added line that looks like
+ * a secret. The line counter follows the hunk headers, so a content line that begins with "+++"
+ * or "diff" is still an added line and not a header.
+ */
+export function secretHitsIn(patch) {
+  const hits = [];
+  let path = null;
+  let inHeader = false;
+  let line = 0;
+  for (const raw of patch.split("\n")) {
+    if (raw.startsWith("diff --git ")) {
+      path = null;
+      inHeader = true;
+      continue;
+    }
+    if (inHeader && raw.startsWith("+++ ")) {
+      const named = raw.slice(4).replace(/\t$/, "");
+      path = named === "/dev/null" ? null : named.replace(/^b\//, "");
+      continue;
+    }
+    const hunk = /^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(raw);
+    if (hunk) {
+      inHeader = false;
+      line = Number(hunk[1]);
+      continue;
+    }
+    if (inHeader) continue;
+    if (raw.startsWith("+")) {
+      const kind = path ? secretKind(raw.slice(1)) : undefined;
+      if (kind) hits.push({ path, line, kind });
+      line++;
+    } else if (raw.startsWith(" ")) {
+      line++;
+    }
+  }
+  return hits;
+}
+
+// Lockfiles are generated from the manifest; a change that touches one is not a second unit of work.
+export const isLockPath = (p) => /(^|\/)(package-lock\.json|npm-shrinkwrap\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lockb?|Cargo\.lock|go\.sum|Gemfile\.lock|poetry\.lock|composer\.lock|Pipfile\.lock)$/.test(p);
+
+// A root-level manifest or dotfile (package.json, tsconfig.json, .nvmrc) configures the project,
+// and a top-level dot-directory (.github, .husky, .vscode) holds its tooling. Neither is a unit of
+// work, so both are left out of the grouping and the 80 percent denominator rather than forming a group.
+const isRootManifest = (p) =>
+  (!p.includes("/") && (p.startsWith(".") || /\.(json|toml|ya?ml|lock|cfg|ini|xml|gradle|mod)$/i.test(p) || /^(Makefile|Dockerfile|Gemfile|Rakefile|Procfile|Justfile)$/.test(p))) ||
+  (p.includes("/") && p.split("/")[0].startsWith("."));
+
+const stemOf = (p) => p.split("/").pop().replace(/\.[^.]+$/, "");
+// The source a test names: reminders.test.js names reminders; test_thing.py names thing.
+const subjectOfTest = (p) => stemOf(p).replace(/[._-](test|spec)$/i, "").replace(/^test_/i, "");
+
+// Monorepo containers: a package under packages/ is a unit of its own, so the group is its first
+// two path segments (packages/a) rather than the container (packages).
+const MONOREPO_CONTAINERS = new Set(["packages", "apps", "services", "libs", "modules"]);
+const groupOf = (p) => {
+  const seg = p.split("/");
+  if (seg.length === 1) return "(root)";
+  if (MONOREPO_CONTAINERS.has(seg[0]) && seg.length >= 3) return `${seg[0]}/${seg[1]}`;
+  return seg[0];
+};
+
+/**
+ * Sort the counted files into groups. A source file groups by its top-level directory (for a
+ * monorepo container, its first two segments). A test joins the group of the source file its name
+ * points at; a test that names no source joins the largest source group. A test forms a group of
+ * its own only when the change has no source file at all. Docs, lockfiles and root-level manifests
+ * are not counted. Returns groups with their changed lines (added plus removed) and the total.
+ */
+export function groupFiles(files) {
+  const counted = files.filter((f) => !isDocPath(f.path) && !isLockPath(f.path) && !isRootManifest(f.path));
+  const source = counted.filter((f) => !isTestPath(f.path));
+  const tests = counted.filter((f) => isTestPath(f.path));
+  const groups = new Map();
+  const add = (key, f) => {
+    if (!groups.has(key)) groups.set(key, { key, files: [], lines: 0 });
+    const g = groups.get(key);
+    g.files.push(f.path);
+    g.lines += f.added + f.removed;
+  };
+  const sourceGroup = new Map();
+  for (const f of source) {
+    if (!sourceGroup.has(stemOf(f.path))) sourceGroup.set(stemOf(f.path), groupOf(f.path));
+    add(groupOf(f.path), f);
+  }
+  if (source.length) {
+    const largest = [...groups.values()].sort((a, b) => b.lines - a.lines)[0].key;
+    for (const t of tests) add(sourceGroup.get(subjectOfTest(t.path)) ?? largest, t);
+  } else {
+    for (const t of tests) add(groupOf(t.path), t);
+  }
+  const total = [...groups.values()].reduce((n, g) => n + g.lines, 0);
+  return { groups: [...groups.values()], total };
 }
 
 const WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
@@ -63,6 +204,9 @@ const TEST_CLAIM = /\b(add(ed|s|ing)?|wrote|writes?|writing|introduc(e|ed|es)|in
 // name `extra-docs-only` contains "docs-only" and named it in a commit message here, which
 // the baseline caught as a false alarm. A token inside a longer compound is a name.
 const DOCS_ONLY_CLAIM = /(?<![-\w])(documentation|docs?|readme|comment)[- ]only\b|\bonly (the )?(documentation|docs?|readme|comments?)\b|\bno (code|source) changes?\b/i;
+
+// A title that says the change is a fix: conventional fix or fix(scope), or fix, fixes or fixed at the start.
+const FIX_TITLE = /^(fix(\([^)]*\))?!?:|(fix|fixes|fixed)\b)/i;
 
 const CHANGE_VERB = /\b(chang(e|ed|es)|touch(ed|es)?|modif(y|ied|ies)|updat(e|ed|es)|edit(ed|s)?|add(ed|s)?|remov(e|ed|es)|delet(e|ed|es)|rewrit(e|ten|es))\b/i;
 
@@ -166,6 +310,45 @@ export function crossCheck(text, diff, { cwd = process.cwd() } = {}) {
   const broken = namedPaths(body).filter((p) => !inDiff.has(p) && !existsSync(join(cwd, p)));
   if (broken.length) {
     add("warn", `the message names ${broken.length === 1 ? "a path" : "paths"} that ${broken.length === 1 ? "is" : "are"} not in this change and not in the repository: ${broken.slice(0, 3).join(", ")}`, "diff-path-missing");
+  }
+
+  // 5. A staged path that looks like a credential. Named by path only; a file that holds one is
+  // removed from the commit, and a `.env.example` is a template and passes.
+  for (const f of files.filter((x) => isSecretPath(x.path) && !x.deleted)) {
+    add("warn", `${diff.isRange ? "changed" : "staged"} file looks like a secret: ${f.path}; remove it from the commit`, "diff-secret-file");
+  }
+
+  // 6. An added line that holds a secret-shaped value. Reported by path and line only: the value
+  // is never copied into a finding, so a report or a CI log cannot leak it.
+  if (diff.secretSkipped) {
+    add("info", "secret-content skipped: change too large for the added-line read; the other checks still ran", "diff-secret-skipped");
+  }
+  for (const h of diff.secretHits ?? []) {
+    add("warn", `an added line looks like a secret (${h.kind}): ${h.path}:${h.line}; the value is not printed`, "diff-secret-content");
+  }
+
+  // A fix ships with a test. A title that says fix over source changes, with no test file changed, is
+  // the shape of a fix that was not tested. A docs-only fix has no source file and is not reported.
+  const title = (text.split("\n")[0] ?? "").trim();
+  // A lock file, a workflow or a config file is not code: a bump of one of them is not a fix to code.
+  const code = source.filter((f) => !isLockPath(f.path) && !isRootManifest(f.path));
+  if (FIX_TITLE.test(title) && !tests.length && code.length) {
+    const n = code.length;
+    const named = code.slice(0, 3).map((f) => f.path).join(", ");
+    add("warn", `the title says this is a fix, and no test file changes; ${n} source file${n === 1 ? " does" : "s do"}: ${named}${n > 3 ? ", and more" : ""}`, "fix-without-test");
+  }
+
+  // 7. Changes that mix unrelated work. The largest group must hold at least 80 percent of the
+  // changed lines for the change to count as one unit; below that, and with two or more groups,
+  // the message is advice to split, not an error. A range is a pull request, which is one unit
+  // that reviewers read together, so the advice to split commits does not apply to it.
+  const { groups, total } = groupFiles(files);
+  if (!diff.isRange && groups.length >= 2 && total > 0) {
+    const largest = Math.max(...groups.map((g) => g.lines));
+    if (largest / total < 0.8) {
+      const named = groups.map((g) => `${g.key}: ${g.files.slice(0, 3).join(", ")}${g.files.length > 3 ? ", and more" : ""}`).join("; ");
+      add("warn", `this change mixes ${groups.length} unrelated groups (${named}); consider separate commits`, "diff-mixed-change");
+    }
   }
 
   return findings;

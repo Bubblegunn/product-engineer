@@ -17,19 +17,27 @@ commit ve pull request'e sade dilde bir "For the customer" bloğu ekler. Gözlem
 
 ## 30 saniyede kurulum
 
+Projedeki ajanlara skill'leri kurar:
+
 ```
 npx skills add Bubblegunn/product-engineer
+```
+
+Aynı skill'leri Claude Code eklentisi olarak kurar (Claude Code 2.1.275 veya sonrası):
+
+```
+/plugin install product-engineer --marketplace Bubblegunn/product-engineer
+```
+
+Komut satırı denetleyicisi (Node 22 veya daha yeni):
+
+```
+npx product-engineer check msg.txt --diff
 ```
 
 Bu, [skills.sh](https://skills.sh) kurucusudur. Projedeki ajanları algılar ve skill'i her biri
 için yerleştirir; `--all` desteklenen bütün ajanları hedefler, `-g` proje yerine kullanıcı
 düzeyine kurar.
-
-Claude Code'da bunun yerine eklenti olarak da kurabilirsiniz (Claude Code 2.1.275 veya sonrası):
-
-```
-/plugin install product-engineer --marketplace Bubblegunn/product-engineer
-```
 
 Her ajanda dosyanın nereye düştüğü, Claude Code plugin komutları, git kancası ve CI adımı
 [`docs/install.md`](docs/install.md) içinde. Depo dört skill taşır: `product-engineer` (yedi
@@ -86,6 +94,10 @@ Not shipped:
 Tam metin: [`skills/product-engineer/SKILL.md`](skills/product-engineer/SKILL.md). Şablon,
 beş soru, bitti listesi, sade dil tablosu ve not-shipped biçimi
 [`references/`](skills/product-engineer/references/) altında.
+
+## Aynı görevlerde karşılaştırma
+
+Bir sonraki karşılaştırma on üç görevde, sekiz kolda ve her kolda üç koşuda yapılır: çıplak model, product-engineer ve üç dizin rakibi; her rakip ayrıca skill'ini adıyla çağrılan bir koşuda da yer alır. Yöntem, sabitlenmiş rakip commit'leri ve kazanma kuralı [`docs/HEAD-TO-HEAD.md`](docs/HEAD-TO-HEAD.md) içinde. Sonuç tablosu birinci tur çalıştırıldıktan sonra buraya eklenecek.
 
 ## Ne yapmaz
 

@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.8.0 (unreleased)
+
+**`product-engineer facts` checks a plain-language rewrite against its source.** `facts <source> <rewrite>` reads both files. It exits 1 when a number is dropped or added, or when the rewrite's sentences average more than 20 words or have one longer than 35. A missing plain equivalent for an obligation and legal phrases left in the rewrite are warnings. `--avg-sentence`, `--max-sentence` and `--json` change the limits and the output.
+
+**An unfinished integration returns an explicit not-available response.** `done-means-observed` now starts with the rule: HTTP 501 or 503 with a test that pins it, no TODO, FIXME or `return null` marker, and an answer that says plainly that nothing happens yet.
+
+**A bug fix ships with a test.** `diff` warns with `fix-without-test` when a fix title changes source files and no test file. The skills ask for the test in the same commit.
+
+**A refactor claims only what was run.** `check` warns with `refactor-benefit-claim`, naming the word, when a refactor's customer block says a benefit such as faster or cleaner. The skills say a refactor shows users no change.
+
+**`check --kind pr` puts the customer block first in pull requests.** `--kind commit|pr` (default `commit`, unchanged). With `pr`, a block that starts after line 12 is a warning with the code `block-not-first`. The Action passes `--kind pr` for every description it checks. The skills say the same: a commit ends with the block, a pull request description opens with it.
+
+**Commits state the observed test result.** Before a fix is committed, the result of the project's test command goes in the message body or the final answer, outside the block; `not run` and the reason when nothing could run. The block itself still does not count a test as evidence.
+
+**The release-notes skill has its own rules.** No line for docs-only, version-bump, formatting or test-only commits. `Not in this release:` lists only what the commits led readers to expect. A cause is described, not an effect nobody measured, and the first line states the commit range. Naming the range is common changelog practice; the wording is this skill's own. Eval task 09 (`evals/tasks/09-release-notes`) asks for release notes.
+
+**`product-engineer stubs` flags stubs in the lines a change adds.** Options: the working tree against `HEAD` by default (staged and unstaged edits, plus new files git does not ignore), `--staged` for the index only, `--range a..b`, `--json`, `--warn` and `-q`. It flags TODO, FIXME and XXX markers, empty or placeholder function bodies, tests that assert nothing or compare an expression with itself, and newly skipped tests. Its pattern families are adapted from dod-guard by Atos Daniel de Assis Lins (MIT).
+
+**`diff` warns about secret-looking files and mixed work.** A changed file whose name says it holds a credential is named. An added line holding a secret-shaped value is reported by file and line, and the value is not printed. A change whose lines fall into unrelated groups gets a warning to split it. These two checks are adapted from Smart Commits by Stefan Petrovici (MIT).
+
+**`stubs` default scope is the working tree.** A change that was not staged is now scanned, and the summary names the scope and the files and lines it read. A clean result says `clean`.
+
+**`diff` does not call a pull request range mixed work.** The mixed-change warning is kept for the staged change; a `--diff a...b` range is one unit and is not reported for mixing unrelated groups.
+
+**`diff` reads secret-looking values more strictly.** A call such as `createSessionTokenForUser(user)` or an identifier such as `request_headers_value` is no longer reported as a secret. A quoted value, or an unquoted value with a digit that ends the token, still is.
+
+**The licence notices ship in the npm package.** `THIRD_PARTY_NOTICES.md` is in the tarball, and the adapted source files carry their copyright lines.
+
+**One-time star request in the CLI.** Shown once per machine, on the first run in an interactive terminal. `--quiet` or `PRODUCT_ENGINEER_NO_STAR_HINT=1` turns it off. It never appears in CI, pipes, agent sessions or git hooks.
+
+**Benchmark harness for the same tasks.** `bench/head-to-head` runs thirteen tasks on eight arms (the bare model, product-engineer, three pinned directory competitors, each also invoked by name), three runs each. The frozen design is in `docs/HEAD-TO-HEAD.md`; `bash bench/head-to-head/rerun.sh` repeats a round. This release publishes no result.
+
+**Credits.** Smart Commits (MIT, Stefan Petrovici) and dod-guard (MIT, Atos Daniel de Assis Lins) are credited in `THIRD_PARTY_NOTICES.md`. git-weekly-changelog has no licence, so only its idea of stating the range was taken, and none of its text.
+
 ## 0.7.0 (2026-10-20)
 
 **`check --format json`.** Prints one JSON object, `{ ok, findings: [{ level, code, message }], readability }`, and

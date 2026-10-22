@@ -31,7 +31,7 @@ the file names the version it was copied from.
 
 ## What you should see
 
-Every commit message and pull request description the agent writes ends with the block:
+Every commit message the agent writes ends with the block, and every pull request description opens with it:
 
 ```
 For the customer:

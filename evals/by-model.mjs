@@ -8,7 +8,7 @@
 // No model is called. Node built-ins only.
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { metrics, score, bootstrapDelta } from "./score.mjs";
+import { metrics, score, bootstrapDelta, coreRows } from "./score.mjs";
 
 /** "worked" when the whole interval is above zero, "worse" when it is all below, otherwise "no clear effect". */
 export function reading(low, high) {
@@ -38,7 +38,7 @@ export function metricRow(rows, key) {
 }
 
 export function summarise(dir) {
-  const rows = score(resolve(dir));
+  const rows = coreRows(score(resolve(dir)));
   const first = rows.find((r) => r.meta?.requested_model) ?? rows[0];
   const arm = (c) => rows.filter((r) => r.condition === c);
   const cost = (c) => mean(arm(c).map((r) => r.meta?.cost_usd).filter((x) => typeof x === "number"));

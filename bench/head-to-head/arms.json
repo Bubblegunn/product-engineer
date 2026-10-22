@@ -1,0 +1,45 @@
+{
+  "ours": { "kind": "self", "cli": true, "probes": [["--help", "stubs"], ["--help", "--kind"], ["--help", "facts"]] },
+  "base": { "kind": "empty" },
+  "dod": {
+    "kind": "git",
+    "repo": "https://github.com/atoslins/dod-guard",
+    "commit": "be038f7201198a8a25790236048f6ed40b9983c1",
+    "exportPluginRoot": true,
+    "competitorOf": "dod",
+    "requires": [
+      {"name": "bash >= 4", "command": "env bash -c '[ \"${BASH_VERSINFO[0]}\" -ge 4 ]'"},
+      {"name": "GNU find (-regextype)", "command": "find /dev/null -regextype posix-basic -regex x >/dev/null 2>&1"}
+    ],
+    "pathLinks": {"bash": "/opt/homebrew/bin/bash", "find": "/opt/homebrew/opt/findutils/libexec/gnubin/find", "xargs": "/opt/homebrew/opt/findutils/libexec/gnubin/xargs"}
+  },
+  "iso": {
+    "kind": "git",
+    "repo": "https://github.com/gazmagik/iso-24495",
+    "commit": "5951eb7d985018459c62428378926c07f4199794",
+    "competitorOf": "iso",
+    "settings": { "outputStyle": "ISO 24495" }
+  },
+  "gwc": {
+    "kind": "git",
+    "repo": "https://github.com/seunggyuyoon-rgb/git-weekly-changelog",
+    "commit": "f0164c00efa3f988ec3a14dac726893401d52922",
+    "competitorOf": "gwc"
+  },
+  "dod-invoked": {
+    "sameAs": "dod",
+    "promptPrefix": "Use the dod-guard plugin: run its /dod:verify command and follow its report format before you give your final answer.",
+    "competitorOf": "dod"
+  },
+  "iso-invoked": {
+    "sameAs": "iso",
+    "promptPrefix": "Apply the iso-24495-1 skill to everything you write, iso-24495-2 for legal text, iso-24495-3 for technical text, and iso-24495-5 for complex documents.",
+    "settings": { "outputStyle": "ISO 24495" },
+    "competitorOf": "iso"
+  },
+  "gwc-invoked": {
+    "sameAs": "gwc",
+    "promptPrefix": "Use the git-weekly-changelog skill.",
+    "competitorOf": "gwc"
+  }
+}

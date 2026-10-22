@@ -152,6 +152,8 @@ for task in "$tasks_dir"/*/; do
         git status --porcelain | awk '{print $2}' > "$out/changed.txt"
       fi
     )
+    # The release-notes task (09) writes RELEASE_NOTES.md. score.mjs reads it from the results directory.
+    if [ -f "$work/RELEASE_NOTES.md" ]; then cp "$work/RELEASE_NOTES.md" "$out/RELEASE_NOTES.md"; fi
     rm -rf "$work"
     if [ -n "$budget" ]; then
       cost=$(node -e 'let c = NaN; try { c = Number(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).cost_usd) } catch {} console.log(c > 0 ? String(c) : "missing")' "$out/meta.json")

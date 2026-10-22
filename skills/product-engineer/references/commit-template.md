@@ -1,6 +1,7 @@
 # The "For the customer" block
 
-Put it at the end of every commit message and every pull request description.
+Put it at the end of every commit message. In a pull request description, put it first,
+right after the title line, so the first screen is the part for the customer.
 
 ```
 For the customer:

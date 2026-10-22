@@ -160,3 +160,297 @@ test("a phrase in quotes or backticks is named, not claimed", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("a staged file that looks like a secret is named; an example or sample env file is not", () => {
+  const { dir } = repo({ ".env": "MODE=dev\n", ".env.example": "MODE=\n", "certs/server.pem": "pem\n", "config/credentials.json": "{}\n", "src/a.ts": "code\n" });
+  try {
+    const f = crossCheck("Adds local config.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(has(f, "warn", /staged file looks like a secret: \.env; remove it from the commit/), JSON.stringify(f));
+    assert.ok(has(f, "warn", /staged file looks like a secret: certs\/server\.pem; remove it from the commit/));
+    assert.ok(has(f, "warn", /staged file looks like a secret: config\/credentials\.json;/));
+    assert.ok(!has(f, "warn", /looks like a secret: \.env\.example/));
+    assert.ok(!has(f, "warn", /looks like a secret: src\/a\.ts/));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("an added line that assigns a long value to a secret-like name is reported by path and line, never by value", () => {
+  // The fake value is assembled at run time so this test file itself never carries a
+  // secret-shaped assignment into a staged diff.
+  const value = "FAKE0123456789ABCDEFxyz";
+  const config = ["const size = 1;", `const ${"apiKey"} = "${value}";`, "const token = getToken();", 'const short = "x";'].join("\n") + "\n";
+  const pem = "-----BEGIN " + "RSA PRIVATE KEY-----\nbody\n";
+  const { dir } = repo({ "src/config.ts": config, "src/key.ts": pem });
+  try {
+    const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
+    const msg = join(dir, "m.txt");
+    writeFileSync(msg, "feat: a\n\nFor the customer:\nWhat changed: Something.\nWhy it matters: A reason.\n");
+    const out = execFileSync(process.execPath, [cli, "check", msg, "--diff", "--format", "json"], { cwd: dir, encoding: "utf8" });
+    const f = JSON.parse(out).findings;
+    assert.ok(has(f, "warn", /looks like a secret \(a long value assigned to a secret-like name\): src\/config\.ts:2;/), out);
+    assert.ok(has(f, "warn", /looks like a secret \(a private key header\): src\/key\.ts:1;/), out);
+    // The token line is a call, not a value, and the short value is below the length.
+    assert.ok(!has(f, "warn", /src\/config\.ts:3/));
+    assert.ok(!has(f, "warn", /src\/config\.ts:4/));
+    assert.ok(!out.includes(value), "the secret value was printed");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a change that mixes unrelated groups names them; one dominant group, a test beside its source, or docs and lockfiles do not", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const mixed = repo({ "bin/a.mjs": lines(10), "src/b.ts": lines(10) });
+  try {
+    const f = crossCheck("Adds two things.", readDiff({ cwd: mixed.dir }), { cwd: mixed.dir });
+    assert.ok(has(f, "warn", /this change mixes 2 unrelated groups \(bin: bin\/a\.mjs; src: src\/b\.ts\); consider separate commits/), JSON.stringify(f));
+  } finally {
+    rmSync(mixed.dir, { recursive: true, force: true });
+  }
+
+  const dominant = repo({ "bin/a.mjs": lines(40), "src/b.ts": lines(1) });
+  try {
+    const f = crossCheck("Adds two things.", readDiff({ cwd: dominant.dir }), { cwd: dominant.dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(dominant.dir, { recursive: true, force: true });
+  }
+
+  const paired = repo({ "bin/a.mjs": lines(10), "test/a.test.mjs": lines(10), "docs/notes.md": lines(10), "package-lock.json": lines(10) });
+  try {
+    const f = crossCheck("Adds two things.", readDiff({ cwd: paired.dir }), { cwd: paired.dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(paired.dir, { recursive: true, force: true });
+  }
+});
+
+test("a change larger than the default output buffer is read, and a secret at its end is still reported", () => {
+  // About 3 MB of added lines: over the 1 MB default that execFileSync allows, so the patch read
+  // must not depend on that default. The secret name is assembled at run time (see above).
+  const name = "apiKey";
+  const value = "FAKE0123456789ABCDEFxyz";
+  const body = Array.from({ length: 150000 }, (_, i) => `const v${i} = ${i};`).join("\n") + "\n" + `const ${name} = "${value}";\n`;
+  const { dir } = repo({ "src/big.ts": body });
+  try {
+    const f = crossCheck("Adds a table.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(has(f, "warn", /looks like a secret \(a long value assigned to a secret-like name\): src\/big\.ts:150001;/), "secret at the end of a large change was not reported");
+    assert.ok(!has(f, "info", /skipped/));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("when the added-line read fails, secret-content is skipped with an info finding instead of an error", () => {
+  const { dir } = repo({ "src/a.ts": "code\n" });
+  try {
+    // A buffer of 16 bytes cannot hold the patch: the read fails, and the check says so.
+    const f = crossCheck("Adds a helper.", readDiff({ cwd: dir, patchBuffer: 16 }), { cwd: dir });
+    assert.ok(has(f, "info", /secret-content skipped: change too large/), JSON.stringify(f));
+    assert.ok(!has(f, "warn", /secret-content|looks like a secret/));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a staged deletion of a secret file is not flagged, because removing it is the right action", () => {
+  const { dir, git } = repo({ ".env": "MODE=dev\n" });
+  try {
+    git("commit", "--quiet", "-m", "add env");
+    git("rm", "--quiet", ".env");
+    const f = crossCheck("Removes local config.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(!has(f, "warn", /looks like a secret: \.env/), JSON.stringify(f));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("the added-line read gives the same path under diff.mnemonicPrefix and diff.noprefix", () => {
+  const name = "apiKey";
+  const value = "FAKE0123456789ABCDEFxyz";
+  for (const setting of ["diff.mnemonicPrefix", "diff.noprefix"]) {
+    const { dir, git } = repo({ "src/config.ts": `const ${name} = "${value}";\n` });
+    try {
+      git("config", setting, "true");
+      const f = crossCheck("Adds config.", readDiff({ cwd: dir }), { cwd: dir });
+      assert.ok(has(f, "warn", /src\/config\.ts:1;/), `${setting}: ${JSON.stringify(f)}`);
+      assert.ok(!has(f, "warn", /(^|\s)[ib]\/src/), `${setting}: a prefix leaked into the path`);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }
+});
+
+test("the secret value is absent from the text output as well as the JSON output", () => {
+  const name = "apiKey";
+  const value = "FAKE0123456789ABCDEFxyz";
+  const { dir } = repo({ "src/config.ts": `const ${name} = "${value}";\n` });
+  try {
+    const msg = join(dir, "m.txt");
+    writeFileSync(msg, "feat: a\n\nFor the customer:\nWhat changed: Something.\nWhy it matters: A reason.\n");
+    const text = execFileSync(process.execPath, [cli, "check", msg, "--diff"], { cwd: dir, encoding: "utf8" });
+    const json = execFileSync(process.execPath, [cli, "check", msg, "--diff", "--format", "json"], { cwd: dir, encoding: "utf8" });
+    assert.match(text, /src\/config\.ts:1/);
+    assert.ok(!text.includes(value), "the secret value was printed in text output");
+    assert.ok(!json.includes(value), "the secret value was printed in json output");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a test that names no source joins the one source group, so a plain feature with its tests does not warn", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const { dir } = repo({ "src/checkout/index.ts": lines(30), "test/checkout.test.ts": lines(12) });
+  try {
+    const f = crossCheck("Adds checkout.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("monorepo packages group by their first two path segments, so two packages in one change warn", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const { dir } = repo({ "packages/a/src/x.ts": lines(10), "packages/b/src/y.ts": lines(10) });
+  try {
+    const f = crossCheck("Adds two things.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(has(f, "warn", /this change mixes 2 unrelated groups \(packages\/a: packages\/a\/src\/x\.ts; packages\/b: packages\/b\/src\/y\.ts\)/), JSON.stringify(f));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("root-level manifests and dotfiles are not a group of their own", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const { dir } = repo({ "package.json": lines(30), ".nvmrc": "20\n", "tsconfig.json": lines(20), "src/a.ts": lines(30) });
+  try {
+    const f = crossCheck("Adds a helper.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a top-level dot-directory such as .github is not a group of its own", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const ci = repo({ ".github/workflows/ci.yml": lines(40), "src/a.js": lines(10) });
+  try {
+    const f = crossCheck("Adds a helper.", readDiff({ cwd: ci.dir }), { cwd: ci.dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(ci.dir, { recursive: true, force: true });
+  }
+
+  // Still a mix when two real source groups are present beside the dot-directory.
+  const mixed = repo({ ".github/workflows/ci.yml": lines(40), "src/a.js": lines(10), "server/b.js": lines(10) });
+  try {
+    const f = crossCheck("Adds two things.", readDiff({ cwd: mixed.dir }), { cwd: mixed.dir });
+    assert.ok(has(f, "warn", /this change mixes 2 unrelated groups \((?=.*src: src\/a\.js)(?=.*server: server\/b\.js)/), JSON.stringify(f));
+  } finally {
+    rmSync(mixed.dir, { recursive: true, force: true });
+  }
+});
+
+test("any top-level dot-directory is ignored, not only .github", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const { dir } = repo({ ".husky/pre-commit": lines(30), ".vscode/settings.json": lines(20), "src/a.js": lines(10) });
+  try {
+    const f = crossCheck("Adds a helper.", readDiff({ cwd: dir }), { cwd: dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// Fix round, final review. A call or an identifier after an assignment is code, not a value.
+// A quoted value or an unquoted value that holds a digit and ends the token is a value.
+import { secretHitsIn } from "../bin/diff.mjs";
+test("secret-content reads a quoted value or an unquoted value with a digit, never a call or an identifier", () => {
+  // Built at run time, so no secret-shaped literal is written into this file.
+  const quoted = "AbCdEfGh" + "1234567890xY";
+  const keyName = "api" + "_key";
+  const patch = [
+    "diff --git a/src/x.js b/src/x.js",
+    "+++ b/src/x.js",
+    "@@ -0,0 +1,5 @@",
+    "+const token = createSessionTokenForUser(user);",
+    "+const password = hashPasswordWithBcrypt(input);",
+    "+headers.authorization_token = request_headers_value;",
+    `+const ${keyName} = "${quoted}";`,
+    "+const sessionToken = mint_session_value_2026;",
+  ].join("\n");
+  const hits = secretHitsIn(patch).map((h) => h.line);
+  assert.deepEqual(hits, [4, 5]);
+});
+
+// Fix round, final review. A pull request (a range) is one unit, so unrelated groups are not
+// reported as a reason to split it; the staged change keeps the check. A secret-named file in a
+// range is a changed file, not a staged one.
+test("mixed-change is kept for the staged change and skipped for a range, and the secret-file finding names the scope", () => {
+  const lines = (n) => Array.from({ length: n }, (_, i) => `line ${i}`).join("\n") + "\n";
+  const committed = repo({ "api/orders.js": lines(10), "web/orders.tsx": lines(10), "test/orders.test.mjs": lines(10), "config/.env": "X=1\n" });
+  try {
+    committed.git("commit", "--quiet", "-m", "feature across the stack");
+    const ranged = readDiff({ range: "HEAD~1..HEAD", cwd: committed.dir });
+    const f = crossCheck("Adds orders across the stack.", ranged, { cwd: committed.dir });
+    assert.ok(!has(f, "warn", /mixes/), JSON.stringify(f));
+    assert.ok(has(f, "warn", /changed file looks like a secret: config\/\.env/), JSON.stringify(f));
+    assert.ok(!has(f, "warn", /staged file/), JSON.stringify(f));
+  } finally {
+    rmSync(committed.dir, { recursive: true, force: true });
+  }
+
+  const staged = repo({ "api/orders.js": lines(10), "web/orders.tsx": lines(10), "config/.env": "X=1\n" });
+  try {
+    const d = readDiff({ cwd: staged.dir });
+    const f = crossCheck("Adds orders across the stack.", d, { cwd: staged.dir });
+    assert.ok(has(f, "warn", /this change mixes 3 unrelated groups/), JSON.stringify(f));
+    assert.ok(has(f, "warn", /staged file looks like a secret: config\/\.env/), JSON.stringify(f));
+  } finally {
+    rmSync(staged.dir, { recursive: true, force: true });
+  }
+});
+
+// A change as crossCheck reads it: the files with their line counts, and nothing else.
+const change = (...paths) => ({
+  files: paths.map((path) => ({ path, added: 2, removed: 1, binary: false, deleted: false })),
+  range: "--cached",
+  isRange: false,
+  secretHits: [],
+  secretSkipped: false,
+});
+
+test("a fix title over a source change with no test file warns fix-without-test", () => {
+  const f = crossCheck("fix(pricing): round the total to cents\n\nThe total showed three decimals.", change("src/pricing.js"));
+  assert.ok(has(f, "warn", /^the title says this is a fix, and no test file changes; 1 source file does: src\/pricing\.js/), JSON.stringify(f));
+  assert.equal(f.find((x) => x.code === "fix-without-test")?.level, "warn");
+});
+
+test("a fix that adds its test in the same change does not warn fix-without-test", () => {
+  const f = crossCheck("fix(pricing): round the total to cents", change("src/pricing.js", "test/pricing.test.js"));
+  assert.ok(!f.some((x) => x.code === "fix-without-test"), JSON.stringify(f));
+});
+
+test("a docs-only fix does not warn fix-without-test, because it changes no source", () => {
+  const f = crossCheck("fix: typo in the README install section", change("README.md", "docs/check-reference.md"));
+  assert.ok(!f.some((x) => x.code === "fix-without-test"), JSON.stringify(f));
+});
+
+test("the fix word at the start of a title counts; a title that only contains the word does not", () => {
+  const fixed = crossCheck("Fixed the rounding in the invoice total", change("src/invoice.js"));
+  assert.ok(fixed.some((x) => x.code === "fix-without-test"), "Fixed at the start is a fix");
+  const fixture = crossCheck("fixture: add a sample invoice for the export", change("src/invoice.js"));
+  assert.ok(!fixture.some((x) => x.code === "fix-without-test"), "fixture is not a fix");
+  const mid = crossCheck("feat: a quick fix for the export later", change("src/invoice.js"));
+  assert.ok(!mid.some((x) => x.code === "fix-without-test"), "fix in the middle of a title is not a fix");
+});
+
+test("a fix that changes only a lock file or a workflow does not warn fix-without-test: they are not source", () => {
+  const lock = crossCheck("fix: bump the action version", change("package-lock.json"));
+  assert.ok(!lock.some((x) => x.code === "fix-without-test"), JSON.stringify(lock));
+  const workflow = crossCheck("fix: bump the action version", change(".github/workflows/ci.yml"));
+  assert.ok(!workflow.some((x) => x.code === "fix-without-test"), JSON.stringify(workflow));
+  const withCode = crossCheck("fix: bump the action version", change("package-lock.json", "src/app.js"));
+  assert.ok(withCode.some((x) => x.code === "fix-without-test"), "a source file alongside the lock file still warns");
+});
