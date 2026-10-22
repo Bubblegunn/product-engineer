@@ -1260,3 +1260,18 @@ out of 4: set c X1 3.00, X2 4.00, X3 4.00, X4 4.00, X5 3.67; set b X1 4.00, X2 1
 4.00 ceiling; set b X2 ties the best rival at 1.33). Set d (written, unread, local branch `heldout-2026-10-d`), the public 13 tasks, F9 and F6 were not run; nothing here
 supports a "first" claim. Set c X1 criterion 1 fails because the grader material shows no new commits for held-out run folders (harness limit, `objective.mjs:41`).
 Iteration 3 was not run because the controller budget was nearly used. Spend: 6.3225 USD in the cost files (54 sessions 4.1520, 54 grader calls 1.9069, author 0.2610, billing check 0.0026).
+
+## Round 7 development gate, iteration 3 design (2026-10-23, written before the iteration 3 code)
+
+Diagnosis from the stored grader reasons of iteration 2 (`bench/head-to-head/results/round7/grades/iter2`), seen sets only. Two criteria are
+harness limits, not product behaviour, and are not acted on: set c X1 c1 and set b X2 c4 ("NEW COMMITS (none)", no `.git/fixture-state` in held-out
+run folders). Remaining lost criteria, as general classes (no fixture value is named in any rule):
+1. A commit message for a named non-technical reader starts with a commit prefix and function names, and the plain part comes later (set b X2 c3, runs 1 and 2).
+   Rule (skill rule 2): when the request names who will read the message, write the subject for that reader: plain words first, no commit prefix and no
+   function or constant names in the subject; technical detail after.
+2. A rewritten page or policy that describes software behaviour is saved without comparing its numbers with the code that implements them
+   (set b X3 c4; the grep rule exists in rule 3 but is not triggered for rewrites). Rule (skill rule 6): before you save such a rewrite, search the code for each
+   number and name it states, and report each disagreement in the answer.
+3. A note about a changed limit omits the old or the new value (set c X5 c2, run 3). Rule (skill rule 2): a note about a changed limit or price states the old and the
+   new value.
+Not acted on: rewrite added-definition and kept-jargon misses (set b X3 c2, c3: rule 6 already forbids them; 3 runs cannot separate this from variance), set b X2 run 3 "no commit was created".
