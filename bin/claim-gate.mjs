@@ -21,6 +21,8 @@ const GIT_STATE = /\bgit\s+(?:-\S+\s+)*(?:status|diff|log|show|stash\s+list|ls-f
 const WS_DIFF = /\bgit\s+(?:-\S+\s+)*(?:diff|show|log)\b[^\n|;&]*\s(?:-w|-b|--ignore-all-space|--ignore-space-change|--ignore-space-at-eol|--ignore-blank-lines|--word-diff\S*|--color-moved\S*)(?=\s|$)|\bproduct-engineer\s+scope\b|\bcheck\.mjs\s+scope\b/;
 const TEST_RUN = /\b(?:npm|pnpm|yarn|bun)\s+(?:run\s+)?test\b|\bnpm\s+t\b|\bnode\s+(?:--[\w-]+\s+)*--test\b|\bnode\s+\S*\.test\.[cm]?js\b|\bpytest\b|\bpy\.test\b|\bpython3?\s+-m\s+(?:pytest|unittest)\b|\bgo\s+test\b|\bcargo\s+(?:test|nextest)\b|\b(?:vitest|jest|mocha|rspec|phpunit)\b|\bmvn\s+(?:-\S+\s+)*test\b|\bgradlew?\s+test\b|\bdotnet\s+test\b|\bmake\s+(?:test|check)\b|\b(?:bash|sh)\s+\S*test\S*\.sh\b/;
 
+// A starting-state statement that names where it comes from (the snapshot or context the session began with) is a quotation, not a claim about a check.
+const SNAPSHOT_SOURCE = /\b(?:snapshot|gitStatus|system context)\b/i;
 const NEGATION = /\b(?:not|never|isn't|aren't|wasn't|weren't|no longer|rather than|instead of|more than|beyond)\b|n't\b/i;
 const CLAIMS = {
   nochange: /\b(?:no (?:code |file |source )?changes? (?:were |was |have been )?(?:made|needed|necessary|required)(?! to (?:the )?(?:public |user-facing )?(?:api|interface|schema|contract|behaviou?r|format|semantics)\b)|made no (?:code |file )?changes?(?! to (?:the )?(?:public |user-facing )?(?:api|interface|schema|contract|behaviou?r|format|semantics)\b)|(?:did not|didn't|have not|haven't|has not|hasn't) (?:change|modify|edit|touch|alter) (?:anything|any files?|the (?:code|repo\w*|files?))|nothing (?:was |has been |had to be )?(?:changed|modified|edited)|(?:left|leaving) (?:the )?(?:code|repo\w*|files?|tree) (?:as is|untouched|unchanged|alone)|working tree is (?:unchanged|clean))\b/i,
@@ -44,6 +46,12 @@ const sentencesOf = (text) =>
     .map((s) => s.trim())
     .filter(Boolean);
 
+const clauseAround = (sentence, at, length) => {
+  const start = Math.max(sentence.slice(0, at).lastIndexOf(","), sentence.slice(0, at).lastIndexOf(";"), sentence.slice(0, at).search(/\b(?:but|and|though|although)\b(?![^]*\b(?:but|and|though|although)\b)/));
+  const rest = sentence.slice(at + length).search(/[,;]|\b(?:but|and|though|although)\b/);
+  return sentence.slice(Math.max(0, start), rest < 0 ? sentence.length : at + length + rest);
+};
+
 /** Claim families found in a text, each with the sentence that holds it. A negated phrase is not a claim. */
 export function findClaims(text) {
   const found = [];
@@ -52,6 +60,7 @@ export function findClaims(text) {
       const m = re.exec(sentence);
       if (!m) continue;
       const before = sentence.slice(Math.max(0, m.index - 60), m.index).split(/[,;]|\b(?:but|and|though|although)\b/).pop();
+      if (family === "startstate" && SNAPSHOT_SOURCE.test(clauseAround(sentence, m.index, m[0].length))) continue;
       const self = family === "nochange" || family === "startstate";
       if (!self && NEGATION.test(before)) continue;
       found.push({ family, sentence });
@@ -145,6 +154,9 @@ export function gate({ events, prompt, last }, claimTexts = [last]) {
   return reasons;
 }
 
+// The next message becomes the final answer. Without this sentence the agent answers only the check and the deliverable report is lost.
+export const REPLY_WHOLE = "After that, write your complete final answer again: everything the person asked for and everything you did and found, with the correction inside it. Never reply with the correction alone.";
+
 function main() {
   try { run(); } catch { /* a hook that fails must not stop the agent */ }
 }
@@ -160,7 +172,7 @@ function run() {
   const written = session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text);
   const reasons = gate(session, [String(input.last_assistant_message ?? session.last), ...written]);
   if (!reasons.length) return;
-  process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${reasons.join(" ")}` }) + "\n");
+  process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${reasons.join(" ")} ${REPLY_WHOLE}` }) + "\n");
 }
 
 const isEntry = () => { try { return import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href; } catch { return false; } };

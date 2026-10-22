@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findClaims, gate, readSession } from "../bin/claim-gate.mjs";
+import { findClaims, gate, readSession, REPLY_WHOLE } from "../bin/claim-gate.mjs";
 
 const GATE = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "claim-gate.mjs");
 const write = (path, text = "") => ({ kind: "write", path, text });
@@ -144,4 +144,28 @@ test("only summary-like files are read as claims, and a bad input never throws",
   const s = readSession([JSON.stringify({ type: "assistant", message: { content: [null, { type: "tool_use", name: "Write", input: { file_path: "CHANGELOG.md", content: "behaviour is unchanged" } }, { type: "tool_use", name: "Write", input: { file_path: "docs/PR.md", content: "formatting only" } }] } })]);
   assert.deepEqual(s.events.filter((e) => e.text).map((e) => e.path), ["docs/PR.md"]);
   assert.doesNotThrow(() => gate(session([write("a.js")], "x"), [{ a: 1 }, null]));
+});
+
+test("a starting-state statement that names the session-start snapshot is not a claim", () => {
+  const events = [bash("ls"), write("docs/a.md")];
+  assert.deepEqual(reasonsFor(events, "The snapshot at the start of the session showed a clean working tree."), []);
+  assert.match(reasonsFor(events, "The working tree was clean before I started.")[0], /starting/);
+  assert.match(reasonsFor(events, "I did not write these files, and the snapshot showed the tree clean.")[0], /starting/);
+  assert.match(reasonsFor(events, "At session start the working tree was clean.")[0], /starting/);
+  assert.match(reasonsFor(events, "The repo was dirty, per the initial message.")[0], /starting/);
+});
+
+test("the block reason asks for the complete final answer, not the correction alone", () => {
+  const dir = mkdtempSync(join(tmpdir(), "gate-"));
+  const transcript = join(dir, "t.jsonl");
+  const lines = [
+    { type: "user", message: { content: "Fix the typo in the docs." } },
+    { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "docs/a.md" } }, { type: "text", text: "No changes were made to the code." }] } },
+  ];
+  writeFileSync(transcript, lines.map((l) => JSON.stringify(l)).join("\n"));
+  const out = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, last_assistant_message: "No changes were made to the code." }), encoding: "utf8" });
+  const verdict = JSON.parse(out.stdout);
+  assert.equal(verdict.decision, "block");
+  assert.ok(verdict.reason.endsWith(REPLY_WHOLE));
+  assert.match(REPLY_WHOLE, /complete final answer/);
 });
