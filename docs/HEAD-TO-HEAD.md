@@ -929,3 +929,54 @@ Phase 3: joint grading. Every `claude -p` call's `total_cost_usd` goes in the co
 of sessions passes 12.5 USD; no new call of any kind starts at 16.0 USD. A cell not run is reported as not run, no comparison is made on
 it, and the gate then fails for lack of data. The final gate runs in the same session only if the budget allows; otherwise it is reported
 as not done.
+
+## Round deep design (frozen 2026-10-22, before any code)
+
+Owner instruction of 2026-10-22: research, analyse, implement, and measure once at the end. Research is in
+`docs/RESEARCH-DEEP-2026-10-22.md` (commit `af19a96`). This section fixes what is built and what is rejected, before the code.
+Nothing here is measured yet.
+
+**Rules for the changes.** (a) General: no benchmark file name, number, identifier or fixture word appears in a rule, a pattern
+or a skill sentence; unit tests use another domain (a calendar app). The existing guard in `test/skill-structure.sh` for
+benchmark values stays. (b) Code taken from other projects only under MIT, Apache, BSD or CC0 with a notice in
+`THIRD_PARTY_NOTICES.md`; this round takes ideas only and writes its own code, so no new notice is needed, and the hook comment
+names the ideas' sources. (c) No new dependency.
+
+**Built (priority order, each with its own tests and its own review):**
+
+1. **Claim-to-evidence Stop hook** (`hooks/hooks.json`, `bin/claim-gate.mjs`). When the agent stops, the hook reads the final
+   message, plus the text of any `.md` or `.txt` file written in the session, and the session's tool calls. It checks five claim
+   families against evidence in the tool calls and blocks the stop once, with the exact command to run or the exact words to drop:
+   - *no change*: "no changes made", "nothing was changed" while a file-writing tool ran, unless a `git status` or `git diff`
+     ran after the last write;
+   - *starting state*: "was already there", "git status was clean", "I did not write it", "uncommitted when I started": needs a
+     `git status`, `git diff` or `git log` call before the first write;
+   - *formatting only*: "formatting only", "whitespace only", "just style": needs a whitespace-aware diff call (`git diff -w`,
+     `--ignore-all-space`, `-b`, `--word-diff`) or `product-engineer scope`;
+   - *unchanged / tests pass*: "behaviour is unchanged", "behaves as before", "all tests pass": needs a test or build command
+     after the last write;
+   - *fixed*: "fixed", "resolved" with a source file written and no test file written.
+   It never blocks twice (`stop_hook_active`), never blocks a session with no tool calls, ignores code blocks and inline code, and
+   `PRODUCT_ENGINEER_NO_GATE=1` turns it off. English phrases only; stated as a limit. Ideas: claim families to checkers from
+   groundtruth (MIT); the loop guard and block JSON from dod-guard `stop-gate.sh` (MIT). The five families are new: no rival has
+   them (Part 5 of the research).
+2. **`product-engineer scope [range]`**: one line per changed file with status, lines added and removed, file class (test, doc,
+   config, source), and whether the change is whitespace-only (`git diff -w` empty for that file); then the changed lines of
+   every file with at most six non-whitespace changed lines. The PR rule in the skill says to run it and to call a file
+   "formatting only" only when the tool says whitespace-only. Idea: scope map from compound-engineering (MIT), `git diff -w`.
+3. **`facts` restatement check**: a rewrite sentence whose content words are at least 70 percent contained in earlier rewrite
+   sentences that map to the same source sentence is reported as "restates an earlier sentence". It targets the explanatory
+   echo sentence found in the round 4 H6 transcripts.
+4. **Skill text** (still at most 120 lines per skill): the revert-and-rerun recipe for fixes (idea from superpowers, MIT); when
+   saying a changed behaviour has no test, add that a green run therefore does not show it unchanged; one value per quantity,
+   copied from output; answer in the language of the request.
+
+**Rejected, with the reason.** NLI models and embeddings for added-content detection (cost, 161 MB download, poor on diffs; F1
+0.150 for embeddings in arXiv 2601.04886). Copying groundtruth code (TypeScript with a build step, no npm package). Running the
+suite against the pre-fix commit inside the hook (needs a test selector per project; too slow and brittle for a Stop hook). A
+hook that blocks on any claim without a model judge of nuance (false blocks). Changing any task, prompt, criterion or label.
+
+**Known risks, written before the result.** The hook adds turns and cost when it blocks. English-only phrases can miss
+paraphrases. A hook in a plugin affects real users of the Claude Code plugin; the opt-out and the once-only block limit the
+harm. Adapters for other agents (Codex, Cursor, Cline) get the skill text only, not the hook. The hook is part of the product
+under test, so a win on tasks it was shaped by (the public set) is a weaker claim than a win on the held-out set.
