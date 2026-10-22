@@ -1036,3 +1036,38 @@ several times what is left (about 0.1 USD per session). Therefore, decided here 
 Note (same day, before any session of this round): the protocol commit `1174d25` was pushed while two bench test files still
 expected the old `--help` text; the next commit only updates those tests for the `scope` probe. No product, harness or protocol
 byte changed. The ours copy is made from the HEAD that contains that test fix.
+
+## Results, deep round (held-out set, partial, 2026-10-22)
+
+Protocol: "Deep-round measurement protocol (frozen 2026-10-22 ...)" above. Product: the immutable copy of `7a013e9` (the hook,
+`scope`, the `facts` echo check and the skill text of `ce5c5f6`; later commits only changed tests, docs and harness). Model
+`claude-sonnet-5-5`, Claude Code 2.1.308, macOS, parallelism 2, key billing. 39 sessions ran: X1, X2 and X3 for ours, base, ce and
+sp-invoked (3 runs each = 36), and X4 for ours only (3 runs). The session budget stop (4.2 USD) fired before X4 base, ce and
+sp-invoked, so X4 has no comparison and was not graded. X1 to X3 were graded jointly (one call per task, 12 sessions each). Session
+cost 4.306 USD, grading 0.405 USD; with research, implementation and held-out authoring (2.66 USD) the cost file totals 7.371 USD.
+
+Outcome-only mean out of 4 outcome criteria per task (`heldout-summary.mjs`; per-run scores in brackets). Each task has 5
+criteria, 4 labelled outcome by their author.
+
+| Task | ours | base | ce | sp-invoked | rule B (ours strictly highest) |
+|---|---|---|---|---|---|
+| X1 | 4.00 [4/4/4] | 4.00 [4/4/4] | 4.00 [4/4/4] | 4.00 [4/4/4] | no, four-way tie (saturated) |
+| X2 | 2.00 [2/2/2] | 1.33 [2/0/2] | 1.33 [2/2/0] | 0.00 [0/0/0] | yes |
+| X3 | 0.67 [2/0/0] | 2.00 [2/2/2] | 2.00 [2/2/2] | 2.00 [2/2/2] | no, ours lowest |
+| X4 | ungraded, ours only | not run | not run | not run | not computed |
+
+**Verdict.** Rule B fails on the held-out tasks that were compared (X1 tie, X3 loss; X2 win). The gate does not pass, and could not
+have passed in this round: gwc, dod and iso arms, `ce-invoked` and `sp` were not run on the held-out set, X4 has one arm, and the
+public set was not re-measured. F9 and F6 were not run (they follow a passed gate). Nothing here supports a "first" claim. The
+scope of what these numbers do show: four unseen tasks written without sight of the product, three runs per cell, one model, one
+date, four arms, three of four tasks compared, graded by one Sonnet grader per task.
+
+**What the data says about the hook.** The Stop hook blocked once in 3 of our 12 sessions (X3 runs 1 and 2, X4 run 2). Our two
+worst runs (X3 runs 1 and 2, 0 of 4 outcome criteria) are two of those three; X3 run 3, which was not blocked, scored 2 of 4. With
+three runs per cell this does not show whether the hook helped or hurt on X3. It does show that the hook did not fire on X1 and X2
+and that ours session cost is 0.114 USD per session against 0.101 (base), 0.108 (ce) and 0.118 (sp-invoked), mean of 12, 9, 9 and
+9 sessions.
+
+**Why the loss on X3 is not diagnosed here.** The held-out tasks stay unread by the controller of this round; finding the cause of
+X3 would mean reading the task and our answers, and a read set is no longer held-out (HANDOFF-LOCAL section 2). The product is
+frozen from here on. A next iteration needs a fresh held-out set written by an agent that has not seen the failing tasks.
