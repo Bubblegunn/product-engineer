@@ -192,6 +192,11 @@ Checks a plain-language rewrite against the text it came from. It reads both fil
 
 - Numbers written as digits. A number the rewrite drops, or adds, exits 1 and is named. Numbers are compared
   as values, so `500.00` is 500, `12,000` is 12000, and `800,00` (a decimal comma) is 800.00, equal to 800.
+- Added sentences (warning, exit code unchanged). Each rewrite sentence is listed, quoted, when it defines a term
+  (`"X" is ...`) or opens with "In this text," and the source does not, or when at least two of its content
+  words, and at least 60 percent of them, appear nowhere in the source (compared by stem, so `payment` matches
+  `pay`). A rewrite that only splits or rewords source sentences reports none. A synonym can trigger a report;
+  check that sentence by hand. `--json` carries the list as `unsupported`.
 - Numbering and dates. Markdown heading, bold, italic and code marks, bullets and blockquote marks are removed,
   and URLs are dropped, so digits in a link are not facts. A heading number (`## 3 Fees`) is numbering. A marker
   with a full stop, bracket or colon (`2.`, `**1.**`, `3)`) is numbering up to 99, so `800. Deposit` at the start

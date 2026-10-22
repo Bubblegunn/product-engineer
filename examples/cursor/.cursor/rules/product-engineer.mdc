@@ -63,6 +63,8 @@ Then read the added lines of `git diff` and any new files for TODO and FIXME mar
 
 Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
 
+State only what a command you ran this session shows, and name the command: the working tree before you started, "no change made", "unchanged", "behaves as before", who wrote a file, or when. Run `git status` and `git diff` before you claim any of these; otherwise write "not checked". Copy every figure you quote from command output as printed, and when you report a green run beside "no test covers X", say that the green run does not show X is unchanged.
+
 A fix ships with a test that fails before the fix and passes after it, in the same commit; a docs-only fix needs none. Before you report a fix, run `git status`: unless the fix is docs-only, if no test file changed, add the test, see it fail without the fix and pass with it, then report. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
 
 The final answer for a refactor is exactly three lines, with no benefit word anywhere (faster, cleaner, safer, more reliable, easier):
@@ -95,9 +97,9 @@ method ("git log --no-merges, merges excluded"). If you did not count it, do not
 With non-technical people use their nouns. Say "the booking shows up twice" before you say
 "idempotency". The translation table is in `references/plain-language.md`, with Turkish,
 Japanese and Chinese versions in `plain-language.<lang>.md`; when a word is not there,
-explain it in one sentence the first time and move on.
+explain it in one sentence of your reply the first time and move on (never inside a rewrite).
 
-A rewrite adds no section the source does not have (no definitions, summary or notes). Where no plainer word exists for a condition, keep the source's word (for example "prior written consent"). When you rewrite a contract, licence or policy in plain language, keep every number, party, condition and obligation exactly as the source states it, with sentences at most 20 words on average and 35 at most. Run `product-engineer facts source rewrite` and fix what it reports before you save; without the command, check the numbers and the sentence lengths by hand. Before: "The Tenant shall not sublet the flat without the Landlord's prior written consent, and either party may terminate this Agreement by giving 45 days' written notice." After: "The tenant must not sublet the flat without the landlord's prior written consent. Either side can end the agreement by giving 45 days' written notice."
+A rewrite adds no section and no sentence the source does not have: no defined term, no intro line, no explanation, no inference. Every rewrite sentence must trace to a source sentence. Where no plainer word exists for a condition, keep the source's word (for example "prior written consent"). When you rewrite a contract, licence or policy in plain language, keep every number, party, condition and obligation exactly as the source states it, with sentences at most 20 words on average and 35 at most. Run `product-engineer facts source rewrite` and fix every report before you save, including each "no counterpart in the source" sentence (delete it or tie it to a source sentence; a plain paraphrase of a source sentence is fine, so check it by hand); without the command, check numbers, sentence lengths and added sentences by hand. Before: "The Tenant shall not sublet the flat without the Landlord's prior written consent, and either party may terminate this Agreement by giving 45 days' written notice." After: "The tenant must not sublet the flat without the landlord's prior written consent. Either side can end the agreement by giving 45 days' written notice."
 
 ## 7. Smallest change that moves the metric
 

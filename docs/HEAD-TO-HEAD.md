@@ -885,3 +885,47 @@ for added sentences; H2 run 3 said "no change made" while the diff shows the reg
 about the starting state of the working tree that the transcript does not support (the answer asserted what it did not check,
 the T3 failure class again). The T3 and H4 misses were on objective criteria and were not examined further in this session.
 Nothing is published or tagged (F7).
+
+## Round 5 measurement protocol (frozen 2026-10-22, owner decision)
+
+Written and committed before any round 5 benchmark run; it is not changed after a result is seen. Owner request of 2026-10-22:
+at launch the benchmark must be able to show, objectively, that we are first against the strongest alternatives.
+
+**Arms.** Four new rival arms, pinned in `arms.json`: `ce` and `ce-invoked` (EveryInc/compound-engineering-plugin, commit
+`738067a599c68f1f0f4a32273fa9d7d2476f0715`, tag `compound-engineering-v3.31.1`, MIT, whole plugin; the invoked prefix is "Use the
+ce-commit-push-pr skill.") and `sp` and `sp-invoked` (obra/superpowers, commit `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b`, v7.0.1,
+MIT, whole package; the invoked prefix names verification-before-completion). Set-up as for the other rivals: `fetch-arms.sh` clone
+at the pinned commit, `--plugin-dir`, throw-away HOME, the hooks and mcpServers guard before and after every call. Checked before the
+round: `ce` has no hooks or mcpServers at its plugin root; `sp` has one SessionStart hook that reads a local file and uses no network.
+ce skills can call `git push` and `gh pr create`; the fixtures have no remote and `GH_TOKEN` and `GITHUB_TOKEN` are not set, so the
+calls fail without effect; that is not corrected for. Vaara is never run. The other candidates of the 2026-10-22 scan (groundtruth,
+claimproof, pandysp and others) are not added in this round; the owner asked for these two.
+
+**Reuse rule.** Tasks T1 to T6 and H2 to H7 are unchanged since round 3, and H1 since round 4 (task text, fixture, check script,
+labels, grader prompt, model `claude-sonnet-5-5`). For them the rival arms `dod`, `dod-invoked`, `gwc`, `gwc-invoked`, `iso`,
+`iso-invoked` and the bare model `base` keep their published scores (round 3 `0410631` for every task except H1; round 4 `2a89d14`
+for H1), unchanged. `ours` runs 3 times on all 13 tasks, because the product changed. The new arms run 3 times on all 13 tasks.
+Round 3 ran in a Linux container, round 4 and 5 on macOS; recorded, not corrected.
+
+**Grading.** Joint, per task (`grade.mjs --joint`): the grader sees every session of that task in one call, anonymised and in mixed
+order, and grades each against the same criteria. Which sessions share a call: `ours` and the new arms. The raw sessions of the reused
+rival arms are not kept (round 3 published only the written files of 48 runs), so they cannot join the call; their reused scores come
+from the round 3 and round 4 per-run grading. That difference in grading mode is recorded and not corrected. Objective criteria
+come from `objective.mjs`, unchanged. Reported figures are outcome-only means out of 5 per task.
+
+**Product under test.** `ours` runs from the immutable `git archive` copy of the commit that precedes this protocol's commit. Its
+changes since round 4: sentence-level "adds nothing the source lacks" rule for plain rewrites with a `facts` warning, a "state only
+what a command you ran shows" rule, and quoted figures copied from command output. They were derived from the round 4 transcripts of
+H1, H2, H4, H6 and T3. Home-ground note: these tasks are ours, and the rules were written after reading our own failed runs on them, so
+a win on them is a weaker claim than a win on held-out tasks. Patterns taken from rival catalogues are marked home-ground as well: none
+were copied in this round.
+
+**Win rule.** Unchanged: rule B on every core task, rule A as restated, the ceiling rule, outcome criteria only, competitor = the better
+of its plain and invoked arm; now with `ce` and `sp` families included. "First" may be claimed only after the full gate passes (held-out
+set, F9, F6) and only with its scope: which rivals, how many tasks, model, date.
+
+**Order and budget.** Phase 1: `ours` x3 on all 13 tasks. Phase 2: the four new arms x3, task by task in the order T1 to T6, H1 to H7.
+Phase 3: joint grading. Every `claude -p` call's `total_cost_usd` goes in the cost file. No new session starts when the running total
+of sessions passes 12.5 USD; no new call of any kind starts at 16.0 USD. A cell not run is reported as not run, no comparison is made on
+it, and the gate then fails for lack of data. The final gate runs in the same session only if the budget allows; otherwise it is reported
+as not done.

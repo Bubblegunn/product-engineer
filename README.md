@@ -230,7 +230,7 @@ product-engineer notes RELEASE_NOTES.md        # release notes carry no code nam
 
 `notes` checks release notes for readers who do not read code: no commit prefixes, code identifiers or file names, no line about docs or a version bump, no unmeasured "faster" or percentage, and a version number only on the first line, which should name the range.
 
-`facts` checks a plain-language rewrite against its source: the same numbers, the obligations carried over, legal phrases left in, and sentences of at most 20 words on average and 35 at most. See [docs/check-reference.md](docs/check-reference.md).
+`facts` checks a plain-language rewrite against its source: the same numbers, the obligations carried over, legal phrases left in, rewrite sentences with no counterpart in the source (an added definition, intro or explanation), and sentences of at most 20 words on average and 35 at most. See [docs/check-reference.md](docs/check-reference.md).
 
 With `--kind pr` the block must start within the first 12 lines, so a pull request opens with the part for the customer; a later block is a warning (`block-not-first`). The command prints a one-time star request on the first run in an interactive terminal. `--quiet` or `PRODUCT_ENGINEER_NO_STAR_HINT=1` turns it off, and it never appears in CI, in pipes, in agent sessions or in git hooks.
 

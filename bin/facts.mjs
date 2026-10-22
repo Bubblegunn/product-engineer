@@ -244,13 +244,53 @@ export function facts(source, rewrite, { maxSentence = DEFAULT_MAX_SENTENCE, avg
     numbers: { source: sourceNumbers, rewrite: rewriteNumbers, dropped, added },
     obligations: { missing: missingObligations(source, rewrite) },
     legalese: legaleseIn(rewrite),
+    unsupported: unsupportedSentences(source, rewrite),
     sentences: { ...sentences, sourceAverage: sentenceStats(source).average, averageLimit: avgSentence, maxLimit: maxSentence },
     violations,
     ok: violations.length === 0,
   };
 }
 
-const USAGE = "usage: product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]";
+const STOP = new Set(("a an the this that these those it its is are was were be been being has have had do does did will would shall may might can could must not no nor and or but if then so than as at by for from in into of on to with within without after before about over under up out off per who whom whose which what when where why how you your we our us they their them he she his her i me my also there here such any each every only own same both other some more most very just even though while still yet again").split(" "));
+
+// A word's stem for matching: lower case, a few common endings removed. "payment", "pays" and "pay" meet.
+const stem = (w) => w.toLowerCase().replace(/(ments?|ings?|ions?|ies|ied|ed|es|s|ly|ers?)$/, "").replace(/y$/, "").replace(/e$/, "");
+const contentWords = (text) => (text.toLowerCase().match(/[a-zÀ-ɏ]+/g) ?? []).filter((w) => w.length > 2 && !STOP.has(w));
+
+/** The sentences of a text, as text. */
+function sentencesOf(text) {
+  const out = [];
+  for (const unit of unitsOf(text)) for (const s of unit.split(/(?<=[.!?])\s+/)) if (/\p{L}/u.test(s)) out.push(s.trim());
+  return out;
+}
+
+// A defined term ("X" is / means ...) or a lead-in such as "In this text,".
+const DEFINITION = /["“][^"”]{1,40}["”]\s+(?:is|are|means|refers to)\b|\bin this (?:text|document|licen[cs]e|agreement|contract),/i;
+
+/**
+ * Rewrite sentences that carry content the source lacks: a defined term or a lead-in the source does not
+ * have, or a sentence of which at least 2 content words, and at least 60 percent of them, appear nowhere in
+ * the source (compared by stem, so "payment" matches "pay"). A sentence that only splits or reorders source
+ * sentences passes. A report means a sentence with no counterpart: delete it, or tie it to a source sentence.
+ * A synonym ("fix" for "remedy") can trigger a report; check that sentence by hand.
+ */
+export function unsupportedSentences(source, rewrite) {
+  const known = new Set(contentWords(source).map(stem));
+  const sourceDefines = DEFINITION.test(source);
+  const out = [];
+  for (const sentence of sentencesOf(rewrite)) {
+    if (!sourceDefines && DEFINITION.test(sentence)) {
+      out.push({ sentence, reason: "defines a term or adds a lead-in the source does not" });
+      continue;
+    }
+    const words = contentWords(sentence);
+    const absent = words.filter((w) => !known.has(stem(w)));
+    if (absent.length >= 2 && absent.length / words.length >= 0.6) out.push({ sentence, reason: `words not in the source: ${[...new Set(absent)].join(", ")}` });
+  }
+  return out;
+}
+
+const USAGE ="usage: product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]";
 const VALUED = ["--max-sentence", "--avg-sentence"];
 
 function limitFrom(argv, flag, fallback) {
@@ -303,6 +343,10 @@ export function runFacts(argv) {
   } else console.log("obligations with no plain equivalent in the rewrite: none");
   if (r.legalese.length) console.log(`warn  legalese left in the rewrite: ${list(r.legalese)}`);
   else console.log("legalese left in the rewrite: none");
+  if (r.unsupported.length) {
+    console.log("warn  rewrite sentences with no counterpart in the source (delete each, or tie it to a source sentence):");
+    for (const u of r.unsupported) console.log(`        "${u.sentence}" (${u.reason})`);
+  } else console.log("rewrite sentences with no counterpart in the source: none");
   console.log(`sentences in the rewrite: ${s.count}, average ${s.average.toFixed(1)} words (limit ${s.averageLimit}), longest ${s.longest} (limit ${s.maxLimit})`);
   console.log(r.ok ? "result: ok" : `result: fail (${r.violations.join("; ")})`);
   return r.ok ? 0 : 1;

@@ -50,6 +50,8 @@ Never write "done" with an empty `Watched` line. If nothing could be observed, s
 
 ## Two rules for the answer
 
+State only what a command you ran this session shows, and name the command. Do not claim the state of the working tree, "no change made", "unchanged" or who wrote a file unless `git status` or `git diff` showed it; otherwise write "not checked".
+
 1. The final answer for a refactor is exactly three lines, with no benefit word anywhere
    (faster, cleaner, safer, more reliable, easier):
 

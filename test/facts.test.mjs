@@ -299,3 +299,46 @@ test("a line-start decimal followed by a space is an amount when the line has mo
   assert.equal(r.ok, false);
   same("1.1 Definitions. Rent is 800 EUR a month.\n", "Rent is 800 EUR a month.\n");
 });
+
+test("unsupported sentences: a rewrite that only splits and rewords source sentences reports none", () => {
+  assert.deepEqual(facts(SOURCE, REWRITE).unsupported, []);
+  const before = "The Tenant shall not sublet the flat without the Landlord's prior written consent, and either party may terminate this Agreement by giving 45 days' written notice.";
+  const after = "The tenant must not sublet the flat without the landlord's prior written consent. Either side can end the agreement by giving 45 days' written notice.";
+  assert.deepEqual(facts(before, after).unsupported, []);
+});
+
+test("unsupported sentences: a defined term, an intro line and an explanatory sentence the source lacks are each reported", () => {
+  const added = `In this text, "you" is the Tenant and "we" is the Landlord.
+${REWRITE}The "Rent" is the money paid every month.
+This duty continues even after the lease has ended.
+`;
+  const r = facts(SOURCE, added);
+  const found = r.unsupported.map((u) => u.sentence);
+  assert.ok(found.some((s) => s.startsWith("In this text")), JSON.stringify(found));
+  assert.ok(found.some((s) => s.startsWith('The "Rent" is')), JSON.stringify(found));
+  assert.ok(found.some((s) => s.startsWith("This duty continues")), JSON.stringify(found));
+  assert.equal(found.length, 3, JSON.stringify(found));
+  assert.equal(r.ok, true, "a report is a warning, not a failure");
+});
+
+test("unsupported sentences: the command prints each one", () => {
+  const dir = mkdtempSync(join(tmpdir(), "pe-facts-"));
+  try {
+    writeFileSync(join(dir, "s.txt"), SOURCE);
+    writeFileSync(join(dir, "r.txt"), `${REWRITE}This duty continues even after the lease has ended.\n`);
+    const out = spawnSync(process.execPath, [join(dirname(cli), "check.mjs"), "facts", join(dir, "s.txt"), join(dir, "r.txt")], { encoding: "utf8" }).stdout;
+    assert.match(out, /no counterpart in the source[\s\S]*This duty continues/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("facts unsupported: number and tense changes of source words are not reported", () => {
+  const dir = mkdtempSync(join(tmpdir(), "facts-stem-"));
+  const src = join(dir, "s.txt");
+  const rew = join(dir, "r.txt");
+  writeFileSync(src, "The fee and the charge apply. The agent will agree and make notes.\n");
+  writeFileSync(rew, "The fees and charges apply. The agent agreed and is making notes.\n");
+  const r = spawnSync(process.execPath, [join(process.cwd(), "bin/check.mjs"), "facts", src, rew, "--json"], { encoding: "utf8" });
+  assert.deepEqual(JSON.parse(r.stdout).unsupported ?? [], []);
+});
