@@ -816,3 +816,37 @@ product rules. Nothing is published outside this repository until the full gate 
    exists.
 6. No other task, prompt, criterion or label changes. Round 4 measurement is the open tasks only (T3, H1, H2, H4, H6, all
    arms, 3 runs), a cheap interim check; a full round and the final gate are separate steps.
+
+## Round 4 measurement protocol (frozen 2026-10-22, owner decision)
+
+Written and committed before any round 4 benchmark run; it is not changed after a result is seen. It narrows the "Round 4
+(frozen 2026-10-22 ...)" section above, which said "all arms, 3 runs" for the open tasks; this protocol replaces that
+sentence for tasks whose inputs did not change. The final gate (held-out set, F9, F6) is exempt: every arm runs in full there.
+
+**Reuse rule.** On a task whose task text, fixture, check script, labels, grader, model and rival arm versions are identical
+to the last published round, the rival arms and the bare model (`base`) keep the scores of that round unchanged; only our arm
+(`ours`) runs again, 3 runs, graded with the same grader. On a changed or new task, every arm runs 3 times. Rule A, rule B and
+the ceiling rule are computed as before. This repository's win rule has no cost rule. A rival score missing from the repository
+means that task runs for every arm.
+
+**Source round.** Round 3, results commit `0410631`, file `bench/head-to-head/results/round-3/SUMMARY.md`, outcome-only table,
+model `claude-sonnet-5-5`, Claude Code 2.1.308 (the local CLI reports 2.1.308 as well). Between `0410631` and this commit
+`git diff --stat 0410631 HEAD -- bench/head-to-head` shows only `objective.mjs` and `tasks.json` changed, and the only change in
+them is the H1 variant. `arms.json`, `labels.json`, `grade.mjs`, `fixtures` and the other tasks are byte-identical. Round 3 ran
+in a Linux cloud container; round 4 runs on macOS. That difference is recorded here and not corrected for.
+
+**Task by task.**
+
+| Task | Status in round 4 | ours | base | dod | dod-invoked | gwc | gwc-invoked | iso | iso-invoked |
+|---|---|---|---|---|---|---|---|---|---|
+| T3 | unchanged: rivals reused (r3), ours x3 new | runs | 4.67 (r3 reused) | 4.33 (r3 reused) | 4.00 (r3 reused) | 3.33 (r3 reused) | 4.67 (r3 reused) | 3.67 (r3 reused) | 4.33 (r3 reused) |
+| H2 | unchanged: rivals reused (r3), ours x3 new | runs | 4.00 (r3 reused) | 5.00 (r3 reused) | 5.00 (r3 reused) | 4.00 (r3 reused) | 4.00 (r3 reused) | 4.33 (r3 reused) | 5.00 (r3 reused) |
+| H4 | unchanged: rivals reused (r3), ours x3 new | runs | 4.00 (r3 reused) | 4.33 (r3 reused) | 4.33 (r3 reused) | 4.00 (r3 reused) | 4.33 (r3 reused) | 4.33 (r3 reused) | 4.00 (r3 reused) |
+| H6 | unchanged: rivals reused (r3), ours x3 new | runs | 4.67 (r3 reused) | 4.67 (r3 reused) | 4.67 (r3 reused) | 4.33 (r3 reused) | 4.33 (r3 reused) | 3.33 (r3 reused) | 3.00 (r3 reused) |
+| H1 | changed (account-lockout variant, commit `628f3c4`): every arm x3 new | runs | runs | runs | runs | runs | runs | runs | runs |
+
+The reused values are the means of the three round 3 outcome scores in the SUMMARY.md rows for those tasks. Tasks T1, T2, T4,
+T5, T6, H3, H5 and H7 are not measured in round 4 (the interim check covers the open tasks only); a full round is a separate
+step. In the round 4 result table a reused cell is marked "r3 reused" and a new cell "r4 new". Our arm runs from the product
+commit `71043a2` (rules for T3, H2, H4, H6). The Rule A figure that mixes in the unmeasured tasks takes our round 3 values for
+them and is marked as such.
