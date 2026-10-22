@@ -177,7 +177,7 @@ writeFileSync(
   join(fakeRepo, "bin", "check.mjs"),
   [
     'if (process.argv.includes("--version")) console.log("0.7.0");',
-    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>");',
+    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>\\n       product-engineer scope [range]");',
     "",
   ].join("\n"),
 );

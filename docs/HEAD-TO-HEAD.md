@@ -1032,3 +1032,7 @@ several times what is left (about 0.1 USD per session). Therefore, decided here 
 6. **Not done in this round:** F9 (Haiku, Opus), F6 (10 percent re-grading by an agent that has not seen the code), the public
    re-measurement. A round 5 attempt earlier the same day (ours x 13 tasks x 3 on `6a2a319`, plus 5 ce sessions) was stopped by the
    owner before grading; those sessions are ungraded and are not used.
+
+Note (same day, before any session of this round): the protocol commit `1174d25` was pushed while two bench test files still
+expected the old `--help` text; the next commit only updates those tests for the `scope` probe. No product, harness or protocol
+byte changed. The ours copy is made from the HEAD that contains that test fix.
