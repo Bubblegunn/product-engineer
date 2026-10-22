@@ -76,22 +76,44 @@ grep -qF 'version-bump' "$rn" || fail "$rn: rule 2 must name the version-bump co
 grep -qF 'Not in this release:' "$rn" || fail "$rn: rule 5 must keep the Not in this release section"
 grep -qF 'reverted' "$rn" || fail "$rn: rule 5 must say a reverted item is not announced"
 grep -qF 'Changes since v2.3.0 (commit abc1234 to def5678)' "$rn" || fail "$rn: rule 7 must show the range line"
-grep -qF 'The release name goes on the line after' "$rn" || fail "$rn: rule 7 must place the release name after the range line"
+grep -qF 'A version number goes on that line only' "$rn" || fail "$rn: rule 7 must keep version numbers on the range line"
 grep -qF 'git log' "$rn" || fail "$rn: rule 7 must check the range against git log"
 grep -qF 'faster' "$rn" || fail "$rn: rule 6 must name the unmeasured effect it forbids"
+# Round 3: the notes check comes first, and notes carry no code identifiers or file names.
+[ "$(grep '^## ' "$rn" | head -1)" = "## Check before you save" ] || fail "$rn: the first section must be 'Check before you save'"
+grep -qF 'run `product-engineer notes <file>`' "$rn" || fail "$rn: the agent must run product-engineer notes <file>"
+grep -qF 'never contain code identifiers or file names' "$rn" || fail "$rn: notes never contain code identifiers or file names"
+grep -q '^description:.*product-engineer notes' "$rn" || fail "$rn: the description must name the notes check"
 # The stubs check names the fallback first and the npx command from 0.8.0, and the commit split rule is kept.
 grep -qF '`product-engineer stubs` does this mechanically' skills/done-means-observed/SKILL.md || fail "done-means-observed must say product-engineer stubs does it mechanically"
 grep -qF '`npx product-engineer stubs` runs the same check' skills/done-means-observed/SKILL.md || fail "done-means-observed must name the npx form once, as the alternative"
 grep -qF 'one commit per group' skills/customer-block/SKILL.md || fail "customer-block must split a mixed change into one commit per group"
 grep -qF 'git restore --staged' skills/customer-block/SKILL.md || fail "customer-block must unstage a secret-looking file before the first commit"
 # Benchmark values from the release-notes fixture must not return to the skills or the eval task.
-for w in 'v1.4.0' '50 bookings' '50 per page' 'stayhub' 'bulk cancel' 'heatmap' 'orders-api' 'LICENCE-plain' 'sk_live' 'refund' 'hereinafter' 'Licensee'; do
+for w in 'v1.4.0' '50 bookings' '50 per page' 'stayhub' 'bulk cancel' 'heatmap' 'orders-api' 'LICENCE-plain' 'sk_live' 'refund' 'hereinafter' 'Licensee' 'style: format' 'Math.floor' 'rate * nights' '33.335' '100.005' 'format-code'; do
   if grep -rqiF -- "$w" skills evals/tasks/09-release-notes; then fail "skills or eval task 09 must not contain the benchmark value: $w"; fi
 done
-# Round 2 (task 17): the unfinished-integration rule is the first section of done-means-observed; the
-# fix, refactor and plain-language rewrite rules are in the core skill and in customer-block.
+# Round 3: the verdict-question rule is the first section of done-means-observed and the
+# unfinished-integration rule (round 2, task 17) the second; the fix, refactor and plain-language
+# rewrite rules are in the core skill and in customer-block.
 dms="skills/done-means-observed/SKILL.md"
-[ "$(grep '^## ' "$dms" | head -1)" = "## Part of the work cannot run yet" ] || fail "$dms: the first section must be 'Part of the work cannot run yet'"
+[ "$(grep '^## ' "$dms" | sed -n 1p)" = "## Asked whether it is finished" ] || fail "$dms: the first section must be 'Asked whether it is finished'"
+[ "$(grep '^## ' "$dms" | sed -n 2p)" = "## Part of the work cannot run yet" ] || fail "$dms: the second section must be 'Part of the work cannot run yet'"
+grep -q '^description: Use when asked whether work is finished' "$dms" || fail "$dms: the description must open with the verdict question"
+grep -qF 'Do not edit code, tests or files, and do not commit' "$dms" || fail "$dms: a verdict question is answered without edits"
+grep -qF 'by its test name' "$dms" || fail "$dms: the answer names each failing test by its test name"
+# Round 3: when told to commit, commit; the rule opens the core skill and customer-block, and the
+# refactor answer has one fixed three-line shape in three skills.
+for f in skills/product-engineer/SKILL.md skills/customer-block/SKILL.md; do
+  [ "$(grep '^## ' "$f" | head -1)" = "## When you are told to commit" ] || fail "$f: the first section must be 'When you are told to commit'"
+  grep -q '^description:.*When told to commit, it commits without asking' "$f" || fail "$f: the description must say it commits without asking"
+  grep -qF 'When the person tells you to commit, commit. Do not ask' "$f" || fail "$f: the commit rule must say commit and do not ask"
+done
+for f in skills/product-engineer/SKILL.md skills/customer-block/SKILL.md skills/done-means-observed/SKILL.md; do
+  grep -qF 'Changed for users: nothing; only <the tests> pin that.' "$f" || fail "$f: the refactor answer shape is missing"
+  grep -qF 'Ran: <command>: <result>.' "$f" || fail "$f: the refactor answer shape must open with Ran:"
+  grep -qF 'Not checked: <what you did not check>.' "$f" || fail "$f: the refactor answer shape must end with Not checked:"
+done
 grep -q '^description:.*501' "$dms" || fail "$dms: the description must name the 501 or 503 response"
 grep -qF 'HTTP 501 or 503' "$dms" || fail "$dms: the unfinished-integration rule must name HTTP 501 or 503"
 grep -qF 'no TODO, FIXME or' "$dms" || fail "$dms: the rule must forbid a TODO, FIXME or return null marker"

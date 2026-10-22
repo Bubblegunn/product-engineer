@@ -17,6 +17,7 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer doctor
        product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]
        product-engineer stubs [--staged | --range <a..b>] [--json] [--warn] [-q]
+       product-engineer notes <file> [--json]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -62,10 +63,20 @@ finding names its file, line and reason. It exits 1 when there are findings; --w
 --json prints { count, findings: [{ file, line, code, reason }] } and nothing else. The text
 output names the scope it scanned and how many files and added lines it read.
 
+notes reads release notes for people who do not read code. Errors: a conventional commit
+prefix at a line start or the word refactor or chore, a code identifier or file name (a
+backticked word, camelCase or snake_case, a call such as name(), a path, a file with an
+extension), a line about docs, a README, a changelog or a version bump, an effect word
+(faster, instant) or a percentage on a line that does not say it was measured, and a version
+number after the first line. Warning: the first line names no range (a tag, a commit hash,
+"since", "the last N commits").
+--json prints { ok, errors, warnings, findings: [{ level, code, line, text, message }] }.
+
 doctor lists the agents on this machine that carry the skill, in this project and
 in your home directory, and whether each copy still matches the packaged rules.
 
-Exit codes: 0 no errors, 1 at least one error (doctor: a copy is out of date; stubs: a finding), 2 usage.`;
+Exit codes: 0 no errors, 1 at least one error (doctor: a copy is out of date; stubs: a finding;
+notes: an error), 2 usage.`;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const TABLE = join(here, "..", "skills", "product-engineer", "references", "plain-language.md");
@@ -392,6 +403,10 @@ async function main(argv) {
   if (command === "stubs") {
     const { runStubs } = await import("./stubs.mjs");
     return runStubs(argv.slice(1));
+  }
+  if (command === "notes") {
+    const { runNotes } = await import("./notes.mjs");
+    return runNotes(argv.slice(1));
   }
   if (command === "facts") {
     const { runFacts } = await import("./facts.mjs");

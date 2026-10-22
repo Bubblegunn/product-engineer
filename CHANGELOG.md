@@ -2,6 +2,14 @@
 
 ## 0.8.0 (unreleased)
 
+**`product-engineer notes` checks release notes for readers who do not read code.** `notes <file> [--json]` exits 1 on a conventional commit prefix, the words refactor or chore, a code identifier or file name (backticks, camelCase, snake_case, a call such as `name()`, a path, a file with an extension), a line about docs, a README, a changelog or a version bump, an effect word or a percentage on a line that does not say it was measured, and a version number after the first line. A first line that names no range is a warning. The release-notes skill runs it and fixes every error before saving.
+
+**When told to commit, the skills commit.** The first section of the core skill and of `customer-block`, and both descriptions, say: commit without asking which files, unstage a file that looks like a secret and say so, make one commit per unrelated group, and end with what was committed and what was left out.
+
+**A question whether work is finished is answered, never acted on.** `done-means-observed` now opens with that rule: run the tests, name each failing test by its test name, say what could not be checked, edit and commit nothing, and offer the fix as the next step.
+
+**A refactor's final answer has one fixed shape.** Three lines, `Ran:`, `Changed for users: nothing; only <the tests> pin that.` and `Not checked:`, with no benefit word, in the core skill, `customer-block` and `done-means-observed`.
+
 **`product-engineer facts` checks a plain-language rewrite against its source.** `facts <source> <rewrite>` reads both files. It exits 1 when a number is dropped or added, or when the rewrite's sentences average more than 20 words or have one longer than 35. A missing plain equivalent for an obligation and legal phrases left in the rewrite are warnings. `--avg-sentence`, `--max-sentence` and `--json` change the limits and the output.
 
 **An unfinished integration returns an explicit not-available response.** `done-means-observed` now starts with the rule: HTTP 501 or 503 with a test that pins it, no TODO, FIXME or `return null` marker, and an answer that says plainly that nothing happens yet.

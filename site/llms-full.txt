@@ -256,9 +256,12 @@ node bin/check.mjs stubs --range HEAD~1..HEAD    # the same for a committed rang
 node bin/check.mjs stubs --json                  # the findings as one object: { count, findings }
 node bin/check.mjs stubs --warn                  # report the findings but exit 0
 product-engineer facts source.txt rewrite.txt  # a rewrite keeps every number; sentences stay short
+product-engineer notes RELEASE_NOTES.md        # release notes carry no code names, commit prefixes or version-bump lines
 ```
 
 `stubs` reads only the lines a change adds: the working tree against `HEAD` and new files by default. It flags TODO, FIXME and XXX markers, empty or placeholder function bodies, tests that assert nothing or compare an expression with itself, and newly skipped tests.
+
+`notes` checks release notes for readers who do not read code: no commit prefixes, code identifiers or file names, no line about docs or a version bump, no unmeasured "faster" or percentage, and a version number only on the first line, which should name the range.
 
 `facts` checks a plain-language rewrite against its source: the same numbers, the obligations carried over, legal phrases left in, and sentences of at most 20 words on average and 35 at most. See [docs/check-reference.md](docs/check-reference.md).
 
@@ -632,6 +635,37 @@ exit code never changes.
 To turn the hint off for good:
 
 `export PRODUCT_ENGINEER_NO_STAR_HINT=1`
+
+## Release notes: `product-engineer notes`
+
+`notes <file>` reads release notes written for people who do not read code, one line at a time.
+It exits 1 when it finds an error, 0 when it finds none, and 2 on a usage error or a file it cannot read.
+
+The errors:
+
+- `commit-prefix`: a line (after a list marker or heading mark) that starts with a conventional commit
+  prefix: `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `style`, `build`, `ci` or `revert`,
+  an optional `(scope)`, then a colon.
+- `commit-word`: the words `refactor` (and `refactored`, `refactoring`) or `chore` anywhere on a line.
+- `code-identifier`: a backticked span, a camelCase word or a PascalCase word with an inner capital,
+  a snake_case word, a lowercase word with digits glued to its end (`step3`), a kebab-case word that holds a digit next to letters or has three or more parts and
+  no short joining word (so "day-to-day" is prose), a call such as `name()`, a path with a slash (a
+  leading `./` or `/`, a first folder such as `src/`, or two slashes), or a file name with a common
+  extension. Links are skipped, and framework names such as Node.js are not file names.
+- `docs-or-version`: a line about docs, documentation, a README, a changelog or a version bump.
+- `unmeasured-effect`: `faster`, `quicker`, `speed`, `snappier` or `instant` on a line that does not say
+  `measured`.
+- `unmeasured-percent`: a percentage on a line that does not say `measured`.
+- `version-number`: a version number (`v2.3` or `2.3.0`) on any line but the first non-empty one.
+
+The warning:
+
+- `no-range`: the first non-empty line names no range: no tag or version, no commit hash, no "since"
+  and no "the last N commits".
+
+`--json` prints one object, `{ ok, errors, warnings, findings: [{ level, code, line, text, message }] }`,
+and nothing else. The check is a heuristic: a brand written in camelCase (iPhone) is flagged, and code
+it does not recognise is missed.
 
 ## Stubs: `product-engineer stubs`
 

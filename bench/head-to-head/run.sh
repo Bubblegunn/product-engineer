@@ -4,8 +4,8 @@
 # Stderr is kept apart from out.jsonl. A run succeeds when claude exits 0 and the last line of out.jsonl that parses as
 # {"type":"result"} is not an error; noise on stderr, or a non-JSON line after the result, does not fail it.
 # Usage: run.sh T1..T6 or H1..H7 <arm from arms.json> 1..3
-# Round 2: T3 is the pr2 fixture. ours.sh writes <work>/shim-ours (the product-engineer command, for the ours arm's
-# claude call only) and <work>/shim-dod (bash 5 and GNU find, first on PATH for dod and dod-invoked, before the probes).
+# Round 3: T3 is the pr3 fixture (round 2 used pr2). ours.sh writes <work>/shim-ours (the product-engineer command,
+# for the ours arm's claude call only) and <work>/shim-dod (bash 5 and GNU find, first on PATH for dod and dod-invoked, before the probes).
 # The ours arm runs from <work>/ours/<hash>/, an immutable git archive of PE_BENCH_OURS_COMMIT (or HEAD), never from the
 # working tree; ours.sh refuses a work directory that holds another hash (see ours.sh).
 # Env:
@@ -48,7 +48,7 @@ REP=$3
 case "$TASK" in
   T1) VARIANT=commit ;;
   T2) VARIANT=done ;;
-  T3) VARIANT=pr2 ;;
+  T3) VARIANT=pr3 ;;
   T4) VARIANT=notes ;;
   T5) VARIANT=perf ;;
   T6) VARIANT=refactor ;;

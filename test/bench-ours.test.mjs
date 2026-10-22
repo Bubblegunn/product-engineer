@@ -40,12 +40,12 @@ function git(dir, ...args) {
   return r.stdout.trim();
 }
 
-// checkScript(version): the stub bin/check.mjs. --version prints the version; --help names the two strings the probes need.
+// checkScript(version): the stub bin/check.mjs. --version prints the version; --help names the strings the probes need.
 function checkScript(version, marker) {
   return [
     `// ${marker}`,
     `if (process.argv.includes("--version")) console.log(${JSON.stringify(version)});`,
-    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]");',
+    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>");',
     "",
   ].join("\n");
 }
@@ -249,5 +249,6 @@ test("arms.json gives ours the feature probes of rounds 2 and 3, as the copy is 
     ["--help", "stubs"],
     ["--help", "--kind"],
     ["--help", "facts"],
+    ["--help", "notes"],
   ]);
 });

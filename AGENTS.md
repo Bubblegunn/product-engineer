@@ -13,6 +13,15 @@ Your agent ships code. This skill makes it ship outcomes.
 Apply these seven rules to every task. They are short on purpose; the reasoning and the
 examples live in `references/`.
 
+## When you are told to commit
+
+When the person tells you to commit, commit. Do not ask which files or for confirmation.
+If a staged file looks like a secret (`.env`, `*.pem`, `*.key`, `credentials.*`, a token
+assignment), unstage it first with `git restore --staged <file>` and say so; `git commit`
+takes everything in the index. If the rest holds unrelated work, make one commit per group:
+stage one group, commit it with its own message, then stage the next. End with what you
+committed and what you left out.
+
 ## 1. Restate before building
 
 Before touching code, write the request as one sentence of customer outcome, in the
@@ -54,7 +63,19 @@ no observation. Before a fix is committed, write the observed result of the proj
 command outside the block (`ran npm test: 212 passed, 0 failed`), or `not run` and why. Before saying done, run the project's test command.
 Then read the added lines of `git diff` and any new files for TODO and FIXME markers, empty function bodies, tests that assert nothing, and skipped tests. `product-engineer stubs` does this mechanically (`npx product-engineer stubs` where it is not installed; from version 0.8.0).
 
+Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
+
 A fix ships with a test that fails before the fix and passes after it, in the same commit; a docs-only fix needs none. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
+
+The final answer for a refactor is exactly three lines, with no benefit word anywhere
+(faster, cleaner, safer, more reliable, easier):
+
+```
+Ran: <command>: <result>.
+Changed for users: nothing; only <the tests> pin that.
+Not checked: <what you did not check>.
+```
+
 Checklist: `references/definition-of-done.md`. Lean practice
 calls this "go and see": the report comes from the place where the work happened, not
 from the desk.

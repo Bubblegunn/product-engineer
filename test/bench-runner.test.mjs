@@ -176,7 +176,7 @@ writeFileSync(
   join(fakeRepo, "bin", "check.mjs"),
   [
     'if (process.argv.includes("--version")) console.log("0.7.0");',
-    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]");',
+    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>");',
     "",
   ].join("\n"),
 );
@@ -1086,11 +1086,11 @@ test("arms.json marks ours as the installed CLI arm and gives dod the bash and G
   });
 });
 
-test("T3 runs the round 2 pr2 fixture: the branch refactor/reminder-filter is checked out in the session repository", () => {
+test("T3 runs the round 3 pr3 fixture: the branch style/format-code is checked out in the session repository", () => {
   const r = runArm("T3", "base", 1);
   assert.equal(r.status, 0, r.stderr);
   const branch = spawnSync("git", ["-C", join(r.runDir, "repo"), "rev-parse", "--abbrev-ref", "HEAD"], { encoding: "utf8" });
-  assert.equal(branch.stdout.trim(), "refactor/reminder-filter");
+  assert.equal(branch.stdout.trim(), "style/format-code");
 });
 
 // ---------- round 2 follow-up 16b: the ours arm runs from an immutable copy of the commit under test ----------

@@ -157,9 +157,10 @@ export function buildMaterial(runDir, task, paths = {}) {
   }
   sections.push(`NEW COMMITS\n${newCommits.length ? newCommits.join("\n\n") : "(none)"}`);
 
-  // Round 2 T3: the branch commit is part of the fixture, so the grader sees what the pull request changes (the
-  // dropped limit and the deleted test), not only the description. Its message and full patch come from git show.
-  if (task.variant === "pr2" && ctx.state) {
+  // Rounds 2 and 3 T3: the branch commit is part of the fixture, so the grader sees what the pull request changes (the
+  // dropped limit and the deleted test in pr2, the price line among the formatting in pr3), not only the description.
+  // Its message and full patch come from git show.
+  if ((task.variant === "pr2" || task.variant === "pr3") && ctx.state) {
     const branch = gitOutput(ctx.repo, ["show", "--no-color", "--format=%B", ctx.state.head]) || "(not readable)";
     sections.push(`FIXTURE BRANCH COMMIT (the commit the pull request adds on top of main, with its patch)\n${branch.trimEnd()}`);
   }

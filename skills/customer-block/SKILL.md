@@ -1,6 +1,6 @@
 ---
 name: customer-block
-description: Use when writing a commit message or a pull request description for software other people use. Puts a plain-language "For the customer" block in every message (at the end of a commit, first in a pull request), what changed, why it matters, and an automation effect only when a manual step really disappeared.
+description: Use when committing, or writing a commit message or a pull request description, for software other people use. When told to commit, it commits without asking, unstages a file that looks like a secret and says so, and makes one commit per unrelated group. Puts a plain-language "For the customer" block in every message (at the end of a commit, first in a pull request), what changed, why it matters, and an automation effect only when a manual step really disappeared.
 license: MIT
 metadata:
   author: Efe Genc
@@ -13,6 +13,15 @@ metadata:
 
 Rule 2 of the product-engineer skill on its own, for teams that want the block and
 nothing else. The full skill is `product-engineer` in the same repository.
+
+## When you are told to commit
+
+When the person tells you to commit, commit. Do not ask which files or for confirmation.
+If a staged file looks like a secret (`.env`, `*.pem`, `*.key`, `credentials.*`, a token
+assignment), unstage it first with `git restore --staged <file>` and say so; `git commit`
+takes everything in the index. If the rest holds unrelated work, make one commit per group
+(a group is the set of files that belong to one piece of work): stage one group, commit it
+with its own message, then stage the next. End with what you committed and what you left out.
 
 ## The block
 
@@ -38,17 +47,18 @@ under `What changed`; a bug fix says what the customer saw before and sees now; 
 invent an automation effect. Merge, fixup, squash and revert commits do not need the
 block.
 
-## Before you commit
-
-Look at the staged diff before the message. First, unstage every file that looks like a secret
-(`.env`, `*.pem`, `*.key`, `credentials.*`) with `git restore --staged <file>`, and say so. `git commit`
-takes everything in the index, so a secret left staged goes into the first commit. Then, if
-the rest holds unrelated work and the person asked you to commit, do not ask and do not lump it. A
-group is the set of files that belong to one piece of work. Make one commit per group: stage one
-group, commit it with its own message, then stage the next group and commit again. Tell the person
-what you split and why.
+## Fixes and refactors
 
 A fix ships with its test. If the change is a fix and no test file changes, write the test in the same commit: it fails before the fix and passes after it. A docs-only fix needs none. A refactor says in its block only that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless you measured it.
+
+The final answer for a refactor is exactly three lines, with no benefit word anywhere
+(faster, cleaner, safer, more reliable, easier):
+
+```
+Ran: <command>: <result>.
+Changed for users: nothing; only <the tests> pin that.
+Not checked: <what you did not check>.
+```
 
 ## The observed result
 

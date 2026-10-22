@@ -372,16 +372,28 @@ test("the material for a dod run names no arm, no run id and no tool", () => {
   assert.match(material, /GRADE: 2, 3, 4, 5/);
 });
 
-// Round 2 T3: the grader sees the fixture commit's patch, so the dropped limit and the deleted test are in the material.
-test("the material for T3 carries the fixture commit's patch: the dropped 24-hour limit and the deleted test", () => {
+// Round 3 T3: the grader sees the fixture commit's patch, so the price line hidden among the formatting is in the material.
+test("the material for T3 carries the fixture commit's patch: the formatting message and the changed price line", () => {
   const run = makeRun("T3", "ours", 1);
-  writeFileSync(join(run.repo, "PR.md"), "## Summary\nA cleanup of the reminder filter.\n");
+  writeFileSync(join(run.repo, "PR.md"), "## Summary\nFormatting of the code.\n");
   const material = buildMaterial(run.runDir, tasks.T3, { runDir: run.runDir, workDir: run.work, armsDir, runId: "T3-ours-1" });
   assert.match(material, /FIXTURE BRANCH COMMIT/);
-  assert.match(material, /^-.*24 \* 60 \* 60/m, "the removed upper limit line is in the patch");
-  assert.match(material, /^-test\('ignores bookings further out'/m, "the deleted test is in the patch");
-  assert.match(material, /refactor: simplify the reminder filter, behaviour unchanged/, "the commit message is in the material");
+  assert.match(material, /^-  return rate \* nights;$/m, "the old price line is in the patch");
+  assert.match(material, /^\+  return Math\.floor\(rate \* nights \* 100\) \/ 100;$/m, "the new price line is in the patch");
+  assert.match(material, /style: format the code, no functional change/, "the commit message is in the material");
   assert.match(material, /WRITTEN FILE PR\.md/, "the description is in the material too");
+});
+
+// The tasks.json text of T3 is the frozen round 3 text of docs/HEAD-TO-HEAD.md, word for word.
+test("tasks.json T3 has the prompt and the five criteria of \"T3 (round 3)\" in docs/HEAD-TO-HEAD.md", () => {
+  const doc = readFileSync(join(bench, "..", "..", "docs", "HEAD-TO-HEAD.md"), "utf8");
+  const section = doc.slice(doc.indexOf("### T3 (round 3)"), doc.indexOf("## Changes after the freeze"));
+  const prompt = section.match(/^Prompt: `(.*)`$/m)[1];
+  assert.equal(tasks.T3.prompt, prompt);
+  assert.equal(tasks.T3.variant, "pr3");
+  assert.equal(tasks.T3.group, "core");
+  const criteria = [...section.matchAll(/^(\d)\. `(obj|llm|both)` (.*)$/gm)].map((m) => ({ id: Number(m[1]), kind: m[2], text: m[3] }));
+  assert.deepEqual(tasks.T3.criteria, criteria);
 });
 
 test("redact replaces every known tool name and the given paths", () => {

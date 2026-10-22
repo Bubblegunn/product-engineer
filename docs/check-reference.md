@@ -107,6 +107,37 @@ To turn the hint off for good:
 
 `export PRODUCT_ENGINEER_NO_STAR_HINT=1`
 
+## Release notes: `product-engineer notes`
+
+`notes <file>` reads release notes written for people who do not read code, one line at a time.
+It exits 1 when it finds an error, 0 when it finds none, and 2 on a usage error or a file it cannot read.
+
+The errors:
+
+- `commit-prefix`: a line (after a list marker or heading mark) that starts with a conventional commit
+  prefix: `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `style`, `build`, `ci` or `revert`,
+  an optional `(scope)`, then a colon.
+- `commit-word`: the words `refactor` (and `refactored`, `refactoring`) or `chore` anywhere on a line.
+- `code-identifier`: a backticked span, a camelCase word or a PascalCase word with an inner capital,
+  a snake_case word, a lowercase word with digits glued to its end (`step3`), a kebab-case word that holds a digit next to letters or has three or more parts and
+  no short joining word (so "day-to-day" is prose), a call such as `name()`, a path with a slash (a
+  leading `./` or `/`, a first folder such as `src/`, or two slashes), or a file name with a common
+  extension. Links are skipped, and framework names such as Node.js are not file names.
+- `docs-or-version`: a line about docs, documentation, a README, a changelog or a version bump.
+- `unmeasured-effect`: `faster`, `quicker`, `speed`, `snappier` or `instant` on a line that does not say
+  `measured`.
+- `unmeasured-percent`: a percentage on a line that does not say `measured`.
+- `version-number`: a version number (`v2.3` or `2.3.0`) on any line but the first non-empty one.
+
+The warning:
+
+- `no-range`: the first non-empty line names no range: no tag or version, no commit hash, no "since"
+  and no "the last N commits".
+
+`--json` prints one object, `{ ok, errors, warnings, findings: [{ level, code, line, text, message }] }`,
+and nothing else. The check is a heuristic: a brand written in camelCase (iPhone) is flagged, and code
+it does not recognise is missed.
+
 ## Stubs: `product-engineer stubs`
 
 `stubs` reads only the lines a change adds. By default that is the working tree against `HEAD` (staged

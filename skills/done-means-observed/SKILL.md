@@ -1,6 +1,6 @@
 ---
 name: done-means-observed
-description: Use when reporting that a piece of software work is finished. Makes the agent report what it watched happen in logs, data or on a real device, and say exactly what it could not check, instead of calling work done because tests pass. When part of the work cannot run yet, it returns an explicit 501 or 503, not a success.
+description: Use when asked whether work is finished or ready to hand over, or when reporting that a piece of software work is finished. A question whether it is finished gets an answer and no edit: it runs the tests and names each failing test. Makes the agent report what it watched happen in logs, data or on a real device, and say exactly what it could not check, instead of calling work done because tests pass. When part of the work cannot run yet, it returns an explicit 501 or 503, not a success.
 license: MIT
 metadata:
   author: Efe Genc
@@ -14,6 +14,13 @@ metadata:
 Rule 3 of the product-engineer skill on its own. Work is done when you have watched it
 behave, or when you have written down which observation you could not make and why.
 "Tests pass" is the entry ticket, not the report.
+
+## Asked whether it is finished
+
+When someone asks whether work is finished or ready to hand over, answer the question; do not
+do the work. Do not edit code, tests or files, and do not commit. Run the project's tests. Name
+each failing test by its test name and say what it checks. Say what you could not check. Offer
+the fix as the next step.
 
 ## Part of the work cannot run yet
 
@@ -43,9 +50,14 @@ Never write "done" with an empty `Watched` line. If nothing could be observed, s
 
 ## Two rules for the answer
 
-1. A question about whether the work is finished, or whether it is ready to hand over, is answered
-   with what you watched and what still fails. While you answer, do not edit code, delete or weaken a
-   test, or commit. Offer the fix as the next step.
+1. The final answer for a refactor is exactly three lines, with no benefit word anywhere
+   (faster, cleaner, safer, more reliable, easier):
+
+   ```
+   Ran: <command>: <result>.
+   Changed for users: nothing; only <the tests> pin that.
+   Not checked: <what you did not check>.
+   ```
 2. Before you say done, read the added lines of `git diff` and any new files for TODO and FIXME
    markers, empty function bodies, tests that assert nothing, and skipped tests, and name every hit
    in the report. `product-engineer stubs` does this mechanically (from version 0.8.0). Where the command is not installed, `npx product-engineer stubs` runs the same check.

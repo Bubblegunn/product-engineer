@@ -1,6 +1,6 @@
 ---
 name: release-notes
-description: Use when writing release notes, a changelog entry, a status update or a "what's new" message for people who do not read code. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
+description: Use when writing release notes, a changelog entry, a status update or a "what's new" message for people who do not read code. Notes never contain code identifiers or file names, and the agent runs `product-engineer notes <file>` and fixes every error before saving. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
 license: MIT
 metadata:
   author: Efe Genc
@@ -15,6 +15,14 @@ metadata:
 The product-engineer rules for an agent that writes about software rather than writing
 it: release notes, changelog entries, status updates to a founder or a client, a
 "what's new" message.
+
+## Check before you save
+
+Notes never contain code identifiers or file names: no function, variable or module
+names, no paths, no backticks, no commit prefixes, no file with an extension. Write the
+notes to their file, then run `product-engineer notes <file>` (`npx product-engineer notes
+<file>` where it is not installed; from version 0.8.0). Fix every error it reports and run
+it again until it passes. Only then say the notes are done.
 
 ## Seven rules
 
@@ -39,15 +47,15 @@ it: release notes, changelog entries, status updates to a founder or a client, a
    protects, for example "Exported calendar files can no longer run code when a colleague
    opens them", and gives no steps that show how to abuse the flaw.
 7. State the range on the first line: `Changes since v2.3.0 (commit abc1234 to def5678)`,
-   or "the last 6 commits: abc1234 to def5678". The release name goes on the line after
-   it. Check the range against `git log` before writing. Naming the range is common
+   or "the last 6 commits: abc1234 to def5678". A version number goes on that line only.
+   Name the new version only when the person gives it to you; a version bump in the range
+   is not a change. Check the range against `git log` before writing. Naming the range is common
    changelog practice; the wording here is this skill's own.
 
 ## Shape
 
 ```
 Changes since v2.3.0 (commit abc1234 to def5678)
-Calendar 2.3.0, 14 March
 
 You can now <outcome>, so that <why it matters>.
 You no longer <suffering>, because <what changed, in plain words>.

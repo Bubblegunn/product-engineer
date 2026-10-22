@@ -223,9 +223,12 @@ node bin/check.mjs stubs --range HEAD~1..HEAD    # the same for a committed rang
 node bin/check.mjs stubs --json                  # the findings as one object: { count, findings }
 node bin/check.mjs stubs --warn                  # report the findings but exit 0
 product-engineer facts source.txt rewrite.txt  # a rewrite keeps every number; sentences stay short
+product-engineer notes RELEASE_NOTES.md        # release notes carry no code names, commit prefixes or version-bump lines
 ```
 
 `stubs` reads only the lines a change adds: the working tree against `HEAD` and new files by default. It flags TODO, FIXME and XXX markers, empty or placeholder function bodies, tests that assert nothing or compare an expression with itself, and newly skipped tests.
+
+`notes` checks release notes for readers who do not read code: no commit prefixes, code identifiers or file names, no line about docs or a version bump, no unmeasured "faster" or percentage, and a version number only on the first line, which should name the range.
 
 `facts` checks a plain-language rewrite against its source: the same numbers, the obligations carried over, legal phrases left in, and sentences of at most 20 words on average and 35 at most. See [docs/check-reference.md](docs/check-reference.md).
 
