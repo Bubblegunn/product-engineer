@@ -154,3 +154,25 @@ test("the CLI exits 2 on a usage error or a file it cannot read", () => {
 test("--help lists the notes command", () => {
   assert.match(spawnSync("node", [cli, "--help"], { encoding: "utf8" }).stdout, /product-engineer notes <file> \[--json\]/);
 });
+
+test("a command-line option or a command the reader types is not code to hide", () => {
+  for (const line of [
+    "New: word counts as JSON with the `--json` option.",
+    "Words shorter than 3 characters are skipped unless you pass --min-length.",
+    "Run `tally --json` to get the count as JSON.",
+    "Run `git tag` after the check.",
+    "Use `--max-line-length=80` or -v for more detail.",
+  ]) {
+    assert.deepEqual(identifiersIn(line), [], line);
+  }
+  assert.ok(identifiersIn("Uses `exportMonth` with `--json`.").includes("`exportMonth`"));
+  assert.ok(identifiersIn("Reads `event_store` first.").includes("`event_store`"));
+});
+
+test("an option exemption does not hide a file name, an identifier or plain words in backticks", () => {
+  assert.ok(identifiersIn("pass --config=src/a.js").includes("src/a.js"));
+  assert.ok(identifiersIn("pass --json=exportMonth").includes("exportMonth"));
+  assert.ok(identifiersIn("the -x/foo.js file").some((id) => id.includes("foo.js")));
+  assert.ok(identifiersIn("run `some words here`").includes("`some words here`"));
+  assert.ok(identifiersIn("run `foo-bar baz`").includes("`foo-bar baz`"));
+});

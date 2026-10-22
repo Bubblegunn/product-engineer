@@ -20,6 +20,15 @@ const DOT_FILE = /(?:^|\s)(\.(?:env|gitignore|npmrc|nvmrc|editorconfig)[\w.-]*)\
 const PATH_DIRS = "src|lib|test|tests|bin|app|docs|scripts|config|packages|public|assets|spec";
 const PATH = new RegExp(`(?:^|[\\s(\\["'])((?:\\.{1,2}/|/)?(?:${PATH_DIRS})/[\\w./-]+|(?:\\.{1,2}/|/)[\\w.-]+(?:/[\\w.-]+)+|[\\w.-]+/[\\w.-]+/[\\w./-]+|[\\w-]+/[\\w-]+\\.[a-z]{1,5})`, "gi");
 const BACKTICK = /`[^`\n]+`/g;
+// A command-line option or a command the reader types is the interface they use, not code to hide.
+const OPTION = /(?<![\w-])(?:--[a-z][\w-]*|-[A-Za-z])(?:=(?=[^\s`])|(?![\w./-]))/g;
+const OPT_TOKEN = /^(?:--[a-z][\w-]*|-[A-Za-z])(?:=[a-z0-9]+)?$/;
+const CLI_TOOLS = new Set(["git", "npm", "npx", "node", "yarn", "pnpm", "docker", "make", "curl", "brew", "pip", "cargo", "go"]);
+const isTyped = (token) => {
+  const words = token.slice(1, -1).trim().split(/\s+/);
+  if (!words.every((w) => OPT_TOKEN.test(w) || /^[a-z][a-z0-9-]*$/.test(w))) return false;
+  return words.length === 1 ? OPT_TOKEN.test(words[0]) : words.some((w) => OPT_TOKEN.test(w)) || CLI_TOOLS.has(words[0]);
+};
 // Brand names written with an inner capital are words a reader knows, not code.
 const BRANDS = new Set(["iPhone", "iPad", "iPod", "iCloud", "iOS", "macOS", "eBay", "PayPal", "WordPress", "YouTube", "LinkedIn", "TripAdvisor", "GitHub", "WhatsApp", "TikTok", "JavaScript", "PowerPoint", "OpenTable", "HubSpot", "QuickBooks", "MailChimp", "DoorDash"]);
 const CAMEL = /\b[a-z]+[A-Z][A-Za-z0-9]*\b/g;
@@ -64,8 +73,8 @@ export function identifiersIn(line) {
       found.push(word);
     }
   };
-  for (const m of line.matchAll(BACKTICK)) add(m[0]);
-  const text = line.replace(BACKTICK, " ").replace(URL, " ");
+  for (const m of line.matchAll(BACKTICK)) if (!isTyped(m[0])) add(m[0]);
+  const text = line.replace(BACKTICK, " ").replace(URL, " ").replace(OPTION, " ");
   for (const m of text.matchAll(FILE_NAME)) if (!JS_NAMES.test(m[1])) add(m[1]);
   for (const m of text.matchAll(DOT_FILE)) add(m[1]);
   for (const m of text.matchAll(PATH)) add(m[1].replace(/[.,;:)\]]+$/, ""));

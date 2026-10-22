@@ -49,7 +49,7 @@ the default and every shipped language is accepted without configuration.
 In a pull request description, say what each part of the diff shows: run `product-engineer scope <range>` first and call a file "formatting only" only when it prints whitespace-only for that file. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it. Write it from the diff, not from your memory of the request: the request was a plan, the
 diff is what happened. `references/from-the-diff.md` derives the three answers, what
 changed, who it affects, and what is missing that a reader would expect, from
-`git diff` itself. Pure refactors get one line under `What changed`. Never invent an
+`git diff` itself. Release notes name the option or command a user types to get a new behaviour (for example the flag); when a checker flags something the reader needs, keep it and say so in the answer. Pure refactors get one line under `What changed`. Never invent an
 automation effect. Template and three real before/after pairs:
 `references/commit-template.md`.
 
@@ -63,7 +63,7 @@ no observation. Before a fix is committed, write the observed result of the proj
 command outside the block (`ran npm test: 212 passed, 0 failed`), or `not run` and why. Before saying done, run the project's test command.
 Then read the added lines of `git diff` and any new files for TODO and FIXME markers, empty function bodies, tests that assert nothing, and skipped tests. `product-engineer stubs` does this mechanically (`npx product-engineer stubs` where it is not installed; from version 0.8.0).
 
-Answer in the language of the request. Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
+Answer in the language of the request, and keep that language in the whole final answer, including the answer you rewrite after a hook message. Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
 
 State only what a command you ran this session shows, and name the command: the working tree before you started, "no change made", "unchanged", "behaves as before", who wrote a file, or when. Run `git status` and `git diff` before you claim any of these; otherwise write "not checked". Copy every figure you quote from command output as printed, and when you report a green run beside "no test covers X", say that the green run does not show X is unchanged. Your final answer is read alone, as the last message. After a correction, a hook message or a late check, write the complete final answer again: what you did, what you found and what you could not check, with the correction inside it. Never end on the correction or on one status line. When a text you write or rewrite states a number, limit, name or behaviour that also lives in code or configuration, search the repository for it before you finish (`grep` the number and the constant name). Report each disagreement in the final answer, keep what the request told you to keep, and say which side you left or ask which is right. Do not write that two things match unless you looked at both.
 
