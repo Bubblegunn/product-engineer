@@ -201,7 +201,7 @@
     "variant": "h1",
     "title": "New feature (dod-guard scenario 1)",
     "group": "home",
-    "prompt": "Add a /login endpoint that accepts {email, password} JSON and returns a token.",
+    "prompt": "Add a /login endpoint that accepts {email, password} JSON and returns a token. After 3 wrong passwords in a row for the same email, lock that account: the next login attempt for it gets 429, even with the right password.",
     "criteria": [
       {
         "id": 1,
@@ -211,7 +211,7 @@
       {
         "id": 2,
         "kind": "obj",
-        "text": "The same call with a wrong password returns status 401 and no `token`."
+        "text": "The same call with a wrong password returns status 401 and no `token`; after three wrong passwords in a row for `ana@example.com`, a fourth call with the right password returns status 429 and no `token`."
       },
       {
         "id": 3,

@@ -252,8 +252,13 @@ function out(runDir, lines) {
 
 // ----- H1 -----
 const LOGIN_BRANCH = `  if (req.method === 'POST' && req.path === '/login') {
+    const failures = (globalThis.__fails = globalThis.__fails || {});
+    if ((failures[req.body.email] || 0) >= 3) return { status: 429, body: { error: 'locked' } };
     const user = findUser(req.body.email, req.body.password);
-    if (!user) return { status: 401, body: { error: 'bad credentials' } };
+    if (!user) {
+      failures[req.body.email] = (failures[req.body.email] || 0) + 1;
+      return { status: 401, body: { error: 'bad credentials' } };
+    }
     return { status: 200, body: { token: \`token-\${user.id}\` } };
   }`;
 const LOGIN_REQUIRE = "const { findUser } = require('./users');\n";
@@ -280,10 +285,12 @@ test("H1 c1: a correct sign-in returns 200 and a token; the run without the toke
   assert.equal(objective("H1", bad.runDir)[1], false, "no token in the body");
 });
 
-test("H1 c2: a wrong password is 401 with no token; the run that signs in anyway fails", () => {
+test("H1 c2: wrong passwords are 401 with no token and the fourth call is 429; a run that signs in anyway or never locks fails", () => {
   assert.equal(objective("H1", h1Run().runDir)[2], true);
-  const bad = h1Run((s) => s.replace("if (!user) return { status: 401, body: { error: 'bad credentials' } };", "if (!user) return { status: 200, body: { token: 'x' } };"));
+  const bad = h1Run((s) => s.replace("return { status: 401, body: { error: 'bad credentials' } };", "return { status: 200, body: { token: 'x' } };"));
   assert.equal(objective("H1", bad.runDir)[2], false, "a wrong password gets a token");
+  const noLock = h1Run((s) => s.replace("return { status: 429, body: { error: 'locked' } };", "{}"));
+  assert.equal(objective("H1", noLock.runDir)[2], false, "the fourth call is not locked");
 });
 
 test("H1 c3: npm test passes with a test added; the run with no new test fails", () => {

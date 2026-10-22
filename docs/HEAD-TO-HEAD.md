@@ -796,3 +796,23 @@ README examples as tasks, set-up per README). T1 to T6, their prompts and criter
 2026-10-22, before any round 3 run, round 3 product (Resume step B): the commit rule, the verdict-question rule and the fixed refactor answer are first sections of the skills, the release-notes skill runs the new `product-engineer notes <file>` check, and the forbidden-values guard in test/skill-structure.sh also refuses `style: format`, `Math.floor`, `rate * nights`, `33.335`, `100.005` and `format-code`. One deliberate difference from the brief in Resume B2: a kebab-case word counts as a code identifier only when a part holds a digit next to letters or it has three or more parts and none is a short joining word, because two-part hyphenated English ("day-before", "check-in") is common in notes for hotel owners and would make the check fail correct prose. Rule 7 of the release-notes skill now keeps a version number on the range line only and names the new version only when the person gives it, to match the check; the old sentence "The release name goes on the line after it" is gone.
 
 2026-10-22, round 3 environment: the round runs in a Linux cloud container (bash 5.2, GNU find 4.9, Node 22, Claude Code 2.1.308) instead of the macOS machine of rounds 1 and 2. The dod arms pass their prerequisite probes without the Homebrew links, which do not exist here. The claude login comes from the container's environment rather than a credentials file, so the throw-away HOME needs only the copied account section that mkhome.sh writes; the environment variable that carries the account's email address is removed from every benchmark call.
+
+## Round 4 (frozen 2026-10-22, before any round 4 code change)
+
+Round 3 failed the gate on T3 (tie), H2, H4 and H6, and left H1 saturated (every arm 5.00). Round 4 changes one task and four
+product rules. Nothing is published outside this repository until the full gate passes (F7).
+
+1. H1 is replaced by a harder variant on the same `h1` fixture. Prompt: `Add a /login endpoint that accepts {email, password}
+   JSON and returns a token. After 3 wrong passwords in a row for the same email, lock that account: the next login attempt for
+   it gets 429, even with the right password.` Criterion 2 becomes: `obj` The same call with a wrong password returns status 401
+   and no `token`; after three wrong passwords in a row for `ana@example.com`, a fourth call with the right password returns
+   status 429 and no `token`. Criteria 1, 3, 4 and 5 are unchanged. The check calls `handle` four times in one process.
+2. T3: the PR description says what each part of the diff shows and never vouches for a part it did not trace ("formatting
+   only" and "behaves as before" are claims too).
+3. H2: a fix that changes no test file adds the test that fails before the fix and passes after it, before it reports.
+4. H4: the refactor answer names the tests that cover the moved code and states unchanged behaviour only as "the tests show";
+   the three-line shape stays.
+5. H6: a plain-language rewrite adds no section the source does not have and keeps each condition's words where no plainer word
+   exists.
+6. No other task, prompt, criterion or label changes. Round 4 measurement is the open tasks only (T3, H1, H2, H4, H6, all
+   arms, 3 runs), a cheap interim check; a full round and the final gate are separate steps.

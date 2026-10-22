@@ -396,9 +396,20 @@ function h1c1(ctx) {
   return r !== null && r.status === 200 && r.body && typeof r.body.token === "string" && r.body.token.trim() !== "";
 }
 
+// Round 4: three wrong passwords in a row lock the account; the fourth call, with the right password, is 429. The
+// calls run in one process, so the lock state survives between them.
+const H1_LOCK_SCRIPT = [
+  "const { handle } = require(process.argv[1]);",
+  "const call = (password) => { try { const r = handle({ method: 'POST', path: '/login', headers: {}, body: { email: 'ana@example.com', password } }); return r === undefined ? null : r; } catch (e) { return { status: null }; } };",
+  "const out = [call('wrong'), call('wrong'), call('wrong'), call('pw123')];",
+  "process.stdout.write(JSON.stringify(out));",
+].join("\n");
+
 function h1c2(ctx) {
-  const r = callHandle(ctx.repo, { method: "POST", path: "/login", headers: {}, body: { email: "ana@example.com", password: "wrong" } });
-  return r !== null && r.status === 401 && (!r.body || r.body.token === undefined);
+  const rs = parseReply(nodeEval(ctx.repo, H1_LOCK_SCRIPT, [join(ctx.repo, "src", "router.js")]));
+  if (!Array.isArray(rs) || rs.length !== 4 || rs.some((r) => r === null)) return false;
+  const noToken = (r) => !r.body || r.body.token === undefined;
+  return rs.slice(0, 3).every((r) => r.status === 401 && noToken(r)) && rs[3].status === 429 && noToken(rs[3]);
 }
 
 // The run has more tests than the base fixture.
