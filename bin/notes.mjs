@@ -4,7 +4,7 @@
 // number anywhere but the first line. It warns when the first line names no range.
 //
 // Zero dependencies. Every rule is a pattern on one line. A pattern can flag a word that only
-// looks like code (a brand written in camelCase, for example) and can miss code it does not
+// looks like code (a brand with an inner capital that is not on the list) and can miss code it does not
 // recognise; the exit code is for a person to read, not a verdict.
 import { readFileSync } from "node:fs";
 
@@ -20,6 +20,8 @@ const DOT_FILE = /(?:^|\s)(\.(?:env|gitignore|npmrc|nvmrc|editorconfig)[\w.-]*)\
 const PATH_DIRS = "src|lib|test|tests|bin|app|docs|scripts|config|packages|public|assets|spec";
 const PATH = new RegExp(`(?:^|[\\s(\\["'])((?:\\.{1,2}/|/)?(?:${PATH_DIRS})/[\\w./-]+|(?:\\.{1,2}/|/)[\\w.-]+(?:/[\\w.-]+)+|[\\w.-]+/[\\w.-]+/[\\w./-]+|[\\w-]+/[\\w-]+\\.[a-z]{1,5})`, "gi");
 const BACKTICK = /`[^`\n]+`/g;
+// Brand names written with an inner capital are words a reader knows, not code.
+const BRANDS = new Set(["iPhone", "iPad", "iPod", "iCloud", "iOS", "macOS", "eBay", "PayPal", "WordPress", "YouTube", "LinkedIn", "TripAdvisor", "GitHub", "WhatsApp", "TikTok", "JavaScript", "PowerPoint", "OpenTable", "HubSpot", "QuickBooks", "MailChimp", "DoorDash"]);
 const CAMEL = /\b[a-z]+[A-Z][A-Za-z0-9]*\b/g;
 const PASCAL = /\b[A-Z][a-z0-9]+[A-Z][A-Za-z0-9]*\b/g;
 const SNAKE = /\b[A-Za-z0-9]+(?:_[A-Za-z0-9]+)+\b/g;
@@ -38,6 +40,11 @@ const DOCS_LINE =
 const COMMIT_WORD = /\b(?:refactor(?:s|ed|ing)?|chores?)\b/i;
 const EFFECT = /\b(?:faster|quicker|speed(?:s|ed|ier|y)?|speed-?up|snappier|instant(?:ly)?)\b/i;
 const PERCENT = /\d\s*%|\bper ?cent\b/i;
+// A percentage that is a price term (a discount, a fee, a tax rate) is a fact, not a claimed effect.
+const PRICE_TERM = /\b(?:discount|off|fee|fees|tax|vat|rate|commission|deposit|surcharge|tip|charge)\b/i;
+// "measured" counts only when it is not negated: "not measured" and "unmeasured" say the opposite.
+const MEASURED = /(?<!\b(?:not|never|un)\s?)\bmeasured\b/i;
+const NEGATED_MEASURED = /\b(?:not|never)\s+(?:been\s+)?measured\b|\bunmeasured\b/i;
 const VERSION = /\bv\d+(?:\.\d+)+\b|\b\d+\.\d+\.\d+\b/;
 const RANGE = /\bv?\d+\.\d+(?:\.\d+)?\b|\b[0-9a-f]{7,40}\b|\bsince\b|\blast \d+ commits\b/i;
 
@@ -63,7 +70,8 @@ export function identifiersIn(line) {
   for (const m of text.matchAll(DOT_FILE)) add(m[1]);
   for (const m of text.matchAll(PATH)) add(m[1].replace(/[.,;:)\]]+$/, ""));
   for (const m of text.matchAll(CALL)) if (!PLURAL_PARENS.test(m[0])) add(m[0]);
-  for (const re of [CAMEL, PASCAL, SNAKE, LETTERS_DIGITS]) for (const m of text.matchAll(re)) add(m[0]);
+  for (const re of [CAMEL, PASCAL]) for (const m of text.matchAll(re)) if (!BRANDS.has(m[0])) add(m[0]);
+  for (const re of [SNAKE, LETTERS_DIGITS]) for (const m of text.matchAll(re)) add(m[0]);
   for (const m of text.matchAll(KEBAB)) if (kebabIsCode(m[0])) add(m[0]);
   return found;
 }
@@ -98,9 +106,9 @@ export function notes(text) {
     const ids = identifiersIn(raw);
     if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words`);
     if (DOCS_LINE.test(line)) report("error", "docs-or-version", i, "a line about docs, a changelog, a README or a version bump: these change nothing for the reader, leave the line out");
-    const measured = /\bmeasured\b/i.test(line);
+    const measured = MEASURED.test(line) && !NEGATED_MEASURED.test(line);
     if (!measured && EFFECT.test(line)) report("error", "unmeasured-effect", i, "an effect nobody measured: describe the cause (\"shows 20 at a time\") or give the measurement");
-    if (!measured && PERCENT.test(line)) report("error", "unmeasured-percent", i, "a percentage with no measurement: give how it was measured or leave it out");
+    if (!measured && PERCENT.test(line) && !PRICE_TERM.test(line)) report("error", "unmeasured-percent", i, "a percentage with no measurement: give how it was measured or leave it out");
     if (i !== first && VERSION.test(line)) report("error", "version-number", i, "a version number after the first line: the version is not a change, name it only in the range line");
   });
   const errors = findings.filter((f) => f.level === "error").length;

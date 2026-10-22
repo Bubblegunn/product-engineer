@@ -125,8 +125,9 @@ The errors:
   extension. Links are skipped, and framework names such as Node.js are not file names.
 - `docs-or-version`: a line about docs, documentation, a README, a changelog or a version bump.
 - `unmeasured-effect`: `faster`, `quicker`, `speed`, `snappier` or `instant` on a line that does not say
-  `measured`.
-- `unmeasured-percent`: a percentage on a line that does not say `measured`.
+  `measured` ("not measured" and "unmeasured" do not count).
+- `unmeasured-percent`: a percentage on a line that does not say `measured`, unless the line names a
+  price term (a discount, fee, tax, rate, deposit or charge), where the percentage is a fact.
 - `version-number`: a version number (`v2.3` or `2.3.0`) on any line but the first non-empty one.
 
 The warning:
@@ -135,8 +136,8 @@ The warning:
   and no "the last N commits".
 
 `--json` prints one object, `{ ok, errors, warnings, findings: [{ level, code, line, text, message }] }`,
-and nothing else. The check is a heuristic: a brand written in camelCase (iPhone) is flagged, and code
-it does not recognise is missed.
+and nothing else. The check is a heuristic: common brands written with an inner capital (iPhone, PayPal,
+WordPress) are allowed by name, another such brand is flagged, and code it does not recognise is missed.
 
 ## Stubs: `product-engineer stubs`
 

@@ -96,6 +96,20 @@ test("an effect word or a percentage is an error unless the line says it was mea
   assert.deepEqual(codes("Changes since v2.3.0\nThe month view opens faster: measured at 0.4 s instead of 1.1 s on the largest calendar.\n"), []);
 });
 
+test("a negated measurement does not excuse an effect word, and a price percentage is not an effect", () => {
+  assert.ok(codes("Changes since v2.3.0\nPages load faster; this was not measured.\n").includes("error:unmeasured-effect:2"));
+  assert.ok(codes("Changes since v2.3.0\nAn unmeasured but faster month view.\n").includes("error:unmeasured-effect:2"));
+  assert.ok(codes("Changes since v2.3.0\nThe view loads 40% sooner; never measured.\n").includes("error:unmeasured-percent:2"));
+  assert.deepEqual(codes("Changes since v2.3.0\nHosts can now give guests a 10% discount code.\n"), []);
+  assert.deepEqual(codes("Changes since v2.3.0\nThe invoice shows the 7% tax on its own line.\n"), []);
+});
+
+test("brand names with an inner capital are not code", () => {
+  for (const line of ["You can now sync events with iCloud and pay with PayPal.", "The iPhone app shows the week view.", "Bookings from the WordPress plugin show up too."]) {
+    assert.deepEqual(identifiersIn(line), [], line);
+  }
+});
+
 test("a version number is allowed on the first non-empty line only", () => {
   assert.deepEqual(codes("\n\nCalendar 2.4.0: changes since v2.3.0\nYou can now print a week.\n"), []);
   assert.ok(codes("Changes since v2.3.0\nCalendar 2.4.0, 14 March\n").includes("error:version-number:2"));
