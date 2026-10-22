@@ -245,6 +245,7 @@ fi
 
 if [ "$VARIANT" = external ]; then
   # Held-out tasks written elsewhere: PE_BENCH_HELDOUT_DIR/<task>/fixture.sh builds the repository.
+  mkdir -p "$RUN/repo"
   bash "${PE_BENCH_HELDOUT_DIR:?run.sh: set PE_BENCH_HELDOUT_DIR for external tasks}/$TASK/fixture.sh" "$RUN/repo"
 else
   bash "$HERE/mk.sh" "$RUN/repo" "$VARIANT"
