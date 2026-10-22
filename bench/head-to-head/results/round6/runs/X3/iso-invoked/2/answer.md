@@ -1,0 +1,7 @@
+I wrote `RELEASE_NOTES.md`. I did not tag or push. Three things need your attention before you ship.
+
+- **The empty-input fix did not ship.** Commit `7940f22` ("fix: crash on empty input") only adds a comment in [count.js:1](file://<HOME>/claude-kredi-runs/2026-10-22/r6w/final/runs/X3-iso-invoked-2/repo/src/count.js#L1). `text.match(/\S+/g)` still returns `null` on empty text, so `.filter` still throws. I left the fix out of the notes. If you want it in this release, it needs a code change.
+- **The default minimum word length changed.** Commit `cf889a6` ("chore: tidy option defaults") changes `minLength` from 1 to 3 in [count.js:2](file://<HOME>/claude-kredi-runs/2026-10-22/r6w/final/runs/X3-iso-invoked-2/repo/src/count.js#L2). Users get lower counts by default, for example "I am at home" now counts 1 word. I listed this under "What's changed", with `--min-length 1` as the way back. You may want to revert it instead.
+- **The version number is a guess.** I titled the notes "1.3.0", because a new flag plus a default change is more than a patch. `package.json` still says 1.2.0, and I did not edit it. Change the title if you pick a different number.
+
+I left out `--csv`, because `7f1c7ad` reverted it.

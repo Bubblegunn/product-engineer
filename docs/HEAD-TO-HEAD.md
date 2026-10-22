@@ -1184,3 +1184,27 @@ Stated before the run: a held-out pass alone is not "first"; the claim needs the
 **Known differences, recorded.** SDK path versus CLI path: no `Artifact` tool and no `artifact-diagramming` skill on the SDK path; the
 tasks do not use them. The ours session reads the owner's user-level CLAUDE.md like every arm (the harness sets HOME to a throw-away
 directory; whatever it loads is the same for all arms).
+
+## Results, round 6 (held-out set of five tasks, 11 arms, 2026-10-22)
+
+Protocol: "Round 6 measurement protocol" above (frozen in `a3c469d`). Full evidence, with per-cell answers and traces, every grader vote,
+`score.py` and a verification checklist: `bench/head-to-head/results/round6/` (start with `SUMMARY.md`, `VERIFY.md`).
+
+**Result.** On five new held-out tasks written by a fresh Sonnet session that saw only the README's user-problem sentence (11 arms x 3
+runs = 165 sessions, `claude-sonnet-5-5`, Claude Code 2.1.308 through the Claude Agent SDK, macOS, 2026-10-22, three joint Sonnet votes
+per task, majority per criterion), `ours` scored 19.67 of 20 outcome points against 20.00 for eight other arms. Rule B fails (X3: one
+criterion missed in one of three runs) and Rule A fails (lost 0.33 against 0.00). The held-out gate is **not passed**, no "first" claim
+is supported, and the set does not separate the arms (all eleven scored 19.00 or more). The public re-measurement, F9 and F6 were not run
+(they follow a passed held-out step). Spend of the round 14.97 USD of the 25 USD cap.
+
+| arm | X1 | X2 | X3 | X4 | X5 | total of 20 |
+|---|---|---|---|---|---|---|
+| ours | 4.00 | 4.00 | 3.67 | 4.00 | 4.00 | 19.67 |
+| base, gwc, gwc-invoked, dod, dod-invoked, iso, iso-invoked, sp-invoked | 4.00 | 4.00 | 4.00 | 4.00 | 4.00 | 20.00 |
+| ce | 3.00 | 4.00 | 4.00 | 4.00 | 4.00 | 19.00 |
+| sp | 4.00 | 3.67 | 4.00 | 4.00 | 4.00 | 19.67 |
+
+The hook change of `5d0cb0c` worked as designed (7 of 15 `ours` sessions were blocked once; all 7 final answers still describe the deliverable;
+the removal condition of `3314d7d` did not occur). What it did not do is give an outcome advantage on this set. What the owner can decide
+next: a harder held-out set written for tasks where the bare model fails (the saturation seen here and in X1 of the deep round says the
+"commit/PR/notes" family is mostly solved by plain Claude on Sonnet 5.5), or a different claim than "first".

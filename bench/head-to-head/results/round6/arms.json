@@ -1,0 +1,133 @@
+{
+  "ours": {
+    "kind": "self",
+    "cli": true,
+    "probes": [
+      [
+        "--help",
+        "stubs"
+      ],
+      [
+        "--help",
+        "--kind"
+      ],
+      [
+        "--help",
+        "facts"
+      ],
+      [
+        "--help",
+        "notes"
+      ],
+      [
+        "--help",
+        "scope"
+      ]
+    ],
+    "pinned_commit": "a3c469de9c8a149079e9f46c9820b56e7329db14 (git archive copy; product files equal 5d0cb0c)"
+  },
+  "base": {
+    "kind": "empty"
+  },
+  "dod": {
+    "kind": "git",
+    "repo": "https://github.com/atoslins/dod-guard",
+    "commit": "be038f7201198a8a25790236048f6ed40b9983c1",
+    "exportPluginRoot": true,
+    "competitorOf": "dod",
+    "requires": [
+      {
+        "name": "bash >= 4",
+        "command": "env bash -c '[ \"${BASH_VERSINFO[0]}\" -ge 4 ]'"
+      },
+      {
+        "name": "GNU find (-regextype)",
+        "command": "find /dev/null -regextype posix-basic -regex x >/dev/null 2>&1"
+      }
+    ],
+    "pathLinks": {
+      "bash": "/opt/homebrew/bin/bash",
+      "find": "/opt/homebrew/opt/findutils/libexec/gnubin/find",
+      "xargs": "/opt/homebrew/opt/findutils/libexec/gnubin/xargs"
+    },
+    "licence": "MIT"
+  },
+  "iso": {
+    "kind": "git",
+    "repo": "https://github.com/gazmagik/iso-24495",
+    "commit": "5951eb7d985018459c62428378926c07f4199794",
+    "competitorOf": "iso",
+    "settings": {
+      "outputStyle": "ISO 24495"
+    },
+    "licence": "MIT"
+  },
+  "gwc": {
+    "kind": "git",
+    "repo": "https://github.com/seunggyuyoon-rgb/git-weekly-changelog",
+    "commit": "f0164c00efa3f988ec3a14dac726893401d52922",
+    "competitorOf": "gwc",
+    "licence": "no LICENSE file in the pinned checkout (not checked further); run unmodified from a git archive copy, no code taken"
+  },
+  "dod-invoked": {
+    "sameAs": "dod",
+    "promptPrefix": "Use the dod-guard plugin: run its /dod:verify command and follow its report format before you give your final answer.",
+    "competitorOf": "dod",
+    "licence": "MIT"
+  },
+  "iso-invoked": {
+    "sameAs": "iso",
+    "promptPrefix": "Apply the iso-24495-1 skill to everything you write, iso-24495-2 for legal text, iso-24495-3 for technical text, and iso-24495-5 for complex documents.",
+    "settings": {
+      "outputStyle": "ISO 24495"
+    },
+    "competitorOf": "iso",
+    "licence": "MIT"
+  },
+  "gwc-invoked": {
+    "sameAs": "gwc",
+    "promptPrefix": "Use the git-weekly-changelog skill.",
+    "competitorOf": "gwc",
+    "licence": "no LICENSE file in the pinned checkout (not checked further); run unmodified from a git archive copy, no code taken"
+  },
+  "ce": {
+    "kind": "git",
+    "repo": "https://github.com/EveryInc/compound-engineering-plugin",
+    "commit": "738067a599c68f1f0f4a32273fa9d7d2476f0715",
+    "competitorOf": "ce",
+    "licence": "MIT"
+  },
+  "sp": {
+    "kind": "git",
+    "repo": "https://github.com/obra/superpowers",
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "competitorOf": "sp",
+    "licence": "MIT"
+  },
+  "ce-invoked": {
+    "sameAs": "ce",
+    "promptPrefix": "Use the ce-commit-push-pr skill.",
+    "competitorOf": "ce",
+    "licence": "MIT"
+  },
+  "sp-invoked": {
+    "sameAs": "sp",
+    "promptPrefix": "Use the verification-before-completion skill before you give your final answer.",
+    "competitorOf": "sp",
+    "licence": "MIT"
+  },
+  "_round6_arm_list": [
+    "ours",
+    "base",
+    "gwc",
+    "gwc-invoked",
+    "dod",
+    "dod-invoked",
+    "iso",
+    "iso-invoked",
+    "ce",
+    "sp",
+    "sp-invoked"
+  ],
+  "_note": "ce-invoked exists in arms.json but is not part of round 6 (protocol). Install method: bench/head-to-head/fetch-arms.sh clones the pinned commit; plugin loaded with --plugin-dir; natural prompt = task text, invoked prompt = promptPrefix + task text."
+}
