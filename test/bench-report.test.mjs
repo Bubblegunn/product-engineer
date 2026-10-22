@@ -376,7 +376,7 @@ test("summarize.mjs prints per-run lines, both tables, rivals and the verdict, a
   assert.match(r.stdout, /^T1\s+\d\/\d\/\d mean \d\.\d\d min \d max \d n 3/m, "per-run line with mean, min, max and n");
   assert.match(r.stdout, /task\s+ours/);
   assert.match(r.stdout, /^  T1 base: not run, no base run$/m);
-  assert.match(r.stdout, /^core B: FAIL: T1 \(dod \(no runs\), /m, "the rival with no runs and no reason still fails");
+  assert.match(r.stdout, /^core B: FAIL: T1 \(ce \(no runs\), dod \(no runs\), /m, "the rival with no runs and no reason still fails");
   assert.doesNotMatch(r.stdout.split("\n").find((l) => l.startsWith("core B:")), /base/, "the not-run base is excluded");
   assert.match(r.stdout, /^core A: /m);
   assert.match(r.stdout, /^home: no home-ground tasks$/m);
@@ -752,7 +752,7 @@ test("publish.sh refuses a --min-runs that is not a whole number of 1 or more", 
 test("rerun.sh stops at a failing step and does not publish", () => {
   // Fake competitor folders so fetch-arms copies them instead of cloning, and a claude stub that always fails.
   const src = join(scratch, "rerun-src");
-  for (const name of ["dod", "iso", "gwc"]) {
+  for (const name of ["dod", "iso", "gwc", "ce", "sp"]) {
     mkdirSync(join(src, name, ".claude-plugin"), { recursive: true });
     writeFileSync(join(src, name, ".claude-plugin", "plugin.json"), `${JSON.stringify({ name, version: "0.0.1" })}\n`);
   }

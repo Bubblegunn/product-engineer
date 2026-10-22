@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 // Blind grading for the head-to-head runs (docs/HEAD-TO-HEAD.md, "Grading").
-// Usage: node grade.mjs [--runs-dir work/runs] [--dry-run] [--only <run id>]
+// Usage: node grade.mjs [--runs-dir work/runs] [--dry-run] [--only <run id>] [--force]
+//        node grade.mjs --joint [--tasks T3,H1] [--runs-dir work/runs] [--dry-run] [--force]
+// --joint grades every DONE run of a task in ONE grader call (all sessions, shuffled, anonymous labels), so one grader
+// applies one standard to all of them. A task whose runs already all have a good grade is skipped unless --force; when it
+// is graded, all its runs are graded again together. A task that cannot be parsed after one retry stays ungraded (no grade
+// file is written for it) and the command exits 1. PE_BENCH_JOINT_MAX_CHARS (default 400000) is the material size above
+// which one task is split into the fewest balanced chunks.
+// Env PE_BENCH_COST_FILE: every grader call appends one row: time(UTC ISO) TAB description TAB usd TAB cumulative.
 // For every run directory with DONE, it builds an anonymised material text, asks a plain Sonnet call
 // (no plugins) to grade the llm and both criteria, and writes grades/<label>.json. labels.json maps each
 // label to its run id. Env: PE_BENCH_CLAUDE (claude binary), PE_BENCH_SEED (shuffle and labels),
@@ -9,7 +16,7 @@
 // guard.sh check runs before and after each call; a changed real Claude settings stops grading with exit 3.
 import { spawnSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { appendFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -47,16 +54,38 @@ export const GRADER_PROMPT = [
   '{"pass": true or false, "why": "one short sentence"}. Example: {"1":{"pass":true,"why":"..."}}',
 ].join("\n");
 
+export const JOINT_GRADER_PROMPT = [
+  "You are grading several coding-assistant sessions against the same fixed criteria.",
+  "The material on stdin holds one block per session, each starting with a line like === SESSION <label> ===.",
+  "The sessions are in mixed order, and nothing about the order or the label tells you anything. Each block holds",
+  "the task the user gave, the criteria, the assistant's final answer, the Bash commands it ran, the commits it made",
+  "with their messages and diff statistics, and any file it wrote.",
+  "Grade every session independently against the criteria listed under GRADE in its own block. A session passes a",
+  "criterion only if its own material supports it. If a session's material does not show it, that session fails that",
+  "criterion. Do not let one session's material count for another. Apply the same standard to every session.",
+  "",
+  'Reply with one JSON object and nothing else: {"<label>":{"<id>":{"pass":true or false,"why":"one short sentence"}}}.',
+  'It has one key per session label, and under each label one key per criterion id as a string.',
+  'Example: {"g0a1b2c":{"1":{"pass":true,"why":"..."}}}',
+].join("\n");
+
+export const JOINT_MAX_CHARS = 400000;
+
 export function defaultWorkDir() {
   return process.env.PE_BENCH_WORK_DIR || join(process.env.TMPDIR || "/tmp", "pe-bench", "work");
 }
 
 function parseArgs(argv) {
-  const opts = { runsDir: join(defaultWorkDir(), "runs"), dryRun: false, only: null, force: false };
+  const opts = { runsDir: join(defaultWorkDir(), "runs"), dryRun: false, only: null, force: false, joint: false, tasks: null };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (a === "--dry-run") opts.dryRun = true;
     else if (a === "--force") opts.force = true;
+    else if (a === "--joint") opts.joint = true;
+    else if (a === "--tasks" && argv[i + 1]) {
+      opts.tasks = argv[i + 1].split(",").filter((t) => t !== "");
+      i += 1;
+    }
     else if (a === "--runs-dir" && argv[i + 1]) {
       opts.runsDir = argv[i + 1];
       i += 1;
@@ -67,6 +96,8 @@ function parseArgs(argv) {
       throw new Error(`unknown or incomplete argument: ${a}`);
     }
   }
+  if (opts.tasks !== null && !opts.joint) throw new Error("--tasks needs --joint");
+  if (opts.joint && opts.only !== null) throw new Error("--only cannot be combined with --joint");
   return opts;
 }
 
@@ -277,6 +308,35 @@ export function parseGrades(text, ids) {
   return { grades };
 }
 
+// Joint reply: {label: {id: {pass, why}}}. idsByLabel maps each label to its criterion ids. Returns {grades: {label: {id: {pass, why}}}} or {error}.
+export function parseJointGrades(text, idsByLabel) {
+  const obj = firstJsonObject(text);
+  if (obj === null) return { error: "no JSON object in the grader reply" };
+  const grades = {};
+  for (const [label, ids] of Object.entries(idsByLabel)) {
+    if (!obj[label] || typeof obj[label] !== "object" || Array.isArray(obj[label])) return { error: `session ${label} is missing from the grader reply` };
+    const parsed = parseGrades(JSON.stringify(obj[label]), ids);
+    if (parsed.error) return { error: `session ${label}: ${parsed.error}` };
+    grades[label] = parsed.grades;
+  }
+  return { grades };
+}
+
+// Appends one row to PE_BENCH_COST_FILE when it is set: time, description, usd, cumulative (the last row's cumulative plus usd).
+export function recordCost(description, usd, file = process.env.PE_BENCH_COST_FILE) {
+  if (!file || typeof usd !== "number" || !Number.isFinite(usd)) return;
+  let previous = 0;
+  if (existsSync(file)) {
+    const rows = readFileSync(file, "utf8").split("\n").filter((l) => l !== "");
+    if (rows.length > 0) {
+      const last = Number(rows[rows.length - 1].split("\t")[3]);
+      if (Number.isFinite(last)) previous = last;
+    }
+  }
+  const cumulative = Math.round((previous + usd) * 1e9) / 1e9;
+  appendFileSync(file, `${new Date().toISOString()}\t${description.replace(/[\t\n]/g, " ")}\t${usd}\t${cumulative}\n`);
+}
+
 // The grader's environment: no NODE_TEST_CONTEXT, no CLAUDE_CONFIG_DIR or XDG_CONFIG_HOME (either would point claude at
 // the owner's config), and HOME is the temporary home, never the real one.
 function cleanEnv(home) {
@@ -301,23 +361,24 @@ function guard(workDir, action) {
 // Calls the grader once. Returns {grades} or {error}, retrying once on a failed call or unparseable reply.
 // The grader runs in a fresh empty directory, so no project settings or instructions of the caller load,
 // and with no tools (--tools ""), so it can only read the material it is given.
-export function gradeMaterial(material, ids, { claudeBin, baseDir, home, settings }) {
+export function gradeMaterial(material, ids, { claudeBin, baseDir, home, settings, description = "grade" }) {
   const emptyDir = mkdtempSync(join(tmpdir(), "h2h-grader-"));
   try {
-    return callGrader(material, ids, { claudeBin, baseDir, emptyDir, home, settings });
+    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: GRADER_PROMPT, parse: (text) => parseGrades(text, ids), description });
   } finally {
     rmSync(emptyDir, { recursive: true, force: true });
   }
 }
 
-function callGrader(material, ids, { claudeBin, baseDir, emptyDir, home, settings }) {
+// Same call for the per-run and the joint prompt. Every spawn that returns a cost envelope is recorded, a retry included.
+function callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt, parse, description }) {
   let last = { error: "grader not called" };
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     const r = spawnSync(
       claudeBin,
       [
         "-p",
-        GRADER_PROMPT,
+        prompt,
         "--model",
         "claude-sonnet-5-5",
         "--setting-sources",
@@ -342,14 +403,50 @@ function callGrader(material, ids, { claudeBin, baseDir, emptyDir, home, setting
     try {
       const envelope = JSON.parse(r.stdout);
       if (envelope && typeof envelope.result === "string") text = envelope.result;
+      if (envelope && typeof envelope.total_cost_usd === "number") {
+        recordCost(attempt > 1 ? `${description} (retry)` : description, envelope.total_cost_usd);
+      }
     } catch {
       // plain text reply: parse it as it is
     }
-    const parsed = parseGrades(text, ids);
+    const parsed = parse(text);
     if (!parsed.error) return { ...parsed, attempts: attempt };
     last = { error: parsed.error, attempts: attempt };
   }
   return last;
+}
+
+export function gradeJoint(material, idsByLabel, { claudeBin, baseDir, home, settings, description }) {
+  const emptyDir = mkdtempSync(join(tmpdir(), "h2h-grader-"));
+  try {
+    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: JOINT_GRADER_PROMPT, parse: (text) => parseJointGrades(text, idsByLabel), description });
+  } finally {
+    rmSync(emptyDir, { recursive: true, force: true });
+  }
+}
+
+// One session block of the joint material.
+export function sessionBlock(label, material) {
+  return `=== SESSION ${label} ===\n${material.trimEnd()}\n`;
+}
+
+// Splits the ordered sessions into the fewest chunks, balanced by count, whose blocks each stay within maxChars.
+// A single session over the limit stays alone in its chunk (it cannot be split).
+export function chunkSessions(blocks, maxChars) {
+  const n = blocks.length;
+  for (let k = 1; k <= n; k += 1) {
+    const base = Math.floor(n / k);
+    const extra = n % k;
+    const chunks = [];
+    let at = 0;
+    for (let c = 0; c < k; c += 1) {
+      const size = base + (c < extra ? 1 : 0);
+      chunks.push([at, at + size]);
+      at += size;
+    }
+    if (k === n || chunks.every(([a, b]) => blocks.slice(a, b).reduce((sum, x) => sum + x.length + 1, 0) <= maxChars)) return chunks;
+  }
+  return [[0, n]];
 }
 
 // A grade file that does not parse counts as absent, so its run is graded again instead of stopping the round.
@@ -377,6 +474,10 @@ function main() {
   const claudeBin = process.env.PE_BENCH_CLAUDE || "claude";
   const tasks = loadTasks();
   const runs = listRuns(runsDir, opts.only);
+  if (opts.joint) {
+    mainJoint({ opts, runsDir, gradesDir, armsDir, owner, claudeBin, tasks, runs });
+    return;
+  }
 
   if (runs.length === 0) {
     process.stdout.write("no DONE runs to grade\n");
@@ -468,7 +569,7 @@ function main() {
       process.exitCode = 3;
       return;
     }
-    const result = gradeMaterial(job.material, job.ids, { claudeBin, baseDir, home, settings });
+    const result = gradeMaterial(job.material, job.ids, { claudeBin, baseDir, home, settings, description: `grade ${label}` });
     if (!guard(workDir, "check")) {
       process.exitCode = 3;
       return;
@@ -484,6 +585,114 @@ function main() {
     const record = { label, ids: job.ids, ...result };
     writeFileSync(file, `${JSON.stringify(record, null, 2)}\n`);
     process.stdout.write(`graded ${label}: ${result.error ? `error (${result.error})` : "ok"}\n`);
+  }
+  if (errors > 0) process.exitCode = 1;
+}
+
+function mainJoint({ opts, runsDir, gradesDir, armsDir, owner, claudeBin, tasks, runs }) {
+  const workDir = dirname(runsDir);
+  const metaOf = new Map(runs.map((id) => [id, JSON.parse(readFileSync(join(runsDir, id, "meta.json"), "utf8"))]));
+  let taskIds = [...new Set([...metaOf.values()].map((m) => m.task))].sort();
+  if (opts.tasks !== null) taskIds = taskIds.filter((t) => opts.tasks.includes(t));
+  if (taskIds.length === 0) {
+    process.stdout.write("no DONE runs to grade\n");
+    return;
+  }
+  const maxChars = Number(process.env.PE_BENCH_JOINT_MAX_CHARS) || JOINT_MAX_CHARS;
+  const rng = makeRng(process.env.PE_BENCH_SEED);
+  const labels = readLabels(gradesDir);
+  const labelOf = new Map(Object.entries(labels).map(([label, runId]) => [runId, label]));
+  const used = new Set(Object.keys(labels));
+  const newLabel = () => {
+    for (;;) {
+      const label = `g${Math.floor(rng() * 0xffffff).toString(16).padStart(6, "0")}`;
+      if (!used.has(label)) {
+        used.add(label);
+        return label;
+      }
+    }
+  };
+  // Plan every task first: shuffle across arms, label, build materials and blocks.
+  const plans = [];
+  for (const taskId of taskIds) {
+    const task = tasks[taskId];
+    if (!task) throw new Error(`no task ${taskId} in tasks.json`);
+    const ids = task.criteria.filter((c) => c.kind === "llm" || c.kind === "both").map((c) => c.id);
+    const order = shuffle(runs.filter((id) => metaOf.get(id).task === taskId), rng);
+    const sessions = order.map((runId) => {
+      if (!labelOf.has(runId)) {
+        const label = newLabel();
+        labelOf.set(runId, label);
+        labels[label] = runId;
+      }
+      const runDir = join(runsDir, runId);
+      const material = buildMaterial(runDir, task, { runDir, workDir, armsDir, runId, ownerEmail: owner });
+      const label = labelOf.get(runId);
+      return { runId, label, ids, block: sessionBlock(label, material) };
+    });
+    plans.push({ taskId, sessions });
+  }
+  if (opts.dryRun) {
+    const first = plans[0];
+    process.stdout.write(`--- prompt ---\n${JOINT_GRADER_PROMPT}\n--- material ---\n${first.sessions.map((x) => x.block).join("\n")}`);
+    return;
+  }
+  mkdirSync(gradesDir, { recursive: true });
+  writeFileSync(join(gradesDir, "labels.json"), `${JSON.stringify(labels, null, 2)}\n`);
+  const baseDir = join(armsDir, "base");
+  const home = join(workDir, "home");
+  const settings = join(workDir, "settings.json");
+  if (!existsSync(join(workDir, "guard-baseline")) && !guard(workDir, "snapshot")) {
+    process.exitCode = 3;
+    return;
+  }
+  if (!existsSync(join(home, ".claude.json"))) {
+    const made = spawnSync("bash", [MKHOME, home], { encoding: "utf8", env: process.env });
+    if (made.status !== 0) throw new Error(`mkhome.sh failed: ${made.stderr}`);
+  }
+  if (!existsSync(settings)) writeFileSync(settings, '{"hooks":{}}\n');
+  let errors = 0;
+  for (const { taskId, sessions } of plans) {
+    const allGood = sessions.every((x) => {
+      const g = readGradeFile(join(gradesDir, `${x.label}.json`));
+      return g !== null && !g.error;
+    });
+    if (allGood && !opts.force) {
+      process.stdout.write(`skipped ${taskId}: already graded (use --force to grade again)\n`);
+      continue;
+    }
+    const chunks = chunkSessions(sessions.map((x) => x.block), maxChars);
+    for (let c = 0; c < chunks.length; c += 1) {
+      const part = sessions.slice(chunks[c][0], chunks[c][1]);
+      const material = part.map((x) => x.block).join("\n");
+      const idsByLabel = Object.fromEntries(part.map((x) => [x.label, x.ids]));
+      const suffix = chunks.length > 1 ? `-c${c + 1}` : "";
+      writeFileSync(
+        join(gradesDir, `joint-${taskId}${suffix}.prompt.txt`),
+        redactOwnerEmail(`grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory\n\n--- prompt (-p) ---\n${JOINT_GRADER_PROMPT}\n\n--- material (stdin) ---\n${material}`, owner),
+      );
+      if (!guard(workDir, "check")) {
+        process.exitCode = 3;
+        return;
+      }
+      const description = `grade joint ${taskId} (${part.length} sessions${chunks.length > 1 ? `, chunk ${c + 1} of ${chunks.length}` : ""})`;
+      const result = gradeJoint(material, idsByLabel, { claudeBin, baseDir, home, settings, description });
+      if (!guard(workDir, "check")) {
+        process.exitCode = 3;
+        return;
+      }
+      if (result.error) {
+        errors += 1;
+        process.stdout.write(`ungraded ${taskId}${suffix}: ${result.error}\n`);
+        continue;
+      }
+      for (const x of part) {
+        const record = { label: x.label, ids: x.ids, grades: result.grades[x.label], attempts: result.attempts, joint: { task: taskId, sessions: part.length, chunk: c + 1, chunks: chunks.length } };
+        if (chunks.length > 1) record.note = `task ${taskId} had ${sessions.length} sessions, over ${maxChars} characters of material, so it was split into ${chunks.length} balanced chunks`;
+        writeFileSync(join(gradesDir, `${x.label}.json`), `${JSON.stringify(record, null, 2)}\n`);
+      }
+      process.stdout.write(`graded ${taskId}${suffix}: ${part.length} sessions ok\n`);
+    }
   }
   if (errors > 0) process.exitCode = 1;
 }

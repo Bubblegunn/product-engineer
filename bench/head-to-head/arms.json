@@ -1,6 +1,29 @@
 {
-  "ours": { "kind": "self", "cli": true, "probes": [["--help", "stubs"], ["--help", "--kind"], ["--help", "facts"], ["--help", "notes"]] },
-  "base": { "kind": "empty" },
+  "ours": {
+    "kind": "self",
+    "cli": true,
+    "probes": [
+      [
+        "--help",
+        "stubs"
+      ],
+      [
+        "--help",
+        "--kind"
+      ],
+      [
+        "--help",
+        "facts"
+      ],
+      [
+        "--help",
+        "notes"
+      ]
+    ]
+  },
+  "base": {
+    "kind": "empty"
+  },
   "dod": {
     "kind": "git",
     "repo": "https://github.com/atoslins/dod-guard",
@@ -8,17 +31,29 @@
     "exportPluginRoot": true,
     "competitorOf": "dod",
     "requires": [
-      {"name": "bash >= 4", "command": "env bash -c '[ \"${BASH_VERSINFO[0]}\" -ge 4 ]'"},
-      {"name": "GNU find (-regextype)", "command": "find /dev/null -regextype posix-basic -regex x >/dev/null 2>&1"}
+      {
+        "name": "bash >= 4",
+        "command": "env bash -c '[ \"${BASH_VERSINFO[0]}\" -ge 4 ]'"
+      },
+      {
+        "name": "GNU find (-regextype)",
+        "command": "find /dev/null -regextype posix-basic -regex x >/dev/null 2>&1"
+      }
     ],
-    "pathLinks": {"bash": "/opt/homebrew/bin/bash", "find": "/opt/homebrew/opt/findutils/libexec/gnubin/find", "xargs": "/opt/homebrew/opt/findutils/libexec/gnubin/xargs"}
+    "pathLinks": {
+      "bash": "/opt/homebrew/bin/bash",
+      "find": "/opt/homebrew/opt/findutils/libexec/gnubin/find",
+      "xargs": "/opt/homebrew/opt/findutils/libexec/gnubin/xargs"
+    }
   },
   "iso": {
     "kind": "git",
     "repo": "https://github.com/gazmagik/iso-24495",
     "commit": "5951eb7d985018459c62428378926c07f4199794",
     "competitorOf": "iso",
-    "settings": { "outputStyle": "ISO 24495" }
+    "settings": {
+      "outputStyle": "ISO 24495"
+    }
   },
   "gwc": {
     "kind": "git",
@@ -34,12 +69,36 @@
   "iso-invoked": {
     "sameAs": "iso",
     "promptPrefix": "Apply the iso-24495-1 skill to everything you write, iso-24495-2 for legal text, iso-24495-3 for technical text, and iso-24495-5 for complex documents.",
-    "settings": { "outputStyle": "ISO 24495" },
+    "settings": {
+      "outputStyle": "ISO 24495"
+    },
     "competitorOf": "iso"
   },
   "gwc-invoked": {
     "sameAs": "gwc",
     "promptPrefix": "Use the git-weekly-changelog skill.",
     "competitorOf": "gwc"
+  },
+  "ce": {
+    "kind": "git",
+    "repo": "https://github.com/EveryInc/compound-engineering-plugin",
+    "commit": "738067a599c68f1f0f4a32273fa9d7d2476f0715",
+    "competitorOf": "ce"
+  },
+  "sp": {
+    "kind": "git",
+    "repo": "https://github.com/obra/superpowers",
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "competitorOf": "sp"
+  },
+  "ce-invoked": {
+    "sameAs": "ce",
+    "promptPrefix": "Use the ce-commit-push-pr skill.",
+    "competitorOf": "ce"
+  },
+  "sp-invoked": {
+    "sameAs": "sp",
+    "promptPrefix": "Use the verification-before-completion skill before you give your final answer.",
+    "competitorOf": "sp"
   }
 }

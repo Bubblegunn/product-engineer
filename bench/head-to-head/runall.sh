@@ -13,6 +13,8 @@
 # the shared set-up. A work directory that holds a copy of another commit is refused (exit 2): a round never mixes two
 # commits. --refresh-ours starts a new copy of the requested commit, for the start of a new round only.
 # A copy that fails verification (--version, or a probe in arms.json "ours".probes) aborts the set-up with exit 2.
+# PE_BENCH_ONLY_TASKS and PE_BENCH_ONLY_ARMS (comma lists) keep only those tasks and arms of the matrix, on top of --tasks and --arms.
+# A name in them that is not a known task or arm is refused (exit 2). They change nothing else, --dry-run included.
 # Env: PE_BENCH_PAR (parallel runs, default 3), PE_BENCH_ARMS_JSON (see run.sh), PE_BENCH_REPO_ROOT, PE_BENCH_OURS_COMMIT,
 # and everything run.sh reads.
 # Bash 3 compatible.
@@ -89,6 +91,40 @@ for a in "${ARM_LIST[@]}"; do
     *) echo "runall.sh: unknown arm: $a" >&2; exit 2 ;;
   esac
 done
+
+# PE_BENCH_ONLY_TASKS / PE_BENCH_ONLY_ARMS: keep only the listed names. Every listed name must be known.
+if [ -n "${PE_BENCH_ONLY_TASKS:-}" ]; then
+  IFS=, read -r -a ONLY_T <<< "$PE_BENCH_ONLY_TASKS"
+  for t in "${ONLY_T[@]}"; do
+    case "$t" in
+      T1|T2|T3|T4|T5|T6|H1|H2|H3|H4|H5|H6|H7) ;;
+      *) echo "runall.sh: unknown task in PE_BENCH_ONLY_TASKS: $t" >&2; exit 2 ;;
+    esac
+  done
+  KEEP=()
+  for t in "${TASK_LIST[@]}"; do
+    case ",$PE_BENCH_ONLY_TASKS," in
+      *",$t,"*) KEEP[${#KEEP[@]}]=$t ;;
+    esac
+  done
+  TASK_LIST=("${KEEP[@]}")
+fi
+if [ -n "${PE_BENCH_ONLY_ARMS:-}" ]; then
+  IFS=, read -r -a ONLY_A <<< "$PE_BENCH_ONLY_ARMS"
+  for a in "${ONLY_A[@]}"; do
+    case ",$ALL_ARMS," in
+      *",$a,"*) ;;
+      *) echo "runall.sh: unknown arm in PE_BENCH_ONLY_ARMS: $a" >&2; exit 2 ;;
+    esac
+  done
+  KEEP=()
+  for a in "${ARM_LIST[@]}"; do
+    case ",$PE_BENCH_ONLY_ARMS," in
+      *",$a,"*) KEEP[${#KEEP[@]}]=$a ;;
+    esac
+  done
+  ARM_LIST=("${KEEP[@]}")
+fi
 
 PENDING=()
 TOTAL=0

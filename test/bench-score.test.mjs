@@ -321,7 +321,14 @@ const good = {};
 for (let i = 1; i <= 5; i += 1) good[i] = { pass: true, why: "stub" };
 const mode = process.env.STUB_MODE || "good";
 const text = mode === "good" || (mode === "garbage-then-good" && n >= 2) ? JSON.stringify(good) : "I cannot grade this.";
-process.stdout.write(JSON.stringify({ type: "result", result: text }) + "\\n");
+const labels = [...stdin.matchAll(/^=== SESSION (\\S+) ===$/gm)].map((m) => m[1]);
+let reply = text;
+if (labels.length > 0 && (mode === "good" || (mode === "garbage-then-good" && n >= 2))) {
+  const all = {};
+  for (const l of labels) all[l] = good;
+  reply = JSON.stringify(all);
+}
+process.stdout.write(JSON.stringify({ type: "result", result: reply, total_cost_usd: 0.25 }) + "\\n");
 `,
 );
 chmodSync(stub, 0o755);
@@ -479,6 +486,71 @@ test("--dry-run prints the first material and the prompt, calls no grader and wr
   assert.match(r.stdout, /TASK/);
   assert.equal(readLog(logName).length, 0);
   assert.equal(existsSync(join(work, "grades")), false);
+});
+
+function jointWork() {
+  const work = join(scratch, `joint-${(counter += 1)}`);
+  for (const [arm, rep] of [["ours", 1], ["dod", 1], ["base", 1]]) {
+    const r = makeRun("T1", arm, rep, work);
+    writeOut(r.runDir, [bashLine("git status --short"), resultLine(`Committed the fix, take ${rep}.`)]);
+  }
+  return work;
+}
+
+test("--joint sends one call per task with every session, writes per-label grades, and records cost", () => {
+  const work = jointWork();
+  const cost = join(scratch, `cost-${counter}.tsv`);
+  const env = gradeEnv(work, "joint-log.jsonl", { PE_BENCH_COST_FILE: cost });
+  const r = spawnSync("node", [gradeMjs, "--joint", "--runs-dir", join(work, "runs")], { encoding: "utf8", env });
+  assert.equal(r.status, 0, r.stderr);
+  const calls = readLog("joint-log.jsonl");
+  assert.equal(calls.length, 1);
+  assert.equal((calls[0].stdin.match(/^=== SESSION g[0-9a-f]{6} ===$/gm) || []).length, 3);
+  assert.doesNotMatch(calls[0].stdin, /\bdod\b|T1-|arms/i);
+  const labels = JSON.parse(readFileSync(join(work, "grades", "labels.json"), "utf8"));
+  assert.deepEqual(Object.values(labels).sort(), ["T1-base-1", "T1-dod-1", "T1-ours-1"]);
+  for (const label of Object.keys(labels)) {
+    const g = JSON.parse(readFileSync(join(work, "grades", `${label}.json`), "utf8"));
+    assert.deepEqual(Object.keys(g.grades), ["2", "3", "4", "5"]);
+  }
+  const rows = readFileSync(cost, "utf8").trim().split("\n").map((l) => l.split("\t"));
+  assert.equal(rows.length, 1);
+  assert.match(rows[0][0], /^\d{4}-\d\d-\d\dT/);
+  assert.equal(rows[0][1], "grade joint T1 (3 sessions)");
+  assert.equal(rows[0][2], "0.25");
+  assert.equal(rows[0][3], "0.25");
+  // a second run appends and accumulates; --tasks T2 grades nothing
+  spawnSync("node", [gradeMjs, "--joint", "--force", "--runs-dir", join(work, "runs")], { encoding: "utf8", env });
+  const rows2 = readFileSync(cost, "utf8").trim().split("\n").map((l) => l.split("\t"));
+  assert.equal(rows2.length, 2);
+  assert.equal(rows2[1][3], "0.5");
+  const none = spawnSync("node", [gradeMjs, "--joint", "--tasks", "T2", "--runs-dir", join(work, "runs")], { encoding: "utf8", env });
+  assert.equal(none.status, 0);
+});
+
+test("--joint splits an oversized task into balanced chunks and notes it in the grade file", () => {
+  const work = jointWork();
+  const env = gradeEnv(work, "joint-split.jsonl", { PE_BENCH_JOINT_MAX_CHARS: "1500" });
+  const r = spawnSync("node", [gradeMjs, "--joint", "--runs-dir", join(work, "runs")], { encoding: "utf8", env });
+  assert.equal(r.status, 0, r.stderr);
+  const calls = readLog("joint-split.jsonl");
+  assert.ok(calls.length >= 2, "split into more than one call");
+  const labels = JSON.parse(readFileSync(join(work, "grades", "labels.json"), "utf8"));
+  const g = JSON.parse(readFileSync(join(work, "grades", `${Object.keys(labels)[0]}.json`), "utf8"));
+  assert.match(g.note, /split into \d+ balanced chunks/);
+});
+
+test("--joint retries a garbage reply once, then leaves the task ungraded and exits 1", () => {
+  const work = jointWork();
+  const env = gradeEnv(work, "joint-bad.jsonl", { STUB_MODE: "garbage" });
+  const r = spawnSync("node", [gradeMjs, "--joint", "--runs-dir", join(work, "runs")], { encoding: "utf8", env });
+  assert.equal(r.status, 1);
+  assert.equal(readLog("joint-bad.jsonl").length, 2);
+  const labels = JSON.parse(readFileSync(join(work, "grades", "labels.json"), "utf8"));
+  for (const label of Object.keys(labels)) assert.equal(existsSync(join(work, "grades", `${label}.json`)), false);
+  const retry = gradeEnv(work, "joint-retry.jsonl", { STUB_MODE: "garbage-then-good" });
+  const ok = spawnSync("node", [gradeMjs, "--joint", "--runs-dir", join(work, "runs")], { encoding: "utf8", env: retry });
+  assert.equal(ok.status, 0, ok.stderr);
 });
 
 test("firstJsonObject skips prose and braces inside strings, and parseGrades validates the ids", () => {
