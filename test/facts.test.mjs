@@ -342,3 +342,18 @@ test("facts unsupported: number and tense changes of source words are not report
   const r = spawnSync(process.execPath, [join(process.cwd(), "bin/check.mjs"), "facts", src, rew, "--json"], { encoding: "utf8" });
   assert.deepEqual(JSON.parse(r.stdout).unsupported ?? [], []);
 });
+
+test("a rewrite sentence that echoes what the sentences before it already said is reported", async () => {
+  const { unsupportedSentences } = await import("../bin/facts.mjs");
+  const source = "The tenant must give the landlord 45 days written notice before leaving the flat. The deposit is returned after the final inspection.";
+  const rewrite = "You must give the landlord written notice 45 days before you leave the flat. The deposit comes back after the final inspection. So give the landlord written notice, 45 days before you leave.";
+  const found = unsupportedSentences(source, rewrite).map((u) => u.reason);
+  assert.ok(found.some((r) => /restates earlier sentences/.test(r)));
+  assert.deepEqual(unsupportedSentences(source, "You must give the landlord written notice 45 days before you leave the flat. The deposit comes back after the final inspection."), []);
+});
+
+test("a source that repeats itself does not make its rewrite report echoes", async () => {
+  const { unsupportedSentences } = await import("../bin/facts.mjs");
+  const source = "Visitors must sign the register at the front desk. Every visitor must sign the register at the front desk before entering.";
+  assert.deepEqual(unsupportedSentences(source, source), []);
+});

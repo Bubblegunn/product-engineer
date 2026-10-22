@@ -980,3 +980,18 @@ hook that blocks on any claim without a model judge of nuance (false blocks). Ch
 paraphrases. A hook in a plugin affects real users of the Claude Code plugin; the opt-out and the once-only block limit the
 harm. Adapters for other agents (Codex, Cursor, Cline) get the skill text only, not the hook. The hook is part of the product
 under test, so a win on tasks it was shaped by (the public set) is a weaker claim than a win on the held-out set.
+
+### Changes after the deep-round design freeze (2026-10-22, before any measurement)
+
+Found by the Sonnet review of the code (`/tmp` review file, 10 findings, 9 applied), not by any benchmark result:
+- `scope` uses `git diff -b --ignore-blank-lines` instead of `-w`: `-w` reports a token join such as `return x` to `returnx` as
+  whitespace-only, the unsafe direction. It also lists unstaged and untracked changes as notes and prints "mode or rename only".
+- The hook scopes its checks to the current person turn (a new user message resets the session slice), reads written files as
+  claims only when the file name is summary-like (`PR`, `summary`, `notes`, `report`, `description`, `answer`, `review`), looks for
+  negation only inside the same clause, narrows the starting-state and no-change phrases to the working tree, narrows the fix
+  trigger words, and ignores redirects to `/dev/null`, `tee` after a test run and `git stash list` as writes. It also never throws.
+- The facts restatement check compares each rewrite sentence with the pooled words of all earlier rewrite sentences, not with the
+  sentences mapped to one source sentence as the design text says. Not changed: the simpler form is stricter; recorded as a known
+  deviation.
+- Not applied: finding 10's suggestion to compare with the best single earlier sentence.
+No task, prompt, criterion, label or rival arm changed.

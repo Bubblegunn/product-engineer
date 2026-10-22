@@ -267,6 +267,23 @@ function sentencesOf(text) {
 // A defined term ("X" is / means ...) or a lead-in such as "In this text,".
 const DEFINITION = /["“][^"”]{1,40}["”]\s+(?:is|are|means|refers to)\b|\bin this (?:text|document|licen[cs]e|agreement|contract),/i;
 
+
+/**
+ * Indexes of sentences whose content words, from 3 words up, are at least 70 percent already used by
+ * the sentences before them: an echo or an explanation of what was just said. A short sentence is
+ * left alone, so a list of short rules does not trigger it.
+ */
+function restatedIndexes(sentences) {
+  const seen = new Set();
+  const out = new Set();
+  sentences.forEach((sentence, i) => {
+    const stems = [...new Set(contentWords(sentence).map(stem))];
+    if (stems.length >= 3 && stems.filter((w) => seen.has(w)).length / stems.length >= 0.7) out.add(i);
+    for (const w of stems) seen.add(w);
+  });
+  return out;
+}
+
 /**
  * Rewrite sentences that carry content the source lacks: a defined term or a lead-in the source does not
  * have, or a sentence of which at least 2 content words, and at least 60 percent of them, appear nowhere in
@@ -277,8 +294,14 @@ const DEFINITION = /["“][^"”]{1,40}["”]\s+(?:is|are|means|refers to)\b|\bi
 export function unsupportedSentences(source, rewrite) {
   const known = new Set(contentWords(source).map(stem));
   const sourceDefines = DEFINITION.test(source);
+  const sourceRestates = restatedIndexes(sentencesOf(source)).size > 0;
+  const restated = sourceRestates ? new Set() : restatedIndexes(sentencesOf(rewrite));
   const out = [];
-  for (const sentence of sentencesOf(rewrite)) {
+  for (const [index, sentence] of sentencesOf(rewrite).entries()) {
+    if (restated.has(index)) {
+      out.push({ sentence, reason: "restates earlier sentences of the rewrite; the source says it once" });
+      continue;
+    }
     if (!sourceDefines && DEFINITION.test(sentence)) {
       out.push({ sentence, reason: "defines a term or adds a lead-in the source does not" });
       continue;

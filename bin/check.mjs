@@ -18,6 +18,7 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]
        product-engineer stubs [--staged | --range <a..b>] [--json] [--warn] [-q]
        product-engineer notes <file> [--json]
+       product-engineer scope [range] [--json]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -71,6 +72,10 @@ extension), a line about docs, a README, a changelog or a version bump, an effec
 number after the first line. Warning: the first line names no range (a tag, a commit hash,
 "since", "the last N commits").
 --json prints { ok, errors, warnings, findings: [{ level, code, line, text, message }] }.
+
+scope lists each changed file of a range (or the staged change, or the working tree) with lines
+added and removed, its class, and whether git sees the change as whitespace-only; small changes
+are shown line by line. Use it before calling a file formatting-only.
 
 doctor lists the agents on this machine that carry the skill, in this project and
 in your home directory, and whether each copy still matches the packaged rules.
@@ -407,6 +412,10 @@ async function main(argv) {
   if (command === "notes") {
     const { runNotes } = await import("./notes.mjs");
     return runNotes(argv.slice(1));
+  }
+  if (command === "scope") {
+    const { runScope } = await import("./scope.mjs");
+    return runScope(argv.slice(1));
   }
   if (command === "facts") {
     const { runFacts } = await import("./facts.mjs");

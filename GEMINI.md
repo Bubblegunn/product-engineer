@@ -40,7 +40,7 @@ Write the headings in the language your team writes: `references/headings.md` ca
 shipped ones, English, Turkish, Japanese and Chinese, and how to add another. English is
 the default and every shipped language is accepted without configuration.
 
-In a pull request description, say what each part of the diff shows. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it. Write it from the diff, not from your memory of the request: the request was a plan, the
+In a pull request description, say what each part of the diff shows: run `product-engineer scope <range>` first and call a file "formatting only" only when it prints whitespace-only for that file. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it. Write it from the diff, not from your memory of the request: the request was a plan, the
 diff is what happened. `references/from-the-diff.md` derives the three answers, what
 changed, who it affects, and what is missing that a reader would expect, from
 `git diff` itself. Pure refactors get one line under `What changed`. Never invent an
@@ -57,11 +57,11 @@ no observation. Before a fix is committed, write the observed result of the proj
 command outside the block (`ran npm test: 212 passed, 0 failed`), or `not run` and why. Before saying done, run the project's test command.
 Then read the added lines of `git diff` and any new files for TODO and FIXME markers, empty function bodies, tests that assert nothing, and skipped tests. `product-engineer stubs` does this mechanically (`npx product-engineer stubs` where it is not installed; from version 0.8.0).
 
-Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
+Answer in the language of the request. Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
 
 State only what a command you ran this session shows, and name the command: the working tree before you started, "no change made", "unchanged", "behaves as before", who wrote a file, or when. Run `git status` and `git diff` before you claim any of these; otherwise write "not checked". Copy every figure you quote from command output as printed, and when you report a green run beside "no test covers X", say that the green run does not show X is unchanged.
 
-A fix ships with a test that fails before the fix and passes after it, in the same commit; a docs-only fix needs none. Before you report a fix, run `git status`: unless the fix is docs-only, if no test file changed, add the test, see it fail without the fix and pass with it, then report. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
+A fix ships with a test that fails before the fix and passes after it, in the same commit (to see it fail, undo the fix, run the test, put the fix back); a docs-only fix needs none. Before you report a fix, run `git status`: unless the fix is docs-only, if no test file changed, add the test, see it fail without the fix and pass with it, then report. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
 
 The final answer for a refactor is exactly three lines, with no benefit word anywhere (faster, cleaner, safer, more reliable, easier):
 
