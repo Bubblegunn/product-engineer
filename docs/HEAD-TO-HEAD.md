@@ -850,3 +850,38 @@ T5, T6, H3, H5 and H7 are not measured in round 4 (the interim check covers the 
 step. In the round 4 result table a reused cell is marked "r3 reused" and a new cell "r4 new". Our arm runs from the product
 commit `71043a2` (rules for T3, H2, H4, H6). The Rule A figure that mixes in the unmeasured tasks takes our round 3 values for
 them and is marked as such.
+
+## Results, round 4 (interim, open tasks only, 2026-10-22)
+
+Protocol: "Round 4 measurement protocol (frozen 2026-10-22, owner decision)" above. Our arm ran from the immutable `git archive`
+of `40b4d89` (product rules from `71043a2`; the later commit only adds the protocol text). Model `claude-sonnet-5-5`, Claude Code
+2.1.308, macOS, parallelism 2, key billing (`apiKeySource` ANTHROPIC_API_KEY). 36 new sessions (ours x3 on T3, H2, H4, H6; all
+8 arms x3 on H1), all 36 graded with `grade.mjs`. Session cost, sum of `total_cost_usd` over the 36 result lines: 4.2923 USD.
+Grading cost was not recorded by `grade.mjs`.
+
+Harness note: 27 of the 36 sessions were marked FAILED by `run.sh` with "no result line" although `out.jsonl` holds a
+`result` event with `subtype` success and `is_error` false (checked for all 27). The `run.sh` check read the file too early.
+The 27 FAILED markers were deleted by hand, the list is kept in the work directory, and no session was rerun. No score had
+been seen when this was done. `run.sh` is not changed.
+
+Outcome-only mean score out of 5 (`summarize.mjs --model claude-sonnet-5-5`). "r4 new" cells ran now; "r3 reused" cells are
+the round 3 values from the protocol.
+
+| Task | ours (r4 new) | best rival | result |
+|---|---|---|---|
+| T3 | 4.00 | 4.67 (base, gwc-invoked; r3 reused) | fail, below the best rival (r3 ours: 4.67) |
+| H2 | 4.33 | 5.00 (dod, dod-invoked, iso-invoked; r3 reused) | fail, below the ceiling (r3 ours: 4.67) |
+| H4 | 4.33 | 4.33 (dod, dod-invoked, gwc-invoked, iso; r3 reused) | fail, tie (r3 ours: 4.33) |
+| H6 | 4.33 | 4.67 (base, dod, dod-invoked; r3 reused) | fail, below the best rival (r3 ours: 4.67) |
+| H1 (lockout variant, all arms r4 new) | 4.00 | 4.67 (gwc, gwc-invoked) | fail; other arms: base 4.00, dod 4.33, dod-invoked 3.67, iso 4.33, iso-invoked 3.67 |
+
+Rule A with the new T3 and every other core task at its round 3 value: ours 24.33 of 30, lost 5.67; best other arm lost 8.67,
+limit 6.93; passes (mixed round 3 and round 4 values). **Verdict: the gate FAILS** on rule B for all five open tasks and on the
+ceiling rule for H2. Our arm scored lower than round 3 on T3, H2 and H6 and equal on H4 (one run per cell differs; 3 runs each).
+
+Grader reasons for our lost points, outcome criterion 5 unless noted: H6 runs 1 and 3 added text the source does not have (a
+defined term, an intro line, "This applies even though the licence has ended"), so the new "adds no section" rule is not enough
+for added sentences; H2 run 3 said "no change made" while the diff shows the regex and a test changed; H1 runs 1 to 3 made claims
+about the starting state of the working tree that the transcript does not support (the answer asserted what it did not check,
+the T3 failure class again). The T3 and H4 misses were on objective criteria and were not examined further in this session.
+Nothing is published or tagged (F7).
