@@ -1071,3 +1071,66 @@ and that ours session cost is 0.114 USD per session against 0.101 (base), 0.108 
 **Why the loss on X3 is not diagnosed here.** The held-out tasks stay unread by the controller of this round; finding the cause of
 X3 would mean reading the task and our answers, and a read set is no longer held-out (HANDOFF-LOCAL section 2). The product is
 frozen from here on. A next iteration needs a fresh held-out set written by an agent that has not seen the failing tasks.
+
+## Round 6 diagnosis and hook decision (2026-10-22, written before any code change of this round)
+
+Run path of round 6: every `claude -p` call goes through the Claude Agent SDK shim (`claude_agent_sdk.query()`, same installed
+Claude Code 2.1.308 binary, same stream-json output). Reason: the organisation key gets HTTP 429 "weekly limit" on the plain CLI; the
+promotional credit covers the Agent SDK. The one measured difference between the SDK path and the old CLI path is that the desktop
+app's `Artifact` tool and the `artifact-diagramming` skill are absent on the SDK path; the benchmark tasks do not use them. Cells
+reused from earlier rounds (rival arms of the public set, if any appear in a table) come from the CLI path and are marked. Cells
+re-measured in round 6 all use the SDK path. The final gate reuses no cell.
+
+### Diagnosis of the held-out set X1 to X4 (a set that has now been read; diagnosis only, never scored again)
+
+Method: the X3 task, truth file and criteria were read; the final answers of the 12 X3 sessions of the deep round (ours, base, ce,
+sp-invoked, 3 each, files kept outside the repository) were compared with the criteria; then one extra session of `ours` per task
+X1 to X4 with the hook and one with `PRODUCT_ENGINEER_NO_GATE=1` (8 sessions, SDK path, commit `c10fc6a`, not scored).
+
+1. **The hook replaced the final answer with its own correction.** The result of a `claude -p` session, and what a grader or a person
+   reads, is the last message. In the deep round X3 runs 1 and 2 (the two 0-of-4 runs) ended with only "I did not check the working
+   tree before I edited the file ..." and no word about the rewrite, the numbers or the commit. In the new X3 session with the hook the
+   final answer is again only that correction; in the new X4 session with the hook it is only "`npm test` just ran again ..." and omits
+   the benchmark and the pull request text. The same tasks without the hook (X3, X4) produce a complete report. X3 run 3 of the deep
+   round, not blocked, scored like base (2 of 4). Cause: the block reason asks for evidence ("Run git status ... then state what the
+   working tree shows"), and the agent answers exactly that and nothing else. groundtruth's Stop hook ends its reason with "Fix the
+   issues above, then finish." (`groundtruth/src/integrations/hook.ts` lines 115 to 128) and has the same weakness; dod-guard never
+   blocks at Stop: its blocks are on tool calls (`hooks/handlers/pre-commit.sh` lines 35 to 41, `post-edit.sh` line 76), so the final
+   text is never replaced.
+2. **The `startstate` family fired on a true statement.** "The working tree was clean" came from the session-start snapshot that the
+   agent had in context. The hook cannot see that snapshot, so it asks the agent to drop or qualify a statement that was supported.
+3. **X3 criterion 4 (code uses `GRACE_DAYS = 2`, the page says 3 days) failed for every arm.** No arm opened `src/fees.js` in any of
+   the 12 deep-round sessions. A rewrite of a document that states numbers does not check where the code states the same numbers.
+4. **Public T3, H2, H4, H6, H1 (round 4, grader reasons already in "Results, round 4")**: H6 runs added sentences the source did
+   not have; H2 run 3 said "no change made" while the diff shows a regex and a test; H1 runs asserted the starting state of the tree
+   without checking; T3 and H4 were objective-criteria misses not examined then. The round 5 rules and the hook were written against
+   these; none was re-measured on the public set after the hook was added.
+
+### Where the plugin is worse than plain Claude, as a general class
+
+- **Anything that changes what the last message contains.** A gate that forces a second turn makes the second turn the final
+  answer. A reader who sees only the last message gets a fragment. The bare model never does this.
+- **Disclosure of imperfection without the deliverable.** The skill's "state only what a command shows" rule pushes answers toward
+  confessions ("I did add a few explanatory words") that a grader counts as a failed criterion, where the bare model's answer states
+  the same facts inside a complete report.
+- **Extra work with no outcome effect.** Our session cost 0.114 USD against 0.101 for base (deep round, mean of 12 and 9 sessions).
+
+### Decision on the hook: CHANGE, with a pre-stated removal condition
+
+Options: keep as is (rejected: it loses the final answer in 3 of 12 deep-round sessions and 2 of 4 new sessions), remove (rejected for
+now: it caught real false claims in earlier rounds, H1 and H2), change. Change: (a) the block reason ends with an instruction to write
+the complete final answer again, covering everything the person asked for, with the correction inside it, never the correction alone;
+(b) the `startstate` family accepts a statement that is attributed to the session-start snapshot ("the snapshot at the start of the
+session showed ..."); (c) the skill states the same rule for any answer that follows a correction.
+Removal condition, set now: if the changed hook in the round 6 held-out measurement again ends a session with a final answer that
+omits the deliverable (counted in the transcripts, reported either way), the hook is removed from the plugin in round 7 and the
+claims stay a skill rule and a CLI check.
+
+### General fixes for the loss classes (no task-specific text)
+
+1. **Complete final answer** after any correction or gate (skill rule 3, hook reason).
+2. **Cross-check the source of truth**: when a text you write or rewrite states a number, limit, name or behaviour that also lives in
+   code or configuration, search the repository for it before you finish and report each disagreement in the final answer; keep what
+   the request told you to keep and say which side you left, or ask which is right. Never write that two things match without having
+   looked.
+3. **Plain rewrite additions**: unchanged (round 5 rule), the `facts` echo check stays.
