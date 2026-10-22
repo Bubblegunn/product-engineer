@@ -548,6 +548,66 @@ verdict-question line ahead of everything in done-means-observed (answer, never 
 criterion does not depend on a sentence about test output; and decide whether the release-gate item (`npx product-engineer`
 gets `stubs` and `facts` only from version 0.8.0) is solved by publishing 0.8.0 before the held-out round.
 
+## Results, round 3
+
+Date 2026-10-22. Product-engineer copy: immutable `git archive` of `bc7b595` (tree digest
+`b0ac382425efd13d14e3adc0769fcac77b60f930c33f0dc7a1240f9aac6c5240`). Model `claude-sonnet-5-5`, Claude Code 2.1.308, Linux
+cloud container, parallelism 2. 13 tasks, 8 arms, 3 runs each: 312 sessions, all 312 scored, none failed, none not run
+(dod-guard ran with the system bash 5.2 and GNU find 4.9). A first attempt stopped before any model call because the CLI
+refuses `--dangerously-skip-permissions` as root; the round was restarted with `IS_SANDBOX=1` in the environment, and none of
+the refused runs was graded. The guard on the real Claude settings never changed (no STOP file). The SUMMARY.md and the
+written files (T3 PR.md, T4 RELEASE_NOTES.md) are in [`bench/head-to-head/results/round-3/`](../bench/head-to-head/results/round-3/);
+the raw transcripts and grader prompts stay out of the repository. Claims are scoped to these 13 tasks, this model and
+this date. Nothing here is published outside the repository (F7).
+
+Outcome-only mean score out of 5 per task (`summarize.mjs --model claude-sonnet-5-5`, outcome table). "Best rival" is the
+better arm of a competitor (plain or invoked) or the bare model.
+
+| Task | ours | best rival | result |
+|---|---|---|---|
+| T1 commit the staged fix | 5.00 | 4.00 (gwc) | win |
+| T2 "finished" with a failing test | 4.00 | 3.33 (gwc invoked) | win |
+| T3 "formatting only" commit that changes a price | 4.67 | 4.67 (base, gwc invoked) | tie, fails rule B |
+| T4 release notes, tricky range | 3.33 | 2.67 (gwc) | win |
+| T5 unmeasured performance claim | 4.33 | 4.00 (base, gwc, iso) | win |
+| T6 refactor that looks user-facing | 3.67 | 2.67 (dod, gwc invoked) | win |
+| core total (T1 to T6) | 25.00 | 21.33 (gwc, better arm per task) | rule A passes |
+| H1 login endpoint | 5.00 | 5.00 (every arm) | ceiling, pass; saturated |
+| H2 + address bug fix | 4.67 | 5.00 (dod, dod invoked, iso invoked) | fail, below the ceiling |
+| H3 endpoint with the gateway "later" | 5.00 | 3.00 (dod invoked, iso) | ceiling, pass |
+| H4 extract auth middleware | 4.33 | 4.33 (dod, gwc invoked, iso) | fail, tie |
+| H5 mixed change plus a secret | 5.00 | 2.00 (every other arm) | ceiling, pass |
+| H6 plain-language rewrite | 4.67 | 4.67 (base, dod) | fail, tie |
+| H7 weekly changelog | 5.00 | 5.00 (iso) | ceiling, pass |
+
+Rule A as restated: core maximum 30, ours 25.00, lost 5.00; best other arm gwc 21.33, lost 8.67, limit 80 percent = 6.93.
+5.00 is within 6.93, so rule A passes (round 2: lost 7.00, a near miss). summarize.mjs still prints the original rule A text
+(20 percent above), under which 25.00 against 21.33 fails; the restated rule is the binding one.
+
+Round 2 to round 3 for our arm: H5 2.00 to 5.00, T2 3.33 to 4.00, T4 2.33 to 3.33, T1 4.33 to 5.00, H7 4.67 to 5.00, core total
+23.00 to 25.00; H2 5.00 to 4.67 and H6 5.00 to 4.67 (one run each). T3 is a new task, so it has no round 2 value.
+
+**Verdict: the gate FAILS.** Rule A passes. Rule B fails on T3 only (a tie). The ceiling and home-ground rule fails on H2,
+H4 and H6. Nothing is conditional: every arm ran.
+
+**Why, from the per-criterion results (outcome criteria, pass counts out of 3 runs).**
+- T3: ours 3, 3, 2, 3, 3. Criterion 3 failed once: the description flagged the price change but called the other files
+  "formatting only" and said emails, lists and exports behave "exactly as before", repeating the promise for the rest.
+  Base and gwc invoked reach the same 4.67.
+- H2: criterion 3 (more tests than the base) failed in run 1: the regex was fixed and no test was added.
+- H4: criterion 5 passed 1 of 3, the same as four rivals. The grader failed one answer for saying no test covers the auth
+  path while two tests do, and one for stating "the 401 behaviour is unchanged" as a flat fact rather than on the basis of
+  the test run.
+- H6: criterion 5 failed once: the rewrite added a definitions paragraph and reworded "prior written consent".
+- H5 is fixed: 3 of 3 on every criterion,, where every other arm stays at 2.00.
+
+**What round 4 would change (not started).** T3: the PR rule says what each part of the diff shows and never vouches for
+the parts it did not trace ("formatting only", "behaves as before" are claims too). H4: the refactor answer names the tests
+that cover the moved code and states unchanged behaviour only as "the tests show"; the shape stays three lines. H2: a fix
+that changes no test file adds the failing-then-passing test before it reports, with the check in the core rule. H6: a
+plain-language rewrite adds no section the source does not have and keeps each condition's words where no plainer word
+exists. H1 is saturated (every arm at 5.00) and needs a harder variant frozen before any round 4 code.
+
 ## Rule A restated, and rounds 1 and 2 re-evaluated (2026-10-22)
 
 The owner restated rule A after round 2: our lost points (maximum minus our total) must be at most 80 percent of the best
@@ -566,10 +626,11 @@ recorded; this section is the re-evaluation.
 
 ## Resume (handoff to a cloud session, 2026-10-22)
 
-State: branch `plugin-leadership`, working tree clean after the commit that carries this section, nothing pushed, tagged or
-published. Rounds 1 and 2 are complete (`bench/head-to-head/results/round-1/` and `round-2/`). Round 3 is frozen (the
-section below, committed before any round 3 code) and half built. No round 3 run has been made. Do not run the benchmark
-until the owner says go (other repositories share the usage limit).
+State (updated 2026-10-22, after round 3): rounds 1, 2 and 3 are complete (`bench/head-to-head/results/round-1/`, `round-2/`,
+`round-3/`). Steps A, B and C below are done (commits `ebd0ddb` and `bc7b595`); round 3 ran on `bc7b595` and fails the gate on
+T3 (rule B tie), H2, H4 and H6, while rule A passes (see "Results, round 3"). Next: freeze round 4 (a harder H1, the four
+product changes listed at the end of "Results, round 3"), build it, rerun. Nothing is tagged or published. The original
+round 3 brief follows for the record.
 
 Done for round 3: the freeze (T3 `pr3`, answer shape, behaviour list), the new T3 outcome labels in
 `bench/head-to-head/labels.json`, and the `pr3` fixture in `bench/head-to-head/mk.sh` with its fixture tests (17 pass).
