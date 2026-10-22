@@ -66,7 +66,7 @@ writeFileSync(
   '{"strictness":"{{STRICTNESS}}","stack":"{{STACK}}","runner":"{{TEST_RUNNER}}"}\n',
 );
 writeFileSync(join(src, "dod", "templates", "DOD.md.template"), "# {{PROJECT_NAME}} definition of done\n");
-for (const name of ["iso", "gwc"]) {
+for (const name of ["iso", "gwc", "ce", "sp"]) {
   writeJson(join(src, name, ".claude-plugin", "plugin.json"), { name, version: "0.0.1" });
 }
 // A fake real home: the three files the isolation reads, and no real one. The email is a fixture address.
@@ -128,6 +128,7 @@ writeFileSync(
     "if [ -n \"${STUB_STDERR-}\" ]; then printf '%s\\n' \"$STUB_STDERR\" >&2; fi",
     'settings_file=""; prev=""; for a in "$@"; do if [ "$prev" = "--settings" ]; then settings_file=$a; fi; prev=$a; done',
     'if [ -n "${STUB_READ_SETTINGS-}" ] && [ -n "$settings_file" ]; then cat "$settings_file" > "$STUB_READ_SETTINGS.$$"; fi',
+    "if [ -n \"${STUB_LATE_LINE-}\" ]; then (sleep \"${STUB_LATE_SECONDS:-2}\"; printf '%s\\n' \"$STUB_LATE_LINE\") & exit \"${STUB_EXIT:-0}\"; fi",
     "if [ -n \"${STUB_LINE-}\" ]; then printf '%s\\n' \"$STUB_LINE\"; else printf '{\"type\":\"result\",\"stub\":true}\\n'; fi",
     "exit \"${STUB_EXIT:-0}\"",
     "",
@@ -203,6 +204,7 @@ function runEnv(work, extra = {}) {
     PE_BENCH_TASKS: tasks,
     PE_BENCH_CLAUDE: stub,
     STUB_RECORD: join(work, "stub-record.txt"),
+    PE_BENCH_RESULT_WAIT: "1",
     ...extra,
   };
 }
@@ -239,12 +241,12 @@ function pendingLines(stdout) {
   return stdout.split("\n").filter((l) => /^[TH][1-7] \S+ [123]$/.test(l));
 }
 
-test("arms.json lists the eight arms with the expected kinds, pins and competitor groups", () => {
+test("arms.json lists the twelve arms with the expected kinds, pins and competitor groups", () => {
   const arms = JSON.parse(readFileSync(armsJson, "utf8"));
-  assert.deepEqual(Object.keys(arms), ["ours", "base", "dod", "iso", "gwc", "dod-invoked", "iso-invoked", "gwc-invoked"]);
+  assert.deepEqual(Object.keys(arms), ["ours", "base", "dod", "iso", "gwc", "dod-invoked", "iso-invoked", "gwc-invoked", "ce", "sp", "ce-invoked", "sp-invoked"]);
   assert.equal(arms.ours.competitorOf, undefined);
   assert.equal(arms.base.competitorOf, undefined);
-  for (const [invoked, name] of [["dod-invoked", "dod"], ["iso-invoked", "iso"], ["gwc-invoked", "gwc"]]) {
+  for (const [invoked, name] of [["dod-invoked", "dod"], ["iso-invoked", "iso"], ["gwc-invoked", "gwc"], ["ce-invoked", "ce"], ["sp-invoked", "sp"]]) {
     assert.equal(arms[invoked].sameAs, name, invoked);
     assert.equal(arms[invoked].competitorOf, name, invoked);
     assert.equal(arms[name].competitorOf, name, name);
@@ -256,7 +258,11 @@ test("arms.json lists the eight arms with the expected kinds, pins and competito
   assert.equal(arms["gwc-invoked"].promptPrefix, "Use the git-weekly-changelog skill.");
   assert.equal(arms.ours.kind, "self");
   assert.equal(arms.base.kind, "empty");
-  for (const name of ["dod", "iso", "gwc"]) {
+  assert.equal(arms["ce-invoked"].promptPrefix, "Use the ce-commit-push-pr skill.");
+  assert.equal(arms["sp-invoked"].promptPrefix, "Use the verification-before-completion skill before you give your final answer.");
+  assert.equal(arms.ce.commit, "738067a599c68f1f0f4a32273fa9d7d2476f0715");
+  assert.equal(arms.sp.commit, "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b");
+  for (const name of ["dod", "iso", "gwc", "ce", "sp"]) {
     assert.equal(arms[name].kind, "git", name);
     assert.match(arms[name].commit, /^[0-9a-f]{40}$/, name);
     assert.match(arms[name].repo, /^https:\/\/github\.com\//, name);
@@ -268,8 +274,8 @@ test("arms.json lists the eight arms with the expected kinds, pins and competito
 
 test("fetch-arms prints one line per arm, copies the git arms and writes the empty base manifest", () => {
   const lines = fetched.stdout.split("\n").filter(Boolean);
-  assert.equal(lines.length, 8);
-  for (const name of ["ours", "base", "dod", "iso", "gwc", "dod-invoked", "iso-invoked", "gwc-invoked"]) {
+  assert.equal(lines.length, 12);
+  for (const name of ["ours", "base", "dod", "iso", "gwc", "dod-invoked", "iso-invoked", "gwc-invoked", "ce", "sp", "ce-invoked", "sp-invoked"]) {
     assert.ok(lines.some((l) => l.startsWith(`${name}:`)), name);
   }
   assert.ok(lines.some((l) => l.startsWith("dod-invoked:") && /alias of dod/.test(l)), "invoked arms are aliases");
@@ -292,10 +298,10 @@ test("fetch-arms refuses an unknown arm name", () => {
   assert.notEqual(r.status, 0);
 });
 
-test("dry-run lists 13 tasks x 8 arms x 3 reps = 312 pending triples", () => {
+test("dry-run lists 13 tasks x 12 arms x 3 reps = 468 pending triples", () => {
   const r = run(runallSh, ["--dry-run"], runEnv(join(scratch, "work-matrix")));
   assert.equal(r.status, 0, r.stderr);
-  assert.equal(pendingLines(r.stdout).length, 312);
+  assert.equal(pendingLines(r.stdout).length, 468);
   assert.match(r.stdout, /about \$[0-9.]+ \(about \$0\.06 per run\)/);
 });
 
@@ -306,7 +312,7 @@ test("dry-run leaves out a run that already has DONE", () => {
   const r = run(runallSh, ["--dry-run"], runEnv(work));
   assert.equal(r.status, 0, r.stderr);
   const pending = pendingLines(r.stdout);
-  assert.equal(pending.length, 311);
+  assert.equal(pending.length, 467);
   assert.equal(pending.includes("T2 ours 1"), false);
 });
 
@@ -314,6 +320,19 @@ test("--tasks, --arms and --reps narrow the dry-run matrix", () => {
   const r = run(runallSh, ["--dry-run", "--tasks", "T2", "--arms", "ours,base", "--reps", "1"], runEnv(join(scratch, "work-narrow")));
   assert.equal(r.status, 0, r.stderr);
   assert.deepEqual(pendingLines(r.stdout), ["T2 ours 1", "T2 base 1"]);
+});
+
+test("PE_BENCH_ONLY_TASKS and PE_BENCH_ONLY_ARMS keep only the listed tasks and arms, and refuse unknown names", () => {
+  const r = run(runallSh, ["--dry-run", "--reps", "1"], runEnv(join(scratch, "work-only"), { PE_BENCH_ONLY_TASKS: "T3,H1", PE_BENCH_ONLY_ARMS: "ce,sp-invoked" }));
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(pendingLines(r.stdout), ["T3 ce 1", "T3 sp-invoked 1", "H1 ce 1", "H1 sp-invoked 1"]);
+  assert.match(r.stdout, /4 runs to do, 0 already done, 4 in the matrix/);
+  const narrowed = run(runallSh, ["--dry-run", "--reps", "1", "--tasks", "T1,T3", "--arms", "ours,ce"], runEnv(join(scratch, "work-only2"), { PE_BENCH_ONLY_TASKS: "T3", PE_BENCH_ONLY_ARMS: "ce" }));
+  assert.deepEqual(pendingLines(narrowed.stdout), ["T3 ce 1"]);
+  const bad = run(runallSh, ["--dry-run"], runEnv(join(scratch, "work-only3"), { PE_BENCH_ONLY_ARMS: "nope" }));
+  assert.equal(bad.status, 2);
+  const badTask = run(runallSh, ["--dry-run"], runEnv(join(scratch, "work-only4"), { PE_BENCH_ONLY_TASKS: "T9" }));
+  assert.equal(badTask.status, 2);
 });
 
 test("runall runs the pending triples through run.sh", () => {
@@ -896,6 +915,32 @@ test("a run with no result line fails, even when the output is otherwise JSON", 
   assert.notEqual(r.status, 0);
   assert.equal(existsSync(join(r.runDir, "DONE")), false);
   assert.match(readFileSync(join(r.runDir, "FAILED"), "utf8"), /no result line/);
+});
+
+test("a result line that the output file receives 2 s after claude exits is still read: DONE", () => {
+  const r = runArm("T3", "base", 1, {
+    extra: { STUB_LATE_LINE: '{"type":"result","subtype":"success","is_error":false}', STUB_LATE_SECONDS: "2", PE_BENCH_RESULT_WAIT: "15" },
+  });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(existsSync(join(r.runDir, "DONE")), true);
+  assert.equal(existsSync(join(r.runDir, "FAILED")), false);
+});
+
+test("a result line that arrives after PE_BENCH_RESULT_WAIT is too late: FAILED with no result line", () => {
+  const r = runArm("T3", "base", 1, {
+    extra: { STUB_LATE_LINE: '{"type":"result","is_error":false}', STUB_LATE_SECONDS: "4", PE_BENCH_RESULT_WAIT: "1" },
+  });
+  assert.notEqual(r.status, 0);
+  assert.equal(existsSync(join(r.runDir, "DONE")), false);
+  assert.match(readFileSync(join(r.runDir, "FAILED"), "utf8"), /no result line/);
+});
+
+test("a nonzero claude exit fails at once, without waiting for a result line", () => {
+  const t0 = Date.now();
+  const r = runArm("T3", "base", 1, { extra: { STUB_EXIT: "3", STUB_LINE: "not json", PE_BENCH_RESULT_WAIT: "30" } });
+  assert.equal(r.status, 3);
+  assert.ok(Date.now() - t0 < 20000);
+  assert.match(readFileSync(join(r.runDir, "FAILED"), "utf8"), /claude exited 3/);
 });
 
 test("the last result line decides: an error result followed by a good one is DONE, a good one followed by an error is failed", () => {

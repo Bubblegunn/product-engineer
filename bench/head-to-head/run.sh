@@ -17,6 +17,7 @@
 #   PE_BENCH_WORK_DIR   work directory (default: ${TMPDIR:-/tmp}/pe-bench/work, outside the repository)
 #   PE_BENCH_ARMS_JSON  arms file (default: arms.json next to this script; the tests use a copy with stub probes)
 #   PE_BENCH_REPO_ROOT  repository whose commit the ours arm runs (default: the repository this script belongs to)
+#   PE_BENCH_RESULT_WAIT  seconds to wait, after claude exits 0, for a result line in out.jsonl (default: 60, polled every 1 s)
 #   PE_BENCH_OURS_COMMIT  commit the ours arm runs (default: HEAD); used only when the work directory has no copy yet
 # Prerequisites: an arm whose arms.json entry has "requires" runs each probe first, with sh -c in this environment.
 # If one fails, claude is not called: the run writes FAILED (exit_status 0, reason "not run: ...") and meta.json with
@@ -284,8 +285,12 @@ set -e
 END=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 guard_check
 
-# The last stream-json line that parses as a result event decides: it is an error when claude reports is_error.
-LAST_LINE=$(node -e '
+# The result line can reach out.jsonl after claude has exited (round 4: 27 of 36 sessions read as "no result line" although
+# the file held a success result). After exit 0, poll once per second, up to PE_BENCH_RESULT_WAIT seconds (default 60), for
+# a line that parses as {"type":"result"}. A nonzero exit is not polled. If no result line appears, the reason stays "no result line".
+# The last result line found decides: it is an error when claude reports is_error.
+result_state() {
+node -e '
 const fs = require("fs");
 const lines = fs.readFileSync(process.argv[1], "utf8").split("\n").filter((l) => l.trim() !== "");
 let result = null;
@@ -300,7 +305,22 @@ for (const line of lines) {
 }
 if (result === null) process.stdout.write("no result line");
 else process.stdout.write(result.is_error === true ? "error result" : "ok");
-' "$RUN/out.jsonl")
+' "$RUN/out.jsonl"
+}
+LAST_LINE="no result line"
+if [ "$STATUS" -eq 0 ]; then
+  WAIT=${PE_BENCH_RESULT_WAIT:-60}
+  case "$WAIT" in ''|*[!0-9]*) WAIT=60 ;; esac
+  waited=0
+  while :; do
+    LAST_LINE=$(result_state)
+    [ "$LAST_LINE" != "no result line" ] && break
+    [ "$waited" -ge "$WAIT" ] && break
+    sleep 1
+    waited=$((waited + 1))
+  done
+  guard_check
+fi
 
 if [ "$STATUS" -ne 0 ]; then
   OUTCOME=failed
