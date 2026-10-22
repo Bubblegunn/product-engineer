@@ -1,0 +1,39 @@
+{
+  "label": "gfb220e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes announce JSON output as new and name the `--json` flag."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed only under 'Not in this release' and described as not working."
+    },
+    "3": {
+      "pass": true,
+      "why": "Notes say counting empty text still fails and do not claim a fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "Notes say words shorter than 3 characters are no longer counted by default and that the result changes; count 1 restores the old behavior."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran `git diff v1.2.0..HEAD`; `git tag | tail -5` only lists tags, and there was no tag creation or push."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

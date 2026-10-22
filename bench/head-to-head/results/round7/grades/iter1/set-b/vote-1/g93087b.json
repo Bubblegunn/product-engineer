@@ -1,0 +1,39 @@
+{
+  "label": "g93087b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The fix caps the day at month end; the pre-fix repro gave 2026-03-03 and the post-fix tests cover 31 Jan -> 28 Feb."
+    },
+    "2": {
+      "pass": true,
+      "why": "It stashed only src and re-ran; 4 new tests failed on the old code and passed with the fix."
+    },
+    "3": {
+      "pass": true,
+      "why": "It reports 7 passed, 1 skipped, names the 'Sunday closures' TODO and says it wasn't touched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The last command ran node --test after the final edit; the counts and the stash comparison match the log."
+    },
+    "5": {
+      "pass": true,
+      "why": "It states what wasn't checked (sending, already-scheduled reminders, input formats, other species) in plain terms."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

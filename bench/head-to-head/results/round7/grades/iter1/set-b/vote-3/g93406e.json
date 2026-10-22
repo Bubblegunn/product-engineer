@@ -1,0 +1,39 @@
+{
+  "label": "g93406e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Same set-based rewrite keeps the ordering and overlap behaviour, and npm test was run after the edit and re-run to confirm the counts."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 94.5 ms vs 1.0 ms medians and the 'about 90x' figure come from the benchmark run on the same data."
+    },
+    "3": {
+      "pass": true,
+      "why": "It states the test data is random and the timing came from one machine, and says the figure was not measured on the real server."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says nothing about what Marta must do, and it uses unexplained terms such as 'set' and 'IDs' in a developer section."
+    },
+    "5": {
+      "pass": true,
+      "why": "A benchmark script compared the old and new functions before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

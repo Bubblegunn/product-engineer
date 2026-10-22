@@ -1,0 +1,39 @@
+{
+  "label": "g90be2d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The coordinator-facing note says a household that has visited twice this month can now book a third visit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The message says it is a behaviour change, says no tests are included, and does not copy the draft line."
+    },
+    "3": {
+      "pass": false,
+      "why": "The subject line starts with 'refactor' and names hasVisitsLeft and slotHasRoom, and the body has code operators before the plain-language part."
+    },
+    "4": {
+      "pass": false,
+      "why": "The NEW COMMITS section shows none, so the material does not show exactly one commit containing only src/pickup.js."
+    },
+    "5": {
+      "pass": false,
+      "why": "It says the change looks like a bug but never checked for existing tests or ran any, so it does not establish that no test covers the two-visit limit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

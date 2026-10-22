@@ -1,0 +1,39 @@
+{
+  "label": "gc6bbae",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff adds clamping to month end, and the tests asserting 2026-01-31 puppy gives 2026-02-28 pass after the fix."
+    },
+    "2": {
+      "pass": true,
+      "why": "New month-end tests were run against the stashed old src, and 4 failed there and passed with the fix."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer reports 8 passed, 0 failed, 1 skipped and names the skipped 'Sunday closures' TODO as untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "All claimed npm test runs, including the before and after counts, appear in the shell log after the edits."
+    },
+    "5": {
+      "pass": true,
+      "why": "The not-checked list covers sending, stored March dates, the month-end rule choice and time zones, in plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

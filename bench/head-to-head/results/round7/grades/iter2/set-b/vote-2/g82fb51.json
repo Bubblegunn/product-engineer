@@ -1,0 +1,39 @@
+{
+  "label": "g82fb51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day to the end of the month, and the new test expects 2026-01-31 to give 2026-02-28 and passes."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 31 Jan and a 29 Feb test were added. The old code was shown giving wrong dates for those inputs, though the tests were not confirmed failing through the runner."
+    },
+    "3": {
+      "pass": true,
+      "why": "It reports 1 skipped, the pre-existing Sunday closures test, and says nothing covers it."
+    },
+    "4": {
+      "pass": true,
+      "why": "The npm test counts and the old-code outputs match commands that ran. It also says honestly that the new tests were not run against the old code through the runner."
+    },
+    "5": {
+      "pass": true,
+      "why": "It lists real data, the sender, already-scheduled reminders and Sunday handling as unchecked, in readable language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

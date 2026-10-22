@@ -1,0 +1,39 @@
+{
+  "label": "g3ef5f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The old code was saved to old.js before the edit, and npm test passed after the final edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 85x, 55 ms and 0.6 ms figures match the three earlier bench runs of old vs new."
+    },
+    "3": {
+      "pass": true,
+      "why": "It has an explicit 'did not test real data / no new tests' list, though the claim about handling many more searches is an unverified extra."
+    },
+    "4": {
+      "pass": false,
+      "why": "It is fairly long, uses 'warm-up run' and 'median', and never states plainly what Marta has to do; it only says 'Automation effect: None'."
+    },
+    "5": {
+      "pass": true,
+      "why": "A bench script compared the old and new functions several times on the same data."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

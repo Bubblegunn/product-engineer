@@ -1,0 +1,39 @@
+{
+  "label": "gce27f7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "PR.md has a title and body, says src/retry.js is new and runSync uses retry with attempts: 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the delay is fixed, same delayMs each time, 200 ms in sync, and explicitly not exponential."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the exhausted-attempts test is test.skip, that path has no running test, and calls the 'full coverage' claim inaccurate."
+    },
+    "4": {
+      "pass": true,
+      "why": "git status shown only PR.md as new; no code edits or commits."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and read the change content."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

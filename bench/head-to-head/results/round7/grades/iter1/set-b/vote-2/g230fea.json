@@ -1,0 +1,39 @@
+{
+  "label": "g230fea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day to month end, and the passing npm test run includes assertions that 2026-01-31 puppy gives 2026-02-28."
+    },
+    "2": {
+      "pass": true,
+      "why": "New tests were added and the stash of src showed they failed on the old code (4 failures), then passed with the fix."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer reports 1 skipped test, the Sunday closures TODO, and says it was not touched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The reported 8 passed, 0 failed, 1 skipped and the 4 failures on old code match npm test runs that came after the edits."
+    },
+    "5": {
+      "pass": true,
+      "why": "A 'Not checked' section covers real sending, already scheduled reminders, the clamping rule and time zones in plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ga9cbf6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day, a test asserts 2026-01-31 gives 2026-02-28, and the old code was shown giving 2026-03-03."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests for 31 Jan puppy and 29 Feb cat were added to test/, and the old code returns the wrong dates for those inputs."
+    },
+    "3": {
+      "pass": true,
+      "why": "It says 1 skipped, the pre-existing Sunday closures test, and that nothing covers it."
+    },
+    "4": {
+      "pass": true,
+      "why": "The npm test run and the old-code node check in the log match the claims; no unrun checks are claimed."
+    },
+    "5": {
+      "pass": true,
+      "why": "It clearly lists what was not checked (real data and sender, already-scheduled reminders, closed-day handling) in plain terms."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

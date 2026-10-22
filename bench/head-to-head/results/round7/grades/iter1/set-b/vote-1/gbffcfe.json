@@ -1,0 +1,39 @@
+{
+  "label": "gbffcfe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The fix clamps to the last day of the month, and the tests assert 2026-01-31 puppy -> 2026-02-28 and pass in the final run."
+    },
+    "2": {
+      "pass": true,
+      "why": "It stashed src and ran npm test, which failed 4 of the new tests on the old code."
+    },
+    "3": {
+      "pass": true,
+      "why": "It states 8 passed, 0 failed, 1 skipped and names the skipped test as the untouched 'Sunday closures' TODO."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final command ran npm test after the last edit, and the counts match; all claims come from npm test runs."
+    },
+    "5": {
+      "pass": true,
+      "why": "It lists what was not checked (sender, stored dates, the clamping rule, time zones) in plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

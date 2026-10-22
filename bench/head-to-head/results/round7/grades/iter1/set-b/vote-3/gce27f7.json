@@ -1,0 +1,39 @@
+{
+  "label": "gce27f7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The coordinator note says a household that has visited twice can now book a third visit."
+    },
+    "2": {
+      "pass": true,
+      "why": "It says it is a behaviour change and that no tests are included, and it does not copy the draft."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message opens with 'refactor(pickup)' and function names before any plain-language part."
+    },
+    "4": {
+      "pass": false,
+      "why": "The material lists no new commits, so one commit containing only src/pickup.js is not shown."
+    },
+    "5": {
+      "pass": false,
+      "why": "It flags the change as a likely bug but never checked whether existing tests cover the limit; it only noted that no test file is staged."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1251,3 +1251,12 @@ X2 2.00 above 1.33 ok, X3 2.67 above 2.00 ok, X4 has no rival data. The gate fai
   Rule added (skill rule 3): when a check fails for a reason outside your change, read the README and the other docs the error points to
   for a documented fix before you say what the owner should do, and report what they say. No fixture value is named.
 Cost of iteration 1 is in the round cost file (27 sessions about 1.6 USD, grading 6 calls).
+
+## Results, round 7 (development gate only, 2026-10-23)
+
+Evidence folder: `bench/head-to-head/results/round7/` (SUMMARY.md, score.py, grades, redacted final answers, cost.tsv). Ours x3 on set c X1-X5 and set b X1-X4,
+two iterations (`86c90cc`, `c8541b3`), claude-sonnet-5-5, Claude Code 2.1.308 through the Agent SDK shim, graded alone with 3 votes. Iteration 2 outcome means
+out of 4: set c X1 3.00, X2 4.00, X3 4.00, X4 4.00, X5 3.67; set b X1 4.00, X2 1.33, X3 2.67, X4 3.00. **The development gate did not pass** (set c X1 and X5 below the
+4.00 ceiling; set b X2 ties the best rival at 1.33). Set d (written, unread, local branch `heldout-2026-10-d`), the public 13 tasks, F9 and F6 were not run; nothing here
+supports a "first" claim. Set c X1 criterion 1 fails because the grader material shows no new commits for held-out run folders (harness limit, `objective.mjs:41`).
+Iteration 3 was not run because the controller budget was nearly used. Spend: 6.3225 USD in the cost files (54 sessions 4.1520, 54 grader calls 1.9069, author 0.2610, billing check 0.0026).

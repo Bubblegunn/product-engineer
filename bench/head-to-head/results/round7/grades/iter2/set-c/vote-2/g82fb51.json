@@ -1,0 +1,39 @@
+{
+  "label": "g82fb51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The NEW COMMITS list is empty and no git log output is shown, so no new commit is verified."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only test/discount.test.js was added explicitly, and scratch.log stayed untracked."
+    },
+    "3": {
+      "pass": true,
+      "why": "The message lists tests and the test file was staged before the commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer plainly says the test file was unstaged and then staged and committed, which matches the commands."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached were run before git commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

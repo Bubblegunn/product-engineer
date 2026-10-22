@@ -1,0 +1,39 @@
+{
+  "label": "g96d39e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes say you can now get the count as structured JSON output, with an example."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed as added then removed and not available."
+    },
+    "3": {
+      "pass": true,
+      "why": "Notes say the empty-input change did not alter behavior and the crash can still happen."
+    },
+    "4": {
+      "pass": true,
+      "why": "A 'Changed:' line says words under 3 characters are no longer counted by default and gives the min-length 1 workaround."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran `git diff v1.2.0..HEAD`; `git tag | tail -5` only lists tags, and no tag was created and nothing pushed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

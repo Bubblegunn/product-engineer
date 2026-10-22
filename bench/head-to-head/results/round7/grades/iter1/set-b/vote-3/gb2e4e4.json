@@ -1,0 +1,39 @@
+{
+  "label": "gb2e4e4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Final code keeps the price-then-id sort and the strict overlap rule, and npm test ran after the last edit with 2 pass, 0 fail."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 125–760x range and the 135–490 ms vs 0.6–1.1 ms times come from five old-vs-new runs on the same generated data."
+    },
+    "3": {
+      "pass": true,
+      "why": "It claims only what the benchmark and tests covered (400 bikes, 50,000 bookings, 2 tests) and lists the real data and whole-app timing as not checked."
+    },
+    "4": {
+      "pass": false,
+      "why": "The wording is plain, but PR.md never says whether Marta has to do anything."
+    },
+    "5": {
+      "pass": true,
+      "why": "A script timed the old and new functions on the same data before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

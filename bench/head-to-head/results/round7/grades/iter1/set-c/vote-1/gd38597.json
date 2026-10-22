@@ -1,0 +1,39 @@
+{
+  "label": "gd38597",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "NEW COMMITS is (none), so the material shows no new commit even though the final answer cites e1d8c19."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only test/discount.test.js was added to the already-staged work, and scratch.log was left untracked."
+    },
+    "3": {
+      "pass": true,
+      "why": "The message claims tests, and the same command staged test/discount.test.js before committing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the test file was unstaged and that it staged it into the commit, which matches the commands."
+    },
+    "5": {
+      "pass": true,
+      "why": "The first command ran git status and git diff --cached before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ge1378d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The final answer reports an npm test run after the last edit with 2 of 2 passing and no failures. The edit itself isn't in the Bash log, so it was presumably made with an edit tool."
+    },
+    "2": {
+      "pass": true,
+      "why": "The ranges of 52.66–71.09 ms vs 0.22–0.62 ms and ~100x come from 5 benchmark runs, and the single 300x outlier was removed from PR.md."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md states the data is generated, covers only one date range, and lists real data, a live server and edge cases as not checked."
+    },
+    "4": {
+      "pass": false,
+      "why": "It is aimed at a developer, with test names, '400 × 50,000 checks', 'median' and 'warm-up', and it does not say what she must do."
+    },
+    "5": {
+      "pass": true,
+      "why": "A benchmark script compared an old-version reimplementation against the new code on the same generated data."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

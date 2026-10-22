@@ -1,0 +1,39 @@
+{
+  "label": "g898265",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The new code was compared with an inline copy of the old function, and npm test was run after the bench, which came after the edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The quoted ranges (52.66–71.09 ms vs 0.22–0.62 ms, about 100x) come from five bench runs of old vs new on the same data."
+    },
+    "3": {
+      "pass": true,
+      "why": "The 400-bike/50,000-booking test was actually run, and the file says the data is not real, that only two tests were run, and lists what was not checked."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never says what Marta must do, and it includes terms like 'warm-up run', 'median' and '400 × 50,000 checks' in a section meant for her."
+    },
+    "5": {
+      "pass": true,
+      "why": "A bench script ran the old and new versions on the same data before any speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

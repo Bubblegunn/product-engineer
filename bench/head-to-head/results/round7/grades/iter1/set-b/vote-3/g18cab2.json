@@ -1,0 +1,39 @@
+{
+  "label": "g18cab2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps to the last day of the month, and the 31 Jan 2026 to 28 Feb test passes after the fix."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three new tests were run against the checked-out old src and failed, then passed with the fix restored."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer reports 6 passed, 0 failed, 1 skipped and names the skipped 'Sunday closures' TODO as untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The claimed test runs appear in the log, including a final npm test after restoring the fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "The answer lists unchecked items (real data, live sender, already-scheduled reminders, the clinic's month-end rule) in plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

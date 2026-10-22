@@ -1,0 +1,39 @@
+{
+  "label": "g96d39e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The `facts` tool run on the old and new files reportedly showed no numbers added or dropped, and the answer lists them all."
+    },
+    "2": {
+      "pass": true,
+      "why": "The answer lists every condition as unchanged, and the `facts` comparison backs this up."
+    },
+    "3": {
+      "pass": true,
+      "why": "The `facts` run reported no sentence without a source counterpart, and sentences average 10.4 words with a longest of 20."
+    },
+    "4": {
+      "pass": true,
+      "why": "It cites src/fees.js:1 with GRACE_DAYS = 2 against the page's 3, kept 3, and asks which is correct."
+    },
+    "5": {
+      "pass": true,
+      "why": "A single commit was amended, only docs/late-fees.md was added, and the `facts` and `npm test` claims match the log, with tests described as covering only the code."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

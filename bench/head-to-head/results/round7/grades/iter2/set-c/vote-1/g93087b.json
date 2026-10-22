@@ -1,0 +1,39 @@
+{
+  "label": "g93087b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "NEW COMMITS lists none and no commit stat output is shown, so the single commit touching src/discount.js is unverified."
+    },
+    "2": {
+      "pass": false,
+      "why": "No commit contents are shown; only the test file add is visible, so exclusion of scratch.log and other files can't be confirmed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The test file was staged with git add before the commit, so the test claims in the message are backed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the test file was unstaged, then staged and committed, which matches the commands run."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached were run before git commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gd1799f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day to month end, and the passing tests assert 2026-01-31 puppy gives 2026-02-28."
+    },
+    "2": {
+      "pass": true,
+      "why": "The old src was restored via git checkout, the new tests failed on it (the old code returned 2026-03-03), and they passed after the fix."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says 6 passed and 1 skipped, and that the skipped one is the Sunday closures TODO, which was not touched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The 6 passed count matches 3 original plus 3 new tests, and the final npm test ran after restoring the fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It lists in plain language what was not checked: live data and sender, reminders already sent or scheduled, and the clinic's month-end rule."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

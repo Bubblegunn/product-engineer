@@ -1,0 +1,39 @@
+{
+  "label": "gd2f280",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The facts command compared the original with the rewrite and all 10 numbers matched."
+    },
+    "2": {
+      "pass": true,
+      "why": "The sentence-by-sentence mapping and the facts check support that every condition was kept."
+    },
+    "3": {
+      "pass": false,
+      "why": "It says it kept 'patron', 'grace period' and 'hold' from the source, so these terms were left unexplained."
+    },
+    "4": {
+      "pass": true,
+      "why": "It flags GRACE_DAYS = 2 against 3 days on the page, says the page was left at 3, and asks someone to decide which is right."
+    },
+    "5": {
+      "pass": true,
+      "why": "One commit staged only docs/late-fees.md, and the test and facts claims match the logged commands, including the post-commit re-run and the note that tests don't cover the doc."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

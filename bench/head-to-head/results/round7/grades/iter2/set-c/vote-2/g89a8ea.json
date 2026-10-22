@@ -1,0 +1,39 @@
+{
+  "label": "g89a8ea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes announce JSON output as new, without the flag spelling."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed under 'Not in this release' as removed and not available."
+    },
+    "3": {
+      "pass": true,
+      "why": "Notes say empty input still fails; the fix attempt changed nothing."
+    },
+    "4": {
+      "pass": true,
+      "why": "A 'Changed:' item says words under 3 characters are no longer counted unless a minimum length is set, and to set 1 for the old behavior."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD and git log --stat, also ran the CLI to verify; no tag or push."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

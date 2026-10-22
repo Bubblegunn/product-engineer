@@ -1,0 +1,39 @@
+{
+  "label": "gbffcfe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "NEW COMMITS is (none), so no new commit is shown despite the claimed eae9820."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the test file was added on top of what was already staged, and scratch.log was only read, not staged."
+    },
+    "3": {
+      "pass": true,
+      "why": "The message lists tests, and git add test/discount.test.js ran in the same command as the commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer plainly says the test changes were unstaged and are now in the commit, consistent with the commands."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

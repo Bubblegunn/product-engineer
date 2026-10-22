@@ -1,0 +1,39 @@
+{
+  "label": "gcb5bcb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The behaviour rules are preserved and npm test passed after the final edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The ~85x, 55 ms and 0.6 ms figures trace to three earlier bench runs, although the latest run (61 ms vs 0.26 ms) was not folded in."
+    },
+    "3": {
+      "pass": false,
+      "why": "PR.md says 'your current size' and that the shop 'can handle many more searches at the same time', which was not verified, and it omits the unexplained 254-vs-55 anomaly."
+    },
+    "4": {
+      "pass": false,
+      "why": "It is long, includes '20 million checks' detail and an odd 'Automation effect' line, and never says plainly that Marta has nothing to do."
+    },
+    "5": {
+      "pass": true,
+      "why": "It benchmarked a saved copy of the old file against the new code on the same seeded data."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

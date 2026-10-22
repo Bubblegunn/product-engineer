@@ -1,0 +1,39 @@
+{
+  "label": "g93087b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "NEW COMMITS is (none), so no new commit is shown despite the claimed a3e2c42."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the test file was added, and scratch.log stayed untracked."
+    },
+    "3": {
+      "pass": true,
+      "why": "The message mentions tests, and the test file was staged in the same command as the commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the test file was modified but unstaged, and that it was staged and included."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
