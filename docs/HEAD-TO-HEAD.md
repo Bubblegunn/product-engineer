@@ -1208,3 +1208,30 @@ The hook change of `5d0cb0c` worked as designed (7 of 15 `ours` sessions were bl
 the removal condition of `3314d7d` did not occur). What it did not do is give an outcome advantage on this set. What the owner can decide
 next: a harder held-out set written for tasks where the bare model fails (the saturation seen here and in X1 of the deep round says the
 "commit/PR/notes" family is mostly solved by plain Claude on Sonnet 5.5), or a different claim than "first".
+
+## Round 7 design (frozen 2026-10-23, before any round 7 code change)
+
+Evidence: `docs/BEST-RIVAL-r7.md` (committed in `554a60e`, before this section). Criteria, checks, tasks and the win rule do not change.
+Round 7 adds Rule B′ (EVIDENCE-SPEC, "Win rule") next to Rule A and Rule B in the round's protocol.
+
+General loss classes taken from the analysis (class numbers from section 6 of that document), and the rule written for each:
+
+1. **Class 1, a checker reports an item the reader needs.** `product-engineer notes` reports every backticked token as "code a reader
+   cannot follow". Rule: a command-line option (`--json`, `-v`, with or without backticks) and a command name the reader types is an
+   interface the reader uses, not code to hide; `notes` does not report it. Every other identifier and file name stays an error.
+   Skill text: release notes name the option or command a user types to get the new behaviour; when a checker flags something the
+   reader needs, keep it and say in the answer that the checker flagged it. Source of the idea: `iso-24495` exempts commands and
+   code the reader types from its limits (MIT, idea only, no code taken). Test first: a failing test for an option name in notes.
+2. **Class 3, the answer is in another language than the request.** Rule: the whole final answer, including the rewritten answer
+   after a hook message, uses the language of the request. One sentence added to skill rule 3; no code.
+3. **Classes 2, 5, 6, 7, 8** are already covered by skill rules 3 and 6 and by `facts`, `scope`, `claim-gate`; no new rule. They are
+   not changed in round 7. Class 4 was fixed in `5d0cb0c`. Class 9 is recorded and not acted on (one cell, no check can decide it).
+
+Rejected: any rule that names a fixture, a task or a flag by its value (overfitting); removing the Stop hook (7 of 7 blocked round 6
+answers kept the deliverable and scored 4 of 4).
+
+Not shipped in round 7: a deterministic check for class 9; changes to the hook.
+
+Budget stated before the run (owner: total at most 30 USD, controller 7 USD): the public 13-task set with all arms times 3 is
+about 43 USD at 0.1 USD per session, which is above the cap, so it cannot be run in round 7. The gate therefore cannot pass in this
+round; F9 and F6 follow a passed gate and are not run. Round 7 measures the development gate and the new held-out set d only.
