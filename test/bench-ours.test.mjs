@@ -45,7 +45,7 @@ function checkScript(version, marker) {
   return [
     `// ${marker}`,
     `if (process.argv.includes("--version")) console.log(${JSON.stringify(version)});`,
-    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>");',
+    'else console.log("usage: product-engineer check [--kind commit|pr]\\n       product-engineer facts <source> <rewrite>\\n       product-engineer stubs [--staged]\\n       product-engineer notes <file>\\n       product-engineer scope [range]");',
     "",
   ].join("\n");
 }
@@ -250,5 +250,6 @@ test("arms.json gives ours the feature probes of rounds 2 and 3, as the copy is 
     ["--help", "--kind"],
     ["--help", "facts"],
     ["--help", "notes"],
+  ["--help", "scope"],
   ]);
 });

@@ -742,7 +742,8 @@ const CHECKS = {
 // Returns {1: true|false|null, ..., 5: true|false|null}. null means the criterion is not objective.
 export function objective(task, runDir) {
   const ctx = loadRunContext(runDir);
-  const checks = CHECKS[task] || HOME_CHECKS[task];
+  // External held-out tasks have no scripted criteria: every criterion is graded by the grader.
+  const checks = CHECKS[task] || HOME_CHECKS[task] || (/^X\d/.test(task) ? {} : undefined);
   if (!checks) throw new Error(`objective: unknown task ${task}`);
   const result = {};
   for (let id = 1; id <= CRITERIA_COUNT; id += 1) {

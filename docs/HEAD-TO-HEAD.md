@@ -995,3 +995,40 @@ Found by the Sonnet review of the code (`/tmp` review file, 10 findings, 9 appli
   deviation.
 - Not applied: finding 10's suggestion to compare with the best single earlier sentence.
 No task, prompt, criterion, label or rival arm changed.
+
+## Deep-round measurement protocol (frozen 2026-10-22, owner decision, before any run of this round)
+
+Written and committed before any session of this round; not changed after a result is seen.
+
+**Budget forced a smaller measurement than the owner's request.** The owner capped this round at 8 USD in total, of which 3 for
+research and implementation. Research, implementation and held-out authoring used 2.66 USD (cost file kept outside the
+repository). A full matrix (public set: ours x 13 tasks x 3, the new arms x 13 x 3; held-out: all 12 arms x 4 tasks x 3) costs
+several times what is left (about 0.1 USD per session). Therefore, decided here before any run, in this priority:
+
+1. **Held-out set first.** Four new tasks, X1 to X4, written by a fresh Sonnet session that was given only the user problem
+   sentence from the README and the task format, and no code, no `HEAD-TO-HEAD.md` and no public task (its prompt is the author
+   brief; the session ran in an empty directory). They sit on the local branch `heldout-2026-10-b` (commit `e87eb6f`, not pushed).
+   The controller of this round did not read them: `heldout-prep.mjs` prints counts only. Each has a fixture script, five
+   criteria and an outcome or process label from the author; every criterion is graded by the grader (no scripted criteria).
+   Fixtures were checked only for `git log`, `git status` and `npm test` exit codes.
+2. **Arms on the held-out set:** `ours` (immutable `git archive` copy of the commit that carries this protocol), `base` (empty
+   plugin), `ce` (compound-engineering `738067a`, whole plugin, natural prompt), `sp-invoked` (superpowers `2ce8aa1`, whole
+   package, prompt names verification-before-completion). 3 runs each, model `claude-sonnet-5-5`, Claude Code 2.1.308, macOS,
+   parallelism 2. **Not run, for budget:** the existing rivals `gwc`, `gwc-invoked`, `dod`, `dod-invoked`, `iso`, `iso-invoked`,
+   and `ce-invoked`, `sp` on the held-out set; and the whole public set (ours and the new arms). Consequence: the final gate
+   cannot pass in this round, whatever the numbers are, because rule B needs every arm. Any statement from this round is scoped to
+   these four tasks and these four arms.
+3. **Order and stop rule.** Task by task X1 to X4; within a task ours, base, ce, sp-invoked. No new session starts once the
+   sessions' cost reaches 4.2 USD, nor when `spend.sh` prints a first number above 160. A cell not run is reported as not run.
+   Driver: `bench/head-to-head/heldout-drive.sh`.
+4. **Grading.** `grade.mjs --joint` per task (all sessions of a task in one anonymised, shuffled call, Sonnet, no plugins), cost
+   appended to the cost file through `PE_BENCH_COST_FILE`. Outcome-only mean out of the outcome criteria of each task per arm
+   (`heldout-summary.mjs`). Rule B on these tasks: ours strictly above every other run arm on every task. No rule A, no ceiling
+   rule (no full rival set).
+5. **Product under test.** Commit `ce5c5f6` plus the harness changes of this protocol commit (external fixture support in
+   `run.sh`, `runall.sh`, `objective.mjs`, the `scope` probe in `arms.json`, the two summary scripts). The product does not change
+   after the held-out tasks are first run. Home-ground caveat: the hook and `scope` were shaped by the public tasks' failures;
+   the held-out set was written without seeing them.
+6. **Not done in this round:** F9 (Haiku, Opus), F6 (10 percent re-grading by an agent that has not seen the code), the public
+   re-measurement. A round 5 attempt earlier the same day (ours x 13 tasks x 3 on `6a2a319`, plus 5 ce sessions) was stopped by the
+   owner before grading; those sessions are ungraded and are not used.

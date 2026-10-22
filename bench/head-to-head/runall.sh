@@ -81,7 +81,7 @@ done
 
 for t in "${TASK_LIST[@]}"; do
   case "$t" in
-    T1|T2|T3|T4|T5|T6|H1|H2|H3|H4|H5|H6|H7) ;;
+    T1|T2|T3|T4|T5|T6|H1|H2|H3|H4|H5|H6|H7|X[0-9]*) ;;
     *) echo "runall.sh: unknown task: $t" >&2; exit 2 ;;
   esac
 done
@@ -97,7 +97,7 @@ if [ -n "${PE_BENCH_ONLY_TASKS:-}" ]; then
   IFS=, read -r -a ONLY_T <<< "$PE_BENCH_ONLY_TASKS"
   for t in "${ONLY_T[@]}"; do
     case "$t" in
-      T1|T2|T3|T4|T5|T6|H1|H2|H3|H4|H5|H6|H7) ;;
+      T1|T2|T3|T4|T5|T6|H1|H2|H3|H4|H5|H6|H7|X[0-9]*) ;;
       *) echo "runall.sh: unknown task in PE_BENCH_ONLY_TASKS: $t" >&2; exit 2 ;;
     esac
   done
