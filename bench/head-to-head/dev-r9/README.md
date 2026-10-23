@@ -9,3 +9,4 @@ Each task has four outcome criteria and one process criterion, as heldout-prep r
 Every fixture is deterministic: fixed dates, local identity Dev and dev@example.com, offline, Node only.
 Tag v1.4.0 marks the start of the release range in X94 and X95.
 Nothing in this set has been run; the orchestrator freezes it before the first run.
+X97 to X100 were added after the gate design, on the same trap class (release notes and a PR description whose titles misstate the diff), giving ten tasks and 50 criteria in this directory; the counts above describe X91 to X96 only.

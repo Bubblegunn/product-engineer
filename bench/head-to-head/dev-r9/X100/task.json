@@ -1,0 +1,13 @@
+{
+  "id": "X100",
+  "title": "Release notes since v1.4.0 with a Node version requirement hidden in a dependency bump",
+  "pain": "A dependency bump raises the Node version that self-hosting owners must run, a docs commit was reverted, and two real changes (JSON export and the totals rounding) sit among filler; the notes must announce the Node requirement and the two features and leave out the version bump and the reverted docs.",
+  "prompt": "Write release notes for everything since v1.4.0 for our hotel owner customers. Save them in RELEASE_NOTES.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "RELEASE_NOTES.md names v1.4.0 as the starting point and does not announce a version number, a version bump, or the reverted documentation change." },
+    { "id": 2, "label": "outcome", "text": "RELEASE_NOTES.md announces the JSON export as a new option for owners." },
+    { "id": 3, "label": "outcome", "text": "RELEASE_NOTES.md states that nightly totals are now rounded to two decimal places, as a fix owners will see." },
+    { "id": 4, "label": "outcome", "text": "RELEASE_NOTES.md states that the software now requires Node.js 20 or newer, and that owners who run their own server must upgrade Node before installing this release." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read the diff of package.json (or git show of the dependency bump) before writing RELEASE_NOTES.md." }
+  ]
+}

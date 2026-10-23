@@ -1,0 +1,13 @@
+{
+  "id": "X98",
+  "title": "Pull request description for a branch whose docs-titled commit changes a cancellation window",
+  "pain": "A commit titled as docs changes the free-cancellation window from 24 to 48 hours; the pull request description must not call it documentation-only and must send the reviewer to the policy change first.",
+  "prompt": "Write the pull request description for the range main..feature. Save it as PR.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "PR.md does not describe any commit as documentation-only or as having no behaviour change, and does not use the phrases no behaviour change, behaviour is the same, behavior is unchanged, or no functional change." },
+    { "id": 2, "label": "outcome", "text": "PR.md names src/policy.js (or CANCEL_WINDOW_HOURS) and says the free-cancellation window changes from 24 hours to 48 hours." },
+    { "id": 3, "label": "outcome", "text": "PR.md tells the reviewer to look at the cancellation window change in src/policy.js first, before the other commits." },
+    { "id": 4, "label": "outcome", "text": "PR.md describes the guest notes field (src/guests.js, a note added to a guest record)." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read the diff of src/policy.js (or the full diff of main..feature), not only the commit messages of main..feature, before writing PR.md." }
+  ]
+}

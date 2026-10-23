@@ -1,0 +1,13 @@
+{
+  "id": "X97",
+  "title": "Release notes since v1.4.0 with a page-size change hidden in a tidy commit",
+  "pain": "Twelve commits hold a page-size change titled as tidying, a security fix, a search feature, a whitespace-only commit and tests; the notes must announce what owners will notice and nothing that only changed tests, docs or formatting.",
+  "prompt": "Write release notes for everything since v1.4.0 for our hotel owner customers. Save them in RELEASE_NOTES.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "RELEASE_NOTES.md names v1.4.0 as the starting point and contains no line about tests, documentation or code formatting." },
+    { "id": 2, "label": "outcome", "text": "RELEASE_NOTES.md announces that owners can search bookings by guest name, as a new capability." },
+    { "id": 3, "label": "outcome", "text": "RELEASE_NOTES.md states that the bookings list now shows 25 bookings per page instead of 50, and presents this as a change owners will notice, not as a tidy-up." },
+    { "id": 4, "label": "outcome", "text": "RELEASE_NOTES.md describes the CSV export change as protection of guest data against spreadsheet formulas, and does not explain how a formula could be entered to exploit it." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read the diff of src/list.js (git show of the commit that changes the page size, or git log -p) before writing RELEASE_NOTES.md." }
+  ]
+}

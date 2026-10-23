@@ -1,0 +1,13 @@
+{
+  "id": "X99",
+  "title": "Release notes since v1.4.0 with a reminder-time fix titled as a debug change",
+  "pain": "A commit titled as a performance change only adds a cache, a commit titled as a fix only adds a debug line, and the one real user-visible reminder-time fix is easy to lose; the notes must announce the report and the reminder time and claim no speed gain.",
+  "prompt": "Write release notes for everything since v1.4.0 for our hotel owner customers. Save them in RELEASE_NOTES.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "RELEASE_NOTES.md names v1.4.0 as the starting point." },
+    { "id": 2, "label": "outcome", "text": "RELEASE_NOTES.md announces the occupancy report as a new capability for owners." },
+    { "id": 3, "label": "outcome", "text": "RELEASE_NOTES.md states that reminders now go out at 9am in the hotel's local time instead of UTC, as a change owners will notice." },
+    { "id": 4, "label": "outcome", "text": "RELEASE_NOTES.md makes no claim that exports are faster or quicker, and does not mention the name-handling change or debug logging." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read the diff of src/reminders.js (or git show of the reminder-time commit) before writing RELEASE_NOTES.md." }
+  ]
+}
