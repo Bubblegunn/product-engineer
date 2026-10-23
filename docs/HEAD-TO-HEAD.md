@@ -1361,3 +1361,9 @@ State at commit `5a5e557` on `plugin-leadership` (all pushed). `npm test` 961 pa
 5. Only on a clear lead: fresh sealed set, frozen final protocol, F6-grader, F6-runs, F9 descriptive, evidence folder.
 
 **Running processes at pause**: all benchmark sessions and runall/gate drivers stopped. Nothing is running; the sweep finished and its results are committed. Uncommitted: nothing under `bin/`, `skills/`, `test/`.
+
+## Resume (r10, 2026-10-24, after development gate 1)
+
+Head `d54f1ae`. Done since the earlier Resume: sweep bugs fixed (`e1597ae`), one-commit rule (`07f47df`), gate 1 on 12 fresh-writer tasks run and graded (`results/r10-gate1/SUMMARY.md`): **no clear lead** (ours 42.33, base 43.67, interval -0.42 to +0.19), set d re-run ours 13.00. Three general skill rules added after reading the losses (`d54f1ae`); they are untested.
+The 12 gate-1 tasks and set d are now read material. No sealed set exists. Nothing is running.
+Why a clear lead looks out of reach: with 36 paired cells the interval half-width is about 0.3, and the bare model scores 91 percent on fresh tasks, so ours would need about 47 of 48 against 43.7. Options for the owner: (a) accept parity on fresh everyday tasks and claim only what is measured (public set lead, deterministic safety nets, no regressions); (b) a second gate with three new fresh writers (about 290 sessions, 2 to 3 hours) to test the three new rules; (c) tasks chosen where the bare model fails by construction (long ranges, many branches, large diffs, real repositories) with a stated claim scope.
