@@ -18,7 +18,7 @@ it: release notes, changelog entries, status updates to a founder or a client, a
 
 ## Check before you save
 
-Notes never contain code identifiers or file names: no function, variable or module
+Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled; then check the saved file with `product-engineer notes <file> --range <tag>`. Notes never contain code identifiers or file names: no function, variable or module
 names, no paths, no backticks, no commit prefixes, no file with an extension. Write the
 notes to their file, then run `product-engineer notes <file>` (`npx product-engineer notes
 <file>` where it is not installed; from version 0.8.0). Fix every error it reports and run

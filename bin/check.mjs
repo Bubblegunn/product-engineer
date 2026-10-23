@@ -18,7 +18,9 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]
        product-engineer stubs [--staged | --range <a..b>] [--json] [--warn] [-q]
        product-engineer notes <file> [--json]
+       product-engineer notes <file> --range <from>..<to>|<tag> [--json]
        product-engineer scope [range] [--json]
+       product-engineer range <from>..<to> [--json]
        product-engineer claims <file|-> [--repo DIR] [--json]
 
 Reads a commit message or pull request description and reports whether it
@@ -71,12 +73,17 @@ backticked word, camelCase or snake_case, a call such as name(), a path, a file 
 extension), a line about docs, a README, a changelog or a version bump, an effect word
 (faster, instant) or a percentage on a line that does not say it was measured, and a version
 number after the first line. Warning: the first line names no range (a tag, a commit hash,
-"since", "the last N commits").
+"since", "the last N commits"). With --range, a line outside "Not in this release" that names the words of a commit the range cancelled is an error.
 --json prints { ok, errors, warnings, findings: [{ level, code, line, text, message }] }.
 
 scope lists each changed file of a range (or the staged change, or the working tree) with lines
 added and removed, its class, and whether git sees the change as whitespace-only; small changes
 are shown line by line. Use it before calling a file formatting-only.
+
+range lists each commit of a range, oldest first, with its class and candidate flags: a change a
+later commit reverts (net: cancelled), a revert of a revert (net: present), a cherry-picked
+duplicate, security or performance wording, a breaking marker, a type the files contradict. Every
+line is a candidate to check against the diff. It reads git only.
 
 claims reads a text (your final answer, a pull request description) and lists each number with a
 unit, version-like token and backticked name in it. For each it says "found <file>" when a tracked
@@ -422,6 +429,10 @@ async function main(argv) {
   if (command === "scope") {
     const { runScope } = await import("./scope.mjs");
     return runScope(argv.slice(1));
+  }
+  if (command === "range") {
+    const { runRange } = await import("./range.mjs");
+    return runRange(argv.slice(1));
   }
   if (command === "claims") {
     const { runClaims } = await import("./claims.mjs");

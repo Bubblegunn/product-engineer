@@ -7,8 +7,54 @@
 // looks like code (a brand with an inner capital that is not on the list) and can miss code it does not
 // recognise; the exit code is for a person to read, not a verdict.
 import { readFileSync } from "node:fs";
+import { parseRange, range as ledgerRange } from "./range.mjs";
 
-const USAGE = "usage: product-engineer notes <file> [--json]";
+const USAGE = "usage: product-engineer notes <file> [--json]\n       product-engineer notes <file> --range <from>..<to>|<tag> [--json]";
+
+// Words of a commit subject that can name what a note announces. Short words and the stoplist are not
+// evidence that a line is about the commit.
+const STOPWORDS = new Set(["should", "which", "their", "there", "about", "would", "these", "those", "being", "other"]);
+const LIST_ITEM = /^\s*(?:[-*+]|\d+[.)])\s/;
+
+/** The content words of a commit subject: the conventional prefix and a Revert wrapper removed, letters in any script, five or more. */
+export function contentWords(subject) {
+  let s = String(subject).trim();
+  const inner = /^Revert "(.*)"$/.exec(s);
+  if (inner) s = inner[1];
+  s = s.replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, "");
+  return [...new Set(s.toLowerCase().match(/\p{L}{5,}/gu) ?? [])].filter((w) => !STOPWORDS.has(w));
+}
+
+// Section markers. "Not in this release" opens a section when it is a heading (ATX, bold, plain or setext),
+// or the label of a one-line section ("Not in this release: text"); the text after the colon is inside.
+const START = /^\s*(?:#{1,6}\s+)?(?:\*\*|__)?\s*not in this release\s*(?:\*\*|__)?\s*(?::|$)/i;
+const ATX = /^\s*#{1,6}\s+\S/;
+const BOLD_ONLY = /^\s*(?:\*\*|__)\s*[^*_\s][^*_]*?\s*(?:\*\*|__)\s*:?\s*$/;
+const UNDERLINE = /^\s*(?:=+|-+)\s*$/;
+const LABEL = /:\s*$/;
+
+/** A setext heading: a text line (not a list item) over a line of = or - marks. */
+const isSetextTitle = (lines, i) =>
+  lines[i].trim() !== "" && !LIST_ITEM.test(lines[i]) && !UNDERLINE.test(lines[i]) && i + 1 < lines.length && UNDERLINE.test(lines[i + 1]);
+
+/** A line that closes a Not in this release section: any heading style, or a label line after a blank line. */
+const closesSection = (lines, i) =>
+  ATX.test(lines[i]) ||
+  BOLD_ONLY.test(lines[i]) ||
+  (lines[i].trim() !== "" && !LIST_ITEM.test(lines[i]) && LABEL.test(lines[i]) && (i === 0 || lines[i - 1].trim() === "")) ||
+  isSetextTitle(lines, i);
+
+/** Line indexes (0-based) under a "Not in this release" section. The section ends at the next heading of any style. */
+function notInReleaseLines(lines) {
+  const inside = new Set();
+  let on = false;
+  lines.forEach((l, i) => {
+    if (START.test(l)) on = true;
+    else if (on && closesSection(lines, i)) on = false;
+    if (on) inside.add(i);
+  });
+  return inside;
+}
 
 const COMMIT_PREFIX = /^(?:feat|fix|chore|docs|refactor|perf|test|style|build|ci|revert)(?:\([^)]*\))?!?:/i;
 const EXTENSIONS =
@@ -93,11 +139,30 @@ const bare = (line) =>
     .replace(/^(?:[-*+]|\d+[.)])\s+/, "")
     .replace(/^[*_]{1,2}(?=\S)/, "");
 
+// Two matched subject words in one sentence are not enough. "Printing a week of calendars is possible; the
+// view is shared by link" holds "calendars" and "shared" (the two content words of "feat: shared calendars
+// view") but the words are eight tokens apart. An announcement keeps its words together, so the matched words
+// must fall within a window of four tokens. Two count-based rules were considered and rejected: "two matched
+// words among the first four content words" and "60% of the content words matched". Both still flag this
+// sentence, because the subject has only two content words and both are among its first four.
+const WINDOW = 4;
+/** Whether a line holds `need` distinct subject words, each at the start of a word, within WINDOW words of each other. */
+function announces(line, words, need) {
+  const tokens = line.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+  for (let k = 0; k < tokens.length; k++) {
+    const seen = new Set();
+    for (const t of tokens.slice(k, k + WINDOW)) for (const w of words) if (t.startsWith(w)) seen.add(w);
+    if (seen.size >= need) return true;
+  }
+  return false;
+}
+
 /**
  * Checks release notes. Returns { ok, errors, warnings, findings: [{ level, code, line, text, message }] },
- * where line is 1-based and ok means no error.
+ * where line is 1-based and ok means no error. options.cancelled is a list of { subject, by } for commits
+ * the range cancelled; a line outside "Not in this release" that names their content words is an error.
  */
-export function notes(text) {
+export function notes(text, { cancelled = [] } = {}) {
   const findings = [];
   const lines = text.split(/\r?\n/);
   const first = lines.findIndex((l) => l.trim() !== "");
@@ -120,13 +185,39 @@ export function notes(text) {
     if (!measured && PERCENT.test(line) && !PRICE_TERM.test(line)) report("error", "unmeasured-percent", i, "a percentage with no measurement: give how it was measured or leave it out");
     if (i !== first && VERSION.test(line)) report("error", "version-number", i, "a version number after the first line: the version is not a change, name it only in the range line");
   });
+  // Lines that announce a commit the range cancelled, outside "Not in this release". Two content words
+  // must appear on the line (one, when the subject has only one).
+  const inside = notInReleaseLines(lines);
+  for (const c of cancelled) {
+    const words = contentWords(c.subject);
+    if (words.length === 0) continue;
+    const need = Math.min(2, words.length);
+    lines.forEach((raw, i) => {
+      if (raw.trim() === "" || inside.has(i)) return;
+      if (!announces(raw, words, need)) return;
+      report("error", "cancelled-announced", i, `announces "${c.subject}", which this range cancelled (reverted by ${c.by}); move it under "Not in this release" or remove it`);
+    });
+  }
   const errors = findings.filter((f) => f.level === "error").length;
   return { ok: errors === 0, errors, warnings: findings.length - errors, findings };
 }
 
 export function runNotes(argv) {
-  const files = argv.filter((a) => !a.startsWith("-"));
-  const unknown = argv.filter((a) => a.startsWith("-") && a !== "--json");
+  // --range <ref> or --range=<ref>
+  const ri = argv.findIndex((a) => a === "--range" || a.startsWith("--range="));
+  let rangeArg;
+  let rest = argv;
+  if (ri !== -1) {
+    const inline = argv[ri].startsWith("--range=");
+    rangeArg = inline ? argv[ri].slice("--range=".length) : argv[ri + 1];
+    rest = argv.filter((_, i) => i !== ri && (inline || i !== ri + 1));
+    if (rangeArg === undefined || rangeArg.startsWith("-") || !parseRange(rangeArg)) {
+      console.error(USAGE);
+      return 2;
+    }
+  }
+  const files = rest.filter((a) => !a.startsWith("-"));
+  const unknown = rest.filter((a) => a.startsWith("-") && a !== "--json");
   if (files.length !== 1 || unknown.length) {
     console.error(USAGE);
     return 2;
@@ -138,7 +229,18 @@ export function runNotes(argv) {
     console.error(`notes: cannot read ${files[0]}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
     return 2;
   }
-  const r = notes(text);
+  let cancelled = [];
+  if (rangeArg !== undefined) {
+    let ledger;
+    try {
+      ledger = ledgerRange({ ...parseRange(rangeArg), cwd: process.cwd() });
+    } catch (err) {
+      console.error(`notes: cannot read the range ${rangeArg}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
+      return 2;
+    }
+    cancelled = ledger.commits.filter((c) => c.net?.state === "cancelled").map((c) => ({ subject: c.subject, by: c.net.by }));
+  }
+  const r = notes(text, { cancelled });
   if (argv.includes("--json")) {
     console.log(JSON.stringify(r, null, 2));
     return r.ok ? 0 : 1;

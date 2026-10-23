@@ -1,11 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { identifiersIn, notes } from "../bin/notes.mjs";
+import { contentWords, identifiersIn, notes } from "../bin/notes.mjs";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
 
@@ -175,4 +175,176 @@ test("an option exemption does not hide a file name, an identifier or plain word
   assert.ok(identifiersIn("the -x/foo.js file").some((id) => id.includes("foo.js")));
   assert.ok(identifiersIn("run `some words here`").includes("`some words here`"));
   assert.ok(identifiersIn("run `foo-bar baz`").includes("`foo-bar baz`"));
+});
+
+// --range: a line that announces a commit the range cancelled is an error.
+const HEAD_LINE = "Changes since v2.3.0 (commit 3a9f2c1 to 8d0b7e4)\n\n";
+const SUBJECT = "feat(bulk cancel button): cancel many bookings at once";
+const ANNOUNCE = "You can now cancel many bookings at once with the bulk cancel button.";
+
+function gitRepo() {
+  const dir = mkdtempSync(join(tmpdir(), "pe-notes-range-"));
+  const git = (...args) => execFileSync("git", ["-c", "user.name=Dev", "-c", "user.email=dev@example.com", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null", ...args], { cwd: dir, encoding: "utf8" });
+  const commit = (file, subject) => {
+    writeFileSync(join(dir, file), `${subject}\n`);
+    git("add", "-A");
+    git("commit", "-q", "-m", subject);
+    return git("rev-parse", "HEAD").trim();
+  };
+  git("init", "-q", "-b", "master");
+  return { dir, git, commit };
+}
+
+/** A base, the feature, its revert; with `restored`, a revert of that revert (the feature is back). */
+function withRange({ restored = false } = {}, fn) {
+  const r = gitRepo();
+  try {
+    const base = r.commit("README.md", "start");
+    r.commit("bulk.txt", SUBJECT);
+    r.git("revert", "--no-edit", "HEAD");
+    if (restored) r.git("revert", "--no-edit", "HEAD");
+    return fn({ dir: r.dir, base });
+  } finally {
+    rmSync(r.dir, { recursive: true, force: true });
+  }
+}
+
+function notesRun(fx, text, args) {
+  const dir = mkdtempSync(join(tmpdir(), "pe-notes-file-"));
+  const file = join(dir, "NOTES.md");
+  writeFileSync(file, text);
+  const r = spawnSync("node", [cli, "notes", file, ...args], { cwd: fx.dir, encoding: "utf8", env: { ...process.env, PRODUCT_ENGINEER_NO_STAR_HINT: "1" } });
+  rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+
+test("a line announcing a cancelled commit is an error, and the CLI names it and the reverting commit", () => {
+  withRange({}, (fx) => {
+    const r = notesRun(fx, `${HEAD_LINE}${ANNOUNCE}\n`, ["--range", fx.base]);
+    assert.equal(r.status, 1, r.stdout + r.stderr);
+    assert.match(r.stdout, /error line 3: announces "feat\(bulk cancel button\): cancel many bookings at once", which this range cancelled \(reverted by [0-9a-f]{7}\); move it under "Not in this release" or remove it/);
+  });
+});
+
+test("the same line under a Not in this release heading passes", () => {
+  withRange({}, (fx) => {
+    const text = `${HEAD_LINE}You can now export a month as a file.\n\nNot in this release:\n- ${ANNOUNCE}\n`;
+    const r = notesRun(fx, text, ["--range", fx.base]);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+});
+
+test("the section ends at the next heading after a blank line, so a line below it is checked again", () => {
+  withRange({}, (fx) => {
+    const text = `${HEAD_LINE}Not in this release:\n- Shared calendars.\n\nWhat changed:\n${ANNOUNCE}\n`;
+    const r = notesRun(fx, text, ["--range", fx.base]);
+    assert.equal(r.status, 1, r.stdout + r.stderr);
+    assert.match(r.stdout, /error line 7: announces/);
+  });
+});
+
+test("a commit that a revert of a revert put back is not cancelled, so the line passes", () => {
+  withRange({ restored: true }, (fx) => {
+    const r = notesRun(fx, `${HEAD_LINE}${ANNOUNCE}\n`, ["--range", fx.base]);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+});
+
+test("unrelated notes pass against a range that cancels a commit", () => {
+  withRange({}, (fx) => {
+    const r = notesRun(fx, `${HEAD_LINE}The month view shows 20 events at a time.\n`, ["--range", fx.base]);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+});
+
+test("a line needs two content words of the subject, and a one-word subject needs only that word", () => {
+  const subject = "feat(bulk cancel button): cancel many bookings at once";
+  const one = (line, s = subject) => notes(`${HEAD_LINE}${line}\n`, { cancelled: [{ subject: s, by: "abc1234" }] }).findings.map((f) => f.code);
+  assert.deepEqual(one("You can now cancel events."), [], "one of two words is not enough");
+  assert.ok(one(ANNOUNCE).includes("cancelled-announced"));
+  const single = "feat(ui): rebranding";
+  assert.ok(one("The rebranding is coming.", single).includes("cancelled-announced"));
+  assert.deepEqual(one("Nothing about the new look.", single), []);
+  assert.deepEqual(one(ANNOUNCE, "feat: should which would"), [], "a subject with no content word is not checked");
+});
+
+test("contentWords drops the prefix, the Revert wrapper, short words and the stoplist", () => {
+  assert.deepEqual(contentWords(SUBJECT), ["cancel", "bookings"]);
+  assert.deepEqual(contentWords('Revert "feat(bulk): cancel many bookings"'), ["cancel", "bookings"]);
+  assert.deepEqual(contentWords("fix: their about these"), []);
+});
+
+test("--range with a bad range is a usage error (exit 2)", () => {
+  withRange({}, (fx) => {
+    for (const args of [["--range"], ["--range", "--json"], ["--range", "a...b"], ["--range", ".."], ["--range", "no-such-tag"]]) {
+      const r = notesRun(fx, `${HEAD_LINE}The month view is calm.\n`, args);
+      assert.equal(r.status, 2, `${args.join(" ")}: ${r.stdout}${r.stderr}`);
+    }
+  });
+});
+
+// Heading styles that open and close a "Not in this release" section. A line inside the section may name
+// a cancelled commit; the same line after the section closes must be flagged.
+const cancelledLines = (text) =>
+  notes(`${HEAD_LINE}${text}`, { cancelled: [{ subject: SUBJECT, by: "abc1234" }] }).findings.filter((f) => f.code === "cancelled-announced").map((f) => f.text);
+
+test("every heading style opens a Not in this release section", () => {
+  for (const start of ["# Not in this release", "**Not in this release**", "**Not in this release:**", "Not in this release", "Not in this release:", "Not in this release\n-----", "Not in this release\n====="]) {
+    assert.deepEqual(cancelledLines(`${start}\n- ${ANNOUNCE}\n`), [], JSON.stringify(start));
+  }
+});
+
+test("a one-line Not in this release section covers the whole line after the colon", () => {
+  assert.deepEqual(cancelledLines(`Not in this release: ${ANNOUNCE}\n`), []);
+  assert.deepEqual(cancelledLines(`Not in this release: the month view.\n${ANNOUNCE}\n`), [], "the one-line section runs on until a heading");
+  assert.deepEqual(cancelledLines(`Not in this release: the month view.\n\n# What changed\n${ANNOUNCE}\n`), [ANNOUNCE], "a heading after the one-line section ends it");
+});
+
+test("a prose sentence that starts with the words but is not a heading does not open a section", () => {
+  assert.deepEqual(cancelledLines(`Not in this release yet, the view is calm.\n${ANNOUNCE}\n`), [ANNOUNCE]);
+});
+
+test("every heading style closes a Not in this release section, and the line after it is checked", () => {
+  for (const end of ["# What changed", "**Fixed**", "Fixed:", "Fixed\n-----", "Fixed\n====="]) {
+    assert.deepEqual(cancelledLines(`Not in this release:\n- Shared calendars.\n\n${end}\n${ANNOUNCE}\n`), [ANNOUNCE], JSON.stringify(end));
+  }
+});
+
+test("a bold line closes the section even directly after a list item, with no blank line", () => {
+  assert.deepEqual(cancelledLines(`Not in this release:\n- Shared calendars.\n**Fixed**\n${ANNOUNCE}\n`), [ANNOUNCE]);
+});
+
+test("a list item that ends with a colon does not close the section", () => {
+  assert.deepEqual(cancelledLines(`Not in this release:\n- Shared calendars:\n- ${ANNOUNCE}\n`), []);
+});
+
+const cancelledFor = (subject, text) =>
+  notes(`${HEAD_LINE}${text}\n`, { cancelled: [{ subject, by: "abc1234" }] }).findings.filter((f) => f.code === "cancelled-announced").map((f) => f.text);
+
+test("a subject word matches at the start of a word: cancel matches cancelled, and never the middle of another word", () => {
+  assert.deepEqual(cancelledFor(SUBJECT, "Cancelled bookings stay in the list."), ["Cancelled bookings stay in the list."], "prefix at a word start");
+  assert.deepEqual(cancelledFor("feat: shared calendars view", "Unshared calendars are coming."), [], "shared is inside unshared");
+});
+
+test("content words use letters in any script, so Turkish words of five letters or more count", () => {
+  assert.deepEqual(contentWords("feat: şifre değişikliği"), ["şifre", "değişikliği"]);
+  assert.deepEqual(cancelledFor("feat: şifre değişikliği", "Şifre değişikliği artık e-posta ile mümkün."), ["Şifre değişikliği artık e-posta ile mümkün."]);
+});
+
+test("two shared words in an unrelated sentence do not announce the commit; the announcement still does", () => {
+  const subject = "feat: shared calendars view";
+  assert.deepEqual(cancelledFor(subject, "Printing a week of calendars is possible; the view is shared by link."), [], "calendars and shared both occur, far apart");
+  assert.deepEqual(cancelledFor(subject, "You can now see shared calendars view.").length, 1, "the two words sit together");
+});
+
+test("--range takes the = form too, and an unknown ref is reported as unknown revision with exit 2", () => {
+  withRange({}, (fx) => {
+    const eq = notesRun(fx, `${HEAD_LINE}${ANNOUNCE}\n`, [`--range=${fx.base}`]);
+    assert.equal(eq.status, 1, eq.stdout + eq.stderr);
+    assert.match(eq.stdout, /which this range cancelled/);
+    assert.equal(notesRun(fx, `${HEAD_LINE}The month view is calm.\n`, ["--range="]).status, 2);
+    const unknown = notesRun(fx, `${HEAD_LINE}The month view is calm.\n`, ["--range", "no-such-ref"]);
+    assert.equal(unknown.status, 2);
+    assert.match(unknown.stderr, /unknown revision: no-such-ref/);
+  });
 });
