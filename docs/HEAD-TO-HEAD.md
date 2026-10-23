@@ -1286,3 +1286,45 @@ The 400 errors recorded above came from the wrong CLI: the cells recorded `claud
 With the shim first, the default settings file and no override, iteration 3 ran: 27 valid cells (all 2.1.308), 81 grader calls in total over three iterations. Ours x3, outcome mean of 4: set c X1 3.00, X2 4.00, X3 4.00, X4 4.00, X5 4.00;
 set b X1 4.00, X2 2.00, X3 1.00, X4 3.00. **The development gate did not pass** (set c X1: grader-material limit, no `.git/fixture-state`; set b X3: below the rival's 2.00, runs 1 and 2 scored 0 because the grader material did not show the
 committed rewrite). Three iterations are used. Held-out set d, the public set, F9 and F6 were not run; nothing supports a "first" claim. Spend 10.3719 USD in the cost files. Details: `bench/head-to-head/results/round7/SUMMARY.md`.
+
+## Round r8 design (frozen 2026-10-23, before any r8 code change)
+
+Evidence: `docs/BEST-RIVAL-r8.md` (same commit as this section, before any code). r8 is research, analysis and implementation only: no benchmark,
+development gate or held-out run. Criteria, checks, tasks and the win rule do not change. The first scored round after r8 carries Rule A, Rule B and
+Rule B′ in its own protocol, written before its first run.
+
+Decisions, each general (no fixture, task or flag value named in any rule or test):
+
+1. **r8-0 Runner always uses the pinned CLI.** `run.sh` records the CLI version it resolves in `<work dir>/claude-version` on the first call and
+   refuses to start any later cell of that work directory whose resolved version differs (exit 5, `claude` not called, FAILED not-run reason
+   written). `PE_BENCH_CLAUDE_REQUIRE=<version>` sets the version explicitly and takes precedence over the recorded one. Cause: r7 iteration 3 cells
+   ran 2.1.2 from `/usr/local/bin` because the shim directory was not first on PATH. Test with a stub `claude` that prints two different versions.
+2. **r8-0b Grader evidence for external (held-out) tasks.** (a) `run.sh` writes `.git/fixture-state` after an external `fixture.sh`, with the same
+   fields and hash as `mk.sh:write_state`, when the fixture did not write one; (b) `grade.mjs` shows the full patch of new commits and the
+   working-tree diff for external variants too. Both apply to every arm. Criterion text is unchanged. This corrects a harness limit documented in
+   r7 (set c X1, set b X2 c4, set b X3); results of rounds 6 and 7 are not comparable with rounds measured after this change, and no cell is reused.
+   `PE_BENCH_GRADER_EVIDENCE=legacy` restores the old material. Owner may veto before the next measurement.
+3. **r8-1 Claim family `addedtests`** in `bin/claim-gate.mjs`: an answer that says tests were added or written needs a write event to a test path
+   in the same turn; otherwise the gate asks once, with the existing complete-answer restatement. Negation, quotes and code spans are ignored like
+   the other families. Test first (red), with a table of honest sentences that must not fire.
+4. **r8-2 Stub and skip markers** in `bin/stubs.mjs`, added lines only: `.only(`, `xfail`, Go `t.Skip(`/`t.Skipf(`, Rust `#[ignore]`, JUnit `@Disabled`,
+   Go `panic("not implemented`, Rust `todo!(`/`unimplemented!(`, `expect.assertions(0)`. Extension-based language detection for go and rs.
+   Re-written regexes; no code copied from dod-guard or groundtruth.
+5. **r8-3 Sentence split in `facts`**: an abbreviation (`e.g.`, `i.e.`, `etc.`, `vs.`, `Dr.`, `No.`, a version number such as `v1.2`) does not end a
+   sentence; the length limits and the "no counterpart in the source" report use the new split. Average counts only from 5 sentences? No: the
+   iso minimum of 10 is not adopted, because we have not counted our own sample (rule 5); the average rule stays as it is.
+6. **r8-4 `product-engineer claims <file|-> [--repo DIR] [--json]`**: deterministic read-back. It extracts numbers with units, version-like tokens
+   and backticked names from the answer, searches the repository files and `git log -p -n 50` text for each, and prints each as `found <where>` or
+   `not found`. Output says "candidates, not verdicts" and exits 0 when the check ran, 1 on empty input, 2 on bad arguments, 3 when the repository
+   could not be read (the gate must not treat "did not run" as clean). No model, no network, no dependency.
+7. **r8-5 Skill text**, short sentences only: write a three-line scope map from the whole range before the PR text; use `git commit -- <paths>`,
+   never `git add -A`, never force-push on your own initiative, never write `Fixes #N` unless the request names the issue; lifted text must stay
+   true without its paragraph and a missing required field is a marked gap, not invented wording; run `claims` on the final answer and keep or fix
+   each `not found` item; refactor line 3 says when no test suite exists. Adapters are regenerated.
+
+Not shipped in r8 (reason): result-text parsing of test runs in the Stop hook (the shape of `tool_result` blocks was not checked against a real
+transcript); `complete`, `didwork` and `built` claim families (no measured loss behind them); two-reading minimum-sample rule of iso-24495; any NLI
+model (cannot ship in a dependency-free CLI); intent-class trigger hint (product-engineer has no hint hook; workproof and surviving-lines do).
+
+Next measurement round (plan in the r8 report): development gate on seen sets with the corrected grader material, new held-out set where plain
+Claude is below the ceiling, Rule A + B + B′, F9, F6, cost estimate. Nothing was measured in r8.
