@@ -151,8 +151,10 @@ test("the CLI exits 2 on a usage error or a file it cannot read", () => {
   assert.match(missing.stderr, /notes: cannot read/);
 });
 
-test("--help lists the notes command", () => {
-  assert.match(spawnSync("node", [cli, "--help"], { encoding: "utf8" }).stdout, /product-engineer notes <file> \[--json\]/);
+test("--help lists the notes command and its audience option", () => {
+  const help = spawnSync("node", [cli, "--help"], { encoding: "utf8" }).stdout;
+  assert.match(help, /product-engineer notes <file> \[--audience customers\|developers\] \[--json\]/);
+  assert.match(help, /--audience developers/);
 });
 
 test("a command-line option or a command the reader types is not code to hide", () => {
@@ -347,4 +349,67 @@ test("--range takes the = form too, and an unknown ref is reported as unknown re
     assert.equal(unknown.status, 2);
     assert.match(unknown.stderr, /unknown revision: no-such-ref/);
   });
+});
+
+// Developers audience: people who integrate the product read exact names; the rules that stop code names are relaxed.
+const DEV_HEAD = "Changes since v3.0.0\n";
+
+test("the developers audience accepts backticked names; the customers audience still rejects them", () => {
+  const line = "The option `retryLimit` is now `maxAttempts`; the default is `3` attempts.\n";
+  assert.deepEqual(notes(`${DEV_HEAD}${line}`, { audience: "developers" }).findings, []);
+  assert.ok(codes(`${DEV_HEAD}${line}`).includes("error:code-identifier:2"));
+  assert.ok(notes(`${DEV_HEAD}${line}`, { audience: "customers" }).findings.some((f) => f.code === "code-identifier"));
+});
+
+test("the developers audience accepts camelCase, file names and calls, and the customers audience rejects them", () => {
+  const line = "Pass retryLimit to connect() in src/client.js.\n";
+  assert.deepEqual(notes(`${DEV_HEAD}${line}`, { audience: "developers" }).findings, []);
+  assert.ok(codes(`${DEV_HEAD}${line}`).includes("error:code-identifier:2"));
+});
+
+test("a commit hash is rejected for both audiences, on any line but the first", () => {
+  const text = `${DEV_HEAD}Fixed the export in 3a9f2c1.\n`;
+  for (const audience of ["customers", "developers"]) {
+    const f = notes(text, { audience }).findings.find((x) => x.code === "commit-hash");
+    assert.ok(f, audience);
+    assert.equal(f.level, "error");
+    assert.equal(f.line, 2);
+  }
+  assert.ok(notes("Changes since commit 3a9f2c1 to 8d0b7e4\nYou can export now.\n", { audience: "developers" }).ok, "the range on the first line is not a hash finding");
+});
+
+test("the developers audience still rejects a conventional commit prefix and merge-commit boilerplate", () => {
+  for (const line of ["feat(export): add a month export", "fix: retry count", "Merge branch 'main' into release", "Merge pull request #12 from acme/export"]) {
+    const got = notes(`${DEV_HEAD}${line}\n`, { audience: "developers" }).findings.map((f) => f.code);
+    assert.ok(got.includes("commit-prefix") || got.includes("merge-boilerplate"), line);
+  }
+});
+
+test("a rename, removal or breaking change with no backticked name warns for developers, and the warning clears when a name is given", () => {
+  const warned = (text, audience = "developers") => notes(text, { audience }).findings.filter((f) => f.code === "change-unnamed").map((f) => f.level);
+  assert.deepEqual(warned(`${DEV_HEAD}The retry option was renamed to the new attempts option.\n`), ["warn"]);
+  assert.deepEqual(warned(`${DEV_HEAD}The flag --legacy-output was removed.\n`), ["warn"]);
+  assert.deepEqual(warned(`${DEV_HEAD}This drops the v2 export, which is no longer supported.\n`), ["warn"]);
+  assert.deepEqual(warned(`${DEV_HEAD}Breaking: the connect call changed.\n`), ["warn"]);
+  assert.deepEqual(warned(`${DEV_HEAD}The option was renamed from \`retryLimit\` to \`maxAttempts\`.\n`), [], "a backticked name clears it");
+  assert.deepEqual(warned(`${DEV_HEAD}The option was renamed: it is now \`--max-attempts\`.\n`), [], "a backticked flag clears it");
+  assert.deepEqual(warned(`${DEV_HEAD}The option was renamed from \`retry limit\` to ok.\n`), ["warn"], "a backtick span with a space is not a name");
+  assert.deepEqual(warned(`${DEV_HEAD}The option was renamed to the new attempts option.\n`, "customers"), [], "the customers audience has no such warning");
+});
+
+test("the audience default is customers, and an unknown audience is refused", () => {
+  assert.ok(notes(`${DEV_HEAD}The option \`retryLimit\` is now \`maxAttempts\`.\n`).findings.some((f) => f.code === "code-identifier"));
+  assert.throws(() => notes(GOOD, { audience: "owners" }), /unknown audience: owners/);
+});
+
+test("the CLI takes --audience in both forms, refuses an unknown value with exit 2, and warns for developers", () => {
+  const text = `${DEV_HEAD}The option \`retryLimit\` was renamed to \`maxAttempts\`.\n`;
+  assert.equal(cliRun(text, ["--audience", "developers"]).status, 0);
+  assert.equal(cliRun(text, ["--audience=developers"]).status, 0);
+  assert.equal(cliRun(text).status, 1, "customers rejects the backticked name");
+  assert.equal(cliRun(text, ["--audience", "owners"]).status, 2);
+  assert.equal(cliRun(text, ["--audience"]).status, 2);
+  const warn = cliRun("Changes since v3.0.0\nThe option retryLimit was renamed.\n", ["--audience", "developers"]);
+  assert.equal(warn.status, 0);
+  assert.match(warn.stdout, /^warn {2}line 2: names the change but not what to change/m);
 });

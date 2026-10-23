@@ -1,6 +1,6 @@
 ---
 name: release-notes
-description: Use when writing release notes, a changelog entry, a status update or a "what's new" message for people who do not read code. Notes never contain code identifiers or file names, and the agent runs `product-engineer notes <file>` and fixes every error before saving. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
+description: Use when writing release notes, a changelog entry, a status update or a "what's new" message. For people who do not read code, notes never contain code identifiers or file names; for developers who integrate the product, the notes name each option, flag or function exactly. The agent runs `product-engineer notes <file>` (with `--audience developers` for developers) and fixes every error before saving. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
 license: MIT
 metadata:
   author: Efe Genc
@@ -18,11 +18,21 @@ it: release notes, changelog entries, status updates to a founder or a client, a
 
 ## Check before you save
 
-Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled. For each commit it flags as `type says ...` or `requirement change`, read the printed lines, decide whether the reader would notice the change, and write it as what the reader sees (a changed limit, a price, a new requirement), never as the commit title says. Then check the saved file with `product-engineer notes <file> --range <tag>`. Notes never contain code identifiers or file names: no function, variable or module
-names, no paths, no backticks, no commit prefixes, no file with an extension. Write the
+Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled. For each commit it flags as `type says ...` or `requirement change`, read the printed lines, decide whether the reader would notice the change, and write it as what the reader sees (a changed limit, a price, a new requirement), never as the commit title says. Each name under `names gone at` is a candidate renamed or removed option: confirm it in the diff before you write about it. Then check the saved file with `product-engineer notes <file> --range <tag>`. Customer notes never contain code identifiers or file names: no function, variable or module
+names, no paths, no backticks, no commit prefixes, no file with an extension. Commit hashes and
+merge-commit boilerplate are errors for every audience. Write the
 notes to their file, then run `product-engineer notes <file>` (`npx product-engineer notes
 <file>` where it is not installed; from version 0.8.0). Fix every error it reports and run
 it again until it passes. Only then say the notes are done.
+
+## Audience
+
+Decide it from the request. People who integrate or call the product (a library, API, CLI, plugin
+or SDK) get `--audience developers`: name each option, flag, function or setting exactly as the code
+spells it, old name then new name, and give the default with its unit (`retryLimit`, default 3
+attempts). Put every incompatible change first under `Action required:`, saying what to change.
+Owners, guests, support, managers and end customers get the default, `--audience customers`, and the
+plain-language rules below.
 
 ## Seven rules
 

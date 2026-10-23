@@ -335,3 +335,137 @@ test("the JSON report carries the evidence arrays and the count of lines not pri
   assert.equal(flag.moreLines, 0);
   assert.ok(parsed.commits[0].flags.filter((f) => f.code !== "type").every((f) => Array.isArray(f.evidence) && f.evidence.length === 0), "a flag with no evidence carries an empty array");
 });
+
+// Names gone at <to>: a removed name that the tree at <to> no longer holds (own fixtures below).
+const goneOf = (report) => report.gonenames.map((g) => g.name);
+
+test("a name renamed in code, tests and README is listed as gone, with the files that held it at from", () => {
+  const dir = newRepo();
+  const base = commit(dir, {
+    "src/client.js": "export function connect(o) {\n  return o.retryLimit ?? 3;\n}\n",
+    "test/client.test.mjs": "import { connect } from \"../src/client.js\";\nconnect({ retryLimit: 5 });\n",
+    "README.md": "# Client\n\nSet retryLimit to change the retries.\n",
+  }, "chore: start the client");
+  commit(dir, {
+    "src/client.js": "export function connect(o) {\n  return o.maxAttempts ?? 3;\n}\n",
+    "test/client.test.mjs": "import { connect } from \"../src/client.js\";\nconnect({ maxAttempts: 5 });\n",
+    "README.md": "# Client\n\nSet maxAttempts to change the attempts.\n",
+  }, "feat(client): rename the retry option");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const gone = report.gonenames.find((g) => g.name === "retryLimit");
+  assert.ok(gone, "retryLimit is listed");
+  assert.equal(gone.files, 2);
+  assert.deepEqual([...gone.paths].sort(), ["README.md", "src/client.js"]);
+  const text = render(report);
+  assert.match(text, /^names gone at HEAD:$/m);
+  assert.match(text, /^ {2}retryLimit {2}\(was in 2 files: /m);
+  assert.ok(text.includes("Candidates: a name that disappeared may be a renamed or removed option, flag, setting or function that users call. Check before you write the release notes."));
+  assert.ok(text.indexOf("names gone at HEAD:") < text.indexOf("Candidates only."), "the section comes before the footer");
+});
+
+test("a local variable renamed inside one function is listed as a candidate; a name still in the tree is not", () => {
+  const dir = newRepo();
+  const base = commit(dir, {
+    "src/pager.js": "export function pageOf(xs, n) {\n  const pageTotal = n;\n  return xs.slice(0, pageTotal);\n}\n",
+    "src/totals.js": "export const pageTotal = 3;\n",
+  }, "chore: start the pager");
+  commit(dir, {
+    "src/pager.js": "export function pageOf(xs, n) {\n  const pageCount = n;\n  return xs.slice(0, pageCount);\n}\n",
+  }, "refactor(pager): rename a local");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.ok(!goneOf(report).includes("pageTotal"), "pageTotal is still declared in src/totals.js at HEAD");
+  const d = newRepo();
+  const b = commit(d, { "src/pager.js": "export function pageOf(xs, n) {\n  const pageSize = n;\n  return xs.slice(0, pageSize);\n}\n" }, "chore: start");
+  commit(d, { "src/pager.js": "export function pageOf(xs, n) {\n  const perPage = n;\n  return xs.slice(0, perPage);\n}\n" }, "refactor(pager): rename a local");
+  const local = range({ from: b, to: "HEAD", cwd: d });
+  const pageSize = local.gonenames.find((g) => g.name === "pageSize");
+  assert.ok(pageSize, "the renamed local is listed, as a candidate");
+  assert.deepEqual(pageSize.paths, ["src/pager.js"]);
+});
+
+test("a removed flag is listed; a flag still in the tree is not", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/cli.js": "const flags = [\"--legacy-output\", \"--json\"];\nexport default flags;\n" }, "chore: start the cli");
+  commit(dir, { "src/cli.js": "const flags = [\"--json\"];\nexport default flags;\n" }, "feat(cli): drop the legacy output flag");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(goneOf(report), ["--legacy-output"]);
+  assert.equal(report.gonenames[0].files, 1);
+});
+
+test("a range that holds only docs changes has no names-gone section and an empty list", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/api.js": "export const retryLimit = 3;\n", "README.md": "# Api\n\nUse legacyRetryMode to enable retries.\n" }, "chore: start");
+  commit(dir, { "README.md": "# Api\n\nRetries are off by default.\n" }, "docs: explain retries");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.gonenames, [], "legacyRetryMode is named only in a doc line, which is not code");
+  assert.ok(!render(report).includes("names gone at"));
+  assert.ok(!render(report).includes("Candidates: a name that disappeared"));
+});
+
+test("a name removed only from a test file, or only from a comment line, is not listed", () => {
+  const dir = newRepo();
+  const base = commit(dir, {
+    "src/store.js": "export const open = () => 1;\n// legacyAudit is kept for old readers\n",
+    "test/store.test.mjs": "const probeBeacon = 1;\n",
+  }, "chore: start the store");
+  commit(dir, {
+    "src/store.js": "export const open = () => 1;\n",
+    "test/store.test.mjs": "const probeBeaconNew = 1;\n",
+  }, "refactor(store): tidy");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.ok(!goneOf(report).includes("legacyAudit"), "a comment line is not code");
+  assert.ok(!goneOf(report).includes("probeBeacon"), "a test file is not counted");
+});
+
+test("at most eight names are listed, most-mentioned first", () => {
+  const dir = newRepo();
+  const names = Array.from({ length: 10 }, (_, i) => `knobName${String.fromCharCode(97 + i)}`);
+  const base = commit(dir, { "src/knobs.js": `${names.map((n) => `export const ${n} = 1;`).join("\n")}\n` }, "chore: start the knobs");
+  commit(dir, { "src/knobs.js": "export const kept = 1;\n" }, "refactor(knobs): replace the knobs");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.equal(report.gonenames.length, 8);
+  assert.ok(report.gonenames.every((g, i, all) => i === 0 || all[i - 1].files >= g.files));
+});
+
+test("a 1000-commit range is read in under 5 seconds, and a name removed late in it is listed", () => {
+  const dir = newRepo();
+  const count = 1000;
+  const ts = 1767225600;
+  const data = (text) => `data ${Buffer.byteLength(text)}\n${text}\n`;
+  const stream = [];
+  for (let i = 1; i <= count; i++) {
+    const path = i === 1 || i === count ? "src/knobs.js" : `src/f${i}.js`;
+    const content = i === 1 ? "export const legacyKnobValue = 1;\n" : i === count ? "export const kept = 2;\n" : `export const v${i} = ${i};\n`;
+    stream.push(`commit refs/heads/master\nmark :${i}\ncommitter Dev <dev@example.com> ${ts + i * 60} +0000\n${data(`feat(part): step ${i}`)}${i > 1 ? `from :${i - 1}\n` : ""}M 100644 inline ${path}\n${data(content)}\n`);
+  }
+  execFileSync("git", ["-C", dir, "fast-import", "--quiet"], { input: stream.join("") });
+  const base = run(dir, "rev-parse", `HEAD~${count - 1}`).trim();
+  const started = Date.now();
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const elapsed = Date.now() - started;
+  assert.equal(report.summary.commits, count - 1);
+  assert.ok(elapsed < 5000, `took ${elapsed} ms`);
+  assert.ok(goneOf(report).includes("legacyKnobValue"));
+});
+
+test("keywords, words under five characters and numbers without a letter are not names", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/f.js": "export function f() {\n  const tmp1 = 30000;\n  return tmp1;\n}\n" }, "chore: start");
+  commit(dir, { "src/f.js": "export const f = () => 45000;\n" }, "refactor(f): simplify");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.gonenames, []);
+});
+
+test("the list is most-mentioned first: a name in two files comes before a name in one", () => {
+  const dir = newRepo();
+  const base = commit(dir, {
+    "src/a.js": "export const alphaKnob = 1;\n",
+    "src/b.js": "export const alphaKnob = 2;\n",
+    "src/c.js": "export const betaKnob = 3;\n",
+  }, "chore: start");
+  commit(dir, { "src/a.js": "export const kept = 1;\n", "src/b.js": "export const kept = 2;\n", "src/c.js": "export const kept = 3;\n" }, "refactor(knobs): replace the knobs");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(goneOf(report).slice(0, 2), ["alphaKnob", "betaKnob"]);
+  assert.equal(report.gonenames[0].files, 2);
+  assert.equal(report.gonenames[1].files, 1);
+});

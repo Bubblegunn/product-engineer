@@ -20,6 +20,19 @@ later commit reverts is shown as "net: cancelled"; a revert of a revert shows "n
 Every line is a candidate to check against the diff. Exit 0 for a ledger, 2 for usage or a bad range.`;
 
 const FOOTER = "Candidates only. Read the diff before you write a line about any of these.";
+// Names gone at <to>: a name a removed line carried that the tree at <to> no longer holds. Names are checked in
+// at most GONE_CAP distinct tokens (first seen first), the section lists GONE_SHOWN, and a name counts as
+// "was in" a file when a non-test file at <from> holds it as a whole word.
+const GONE_CAP = 300;
+const GONE_SHOWN = 8;
+const GONE_FILES_SHOWN = 3;
+const GONE_MIN = 5;
+const GONE_CHECK_BATCH = 100;
+const GONE_STOP = new Set(["return", "const", "function", "length", "string", "number", "object", "value", "default", "error", "import", "export", "class", "undefined", "null", "true", "false", "this", "that", "with", "from", "then", "else", "while", "break", "continue", "await", "async", "throw", "catch", "finally", "typeof", "before", "after"]);
+const GONE_FLAG = /(?<![\w-])--[A-Za-z][A-Za-z0-9-]*/g;
+const GONE_WORD = /(?<![\w-])[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*/g;
+// A comment line (a removed comment names nothing that is still in use).
+const COMMENT_LINE = /^\s*(?:\/\/|#|\/\*|\*|<!--|--|;)/;
 const SECURITY = /security|CVE|vuln|escape|sanitiz|xss|csrf|injection|auth/i;
 const PERFORMANCE = /perf|faster|speed|cache|optimi|latency|throughput/i;
 const BENCH = /(bench|timing|perf)/i;
@@ -40,6 +53,15 @@ const EVIDENCE_LINES = 6;
 const EVIDENCE_WIDTH = 100;
 
 const git = (args, cwd, input) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", input, stdio: ["pipe", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
+// git grep exits 1 when nothing matches; that is an empty answer here, not an error.
+const grep = (args, cwd) => {
+  try {
+    return git(["grep", ...args], cwd);
+  } catch (err) {
+    if (err && err.status === 1) return "";
+    throw err;
+  }
+};
 
 /**
  * The changed lines of one commit in one file, whitespace-only changes skipped (the same `-b --ignore-blank-lines`
@@ -90,6 +112,66 @@ function resolve(ref, cwd) {
   } catch {
     throw new Error(`unknown revision: ${ref}`);
   }
+}
+
+/** The identifier-like tokens of one removed line: --long-flags and words of 5+ characters with a letter, minus the stoplist. */
+function tokensOf(text) {
+  const flags = text.match(GONE_FLAG) ?? [];
+  const rest = text.replace(GONE_FLAG, " ");
+  const words = (rest.match(GONE_WORD) ?? []).filter((w) => w.length >= GONE_MIN && /[A-Za-z]/.test(w) && !GONE_STOP.has(w.toLowerCase()));
+  return [...flags.filter((f) => f.length >= GONE_MIN), ...words];
+}
+
+/**
+ * The names a range removed: Map of token to the set of old paths whose removed lines carried it. Only removed
+ * lines of non-test, non-doc files count, and comment lines do not count.
+ */
+export function removedNames(diff) {
+  const names = new Map();
+  let path = null;
+  let inHunk = false;
+  for (const line of diff.split("\n")) {
+    if (line.startsWith("diff --git ")) { inHunk = false; path = null; continue; }
+    if (!inHunk) {
+      if (line.startsWith("--- a/")) path = line.slice(6).replace(/\t$/, "");
+      else if (line.startsWith("--- ")) path = null;
+      else if (line.startsWith("@@")) inHunk = true;
+      continue;
+    }
+    if (line.startsWith("@@") || line[0] !== "-" || path === null) continue;
+    const kind = classOf(path);
+    if (kind === "test" || kind === "doc") continue;
+    const text = line.slice(1);
+    if (COMMENT_LINE.test(text)) continue;
+    for (const token of tokensOf(text)) {
+      if (!names.has(token)) names.set(token, new Set());
+      names.get(token).add(path);
+    }
+  }
+  return names;
+}
+
+/**
+ * The names gone at <to>, most-mentioned first, up to GONE_SHOWN. Each: { name, files, paths } where files counts the
+ * non-test files at <from> that hold the name as a whole word, and paths lists them.
+ */
+export function goneNames(names, fromSha, toSha, cwd) {
+  const tokens = [...names.keys()].slice(0, GONE_CAP);
+  const present = new Set();
+  for (let k = 0; k < tokens.length; k += GONE_CHECK_BATCH) {
+    const batch = tokens.slice(k, k + GONE_CHECK_BATCH);
+    const out = grep(["-o", "-w", "-F", "-h", ...batch.flatMap((t) => ["-e", t]), toSha], cwd);
+    for (const line of out.split("\n")) if (line) present.add(line);
+  }
+  const gone = [];
+  for (const name of tokens) {
+    if (present.has(name)) continue;
+    const listed = grep(["-l", "-w", "-F", "-e", name, fromSha], cwd).split("\n").filter(Boolean).map((l) => l.slice(fromSha.length + 1));
+    const paths = listed.filter((p) => classOf(p) !== "test");
+    if (paths.length > 0) gone.push({ name, files: paths.length, paths });
+  }
+  gone.sort((a, b) => b.files - a.files || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  return gone.slice(0, GONE_SHOWN);
 }
 
 /**
@@ -178,6 +260,9 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     }
   }
 
+  // Names gone at <to>, from the net diff (a name removed and re-added inside the range is still present).
+  const gonenames = goneNames(removedNames(git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", fromSha, toSha], cwd)), fromSha, toSha, cwd);
+
   const firstByPatch = new Map();
   const duplicateOf = new Map();
   for (const c of commits) {
@@ -232,6 +317,7 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     header: `range ${label}: ${commits.length} commit${commits.length === 1 ? "" : "s"}, ${present} net change${present === 1 ? "" : "s"} present, ${cancelled} cancelled`,
     summary: { commits: commits.length, present, cancelled },
     commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text, evidence, moreLines }) => ({ code, text, evidence, moreLines })) })),
+    gonenames,
     footer: FOOTER,
   };
 }
@@ -245,6 +331,14 @@ export function render(report) {
       for (const e of f.evidence) out.push(`    ${e.sign} ${e.text}`);
       if (f.moreLines > 0) out.push(`    (${f.moreLines} more changed lines; read the diff)`);
     }
+  }
+  if (report.gonenames?.length) {
+    out.push(`names gone at ${report.range.to}:`);
+    for (const g of report.gonenames) {
+      const shown = g.paths.slice(0, GONE_FILES_SHOWN).join(", ") + (g.paths.length > GONE_FILES_SHOWN ? ", ..." : "");
+      out.push(`  ${g.name}  (was in ${g.files} file${g.files === 1 ? "" : "s"}: ${shown})`);
+    }
+    out.push("Candidates: a name that disappeared may be a renamed or removed option, flag, setting or function that users call. Check before you write the release notes.");
   }
   out.push(report.footer);
   return out.join("\n");

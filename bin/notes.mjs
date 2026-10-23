@@ -9,7 +9,8 @@
 import { readFileSync } from "node:fs";
 import { parseRange, range as ledgerRange } from "./range.mjs";
 
-const USAGE = "usage: product-engineer notes <file> [--json]\n       product-engineer notes <file> --range <from>..<to>|<tag> [--json]";
+const USAGE = "usage: product-engineer notes <file> [--audience customers|developers] [--json]\n       product-engineer notes <file> --range <from>..<to>|<tag> [--audience customers|developers] [--json]";
+const AUDIENCES = ["customers", "developers"];
 
 // Words of a commit subject that can name what a note announces. Short words and the stoplist are not
 // evidence that a line is about the commit.
@@ -57,6 +58,13 @@ function notInReleaseLines(lines) {
 }
 
 const COMMIT_PREFIX = /^(?:feat|fix|chore|docs|refactor|perf|test|style|build|ci|revert)(?:\([^)]*\))?!?:/i;
+// A commit hash: seven to forty hex digits with at least one digit and one letter a-f. Rejected for every audience.
+const COMMIT_HASH = /\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b/;
+// The merge commit a tool writes by default: "Merge branch ...", "Merge pull request #N ...". Rejected for every audience.
+const MERGE_BOILERPLATE = /^Merge (?:branch|branches|pull request|remote-tracking branch|remote branch|tag)\b/i;
+// Developers: a line that says a name was renamed, removed or changed incompatibly must name it in backticks.
+const CHANGE_WORDS = /\brenamed?\b|\bremoved\b|\bno longer\b|\bbreaking\b|\bdeprecated\b/i;
+const NAMED = /`[^\s`]+`/;
 const EXTENSIONS =
   "js|mjs|cjs|ts|tsx|jsx|json|md|py|rb|go|rs|java|kt|swift|c|h|cpp|cs|php|sh|yml|yaml|toml|lock|css|scss|html|sql|txt|env|ini|cfg|xml|csv";
 // Framework names that end in .js are product names, not files in the change.
@@ -161,8 +169,13 @@ function announces(line, words, need) {
  * Checks release notes. Returns { ok, errors, warnings, findings: [{ level, code, line, text, message }] },
  * where line is 1-based and ok means no error. options.cancelled is a list of { subject, by } for commits
  * the range cancelled; a line outside "Not in this release" that names their content words is an error.
+ * options.audience is "customers" (the default: plain language, no code names) or "developers" (people who
+ * integrate the product: the code-identifier, backtick and file-name rules are relaxed, and a renamed or
+ * removed name must be written in backticks).
  */
-export function notes(text, { cancelled = [] } = {}) {
+export function notes(text, { cancelled = [], audience = "customers" } = {}) {
+  if (!AUDIENCES.includes(audience)) throw new Error(`unknown audience: ${audience}`);
+  const developers = audience === "developers";
   const findings = [];
   const lines = text.split(/\r?\n/);
   const first = lines.findIndex((l) => l.trim() !== "");
@@ -177,8 +190,16 @@ export function notes(text, { cancelled = [] } = {}) {
     const line = bare(raw);
     if (COMMIT_PREFIX.test(line)) report("error", "commit-prefix", i, "a conventional commit prefix: write what the reader can do now instead");
     if (!COMMIT_PREFIX.test(line) && COMMIT_WORD.test(line)) report("error", "commit-word", i, `a word from commit titles (${line.match(COMMIT_WORD)[0]}): say what the reader can do now, or leave the line out`);
-    const ids = identifiersIn(raw);
-    if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words`);
+    // A hash on the first line is the range ("commit 3a9f2c1 to 8d0b7e4"); anywhere else it is rejected.
+    const hash = i !== first ? COMMIT_HASH.exec(raw) : null;
+    if (hash) report("error", "commit-hash", i, `a commit hash (${hash[0]}): a reader cannot use it; say what changed, or name the range on the first line only`);
+    if (MERGE_BOILERPLATE.test(line)) report("error", "merge-boilerplate", i, "merge-commit boilerplate: write what the reader can do now, or leave the line out");
+    if (!developers) {
+      const ids = identifiersIn(raw);
+      if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words`);
+    } else if (CHANGE_WORDS.test(raw) && !NAMED.test(raw)) {
+      report("warn", "change-unnamed", i, "names the change but not what to change: write the exact old and new name in backticks, and the default with its unit");
+    }
     if (DOCS_LINE.test(line)) report("error", "docs-or-version", i, "a line about docs, a changelog, a README or a version bump: these change nothing for the reader, leave the line out");
     const measured = MEASURED.test(line) && !NEGATED_MEASURED.test(line);
     if (!measured && EFFECT.test(line)) report("error", "unmeasured-effect", i, "an effect nobody measured: describe the cause (\"shows 20 at a time\") or give the measurement");
@@ -202,20 +223,31 @@ export function notes(text, { cancelled = [] } = {}) {
   return { ok: errors === 0, errors, warnings: findings.length - errors, findings };
 }
 
+/** Removes `name value` or `name=value` from argv: { value (undefined when absent), rest }. */
+function takeOption(argv, name) {
+  const i = argv.findIndex((a) => a === name || a.startsWith(`${name}=`));
+  if (i === -1) return { value: undefined, rest: argv };
+  const inline = argv[i].startsWith(`${name}=`);
+  const value = inline ? argv[i].slice(name.length + 1) : argv[i + 1];
+  return { value, rest: argv.filter((_, k) => k !== i && (inline || k !== i + 1)) };
+}
+
 export function runNotes(argv) {
   // --range <ref> or --range=<ref>
-  const ri = argv.findIndex((a) => a === "--range" || a.startsWith("--range="));
-  let rangeArg;
-  let rest = argv;
-  if (ri !== -1) {
-    const inline = argv[ri].startsWith("--range=");
-    rangeArg = inline ? argv[ri].slice("--range=".length) : argv[ri + 1];
-    rest = argv.filter((_, i) => i !== ri && (inline || i !== ri + 1));
-    if (rangeArg === undefined || rangeArg.startsWith("-") || !parseRange(rangeArg)) {
-      console.error(USAGE);
-      return 2;
-    }
+  const range = takeOption(argv, "--range");
+  const rangeArg = range.value;
+  if ((rangeArg === undefined && range.rest.length !== argv.length) || (rangeArg !== undefined && (rangeArg.startsWith("-") || !parseRange(rangeArg)))) {
+    console.error(USAGE);
+    return 2;
   }
+  // --audience customers|developers (default customers)
+  const aud = takeOption(range.rest, "--audience");
+  const audience = aud.value ?? "customers";
+  if (!AUDIENCES.includes(audience) || (aud.value === undefined && aud.rest.length !== range.rest.length)) {
+    console.error(USAGE);
+    return 2;
+  }
+  const rest = aud.rest;
   const files = rest.filter((a) => !a.startsWith("-"));
   const unknown = rest.filter((a) => a.startsWith("-") && a !== "--json");
   if (files.length !== 1 || unknown.length) {
@@ -240,7 +272,7 @@ export function runNotes(argv) {
     }
     cancelled = ledger.commits.filter((c) => c.net?.state === "cancelled").map((c) => ({ subject: c.subject, by: c.net.by }));
   }
-  const r = notes(text, { cancelled });
+  const r = notes(text, { cancelled, audience });
   if (argv.includes("--json")) {
     console.log(JSON.stringify(r, null, 2));
     return r.ok ? 0 : 1;

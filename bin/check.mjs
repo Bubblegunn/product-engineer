@@ -17,9 +17,10 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer doctor
        product-engineer facts <source> <rewrite> [--max-sentence N] [--avg-sentence N] [--json]
        product-engineer stubs [--staged | --range <a..b>] [--json] [--warn] [-q]
-       product-engineer notes <file> [--json]
-       product-engineer notes <file> --range <from>..<to>|<tag> [--json]
+       product-engineer notes <file> [--audience customers|developers] [--json]
+       product-engineer notes <file> --range <from>..<to>|<tag> [--audience customers|developers] [--json]
        product-engineer scope [range] [--json]
+       product-engineer twins [range] [--json]
        product-engineer range <from>..<to> [--json]
        product-engineer claims <file|-> [--repo DIR] [--json]
 
@@ -72,18 +73,30 @@ prefix at a line start or the word refactor or chore, a code identifier or file 
 backticked word, camelCase or snake_case, a call such as name(), a path, a file with an
 extension), a line about docs, a README, a changelog or a version bump, an effect word
 (faster, instant) or a percentage on a line that does not say it was measured, and a version
-number after the first line. Warning: the first line names no range (a tag, a commit hash,
-"since", "the last N commits"). With --range, a line outside "Not in this release" that names the words of a commit the range cancelled is an error.
+number after the first line, a commit hash (the first line may hold the range), and merge-commit
+boilerplate. Warning: the first line names no range (a tag, a commit hash, "since", "the last N
+commits"). With --range, a line outside "Not in this release" that names the words of a commit the
+range cancelled is an error.
+--audience customers (the default) is for owners, guests and support: the code-identifier and
+file-name rules apply. --audience developers is for people who integrate the product: backticked
+names, camelCase, file names and calls are allowed, so the exact option, flag or function name can be
+written. A line that says something was renamed, removed, deprecated, breaking or no longer supported
+must then name it in backticks (a warning otherwise).
 --json prints { ok, errors, warnings, findings: [{ level, code, line, text, message }] }.
 
 scope lists each changed file of a range (or the staged change, or the working tree) with lines
 added and removed, its class, and whether git sees the change as whitespace-only; small changes
 are shown line by line. Use it before calling a file formatting-only.
 
+twins lists lines elsewhere in the tracked files that have the same shape as a line the change removed,
+so a defect fixed in one place is looked for where it repeats. Each candidate is a line to read.
+
 range lists each commit of a range, oldest first, with its class and candidate flags: a change a
 later commit reverts (net: cancelled), a revert of a revert (net: present), a cherry-picked
 duplicate, security or performance wording, a breaking marker, a type the files contradict. Every
-line is a candidate to check against the diff. It reads git only.
+line is a candidate to check against the diff. After the ledger, "names gone at <to>" lists up to
+eight names that a removed line carried and the tree at <to> no longer holds (an option, a flag,
+a setting or a function that users may call; a local variable too). It reads git only.
 
 claims reads a text (your final answer, a pull request description) and lists each number with a
 unit, version-like token and backticked name in it. For each it says "found <file>" when a tracked
@@ -429,6 +442,10 @@ async function main(argv) {
   if (command === "scope") {
     const { runScope } = await import("./scope.mjs");
     return runScope(argv.slice(1));
+  }
+  if (command === "twins") {
+    const { runTwins } = await import("./twins.mjs");
+    return runTwins(argv.slice(1));
   }
   if (command === "range") {
     const { runRange } = await import("./range.mjs");
