@@ -1,0 +1,39 @@
+{
+  "label": "gb39cbb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Group bookings are not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "The fix appears once."
+    },
+    "3": {
+      "pass": true,
+      "why": "The CSV line says only 'more efficient', not faster or quicker."
+    },
+    "4": {
+      "pass": false,
+      "why": "It gives 412 ms and 38 ms but not the median-of-five-runs method."
+    },
+    "5": {
+      "pass": true,
+      "why": "The diff over bench/ showed the contents of timing.txt before the file was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X95",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
