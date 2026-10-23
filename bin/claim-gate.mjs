@@ -40,7 +40,7 @@ const CLAIMS = {
 const ABSENCE = /\b(?:no|without|zero|none|already)\b/i;
 const PLAIN_REQUEST = /\bplain[- ]language\b|\bplain english\b|\bin plain (?:words|terms|english)\b|\bsimpl(?:e|er|ify) (?:words|terms|language)\b/i;
 const FACTS_RUN = /\bproduct-engineer\s+facts\b|\bcheck\.mjs\s+facts\b/;
-const FIX_REQUEST = /\b(?:bug|fix|broken|regression|crash(?:es|ing)?|fails?|failing|not working)\b/i;
+export const FIX_REQUEST = /\b(?:bug|fix|broken|regression|crash(?:es|ing)?|fails?|failing|not working)\b/i;
 const WRITTEN_CLAIM_FILE = /^(?:pr|pull[-_ ]?request|summary|notes?|report|description|answer|review)(?:\b|[-_.\d])/i;
 
 const sentencesOf = (text) =>
@@ -77,8 +77,14 @@ export function findClaims(text) {
 }
 
 /** The session as an ordered list of events and the last words of the agent. */
+// The output kept for a test command: the last characters, where a runner prints its summary.
+const OUTPUT_CAP = 4000;
+const resultText = (c) => (typeof c === "string" ? c : (Array.isArray(c) ? c : []).filter((b) => b?.type === "text").map((b) => String(b.text ?? "")).join("\n"));
+
 export function readSession(lines) {
   const events = [];
+  // Bash tool_use id -> its event, so the tool_result that answers it can fill in `output`.
+  const bashById = new Map();
   let prompt = "";
   let last = "";
   for (const line of lines) {
@@ -89,7 +95,13 @@ export function readSession(lines) {
     if (e.type === "user" && !e.isMeta) {
       const text = typeof content === "string" ? content : (Array.isArray(content) ? content : []).filter((b) => b?.type === "text").map((b) => b.text).join("\n");
       // A new person turn starts a new scope: earlier edits belong to an earlier turn.
-      if (text.trim()) { prompt = text; events.length = 0; last = ""; }
+      if (text.trim()) { prompt = text; events.length = 0; last = ""; bashById.clear(); }
+    }
+    if (e.type === "user" && Array.isArray(content)) {
+      for (const b of content) {
+        const ev = b?.type === "tool_result" ? bashById.get(b.tool_use_id) : undefined;
+        if (ev) ev.output = resultText(b.content).slice(-OUTPUT_CAP);
+      }
     }
     if (e.type !== "assistant" || !Array.isArray(content)) continue;
     const texts = content.filter((b) => b?.type === "text").map((b) => String(b.text ?? ""));
@@ -105,7 +117,9 @@ export function readSession(lines) {
         const command = String(input.command ?? "");
         // The write comes first: a command that redirects its own output is not evidence about later edits.
         if (BASH_WRITE.test(command) && !TEST_RUN.test(command) && !GIT_STATE.test(command)) events.push({ kind: "write", path: "", text: "", touches: command.split(/[\s"'<>|;&=()]+/).filter((t) => t && isTestPath(t.replace(/^\.\//, ""))) });
-        events.push({ kind: "bash", command });
+        const ev = { kind: "bash", command };
+        events.push(ev);
+        if (b.id) bashById.set(b.id, ev);
       } else {
         events.push({ kind: "other" });
       }
@@ -199,7 +213,7 @@ function run() {
   const session = readSession(lines);
   // After a block the agent is already repairing: only the checks that are objective run again, and only a new finding blocks.
   const reasons = active ? [] : gate(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
-  const findings = verify({ cwd: input.cwd || process.cwd(), session });
+  const findings = verify({ cwd: input.cwd || process.cwd(), session, answer: String(input.last_assistant_message ?? session.last) });
   const texts = [...reasons, ...findings.map((f) => f.text)];
   if (!texts.length) return;
   const hash = hashOf(findings.map((f) => f.text).join("\n"));

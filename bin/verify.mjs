@@ -8,15 +8,20 @@
 //   twins-open        the change left near-copies of removed lines and nothing searched for them
 //   names-dangling    an identifier the change removed is still used in a tracked file
 //   notes-check       a release-notes file names a range and announces cancelled work or omits gone names
+//   tests-red         the last test run after the last source edit reports failures the answer does not mention
+//   fix-not-redgreen  a bug-fix request changed source with no red-then-green test run and no new test run after the edit
+//   stubs-in-change   the change adds stub markers or skipped tests (the stubs scan on the change's added lines)
+//   unwired-file      a new source file that no tracked or untracked file mentions
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
+import { basename, dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
 import { isDocPath, isLockPath, isTestPath } from "./diff.mjs";
 import { twins as twinsOf } from "./twins.mjs";
 import { parseRange, range as ledgerRange, tokensOf } from "./range.mjs";
 import { notes as checkNotes } from "./notes.mjs";
-import { TEST_RUN } from "./claim-gate.mjs";
+import { FIX_REQUEST, TEST_RUN, findClaims } from "./claim-gate.mjs";
+import { scanAdded } from "./stubs.mjs";
 
 const BUDGET_MS = 3000;
 const SHOWN = 5;
@@ -28,6 +33,12 @@ const GREP_RUN = /\bgit\s+(?:-\S+\s+)*grep\b|\brg\b|\bgrep\b/;
 const TWINS_RUN = /\b(?:product-engineer|check\.mjs)\s+twins\b|\btwins\.mjs\b/;
 const NOTES_NAME = /release|changelog|changes|notes|whats[-_ ]?new/i;
 const NOTES_EXT = /\.(?:md|txt)$/i;
+const ANSWER_MENTIONS_FAILURE = /\bfail\w*|\bred\b|not passing|\bhata\w*|başarısız/i;
+const UNWIRED_MAX = 3;
+const SKIP_BASENAMES = new Set(["index", "main", "cli", "__init__", "mod"]);
+const CODE_FILE = /\.(?:[cm]?[jt]sx?|py|go|rs|java|kt|rb|php|cs|swift|c|cc|cpp|h|hpp)$/i;
+const CONFIG_FILE = /(?:^|\/)(?:\.[^/]*|[^/]*\.(?:json|ya?ml|toml|ini|cfg|lock))$/i;
+const TEST_STUB_CODES = new Set(["skipped-test", "focused-test"]);
 
 const git = (args, cwd) =>
   execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
@@ -291,11 +302,191 @@ function notesCheck(ctx) {
   return findings;
 }
 
+/** The failing-test count in a test runner's printed summary: a number (0 for a green run), or null when no known summary is there. */
+export function failingCount(output) {
+  if (!output) return null;
+  // node --test (spec reporter and TAP)
+  const node = lastMatch(output, /(?:ℹ fail|^# fail) (\d+)/m);
+  if (node) return Number(node[1]);
+  // jest and vitest: the "Tests:" (jest) or "Tests  " (vitest) summary line
+  const jest = lastMatch(output, /^\s*Tests:?\s+(.+)$/m);
+  if (jest) return failedIn(jest[1]);
+  // pytest: "=== 1 failed, 2 passed in 0.12s ==="
+  const py = lastMatch(output, /^=+ (.*\bin [\d.]+s\b[^=\n]*)=*\s*$/m);
+  if (py) return failedIn(py[1]);
+  // cargo: "test result: FAILED. 2 passed; 1 failed" (one line per test binary)
+  const cargo = [...output.matchAll(/test result: (?:ok|FAILED)\. \d+ passed; (\d+) failed/g)];
+  if (cargo.length) return cargo.reduce((n, m) => n + Number(m[1]), 0);
+  // go: "--- FAIL: TestX" per failing test, "FAIL\tpkg" per failing package, "ok\tpkg" or "PASS" when green
+  const goFail = (output.match(/^--- FAIL:/gm) ?? []).length;
+  if (goFail) return goFail;
+  if (/^FAIL\t/m.test(output)) return 1;
+  if (/^(?:ok\s|PASS$)/m.test(output)) return 0;
+  // npm: "npm ERR!" with the runner's "exit code N" line
+  const exit = lastMatch(output, /exit code (\d+)/i);
+  if (/^npm ERR!/m.test(output) && exit) return Number(exit[1]) === 0 ? 0 : 1;
+  return null;
+}
+
+const failedIn = (summary) => {
+  const m = /(\d+) failed/.exec(summary);
+  return m ? Number(m[1]) : 0;
+};
+
+function lastMatch(text, re) {
+  const g = new RegExp(re.source, `${re.flags.replace("g", "")}g`);
+  let m = null;
+  for (const x of text.matchAll(g)) m = x;
+  return m;
+}
+
+/** The session's source writes as event indexes with repository paths; tests, docs and lock files are left out. */
+function sourceEdits(ctx) {
+  const out = [];
+  ctx.session.events.forEach((e, i) => {
+    if (e.kind !== "write" || !e.path) return;
+    const rel = repoPath(ctx, e.path);
+    if (!rel || isTestPath(rel) || isDocPath(rel) || isLockPath(rel)) return;
+    out.push({ i, rel });
+  });
+  return out;
+}
+
+function testsRed(ctx) {
+  const { events } = ctx.session;
+  const edits = sourceEdits(ctx);
+  const lastEdit = edits.length ? edits[edits.length - 1].i : -1;
+  const runAt = lastIndex(events, (e) => e.kind === "bash" && TEST_RUN.test(e.command));
+  if (runAt < 0 || runAt < lastEdit) return [];
+  const run = events[runAt];
+  if (run.output === undefined) return [];
+  const failed = failingCount(run.output);
+  if (!failed) return [];
+  const cmd = clip(run.command, 80);
+  const answer = ctx.answer;
+  if (findClaims(answer).some((c) => c.family === "passing")) {
+    return [{ id: "tests-red", text: `The last test run (${cmd}) reported ${failed} failing, and your answer says the tests pass. Fix them or report them.` }];
+  }
+  if (ANSWER_MENTIONS_FAILURE.test(answer)) return [];
+  return [{ id: "tests-red", text: `The last test run (${cmd}) reported ${failed} failing; your answer does not say so. Fix them or report them.` }];
+}
+
+function fixNotRedGreen(ctx) {
+  const { events, prompt } = ctx.session;
+  if (!FIX_REQUEST.test(prompt)) return [];
+  const edits = sourceEdits(ctx);
+  if (!edits.length || !testCommand(ctx)) return [];
+  const lastEdit = edits[edits.length - 1].i;
+  const runs = events.map((e, i) => ({ e, i })).filter(({ e }) => e.kind === "bash" && TEST_RUN.test(e.command));
+  const redBefore = runs.some(({ e, i }) => i < lastEdit && failingCount(e.output) > 0);
+  const greenAfter = runs.some(({ e, i }) => i > lastEdit && failingCount(e.output) === 0);
+  if (redBefore && greenAfter) return [];
+  const testWritten = events.some((e) => e.kind === "write" && e.path && isTestPath(repoPath(ctx, e.path) ?? ""));
+  const runAfter = runs.some(({ i }) => i > lastEdit);
+  if (testWritten && runAfter) return [];
+  return [{ id: "fix-not-redgreen", text: "No red-then-green evidence for the fix: run the new test against the old code (undo the fix, run, restore) or say you could not. Run the test command before the edit, watch it fail, then run it again after the edit." }];
+}
+
+/** The repository paths the session wrote that git does not track yet (and does not ignore). */
+function untrackedWritten(ctx) {
+  const untracked = new Set(git(["ls-files", "--others", "--exclude-standard", "-z"], ctx.top).split("\0").filter(Boolean));
+  const out = new Set();
+  for (const e of ctx.session.events) {
+    if (e.kind !== "write" || !e.path) continue;
+    const rel = repoPath(ctx, e.path);
+    if (rel && untracked.has(rel)) out.add(rel);
+  }
+  return out;
+}
+
+function stubsInChange(ctx) {
+  const change = ctx.change();
+  const committed = change?.range === "HEAD~1..HEAD";
+  const fresh = untrackedWritten(ctx);
+  const added = (change ? change.added : []).filter((a) => !isLockPath(a.path)).map((a) => ({ file: a.path, line: a.line, text: a.text }));
+  // A new file the session wrote is part of the change even before git knows about it.
+  for (const rel of fresh) {
+    let lines;
+    try {
+      lines = readFileSync(join(ctx.top, rel), "utf8").split("\n");
+    } catch {
+      continue;
+    }
+    if (lines.some((l) => l.includes("\0"))) continue;
+    lines.forEach((text, i) => added.push({ file: rel, line: i + 1, text }));
+  }
+  if (!added.length) return [];
+  const read = (file) => {
+    try {
+      return committed && !fresh.has(file) ? git(["show", `HEAD:${file}`], ctx.top).split("\n") : readFileSync(join(ctx.top, file), "utf8").split("\n");
+    } catch {
+      return null;
+    }
+  };
+  const { findings } = scanAdded(added, { read });
+  const kept = findings.filter((f) => !isTestPath(f.file) || TEST_STUB_CODES.has(f.code)).slice(0, SHOWN);
+  if (!kept.length) return [];
+  const list = kept.map((f) => `${f.file}:${f.line} ${f.code}`).join("; ");
+  const scope = committed ? ` --range ${change.range}` : "";
+  return [{ id: "stubs-in-change", text: `Added lines carry stub or skip markers: ${list}. Run product-engineer stubs${scope} and fix each one, or say why it stays.` }];
+}
+
+/** Relative paths that package.json names as entry points (main, bin, exports), without a leading "./". */
+function entryPoints(top) {
+  const out = new Set();
+  let pkg;
+  try {
+    pkg = JSON.parse(readFileSync(join(top, "package.json"), "utf8"));
+  } catch {
+    return out;
+  }
+  const walk = (v) => {
+    if (typeof v === "string") out.add(v.replace(/^\.\//, ""));
+    else if (v && typeof v === "object") for (const x of Object.values(v)) walk(x);
+  };
+  walk(pkg.main);
+  walk(pkg.bin);
+  walk(pkg.exports);
+  return out;
+}
+
+function unwiredFile(ctx) {
+  const added = new Set();
+  const change = ctx.change();
+  if (change) {
+    const args = change.range === "HEAD" ? ["HEAD"] : ["HEAD~1", "HEAD"];
+    for (const p of git(["diff", "--name-only", "--diff-filter=A", "--no-renames", ...args], ctx.top).split("\n")) if (p) added.add(p);
+  }
+  for (const rel of untrackedWritten(ctx)) added.add(rel);
+  const entries = entryPoints(ctx.top);
+  const items = [];
+  for (const rel of [...added].sort()) {
+    if (items.length >= UNWIRED_MAX) break;
+    if (!CODE_FILE.test(rel) || CONFIG_FILE.test(rel) || isTestPath(rel) || isDocPath(rel) || isLockPath(rel) || entries.has(rel)) continue;
+    const noExt = rel.replace(/\.[^/.]+$/, "");
+    const name = basename(noExt);
+    if (SKIP_BASENAMES.has(name)) continue;
+    // The name as a word, the last two path segments (the usual relative import, "./lib/x"), and the full path without extension.
+    const needles = [...new Set([name, noExt.split("/").slice(-2).join("/"), noExt])];
+    const wired = needles.some((needle) => {
+      // --untracked: a new file that another new file imports is wired too.
+      const rows = gitGrep(["--untracked", "-n", "-I", "-F", "-e", needle], ctx.top).split("\n");
+      return rows.some((row) => {
+        const m = /^([^:]+):\d+:(.*)$/.exec(row);
+        if (!m || m[1] === rel) return false;
+        return needle === name ? wordRe(name).test(m[2]) : m[2].includes(needle);
+      });
+    });
+    if (!wired) items.push({ id: "unwired-file", text: `New file ${rel} is referenced nowhere. Wire it in or say it is standalone.` });
+  }
+  return items;
+}
+
 /**
  * The findings for one session. `limits` may set budgetMs (default 3000) and now (default Date.now); the budget is
  * checked between checks. Any error returns the findings found so far, and no error at all returns no findings.
  */
-export function verify({ cwd = process.cwd(), session, limits = {} } = {}) {
+export function verify({ cwd = process.cwd(), session, limits = {}, answer } = {}) {
   try {
     if (!session || !Array.isArray(session.events) || !session.events.some((e) => e.kind === "write")) return [];
     const budget = limits.budgetMs ?? BUDGET_MS;
@@ -308,6 +499,7 @@ export function verify({ cwd = process.cwd(), session, limits = {} } = {}) {
       cwd,
       top,
       session,
+      answer: typeof answer === "string" ? answer : String(session.last ?? ""),
       change: memo(() => {
         try {
           return readChange(top, session);
@@ -323,7 +515,7 @@ export function verify({ cwd = process.cwd(), session, limits = {} } = {}) {
         }
       }),
     };
-    const checks = [testsNotRun, namesDangling, notesCheck, twinsOpen];
+    const checks = [testsNotRun, namesDangling, notesCheck, twinsOpen, testsRed, fixNotRedGreen, stubsInChange, unwiredFile];
     const findings = [];
     for (const check of checks) {
       if (over()) break;

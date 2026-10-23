@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { verify, rangeOf } from "../bin/verify.mjs";
+import { verify, rangeOf, failingCount } from "../bin/verify.mjs";
 import { readSession, REPLY_WHOLE } from "../bin/claim-gate.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -265,4 +265,144 @@ test("state: stop_hook_active without a session id never blocks, and the switch 
   const lines = [promptLine, editOf(dir, "src/a.js")];
   assert.equal(hook(dir, lines, { stop_hook_active: true }).stdout, "");
   assert.equal(hook(dir, lines, { session_id: `verify-off-${process.pid}` }, { PRODUCT_ENGINEER_NO_GATE: "1" }).stdout, "");
+});
+
+// ---- B1b: the result of the last test run, red-then-green, stubs in the change, unwired new files ----
+
+const OUT = (command, output) => ({ kind: "bash", command, output });
+const SP = (events, prompt = "") => ({ events, prompt, last: "" });
+
+test("readSession pairs each Bash tool_use with its tool_result and keeps the last 4000 characters", () => {
+  const long = `${"x".repeat(5000)}\nℹ fail 2\n`;
+  const s = readSession([
+    JSON.stringify({ type: "user", message: { content: "Fix the parser." } }),
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", id: "t1", name: "Bash", input: { command: "npm test" } }] } }),
+    JSON.stringify({ type: "user", message: { content: [{ type: "tool_result", tool_use_id: "t1", content: long }] } }),
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", id: "t2", name: "Bash", input: { command: "ls" } }, { type: "text", text: "Done." }] } }),
+    JSON.stringify({ type: "user", message: { content: [{ type: "tool_result", tool_use_id: "t2", content: [{ type: "text", text: "a.js" }] }] } }),
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", id: "t3", name: "Bash", input: { command: "npm run build" } }] } }),
+  ]);
+  assert.equal(s.events[0].command, "npm test");
+  assert.equal(s.events[0].output.length, 4000);
+  assert.ok(s.events[0].output.endsWith("ℹ fail 2\n"));
+  assert.equal(s.events[1].output, "a.js");
+  assert.equal(s.events[2].output, undefined, "a tool_use with no result has no output");
+  assert.equal(s.last, "Done.");
+  assert.equal(s.prompt, "Fix the parser.");
+});
+
+test("failingCount reads the summary of each runner, 0 for green, null when no summary is printed", () => {
+  const cases = [
+    ["ℹ tests 3\nℹ pass 2\nℹ fail 1\n", 1],
+    ["ℹ tests 3\nℹ pass 3\nℹ fail 0\n", 0],
+    ["Tests:       1 failed, 2 passed, 3 total", 1],
+    ["Tests:       3 passed, 3 total", 0],
+    ["      Tests  2 failed | 1 passed (3)", 2],
+    ["=========== 1 failed, 2 passed in 0.12s ===========", 1],
+    ["==== 3 passed in 0.01s ====", 0],
+    ["test result: FAILED. 1 passed; 2 failed; 0 ignored", 2],
+    ["--- FAIL: TestParse (0.00s)\nFAIL\nFAIL\texample/x\t0.01s", 1],
+    ["ok  \texample/x\t0.01s", 0],
+    ["npm ERR! Test failed.\nexit code 1", 1],
+    ["hello world", null],
+    ["", null],
+  ];
+  for (const [output, want] of cases) assert.equal(failingCount(output), want, JSON.stringify(output));
+});
+
+test("tests-red: the last test run after the last source edit is red and the answer does not say so", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const red = OUT("npm test", "ℹ tests 2\nℹ fail 1\n");
+  const f = verify({ cwd: dir, session: SP([W(dir, "src/a.js"), red]), answer: "The fee rule is in place." });
+  assert.ok(ids(f).includes("tests-red"));
+  assert.equal(text(f, "tests-red"), "The last test run (npm test) reported 1 failing; your answer does not say so. Fix them or report them.");
+});
+
+test("tests-red: a red answer that names the failure, a green last run, or a run before the edit is not a finding", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const red = OUT("npm test", "ℹ fail 1\n");
+  assert.ok(!ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js"), red]), answer: "One test still fails; I stopped here." })).includes("tests-red"));
+  assert.ok(!ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js"), OUT("npm test", "ℹ fail 0\n")]), answer: "Done." })).includes("tests-red"));
+  assert.ok(!ids(verify({ cwd: dir, session: SP([red, W(dir, "src/a.js")]), answer: "Done." })).includes("tests-red"));
+});
+
+test("tests-red: an answer that says the tests pass while the last run is red says so explicitly", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const f = verify({ cwd: dir, session: SP([W(dir, "src/a.js"), OUT("npm test", "ℹ fail 3\n")]), answer: "All tests pass now." });
+  assert.equal(text(f, "tests-red"), "The last test run (npm test) reported 3 failing, and your answer says the tests pass. Fix them or report them.");
+});
+
+test("fix-not-redgreen: a fix with no red run before the edit and no new test run after it is a finding", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const green = OUT("npm test", "ℹ fail 0\n");
+  const want = "No red-then-green evidence for the fix: run the new test against the old code (undo the fix, run, restore) or say you could not.";
+  assert.ok(text(verify({ cwd: dir, session: SP([W(dir, "src/a.js"), green], "Fix the crash on empty input.") }), "fix-not-redgreen").startsWith(want));
+  assert.ok(ids(verify({ cwd: dir, session: SP([green, W(dir, "src/a.js"), green], "Fix the crash on empty input.") })).includes("fix-not-redgreen"));
+});
+
+test("fix-not-redgreen: a red run before the edit and a green run after it, or a new test run after the edit, settles it", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const prompt = "Fix the crash on empty input.";
+  const red = OUT("npm test", "ℹ fail 1\n");
+  const green = OUT("npm test", "ℹ fail 0\n");
+  assert.ok(!ids(verify({ cwd: dir, session: SP([red, W(dir, "src/a.js"), green], prompt) })).includes("fix-not-redgreen"));
+  assert.ok(!ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js"), W(dir, "test/a.test.js"), green], prompt) })).includes("fix-not-redgreen"));
+  assert.ok(!ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js"), green], "Add the fee rule.") })).includes("fix-not-redgreen"));
+  const bare = repo({ "src/a.js": "export const a = 1;\n" });
+  put(bare, { "src/a.js": "export const a = 2;\n" });
+  assert.ok(!ids(verify({ cwd: bare, session: SP([W(bare, "src/a.js")], prompt) })).includes("fix-not-redgreen"));
+});
+
+test("stubs-in-change: an added stub marker is a finding; a doc or a clean change is not", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n", "README.md": "Notes.\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n// TODO finish the fee rule\n" });
+  const f = verify({ cwd: dir, session: SP([W(dir, "src/a.js")]) });
+  assert.equal(text(f, "stubs-in-change").includes("src/a.js:2 stub-marker"), true);
+  assert.match(text(f, "stubs-in-change"), /Run product-engineer stubs and fix each one/);
+
+  const docs = repo({ ...TESTED, "src/a.js": "export const a = 1;\n", "README.md": "Notes.\n" });
+  put(docs, { "README.md": "TODO: write this section.\n" });
+  assert.ok(!ids(verify({ cwd: docs, session: SP([W(docs, "README.md")]) })).includes("stubs-in-change"));
+
+  const clean = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(clean, { "src/a.js": "export const a = 2;\n" });
+  assert.ok(!ids(verify({ cwd: clean, session: SP([W(clean, "src/a.js")]) })).includes("stubs-in-change"));
+});
+
+test("stubs-in-change: a skipped test in a test file counts, a plain test in a test file does not", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "test/a.test.js": "import { test } from 'node:test';\ntest.skip('later', () => {\n  assert.ok(1);\n});\n" });
+  assert.equal(text(verify({ cwd: dir, session: SP([W(dir, "test/a.test.js")]) }), "stubs-in-change").includes("test/a.test.js:2 skipped-test"), true);
+  const plain = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(plain, { "test/b.test.js": "test('x', () => {\n  assert.equal(f(), 1);\n});\n" });
+  assert.ok(!ids(verify({ cwd: plain, session: SP([W(plain, "test/b.test.js")]) })).includes("stubs-in-change"));
+});
+
+test("unwired-file: a new source file that nothing mentions is a finding, staged or not; a mention by a tracked or new file settles it", () => {
+  const dir = repo({ ...TESTED, "src/app.js": "export const app = 1;\n" });
+  put(dir, { "src/newmod.js": "export const fee = 1;\n" });
+  const want = "New file src/newmod.js is referenced nowhere. Wire it in or say it is standalone.";
+  assert.equal(text(verify({ cwd: dir, session: SP([W(dir, "src/newmod.js")]) }), "unwired-file"), want);
+  sh(dir, ["add", "src/newmod.js"]);
+  assert.equal(text(verify({ cwd: dir, session: SP([W(dir, "src/newmod.js")]) }), "unwired-file"), want);
+
+  const tracked = repo({ ...TESTED, "src/page.js": "export const page = 1;\n" });
+  put(tracked, { "src/page.js": "import { fee } from './newmod.js';\nexport const page = fee;\n", "src/newmod.js": "export const fee = 1;\n" });
+  assert.ok(!text(verify({ cwd: tracked, session: SP([W(tracked, "src/page.js"), W(tracked, "src/newmod.js")]) }), "unwired-file").includes("newmod"));
+
+  const newImporter = repo({ ...TESTED, "src/app.js": "export const app = 1;\n" });
+  put(newImporter, { "src/newmod.js": "export const fee = 1;\n", "src/other.js": "import { fee } from './newmod.js';\n" });
+  assert.ok(!text(verify({ cwd: newImporter, session: SP([W(newImporter, "src/newmod.js"), W(newImporter, "src/other.js")]) }), "unwired-file").includes("newmod"));
+});
+
+test("unwired-file: entry points, index files, tests and config are never candidates", () => {
+  const dir = repo({ ...TESTED, "package.json": JSON.stringify({ scripts: { test: "node --test" }, main: "src/entry.js" }), "src/app.js": "export const app = 1;\n" });
+  put(dir, { "src/entry.js": "export const e = 1;\n", "src/index.js": "export const i = 1;\n", "test/x.test.js": "x\n", "config/app.json": "{}\n" });
+  const f = verify({ cwd: dir, session: SP([W(dir, "src/entry.js"), W(dir, "src/index.js"), W(dir, "test/x.test.js"), W(dir, "config/app.json")]) });
+  assert.ok(!ids(f).includes("unwired-file"), JSON.stringify(f));
 });
