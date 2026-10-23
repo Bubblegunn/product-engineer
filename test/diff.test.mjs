@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readDiff, crossCheck, isTestPath, isDocPath, namedPaths } from "../bin/diff.mjs";
+import { readDiff, crossCheck, isTestPath, isDocPath, namedPaths, secretHitsIn, conflictMarkerHitsIn } from "../bin/diff.mjs";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
 const has = (f, level, re) => f.some((x) => x.level === level && re.test(x.message));
@@ -365,7 +365,6 @@ test("any top-level dot-directory is ignored, not only .github", () => {
 
 // Fix round, final review. A call or an identifier after an assignment is code, not a value.
 // A quoted value or an unquoted value that holds a digit and ends the token is a value.
-import { secretHitsIn } from "../bin/diff.mjs";
 test("secret-content reads a quoted value or an unquoted value with a digit, never a call or an identifier", () => {
   // Built at run time, so no secret-shaped literal is written into this file.
   const quoted = "AbCdEfGh" + "1234567890xY";
@@ -453,4 +452,168 @@ test("a fix that changes only a lock file or a workflow does not warn fix-withou
   assert.ok(!workflow.some((x) => x.code === "fix-without-test"), JSON.stringify(workflow));
   const withCode = crossCheck("fix: bump the action version", change("package-lock.json", "src/app.js"));
   assert.ok(withCode.some((x) => x.code === "fix-without-test"), "a source file alongside the lock file still warns");
+});
+
+// Provider tokens, inline URL passwords, npm auth tokens and conflict markers. Each secret-shaped
+// value is assembled at run time, so no secret-shaped literal is written into this file. A
+// near-miss is built the same way and interpolated into the patch line, so the added text holds
+// the exact token whose length is being tested (a quote between prefix and tail would not).
+
+// A zero-context patch with one added file holding the given lines, numbered from 1.
+const addedPatch = (path, ...lines) =>
+  [`diff --git a/${path} b/${path}`, `+++ b/${path}`, `@@ -0,0 +1,${lines.length} @@`, ...lines.map((l) => `+${l}`)].join("\n");
+const kindsOf = (patch) => secretHitsIn(patch).map((h) => h.kind);
+
+test("an AWS access key id is reported; a 15-character AKIA value is not", () => {
+  const key = "AKIA" + "Q3XW7M2NRT5HBGZK";
+  const short = "AKIA" + "Q3XW7M2NRT5HBGZ";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `const k = "${key}";`)), ["an AWS access key id"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `const k = "${short}";`)), []);
+});
+
+test("the documented AWS example key, which contains EXAMPLE, is not reported", () => {
+  const example = "AKIA" + "IOSFODNN7EXAMPLE";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `key = ${example}`)), []);
+});
+
+test("a GitHub token is reported; ghp_ with too few characters is not", () => {
+  const token = "ghp_" + "a1B2c3D4e5F6g7H8i9J0k1L2m3N4o5P6q7R8";
+  const short = "ghp_" + "a1B2c3D4e5F6g7H8i9J0";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `t = "${token}"`)), ["a GitHub token"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `t = "${short}"`)), []);
+});
+
+test("a fine-grained GitHub token is reported; a github_pat_ prefix with a short tail is not", () => {
+  const fine = "github_pat_" + "11ABCDEFG0" + "a".repeat(45);
+  const short = "github_pat_" + "a".repeat(20);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `t = "${fine}"`)), ["a GitHub token"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `t = "${short}"`)), []);
+});
+
+test("a Slack token is reported; the prefix with a short tail is not", () => {
+  const slack = "xoxb" + "-1234567890-abcdefghij";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `s = "${slack}"`)), ["a Slack token"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `s = "xoxb-short"`)), []);
+});
+
+test("a Google API key is reported; an AIza value one character short is not", () => {
+  const google = "AIza" + "S".repeat(35);
+  const short = "AIza" + "S".repeat(34);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `g = "${google}"`)), ["a Google API key"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `g = "${short}"`)), []);
+});
+
+test("a Stripe live key is reported; a live prefix with a short tail, or a test-mode key, is not", () => {
+  const live = "sk" + "_live_" + "4eC39HqLyjWDarjtT1zdp7dc";
+  const short = "sk" + "_live_" + "abc";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `stripe = "${live}"`)), ["a Stripe live key"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `stripe = "${short}"`)), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `stripe = "sk_test_abc"`)), []);
+});
+
+test("an Anthropic or OpenAI style key is reported; a sk- prefix with a short tail is not", () => {
+  const key = "sk-ant-" + "api03-" + "a".repeat(40);
+  const short = "sk-" + "a1b2c3d4e5f6g7h8i9j0k1";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `k = "${key}"`)), ["an Anthropic or OpenAI style API key"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `k = "${short}"`)), []);
+});
+
+test("a URL with an inline password is reported; a placeholder password is not", () => {
+  const real = "https://deploy:" + "hunter2Real" + "@git.example.org/repo.git";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `url = "${real}"`)), ["a URL with an inline password"]);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `url = "https://user:\${PASS}@host"`)), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `url = "https://user:changeme@host"`)), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `url = "https://user:<password>@host"`)), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `url = "https://example.com/a:b@c"`)), []);
+});
+
+test("an npm _authToken value is reported; an environment reference or a short value is not", () => {
+  // Twelve characters with no digit: the existing assignment rule needs 16 characters or a digit,
+  // so only the npm rule reports this value.
+  const npm = "//registry.npmjs.org/:_authToken=" + "abcdefghijkl";
+  assert.deepEqual(kindsOf(addedPatch(".npmrc", npm)), ["an npm auth token"]);
+  assert.deepEqual(kindsOf(addedPatch(".npmrc", "//registry.npmjs.org/:_authToken=${NPM_TOKEN}")), []);
+  assert.deepEqual(kindsOf(addedPatch(".npmrc", "//registry.npmjs.org/:_authToken=short")), []);
+});
+
+test("a merge conflict marker in an added line is reported with its path and line number", () => {
+  const patch = addedPatch("src/a.js", "const a = 1;", "<<<<<<< HEAD", "const a = 2;", "=======", "const a = 3;", ">>>>>>> feature");
+  assert.deepEqual(conflictMarkerHitsIn(patch), [
+    { path: "src/a.js", line: 2, kind: "a merge conflict marker" },
+    { path: "src/a.js", line: 4, kind: "a merge conflict marker" },
+    { path: "src/a.js", line: 6, kind: "a merge conflict marker" },
+  ]);
+});
+
+test("a lone ======= line is not a conflict marker when the file has no conflict start or end", () => {
+  const underline = addedPatch("docs/guide.md", "Install", "=======", "Run the command.");
+  assert.deepEqual(conflictMarkerHitsIn(underline), []);
+});
+
+test("a seven-character marker that is indented, or a longer run of angle brackets, is not a conflict marker", () => {
+  const near = addedPatch("src/a.js", "  <<<<<<< HEAD", "<<<<<<<<< not seven", " >>>>>>> indented");
+  assert.deepEqual(conflictMarkerHitsIn(near), []);
+});
+
+test("a conflict marker in a context line is not reported, only added lines are read", () => {
+  const patch = [
+    "diff --git a/src/a.js b/src/a.js",
+    "+++ b/src/a.js",
+    "@@ -1,2 +1,2 @@",
+    "<<<<<<< HEAD",
+    "-old",
+    "+new",
+  ].join("\n");
+  assert.deepEqual(conflictMarkerHitsIn(patch), []);
+});
+
+// Review fixes. The timing inputs are built at run time; the secret-shaped values in the negative
+// and positive cases are assembled from fragments so no secret-shaped literal sits in this file.
+test("a 200k-character line is read in under a second for the URL, npm and scheme inputs", () => {
+  const cases = {
+    url: "https://" + "a".repeat(200000),
+    npm: "_authToken=" + "a".repeat(200000),
+    scheme: "a://" + "b".repeat(200000) + ":",
+  };
+  for (const [name, line] of Object.entries(cases)) {
+    const t0 = performance.now();
+    secretHitsIn(addedPatch("src/a.js", line));
+    const ms = performance.now() - t0;
+    assert.ok(ms < 1000, `${name} line took ${Math.round(ms)} ms`);
+  }
+});
+
+test("a documented URL placeholder and a password shorter than six characters are not reported", () => {
+  assert.deepEqual(kindsOf(addedPatch("docs/a.md", "git clone https://user:YOUR_PASSWORD@host/repo.git")), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", "u = a://x:p@y")), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", "u = a://x:abcde@y")), []);
+});
+
+test("an npm _authToken that is an environment reference, bare or quoted, is not reported", () => {
+  assert.deepEqual(kindsOf(addedPatch(".npmrc", "//registry.npmjs.org/:_authToken=$NPM_TOKEN")), []);
+  assert.deepEqual(kindsOf(addedPatch(".npmrc", '//registry.npmjs.org/:_authToken="${NPM_TOKEN}"')), []);
+});
+
+test("a hyphenated sk- slug with no digit is not reported, and an sk- value that says your is not reported", () => {
+  assert.deepEqual(kindsOf(addedPatch("docs/a.md", "run sk-learn-pipeline-name-that-is-very-long-indeed")), []);
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", 'k = "sk-your-key-' + '1234567890abcdefghijklmnop"')), []);
+});
+
+test("a Slack-shaped value with no digit in its tail is not reported", () => {
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", 's = "xoxb-your-token-here-abcd"')), []);
+});
+
+test("a GitHub token that contains the lowercase word example is still reported", () => {
+  const token = "ghp_" + "example" + "a1B2c3D4e5F6g7H8i9J0k1L2m3N4o5";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `t = "${token}"`)), ["a GitHub token"]);
+});
+
+test("a Stripe restricted live key is reported", () => {
+  const rk = "rk" + "_live_" + "4eC39HqLyjWDarjtT1zdp7dc";
+  assert.deepEqual(kindsOf(addedPatch("src/a.js", `stripe = "${rk}"`)), ["a Stripe live key"]);
+});
+
+test("a conflict marker split line that ends in CRLF is reported with its line number", () => {
+  const patch = addedPatch("src/a.js", "const a = 1;\r", "<<<<<<< HEAD\r", "const a = 2;\r", "=======\r", "const a = 3;\r", ">>>>>>> feature\r");
+  assert.deepEqual(conflictMarkerHitsIn(patch).map((h) => h.line), [2, 4, 6]);
 });

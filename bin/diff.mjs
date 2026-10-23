@@ -89,20 +89,67 @@ export const isSecretPath = (p) => {
 const SECRET_ASSIGNMENT = /(?:api[_-]?key|apikey|secret|token|password|passwd)["']?\s*[:=]\s*(?:["'][A-Za-z0-9_\-+/=]{16,}["']|(?=[A-Za-z0-9_\-+/=]*\d)[A-Za-z0-9_\-+/=]{16,}(?=[\s,;)\]}]|$))/i;
 const PRIVATE_KEY_HEADER = /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/;
 
+// Provider token shapes. Each is specific enough that a match is a credential in practice, not a
+// word that happens to look like one. The optional third field is a further test on the match.
+// A match is skipped when it is the provider's own documentation value (AKIAIOSFODNN7EXAMPLE).
+const digitAndLetter = (tail) => /\d/.test(tail) && /[A-Za-z]/.test(tail);
+const tailOf = (s) => s.slice(s.indexOf("-") + 1);
+const TOKEN_RULES = [
+  [/\b(AKIA|ASIA)[0-9A-Z]{16}\b/g, "an AWS access key id"],
+  [/\bgh[pousr]_[A-Za-z0-9]{36,}\b/g, "a GitHub token"],
+  [/github_pat_[A-Za-z0-9_]{50,}/g, "a GitHub token"],
+  [/\bxox[baprs]-[A-Za-z0-9-]{10,}/g, "a Slack token", (m) => /\d/.test(tailOf(m))],
+  [/\bAIza[0-9A-Za-z_\-]{35}\b/g, "a Google API key"],
+  [/\b[sr]k_live_[0-9A-Za-z]{16,}/g, "a Stripe live key"],
+  [/\bsk-(ant-)?[A-Za-z0-9_\-]{32,}/g, "an Anthropic or OpenAI style API key", (m) => digitAndLetter(tailOf(m)) && !/your|example/i.test(m)],
+];
+
+// The documentation values a provider publishes. Compared case-insensitively, but only the whole
+// value matches, so a credential that merely contains the word example is still reported.
+const DOCUMENTED_SAMPLES = new Set(["AKIAIOSFODNN7EXAMPLE", "ASIAIOSFODNN7EXAMPLE"]);
+const isDocumentedSample = (m) => m.includes("EXAMPLE") || (/example/i.test(m) && DOCUMENTED_SAMPLES.has(m.toUpperCase()));
+
+// Lines longer than this are not read for the URL and npm rules. Those rules are the ones whose
+// backtracking grows with line length; a minified bundle past this size is not reviewed line by line.
+const LONG_LINE = 20000;
+
+// An inline password in a URL. The scheme is bounded and starts at a word boundary, and the line must
+// contain "://" first, so a long run of letters cannot be scanned from every start position.
+// The regex only lets through a password of six or more characters that is not a template or
+// placeholder; realUrlPassword() applies the rest.
+const URL_PASSWORD =
+  /\b[a-z][a-z0-9+.\-]{0,31}:\/\/[^\s/:@]+:(?!(?:password|pass|secret|changeme|x{3,}|example|%s|<[^>\s]*>|\$\{[^}\s]*\}|\{\{[^}\s]*\}\})@)([^\s/@]{6,})@[^\s/]+/gi;
+const realUrlPassword = (pw) => !/^[<*$%{]/.test(pw) && !/^[*x]+$/i.test(pw) && !/password|pass|secret|token|your/i.test(pw);
+const urlPasswordIn = (text) => [...text.matchAll(URL_PASSWORD)].some((m) => realUrlPassword(m[1]));
+
+// An npmrc auth token. A value that starts with an environment reference or a template marker is not a secret.
+const NPM_AUTH_TOKEN = /_authToken=(?![$"'<%{])\S{10,}/;
+
+// A merge conflict marker, at column 0 and exactly seven characters long.
+const CONFLICT_START = /^<{7}(?:\s|$)/;
+const CONFLICT_END = /^>{7}(?:\s|$)/;
+const CONFLICT_SPLIT = /^={7}\r?$/;
+
 /** The first secret-shaped kind a single added line matches, or undefined. */
 function secretKind(text) {
   if (PRIVATE_KEY_HEADER.test(text)) return "a private key header";
   if (SECRET_ASSIGNMENT.test(text)) return "a long value assigned to a secret-like name";
+  for (const [re, kind, real] of TOKEN_RULES) {
+    if ([...text.matchAll(re)].some((m) => !isDocumentedSample(m[0]) && (!real || real(m[0])))) return kind;
+  }
+  const long = text.length > LONG_LINE;
+  if (!long && text.includes("://") && urlPasswordIn(text)) return "a URL with an inline password";
+  if (!long && text.includes("_authToken=") && NPM_AUTH_TOKEN.test(text)) return "an npm auth token";
   return undefined;
 }
 
 /**
- * Walk a zero-context patch and return { path, line, kind } for each added line that looks like
- * a secret. The line counter follows the hunk headers, so a content line that begins with "+++"
- * or "diff" is still an added line and not a header.
+ * Walk a zero-context patch and call visit(path, line, text) for each added line, with the path
+ * the line belongs to (null when the file has no new side) and its number in the new file. The
+ * line counter follows the hunk headers, so a content line that begins with "+++" or "diff" is
+ * still an added line and not a header.
  */
-export function secretHitsIn(patch) {
-  const hits = [];
+function walkAdded(patch, visit) {
   let path = null;
   let inHeader = false;
   let line = 0;
@@ -125,14 +172,41 @@ export function secretHitsIn(patch) {
     }
     if (inHeader) continue;
     if (raw.startsWith("+")) {
-      const kind = path ? secretKind(raw.slice(1)) : undefined;
-      if (kind) hits.push({ path, line, kind });
+      visit(path, line, raw.slice(1));
       line++;
     } else if (raw.startsWith(" ")) {
       line++;
     }
   }
+}
+
+/**
+ * Walk a zero-context patch and return { path, line, kind } for each added line that looks like
+ * a secret.
+ */
+export function secretHitsIn(patch) {
+  const hits = [];
+  walkAdded(patch, (path, line, text) => {
+    const kind = path ? secretKind(text) : undefined;
+    if (kind) hits.push({ path, line, kind });
+  });
   return hits;
+}
+
+/**
+ * Return { path, line, kind } for each added line that is a merge conflict marker. A `=======`
+ * line is a marker only when the same file also has an added `<<<<<<<` or `>>>>>>>` line: alone
+ * it is the underline of a markdown or rst heading.
+ */
+export function conflictMarkerHitsIn(patch) {
+  const added = [];
+  walkAdded(patch, (path, line, text) => {
+    if (path) added.push({ path, line, text });
+  });
+  const hasEdge = new Set(added.filter((a) => CONFLICT_START.test(a.text) || CONFLICT_END.test(a.text)).map((a) => a.path));
+  return added
+    .filter((a) => CONFLICT_START.test(a.text) || CONFLICT_END.test(a.text) || (CONFLICT_SPLIT.test(a.text) && hasEdge.has(a.path)))
+    .map((a) => ({ path: a.path, line: a.line, kind: "a merge conflict marker" }));
 }
 
 // Lockfiles are generated from the manifest; a change that touches one is not a second unit of work.
