@@ -60,4 +60,6 @@ F6 in two parts (F6-grader gates, F6-runs is descriptive). Scripts stay the judg
 
 ## Changes after the freeze
 
-(none yet)
+1. Amendment A1 (2026-10-23, before any grading call of this measurement, no score of it seen): confirms the grading method already frozen in section 2 of commit 5b4dcf5 and implemented by tooling commit 1e8bc30:
+   five joint votes per task (seeds 1 to 5), `PE_BENCH_REASON_FIRST=1` (reason before verdict), majority of valid votes, fewer than three valid = err, a close split (the tooling lists 3-2 and 4-3, and also ties or 2-1 on three votes; for five votes that means 3-2) is re-asked once with seeds 6 and 7 for that task and the majority of seven decides.
+   This method is used for the whole round and is not changed again. The development gate used three votes without the switch; that is a different protocol and is not mixed with this one. If any grading ever runs under another method, it is not used; the whole round is regraded with this method.
