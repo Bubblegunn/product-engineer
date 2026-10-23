@@ -371,14 +371,22 @@ test("final score: a tie below the ceiling fails Rule B on that task", () => {
   assert.equal(s.ruleBPrime.exception, "X1");
 });
 
-test("final score: the Rule B ceiling clause needs the best other arm at the ceiling, not just another arm", () => {
-  // alpha has the best total (3 against beta's 2). On X1 beta ties ours at the ceiling but alpha does not.
+test("final score: the Rule B ceiling clause applies when ANY other arm is at the ceiling and ours is too (spec ceiling rule)", () => {
+  // alpha has the best total. On X1 beta ties ours at the ceiling and alpha does not reach it: ours is at the ceiling too, so X1 passes.
   const set = buildSet("final-ceiling-clause", {
     X1: { ours: [2, 2, 2], alpha: [1, 1, 1], beta: [2, 2, 2] },
     X2: { ours: [2, 2, 2], alpha: [2, 2, 2], beta: [0, 0, 0] },
   });
   const s = scoreSet({ ...set });
   assert.equal(s.bestOther.arm, "alpha");
+  assert.deepEqual(s.ruleB.failures, []);
+});
+
+test("final score: another arm at the ceiling while ours is below it fails Rule B", () => {
+  const set = buildSet("final-ceiling-below", {
+    X1: { ours: [1, 1, 1], alpha: [2, 2, 2], beta: [0, 0, 0] },
+  });
+  const s = scoreSet({ ...set });
   assert.deepEqual(s.ruleB.failures, ["X1"]);
 });
 

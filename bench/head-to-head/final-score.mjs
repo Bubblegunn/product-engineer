@@ -122,7 +122,7 @@ export function scoreSet({ runsDir, gradesDir, tasks, labels, taskList = null })
     const bestOtherMean = bestOther === null ? null : cells[task][bestOther];
     const ceiling = taskMax[task];
     const strictlyAbove = ours !== null && (maxOther === null || ours > maxOther);
-    const bothAtCeiling = ours !== null && ours === ceiling && bestOtherMean === ceiling;
+    const bothAtCeiling = ours !== null && ours === ceiling && maxOther !== null && maxOther === ceiling;
     const b = strictlyAbove || bothAtCeiling;
     return { task, ours, taskMax: ceiling, maxOther, maxOtherArm, bestOtherMean, b };
   });
