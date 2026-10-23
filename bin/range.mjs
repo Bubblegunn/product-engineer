@@ -138,12 +138,12 @@ function resolve(ref, cwd) {
   }
 }
 
-/** The identifier-like tokens of one removed line: --long-flags and words of 5+ characters with a letter, minus the stoplist. */
-function tokensOf(text) {
+/** The identifier-like tokens of one line: --long-flags and words of `min` (default 5) or more characters with a letter, minus the stoplist. */
+export function tokensOf(text, min = GONE_MIN) {
   const flags = text.match(GONE_FLAG) ?? [];
   const rest = text.replace(GONE_FLAG, " ");
-  const words = (rest.match(GONE_WORD) ?? []).filter((w) => w.length >= GONE_MIN && /[A-Za-z]/.test(w) && !GONE_STOP.has(w.toLowerCase()));
-  return [...flags.filter((f) => f.length >= GONE_MIN), ...words];
+  const words = (rest.match(GONE_WORD) ?? []).filter((w) => w.length >= min && /[A-Za-z]/.test(w) && !GONE_STOP.has(w.toLowerCase()));
+  return [...flags.filter((f) => f.length >= min), ...words];
 }
 
 /**

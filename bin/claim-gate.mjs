@@ -11,15 +11,19 @@
 // It reads the hook input on standard input ({ transcript_path, stop_hook_active, last_assistant_message }),
 // reads the transcript, and prints { decision: "block", reason } at most once per session. It never
 // blocks a session that used no tools. PRODUCT_ENGINEER_NO_GATE=1 turns it off. English phrases only.
-import { readFileSync, realpathSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { isTestPath, isDocPath } from "./diff.mjs";
+import { verify } from "./verify.mjs";
 
 const WRITE_TOOLS = new Set(["Write", "Edit", "MultiEdit", "NotebookEdit"]);
 const BASH_WRITE = /\bsed\s+(?:-[a-zA-Z]*i|--in-place)\b|\bperl\s+-[a-zA-Z]*i\b|\btee\s+(?!\/dev\/null)\S|\bgit\s+(?:apply|checkout\s+--|restore|reset|stash(?!\s+list))\b|\bpatch\s+-|(?:^|[\s\d])>>?\s*(?!&|\/dev\/null)[^\s&|;>]+|\b(?:mv|rm|cp)\s/;
 const GIT_STATE = /\bgit\s+(?:-\S+\s+)*(?:status|diff|log|show|stash\s+list|ls-files)\b/;
 const WS_DIFF = /\bgit\s+(?:-\S+\s+)*(?:diff|show|log)\b[^\n|;&]*\s(?:-w|-b|--ignore-all-space|--ignore-space-change|--ignore-space-at-eol|--ignore-blank-lines|--word-diff\S*|--color-moved\S*)(?=\s|$)|\bproduct-engineer\s+scope\b|\bcheck\.mjs\s+scope\b/;
-const TEST_RUN = /\b(?:npm|pnpm|yarn|bun)\s+(?:run\s+)?test\b|\bnpm\s+t\b|\bnode\s+(?:--[\w-]+\s+)*--test\b|\bnode\s+\S*\.test\.[cm]?js\b|\bpytest\b|\bpy\.test\b|\bpython3?\s+-m\s+(?:pytest|unittest)\b|\bgo\s+test\b|\bcargo\s+(?:test|nextest)\b|\b(?:vitest|jest|mocha|rspec|phpunit)\b|\bmvn\s+(?:-\S+\s+)*test\b|\bgradlew?\s+test\b|\bdotnet\s+test\b|\bmake\s+(?:test|check)\b|\b(?:bash|sh)\s+\S*test\S*\.sh\b/;
+export const TEST_RUN = /\b(?:npm|pnpm|yarn|bun)\s+(?:run\s+)?test\b|\bnpm\s+t\b|\bnode\s+(?:--[\w-]+\s+)*--test\b|\bnode\s+\S*\.test\.[cm]?js\b|\bpytest\b|\bpy\.test\b|\bpython3?\s+-m\s+(?:pytest|unittest)\b|\bgo\s+test\b|\bcargo\s+(?:test|nextest)\b|\b(?:vitest|jest|mocha|rspec|phpunit)\b|\bmvn\s+(?:-\S+\s+)*test\b|\bgradlew?\s+test\b|\bdotnet\s+test\b|\bmake\s+(?:test|check)\b|\b(?:bash|sh)\s+\S*test\S*\.sh\b/;
 
 // A starting-state statement that names where it comes from (the snapshot or context the session began with) is a quotation, not a claim about a check.
 const SNAPSHOT_SOURCE = /\b(?:snapshot|gitStatus|system context)\b/i;
@@ -167,18 +171,41 @@ function main() {
   try { run(); } catch { /* a hook that fails must not stop the agent */ }
 }
 
+// Blocks at most twice per session. The state file is keyed by session id; without one the loop is bounded by stop_hook_active alone.
+const MAX_BLOCKS = 2;
+const stateFile = (sid) => join(tmpdir(), `product-engineer-gate-${sid}.json`);
+const readState = (sid) => {
+  try {
+    const s = JSON.parse(readFileSync(stateFile(sid), "utf8"));
+    return { blocks: Number.isFinite(s.blocks) ? s.blocks : 0, hash: typeof s.hash === "string" ? s.hash : null };
+  } catch {
+    return { blocks: 0, hash: null };
+  }
+};
+const writeState = (sid, state) => { try { writeFileSync(stateFile(sid), JSON.stringify(state)); } catch { /* the state is a bound, not a result */ } };
+const hashOf = (text) => createHash("sha1").update(text).digest("hex");
+
 function run() {
   if (process.env.PRODUCT_ENGINEER_NO_GATE === "1") return;
   let input;
   try { input = JSON.parse(readFileSync(0, "utf8") || "{}"); } catch { return; }
-  if (input.stop_hook_active) return;
+  const active = Boolean(input.stop_hook_active);
+  const sid = typeof input.session_id === "string" ? input.session_id.replace(/[^A-Za-z0-9_-]/g, "_") : "";
+  if (active && !sid) return;
   let lines;
   try { lines = readFileSync(input.transcript_path, "utf8").split("\n"); } catch { return; }
+  const state = sid ? readState(sid) : { blocks: 0, hash: null };
+  if (state.blocks >= MAX_BLOCKS) return;
   const session = readSession(lines);
-  const written = session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text);
-  const reasons = gate(session, [String(input.last_assistant_message ?? session.last), ...written]);
-  if (!reasons.length) return;
-  process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${reasons.join(" ")} ${REPLY_WHOLE}` }) + "\n");
+  // After a block the agent is already repairing: only the checks that are objective run again, and only a new finding blocks.
+  const reasons = active ? [] : gate(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
+  const findings = verify({ cwd: input.cwd || process.cwd(), session });
+  const texts = [...reasons, ...findings.map((f) => f.text)];
+  if (!texts.length) return;
+  const hash = hashOf(findings.map((f) => f.text).join("\n"));
+  if (state.hash !== null && state.hash === hash) return;
+  if (sid) writeState(sid, { blocks: state.blocks + 1, hash });
+  process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${texts.join(" ")} ${REPLY_WHOLE}` }) + "\n");
 }
 
 const isEntry = () => { try { return import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href; } catch { return false; } };
