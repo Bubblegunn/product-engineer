@@ -171,6 +171,10 @@ export function buildMaterial(runDir, task, paths = {}) {
   const commands = ctx.commands.map((c) => `$ ${c}`);
   sections.push(`BASH COMMANDS\n${commands.length ? commands.join("\n") : "(none)"}`);
 
+  // r8-0b: held-out (external) tasks get the same evidence as H5 (full patches) and H1 to H4 (working-tree diff).
+  // PE_BENCH_GRADER_EVIDENCE=legacy restores the earlier material.
+  const external =
+    process.env.PE_BENCH_GRADER_EVIDENCE !== "legacy" && (task.variant === "external" || (ctx.state && ctx.state.variant === "external"));
   const newCommits = [];
   if (ctx.state) {
     const head = gitOutput(ctx.repo, ["rev-parse", "HEAD"]);
@@ -180,7 +184,7 @@ export function buildMaterial(runDir, task, paths = {}) {
         const message = gitOutput(ctx.repo, ["log", "-1", "--format=%B", sha]) || "";
         const stat = gitOutput(ctx.repo, ["show", "--stat", "--format=", sha]) || "";
         // H5 is graded on what the commits contain, so its new commits are shown as full patches.
-        const patch = task.variant === "h5" ? (gitOutput(ctx.repo, ["show", "--no-color", "--format=", sha]) || "") : null;
+        const patch = task.variant === "h5" || external ? (gitOutput(ctx.repo, ["show", "--no-color", "--format=", sha]) || "") : null;
         const diff = patch === null ? `diff stat:\n${stat.trimEnd()}` : `patch:\n${patch.trimEnd()}`;
         newCommits.push(`commit message:\n${message.trimEnd()}\n\n${diff}`);
       }
@@ -217,7 +221,7 @@ export function buildMaterial(runDir, task, paths = {}) {
     const history = gitOutput(ctx.repo, ["log", "--reverse", "--date=short", "--format=%ad %s"]) || "";
     sections.push(`REPOSITORY HISTORY (date and subject)\n${history.trimEnd()}`);
   }
-  if (["h1", "h2", "h3", "h4"].includes(task.variant)) {
+  if (["h1", "h2", "h3", "h4"].includes(task.variant) || external) {
     const head = ctx.state ? ctx.state.head : "HEAD";
     const diff = gitOutput(ctx.repo, ["diff", "--no-color", head]) || "";
     const untracked = (gitOutput(ctx.repo, ["ls-files", "--others", "--exclude-standard"]) || "")
@@ -225,9 +229,11 @@ export function buildMaterial(runDir, task, paths = {}) {
       .filter((f) => f !== "")
       .map((f) => `new file ${f}\n${readFileSync(join(ctx.repo, f), "utf8")}`);
     sections.push(`GIT DIFF OF THE WORKING TREE\n${[diff.trimEnd(), ...untracked].filter((x) => x !== "").join("\n") || "(none)"}`);
-    const tests = npmTestCopy(ctx.repo);
-    scratch.push(...tests.dirs);
-    sections.push(`FINAL NPM TEST OUTPUT (run in a copy of the repository)\n${tests.text.trimEnd()}`);
+    if (!external) {
+      const tests = npmTestCopy(ctx.repo);
+      scratch.push(...tests.dirs);
+      sections.push(`FINAL NPM TEST OUTPUT (run in a copy of the repository)\n${tests.text.trimEnd()}`);
+    }
   }
 
   const hidden = [paths.runDir, paths.workDir, paths.armsDir, paths.runId, ...scratch].filter(Boolean);

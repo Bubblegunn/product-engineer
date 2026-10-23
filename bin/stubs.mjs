@@ -66,6 +66,8 @@ export function parseAdded(patch) {
 const language = (file) => {
   if (/\.py$/i.test(file)) return "py";
   if (/\.[mc]?[jt]sx?$/i.test(file)) return "js";
+  if (/\.go$/i.test(file)) return "go";
+  if (/\.rs$/i.test(file)) return "rs";
   return null;
 };
 
@@ -94,6 +96,40 @@ const JS_TEST_OPEN = /^\s*(?:test|it)\s*\(/;
 const PY_TEST_OPEN = /^\s*(?:async\s+)?def\s+test\w*\s*\(/;
 const JS_ASSERTION = /\bexpect\b|\bassert\w*[.(]|\.should\b|\bt\.(?:is|true|false|deepEqual|not\w*|throws|like)\(|\b(?:check|verify|expect|assert)\w*\s*\(/;
 const PY_ASSERTION = /\bassert\w*|\braises\(|\bexpect\b/;
+
+// Markers of other test frameworks and languages. Each is read on a copy of the line whose
+// strings and comments are blanked, so a marker named in a string or a comment is not a finding.
+const FOCUSED = /\b(?:test|it|describe|suite|context)(?:\.\w+)*\.only\s*\(|\b(?:fit|fdescribe)\s*\(/;
+const XFAIL = /@pytest\.mark\.xfail\b|\bpytest\.xfail\s*\(|@unittest\.expectedFailure\b|\b(?:test|it)\.fails?\s*\(/;
+const GO_SKIP = /\bt\.Skip(?:f|Now)?\s*\(/;
+const RUST_IGNORE = /#\[ignore(?:\s*=[^\]]*)?\]/;
+const JUNIT_DISABLED = /@Disabled\b/;
+const RUST_TODO = /\b(?:todo|unimplemented)!\s*[(\[{]/;
+const ZERO_ASSERTIONS = /\bexpect\.assertions\(\s*0\s*\)/;
+
+/** `text` with the inside of strings and comments replaced by spaces; same length, so indexes match. */
+function maskLine(text, lang) {
+  const quotes = lang === "rs" ? '"' : lang === "py" ? "'\"" : "'\"`";
+  const slashes = lang !== "py";
+  const out = text.split("");
+  let i = 0;
+  while (i < text.length) {
+    const c = text[i];
+    if (quotes.includes(c)) {
+      let j = i + 1;
+      while (j < text.length && text[j] !== c) j += text[j] === "\\" ? 2 : 1;
+      for (let k = i + 1; k < Math.min(j, text.length); k++) out[k] = " ";
+      i = j + 1;
+      continue;
+    }
+    if ((slashes && c === "/" && text[i + 1] === "/") || (!slashes && c === "#")) {
+      for (let k = i; k < text.length; k++) out[k] = " ";
+      break;
+    }
+    i++;
+  }
+  return out.join("");
+}
 
 const indentOf = (s) => s.match(/^\s*/)[0].length;
 
@@ -292,6 +328,34 @@ export function scanAdded(added, { read = () => null } = {}) {
       }
       if (lang === "py" && PY_DEF_OPEN.test(text) && after !== undefined && ["pass", "..."].includes(after.trim()) && indentOf(after) > indentOf(text)) {
         add(entry, "empty-body", "function body is empty; calling it does nothing");
+        continue;
+      }
+      if (lang) {
+        const code = maskLine(text, lang);
+        const panic = lang === "go" ? /\bpanic\(\s*"/.exec(code) : null;
+        if ((panic && /^panic\(\s*"not implemented/i.test(text.slice(panic.index))) || (lang === "rs" && RUST_TODO.test(code))) {
+          add(entry, "not-implemented", "placeholder that panics as 'not implemented' or todo in added code");
+          continue;
+        }
+        if ((lang === "go" && GO_SKIP.test(code)) || (lang === "rs" && RUST_IGNORE.test(code))) {
+          add(entry, "skipped-test", "newly skipped test; it no longer runs");
+          continue;
+        }
+        if (test && FOCUSED.test(code)) {
+          add(entry, "focused-test", "focused test (only); the rest of the suite stops running");
+          continue;
+        }
+        if (test && XFAIL.test(code)) {
+          add(entry, "skipped-test", "test marked as an expected failure; a failure no longer fails the run");
+          continue;
+        }
+        if (test && ZERO_ASSERTIONS.test(code)) {
+          add(entry, "decorative-assert", "expects zero assertions, so the test passes whatever the code does");
+          continue;
+        }
+      }
+      if (test && JUNIT_DISABLED.test(maskLine(text, "js"))) {
+        add(entry, "skipped-test", "newly disabled test; it no longer runs");
         continue;
       }
       if (!test) continue;

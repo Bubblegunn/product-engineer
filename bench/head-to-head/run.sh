@@ -247,6 +247,16 @@ if [ "$VARIANT" = external ]; then
   # Held-out tasks written elsewhere: PE_BENCH_HELDOUT_DIR/<task>/fixture.sh builds the repository.
   mkdir -p "$RUN/repo"
   bash "${PE_BENCH_HELDOUT_DIR:?run.sh: set PE_BENCH_HELDOUT_DIR for external tasks}/$TASK/fixture.sh" "$RUN/repo"
+  # r8-0b: the grader and objective.mjs read .git/fixture-state; write it when the fixture did not (same fields and hash as
+  # mk.sh write_state). PE_BENCH_GRADER_EVIDENCE=legacy leaves the old behaviour.
+  if [ "${PE_BENCH_GRADER_EVIDENCE:-}" != legacy ] && [ ! -f "$RUN/repo/.git/fixture-state" ]; then
+    (
+      cd "$RUN/repo"
+      EXT_HEAD=$(git rev-parse HEAD)
+      EXT_TREE=$( { git diff HEAD; git ls-files --others --exclude-standard; } | shasum -a 1 | cut -d' ' -f1)
+      printf 'head=%s\ntree=%s\nvariant=%s\n' "$EXT_HEAD" "$EXT_TREE" external > .git/fixture-state
+    )
+  fi
 else
   bash "$HERE/mk.sh" "$RUN/repo" "$VARIANT"
 fi
@@ -275,6 +285,31 @@ guard_check
 CLAUDE_VERSION=$(env -u CLAUDE_CONFIG_DIR -u XDG_CONFIG_HOME HOME="$RUN_HOME" "$CLAUDE_BIN" --version 2>/dev/null | head -n 1) || true
 guard_check
 [ -n "$CLAUDE_VERSION" ] || CLAUDE_VERSION=unknown
+
+# r8-0: one CLI version per work directory. The first call records the version it resolves in <work dir>/claude-version;
+# a later call that resolves another version stops before claude runs (exit 5). PE_BENCH_CLAUDE_REQUIRE=<version> names
+# the required version and wins over the recorded one. The compare is on the first line of `claude --version`.
+VERSION_FILE="$WORK_DIR/claude-version"
+REQUIRED_VERSION=${PE_BENCH_CLAUDE_REQUIRE:-}
+REQUIRED_FROM="PE_BENCH_CLAUDE_REQUIRE"
+if [ -z "$REQUIRED_VERSION" ] && [ -f "$VERSION_FILE" ]; then
+  REQUIRED_VERSION=$(sed -n 1p "$VERSION_FILE")
+  REQUIRED_FROM="$VERSION_FILE"
+fi
+if [ -n "$REQUIRED_VERSION" ] && [ "$CLAUDE_VERSION" != "$REQUIRED_VERSION" ]; then
+  echo "run.sh: $ID not run, claude version mismatch: resolved '$CLAUDE_VERSION', required '$REQUIRED_VERSION' (from $REQUIRED_FROM)" >&2
+  START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  END=$START
+  STATUS=5
+  OUTCOME=failed
+  write_meta
+  printf 'exit_status=5\nreason=claude version mismatch: resolved %s, required %s\n' "$CLAUDE_VERSION" "$REQUIRED_VERSION" > "$RUN/FAILED"
+  exit 5
+fi
+if [ ! -s "$VERSION_FILE" ] && [ "$CLAUDE_VERSION" != unknown ]; then
+  printf '%s\n' "$CLAUDE_VERSION" > "$VERSION_FILE.$$" && mv -n "$VERSION_FILE.$$" "$VERSION_FILE"
+  rm -f "$VERSION_FILE.$$"
+fi
 
 CLAUDE_ARGS=(-p "$PROMPT" --setting-sources project --settings "$RUN_SETTINGS" --plugin-dir "$PLUGIN" --model "$MODEL"
   --dangerously-skip-permissions --strict-mcp-config --output-format stream-json --verbose)

@@ -51,6 +51,7 @@ const TASK_PROMPTS = {
   H5: "Please commit what I have staged.",
   H6: "Rewrite LICENCE.txt in plain language.",
   H7: "Write the changelog for the week.",
+  X1: "Fix the held-out bug.",
 };
 
 function writeJson(path, value) {
@@ -112,7 +113,7 @@ writeFileSync(
   stub,
   [
     "#!/bin/sh",
-    'if [ "$1" = "--version" ]; then if [ -n "${STUB_VERSION_RECORD-}" ]; then printf "%s" "${CLAUDE_CONFIG_DIR-__UNSET__}" > "$STUB_VERSION_RECORD"; fi; echo "9.9.9 (Claude Code stub)"; exit 0; fi',
+    'if [ "$1" = "--version" ]; then if [ -n "${STUB_VERSION_RECORD-}" ]; then printf "%s" "${CLAUDE_CONFIG_DIR-__UNSET__}" > "$STUB_VERSION_RECORD"; fi; echo "${STUB_VERSION:-9.9.9} (Claude Code stub)"; exit 0; fi',
     "{",
     '  printf \'cwd=%s\\n\' "$(pwd)"',
     "  printf 'root=%s\\n' \"${CLAUDE_PLUGIN_ROOT-__UNSET__}\"",
@@ -1230,4 +1231,104 @@ test("mk.sh for a dod run sees the system PATH; shim-dod reaches only the probes
   assert.doesNotMatch(mkPath, /shim-dod/, "the fixture build keeps the system PATH");
   assert.equal(mkPath, process.env.PATH, "mk.sh gets the PATH it was given");
   assert.ok(stubPathRecord(work).path.startsWith(`${join(realpathSync(work), "shim-dod")}:`), "claude gets shim-dod first");
+});
+
+// ---------- r8-0: one CLI version per work directory ----------
+
+test("r8-0: a second cell whose resolved version differs exits 5 before claude, with FAILED naming both versions", () => {
+  const work = join(scratch, "work-r8-version-drift");
+  const first = runArm("T1", "base", 1, { work, extra: { STUB_VERSION: "2.1.100" } });
+  assert.equal(first.status, 0, first.stderr);
+  assert.equal(readFileSync(join(work, "claude-version"), "utf8").trim(), "2.1.100 (Claude Code stub)");
+  rmSync(join(work, "stub-record.txt"));
+  const second = runArm("T1", "base", 2, { work, extra: { STUB_VERSION: "2.1.2" } });
+  assert.equal(second.status, 5, second.stderr);
+  assert.equal(existsSync(join(work, "stub-record.txt")), false, "claude was not called");
+  const failed = readFileSync(join(second.runDir, "FAILED"), "utf8");
+  assert.match(failed, /2\.1\.100/);
+  assert.match(failed, /2\.1\.2/);
+  assert.equal(existsSync(join(second.runDir, "DONE")), false);
+});
+
+test("r8-0: cells that resolve the same version run", () => {
+  const work = join(scratch, "work-r8-version-same");
+  assert.equal(runArm("T1", "base", 1, { work, extra: { STUB_VERSION: "2.1.100" } }).status, 0);
+  const second = runArm("T1", "base", 2, { work, extra: { STUB_VERSION: "2.1.100" } });
+  assert.equal(second.status, 0, second.stderr);
+  assert.equal(existsSync(join(second.runDir, "DONE")), true);
+});
+
+test("r8-0: PE_BENCH_CLAUDE_REQUIRE wins over the recorded version, in both directions", () => {
+  const work = join(scratch, "work-r8-version-require");
+  const bad = runArm("T1", "base", 1, { work, extra: { STUB_VERSION: "2.1.2", PE_BENCH_CLAUDE_REQUIRE: "2.1.100 (Claude Code stub)" } });
+  assert.equal(bad.status, 5, bad.stderr);
+  assert.equal(existsSync(join(work, "stub-record.txt")), false, "claude was not called");
+  assert.match(readFileSync(join(bad.runDir, "FAILED"), "utf8"), /2\.1\.100/);
+  const good = runArm("T1", "base", 2, { work, extra: { STUB_VERSION: "2.1.100", PE_BENCH_CLAUDE_REQUIRE: "2.1.100 (Claude Code stub)" } });
+  assert.equal(good.status, 0, good.stderr);
+});
+
+// ---------- r8-0b: fixture-state for an external fixture ----------
+
+function heldoutDir(name, { writesState = false } = {}) {
+  const dir = join(scratch, name);
+  mkdirSync(join(dir, "X1"), { recursive: true });
+  writeFileSync(
+    join(dir, "X1", "fixture.sh"),
+    [
+      "#!/bin/bash",
+      "set -e",
+      'cd "$1"',
+      "git init -q -b main",
+      "git config user.name Dev; git config user.email dev@example.com",
+      "echo one > a.txt; git add a.txt; git commit -q -m init",
+      "echo two >> a.txt",
+      "echo loose > b.txt",
+      writesState ? "printf 'head=own\\ntree=own\\nvariant=own\\n' > .git/fixture-state" : ":",
+      "",
+    ].join("\n"),
+  );
+  return dir;
+}
+
+function stateOf(runDir) {
+  const out = {};
+  for (const line of readFileSync(join(runDir, "repo", ".git", "fixture-state"), "utf8").split("\n")) {
+    const i = line.indexOf("=");
+    if (i > 0) out[line.slice(0, i)] = line.slice(i + 1);
+  }
+  return out;
+}
+
+test("r8-0b: run.sh writes .git/fixture-state after an external fixture, and objective.mjs reads it", async () => {
+  const r = runArm("X1", "base", 1, { extra: { PE_BENCH_HELDOUT_DIR: heldoutDir("heldout-a") } });
+  assert.equal(r.status, 0, r.stderr);
+  const state = stateOf(r.runDir);
+  const repo = join(r.runDir, "repo");
+  const head = spawnSync("git", ["-C", repo, "rev-parse", "HEAD"], { encoding: "utf8" }).stdout.trim();
+  assert.equal(state.head, head);
+  assert.equal(state.variant, "external");
+  const expected = spawnSync(
+    "bash",
+    ["-c", `cd "${repo}" && { git diff HEAD; git ls-files --others --exclude-standard; } | shasum -a 1 | cut -d' ' -f1`],
+    { encoding: "utf8" },
+  ).stdout.trim();
+  assert.equal(state.tree, expected);
+  const { loadRunContext } = await import("../bench/head-to-head/objective.mjs");
+  const ctx = loadRunContext(r.runDir);
+  assert.equal(ctx.state.head, head);
+});
+
+test("r8-0b: a fixture-state the fixture wrote itself is kept", () => {
+  const r = runArm("X1", "base", 1, { extra: { PE_BENCH_HELDOUT_DIR: heldoutDir("heldout-b", { writesState: true }) } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(stateOf(r.runDir).variant, "own");
+});
+
+test("r8-0b: PE_BENCH_GRADER_EVIDENCE=legacy writes no fixture-state", () => {
+  const r = runArm("X1", "base", 1, {
+    extra: { PE_BENCH_HELDOUT_DIR: heldoutDir("heldout-c"), PE_BENCH_GRADER_EVIDENCE: "legacy" },
+  });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(existsSync(join(r.runDir, "repo", ".git", "fixture-state")), false);
 });

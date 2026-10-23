@@ -18,6 +18,7 @@ assignment), unstage it first with `git restore --staged <file>` and say so; `gi
 takes everything in the index. If the rest holds unrelated work, make one commit per group:
 stage one group, commit it with its own message, then stage the next. End with what you
 committed and what you left out.
+Name each file: `git add <path>`, then `git commit -- <paths>`. Never run `git add -A` or `git add .`. Never force-push on your own initiative. Never write `Fixes #N` or `Closes #N` unless the request names that issue.
 
 ## 1. Restate before building
 
@@ -43,11 +44,11 @@ Write the headings in the language your team writes: `references/headings.md` ca
 shipped ones, English, Turkish, Japanese and Chinese, and how to add another. English is
 the default and every shipped language is accepted without configuration.
 
-In a pull request description, say what each part of the diff shows: run `product-engineer scope <range>` first and call a file "formatting only" only when it prints whitespace-only for that file. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it. Write it from the diff, not from your memory of the request: the request was a plan, the
+In a pull request description, say what each part of the diff shows. Before the text, write a three-line scope map from the whole range, never from the last commit alone. Run `product-engineer scope <range>` first and call a file "formatting only" only when it prints whitespace-only for that file. Never vouch for a part you did not trace: "formatting only", "no functional change" and "behaves as before" are claims too. For a part you did not trace, write that you did not trace it. Write it from the diff, not from your memory of the request: the request was a plan, the
 diff is what happened. `references/from-the-diff.md` derives the three answers, what
 changed, who it affects, and what is missing that a reader would expect, from
 `git diff` itself. Release notes name the option or command a user types to get a new behaviour (for example the flag); when a checker flags something the reader needs, keep it and say so in the answer. When the request says a non-technical person will read the commit message, write the subject for that reader: plain words first, and no commit prefix or function or constant names in the subject; put the technical detail in the body, after the plain part. Otherwise keep the project's own title convention. A commit message, release note or pull request text about a changed limit or price states the old and the new value. Pure refactors get one line under `What changed`. Never invent an
-automation effect. Template and three real before/after pairs:
+automation effect. Text that a tool lifts out (a title, a summary) must stay true without its paragraph. A required field you cannot derive is a marked gap, not invented wording. Template and three real before/after pairs:
 `references/commit-template.md`.
 
 ## 3. Done means observed
@@ -62,7 +63,7 @@ Then read the added lines of `git diff` and any new files for TODO and FIXME mar
 
 Answer in the language of the request, and keep that language in the whole final answer, including the answer you rewrite after a hook message. Asked whether work is finished or ready to hand over, answer and edit nothing: run the tests, name each failing test and what it checks, say what you could not check, and offer the fix as the next step.
 
-State only what a command you ran this session shows, and name the command: the working tree before you started, "no change made", "unchanged", "behaves as before", who wrote a file, or when. Run `git status` and `git diff` before you claim any of these; otherwise write "not checked". Copy every figure you quote from command output as printed, and when you report a green run beside "no test covers X", say that the green run does not show X is unchanged. Your final answer is read alone, as the last message. After a correction, a hook message or a late check, write the complete final answer again: what you did, what you found and what you could not check, with the correction inside it. Never end on the correction or on one status line. When a check fails for a reason outside your change, read the README and the other docs the error points to for a documented fix before you say what the owner should do, and report what they say. When a text you write or rewrite states a number, limit, name or behaviour that also lives in code or configuration, search the repository for it before you finish (`grep` the number and the constant name). Report each disagreement in the final answer, keep what the request told you to keep, and say which side you left or ask which is right. Do not write that two things match unless you looked at both.
+State only what a command you ran this session shows, and name the command: the working tree before you started, "no change made", "unchanged", "behaves as before", who wrote a file, or when. Run `git status` and `git diff` before you claim any of these; otherwise write "not checked". Copy every figure you quote from command output as printed, and when you report a green run beside "no test covers X", say that the green run does not show X is unchanged. Your final answer is read alone, as the last message. After a correction, a hook message or a late check, write the complete final answer again: what you did, what you found and what you could not check, with the correction inside it. Never end on the correction or on one status line. When a check fails for a reason outside your change, read the README and the other docs the error points to for a documented fix before you say what the owner should do, and report what they say. When a text you write or rewrite states a number, limit, name or behaviour that also lives in code or configuration, search the repository for it before you finish (`grep` the number and the constant name). Report each disagreement in the final answer, keep what the request told you to keep, and say which side you left or ask which is right. Do not write that two things match unless you looked at both. When the final answer quotes numbers or names, run `product-engineer claims` on it first (`npx product-engineer claims -` reads standard input). Fix each `not found` item, or keep it and say that it is not checked.
 
 A fix ships with a test that fails before the fix and passes after it, in the same commit (to see it fail, undo the fix, run the test, put the fix back); a docs-only fix needs none. Before you report a fix, run `git status`: unless the fix is docs-only, if no test file changed, add the test, see it fail without the fix and pass with it, then report. A refactor says in one line that users see no change, with the test command and its result, and names no benefit such as faster, cleaner or safer unless it was measured.
 
@@ -74,7 +75,7 @@ Changed for users: nothing; only <the tests> pin that.
 Not checked: <what you did not check>.
 ```
 
-In the first line, `<the tests>` are the covering tests named by their test names. State that behaviour is unchanged only as "the tests show" it, never as a flat fact. If no test covers the moved code, say so on the third line. Checklist: `references/definition-of-done.md`. Lean practice
+In the first line, `<the tests>` are the covering tests named by their test names. State that behaviour is unchanged only as "the tests show" it, never as a flat fact. If no test covers the moved code, say so on the third line. If the project has no test suite, say that on the third line too. Checklist: `references/definition-of-done.md`. Lean practice
 calls this "go and see": the report comes from the place where the work happened, not
 from the desk.
 

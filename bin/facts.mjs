@@ -155,11 +155,25 @@ function unitsOf(text) {
   return units;
 }
 
+const ABBREVIATION = /(?:^|[\s(])(?:e\.g|i\.e|etc|vs|cf|dr|mr|mrs|ms|prof|approx|a\.m|p\.m)\.$/i;
+const NUMBER_ABBREVIATION = /(?:^|[\s(])no\.$/i;
+
+/** One unit split into sentences: after . ? or ! and a space, except after an abbreviation (e.g., i.e., etc., vs., Dr., No. before a digit). */
+function splitSentences(unit) {
+  const out = [];
+  for (const piece of unit.split(/(?<=[.!?])\s+/)) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && (ABBREVIATION.test(prev) || (NUMBER_ABBREVIATION.test(prev) && /^\d/.test(piece)))) out[out.length - 1] = `${prev} ${piece}`;
+    else out.push(piece);
+  }
+  return out;
+}
+
 /** Sentence count, words, the average and the longest sentence in words. A sentence ends after . ? or ! and a space. */
 export function sentenceStats(text) {
   const lengths = [];
   for (const unit of unitsOf(text)) {
-    for (const s of unit.split(/(?<=[.!?])\s+/)) {
+    for (const s of splitSentences(unit)) {
       const words = s.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
       if (words) lengths.push(words);
     }
@@ -260,7 +274,7 @@ const contentWords = (text) => (text.toLowerCase().match(/[a-zÀ-ɏ]+/g) ?? []).
 /** The sentences of a text, as text. */
 function sentencesOf(text) {
   const out = [];
-  for (const unit of unitsOf(text)) for (const s of unit.split(/(?<=[.!?])\s+/)) if (/\p{L}/u.test(s)) out.push(s.trim());
+  for (const unit of unitsOf(text)) for (const s of splitSentences(unit)) if (/\p{L}/u.test(s)) out.push(s.trim());
   return out;
 }
 

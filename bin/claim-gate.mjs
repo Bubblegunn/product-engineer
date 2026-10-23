@@ -30,8 +30,10 @@ const CLAIMS = {
   formatting: /\b(?:formatting[- ]only|only (?:formatting|whitespace|style|cosmetic)|(?:purely|just|merely) (?:formatting|whitespace|style|cosmetic|reformatting)|(?:whitespace|style|cosmetic)[- ]only|no (?:functional|behaviou?ral|behaviou?r) changes?)\b/i,
   unchanged: /\b(?:(?:behaviou?r|logic|output|results?|semantics)\s+(?:is |are |was |remains? |stays? |is still )?(?:unchanged|the same|identical)|(?:behaves?|works?|reads?|looks?|runs?) (?:exactly |just |precisely )?(?:the same|as (?:it did )?before|as previously)|(?:unchanged|identical) (?:behaviou?r|output)|exactly as before|same as before)\b/i,
   passing: /\b(?:(?:all |the |every )?(?:\d+ )?(?:tests?|specs?|suite|checks?)\s+(?:(?:are|is|now|all|still) )*(?:pass(?:ed|es|ing)?|green)|all green|\d+ (?:passing|passed))\b/i,
+  addedtests: /\b(?:(?:added|wrote|written|created|authored)(?: (?:an?|the|some|several|a few|a couple of|few|\d+|one|two|three|four|five|six|new|more|additional|extra|regression|unit|integration|failing|e2e)\b)* (?:tests?|test cases?|specs?)\b|(?<!\b(?:existing|old|current|original|legacy|those|these|prior|previous|earlier|other)\s)(?:tests?|test cases?|specs?) (?:were |was |have been |has been )?(?:added|written|created)\b(?! (?:earlier|previously|before|already|in (?:the )?(?:previous|last|earlier|prior)\b)))/i,
   fixed: /\b(?:i (?:have )?(?:fixed|resolved|patched|corrected)|(?:is|are|now) (?:fixed|resolved)|the fix|fixes)\b/i,
 };
+const ABSENCE = /\b(?:no|without|zero|none|already)\b/i;
 const PLAIN_REQUEST = /\bplain[- ]language\b|\bplain english\b|\bin plain (?:words|terms|english)\b|\bsimpl(?:e|er|ify) (?:words|terms|language)\b/i;
 const FACTS_RUN = /\bproduct-engineer\s+facts\b|\bcheck\.mjs\s+facts\b/;
 const FIX_REQUEST = /\b(?:bug|fix|broken|regression|crash(?:es|ing)?|fails?|failing|not working)\b/i;
@@ -61,6 +63,7 @@ export function findClaims(text) {
       if (!m) continue;
       const before = sentence.slice(Math.max(0, m.index - 60), m.index).split(/[,;]|\b(?:but|and|though|although)\b/).pop();
       if (family === "startstate" && SNAPSHOT_SOURCE.test(clauseAround(sentence, m.index, m[0].length))) continue;
+      if (family === "addedtests" && ABSENCE.test(before)) continue;
       const self = family === "nochange" || family === "startstate";
       if (!self && NEGATION.test(before)) continue;
       found.push({ family, sentence });
@@ -97,7 +100,7 @@ export function readSession(lines) {
       } else if (b.name === "Bash") {
         const command = String(input.command ?? "");
         // The write comes first: a command that redirects its own output is not evidence about later edits.
-        if (BASH_WRITE.test(command) && !TEST_RUN.test(command) && !GIT_STATE.test(command)) events.push({ kind: "write", path: "", text: "" });
+        if (BASH_WRITE.test(command) && !TEST_RUN.test(command) && !GIT_STATE.test(command)) events.push({ kind: "write", path: "", text: "", touches: command.split(/[\s"'<>|;&=()]+/).filter((t) => t && isTestPath(t.replace(/^\.\//, ""))) });
         events.push({ kind: "bash", command });
       } else {
         events.push({ kind: "other" });
@@ -139,6 +142,9 @@ export function gate({ events, prompt, last }, claimTexts = [last]) {
   }
   if (families.has("passing") && !after(runs(TEST_RUN))) {
     reasons.push(`You say tests pass ("${quote("passing")}"), but no test command ran after your last edit. Run the tests again and quote the result as printed.`);
+  }
+  if (families.has("addedtests") && !events.some((e) => isWrite(e) && (isTestPath(e.path ?? "") || (e.touches ?? []).length))) {
+    reasons.push(`You say tests were added ("${quote("addedtests")}"), but no write to a test file happened in this turn. Write the test, run it, and name the file; otherwise drop the claim.`);
   }
   if (families.has("fixed") && FIX_REQUEST.test(prompt)) {
     const writes = events.filter(isWrite);

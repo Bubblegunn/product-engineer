@@ -78,6 +78,19 @@ const cases = [
   ["no-assertion", "tests/test_l.py", "def test_add():\n    x = add(1, 2)\n\n\ndef test_other():\n    assert add(1, 2) == 3\n", "def test_add():\n    x = add(1, 2)\n    assert x == 3\n"],
   ["skipped-test", "test/j.test.mjs", 'import assert from "node:assert/strict";\nimport { test } from "node:test";\ntest.skip("later", () => {\n  assert.equal(1, 2);\n});\n', 'import assert from "node:assert/strict";\nimport { test } from "node:test";\ntest("now", () => {\n  assert.equal(1 + 1, 2);\n});\n'],
   ["skipped-test", "tests/test_k.py", "import pytest\n\n@pytest.mark.skip\ndef test_later():\n    assert 1 == 2\n", "import pytest\n\ndef test_now():\n    assert 1 + 1 == 2\n"],
+  // r8-2: skip, focus and placeholder markers in other test frameworks and languages.
+  ["focused-test", "test/m.test.mjs", 'import { test } from "node:test";\nimport assert from "node:assert/strict";\ntest.only("x", () => {\n  assert.equal(add(1, 2), 3);\n});\n', 'import { test } from "node:test";\nimport assert from "node:assert/strict";\ntest("x", () => {\n  assert.equal(add(1, 2), 3);\n});\n'],
+  ["focused-test", "test/m.test.mjs", 'describe.only("x", () => {\n  it("y", () => { expect(add(1, 2)).toBe(3); });\n});\n', 'describe("x", () => {\n  it("y", () => { expect(add(1, 2)).toBe(3); });\n});\n'],
+  ["skipped-test", "tests/test_n.py", "import pytest\n\n@pytest.mark.xfail\ndef test_later():\n    assert 1 == 2\n", "import pytest\n\ndef test_now():\n    assert 1 + 1 == 2\n"],
+  ["skipped-test", "tests/test_n.py", "import pytest\n\ndef test_later():\n    pytest.xfail('later')\n    assert 1 == 2\n", "import pytest\n\ndef test_now():\n    assert 1 + 1 == 2\n"],
+  ["skipped-test", "pkg/a_test.go", 'package pkg\n\nfunc TestA(t *testing.T) {\n\tt.Skip("later")\n}\n', 'package pkg\n\nfunc TestA(t *testing.T) {\n\tif Add(1, 2) != 3 {\n\t\tt.Fatal("bad")\n\t}\n}\n'],
+  ["skipped-test", "pkg/a_test.go", 'package pkg\n\nfunc TestA(t *testing.T) {\n\tt.Skipf("later %d", 1)\n}\n', 'package pkg\n\nfunc TestA(t *testing.T) {\n\tt.Logf("now %d", 1)\n}\n'],
+  ["skipped-test", "src/lib.rs", "#[test]\n#[ignore]\nfn slow() {\n    assert_eq!(1, 1);\n}\n", "#[test]\nfn slow() {\n    assert_eq!(1, 1);\n}\n"],
+  ["skipped-test", "src/test/java/ATest.java", "class ATest {\n    @Disabled\n    @Test\n    void a() { assertEquals(1, 1); }\n}\n", "class ATest {\n    @Test\n    void a() { assertEquals(1, 1); }\n}\n"],
+  ["not-implemented", "pkg/b.go", 'package pkg\n\nfunc F() int {\n\tpanic("not implemented")\n}\n', 'package pkg\n\nfunc F() int {\n\tpanic("unreachable state")\n}\n'],
+  ["not-implemented", "src/b.rs", "fn f() -> u8 {\n    todo!()\n}\n", "fn f() -> u8 {\n    7\n}\n"],
+  ["not-implemented", "src/b.rs", "fn f() -> u8 {\n    unimplemented!(\"later\")\n}\n", "fn f() -> u8 {\n    unreachable!(\"never\")\n}\n"],
+  ["decorative-assert", "test/o.test.mjs", 'import { test, expect } from "vitest";\ntest("x", () => {\n  expect.assertions(0);\n  run();\n});\n', 'import { test, expect } from "vitest";\ntest("x", () => {\n  expect.assertions(1);\n  expect(run()).toBe(2);\n});\n'],
 ];
 
 for (const [code, path, bad, good] of cases) {
@@ -324,4 +337,23 @@ test("stubs accepts -q and --quiet as a no-op on the findings", () => {
   rmSync(r.dir, { recursive: true, force: true });
   assert.equal(quiet.status, 1, quiet.out);
   assert.deepEqual(JSON.parse(quiet.out), JSON.parse(long.out));
+});
+
+test("r8-2 markers inside a string or a comment are not findings", () => {
+  for (const [path, text] of [
+    ["test/p.test.mjs", 'import assert from "node:assert/strict";\nassert.equal(label, "use test.only( to focus");\n'],
+    ["test/p.test.mjs", "// do not call describe.only( here\nassert.equal(add(1, 2), 3);\n"],
+    ["pkg/p_test.go", 'package pkg\n\nvar msg = "call t.Skip( to skip"\n// t.Skipf("x")\n'],
+    ["pkg/p.go", 'package pkg\n\nvar msg = "panic(\\"not implemented\\")"\n'],
+    ["src/p.rs", 'const MSG: &str = "todo!(\\"x\\")";\n// unimplemented!()\n'],
+    ["tests/test_p.py", "def test_x():\n    assert note == 'xfail is a word here'\n"],
+  ]) {
+    const res = stage({ [path]: text }, JSON_ARG);
+    assert.equal(res.status, 0, `${path}: ${res.out}`);
+  }
+});
+
+test("r8-2 a Go or Rust file is read as code, not skipped as an unknown language", () => {
+  const res = stage({ "src/q.rs": "fn f() {\n    todo!(); // later\n}\n" }, JSON_ARG);
+  assert.deepEqual(codes(res), ["not-implemented"]);
 });

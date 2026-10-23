@@ -19,6 +19,7 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer stubs [--staged | --range <a..b>] [--json] [--warn] [-q]
        product-engineer notes <file> [--json]
        product-engineer scope [range] [--json]
+       product-engineer claims <file|-> [--repo DIR] [--json]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -76,6 +77,11 @@ number after the first line. Warning: the first line names no range (a tag, a co
 scope lists each changed file of a range (or the staged change, or the working tree) with lines
 added and removed, its class, and whether git sees the change as whitespace-only; small changes
 are shown line by line. Use it before calling a file formatting-only.
+
+claims reads a text (your final answer, a pull request description) and lists each number with a
+unit, version-like token and backticked name in it. For each it says "found <file>" when a tracked
+file or the last 50 commits contain it, or "not found". These are candidates, not verdicts. Exit
+codes: 0 ran, 1 empty input, 2 bad arguments, 3 repository unreadable. --repo picks the directory.
 
 doctor lists the agents on this machine that carry the skill, in this project and
 in your home directory, and whether each copy still matches the packaged rules.
@@ -416,6 +422,10 @@ async function main(argv) {
   if (command === "scope") {
     const { runScope } = await import("./scope.mjs");
     return runScope(argv.slice(1));
+  }
+  if (command === "claims") {
+    const { runClaims } = await import("./claims.mjs");
+    return runClaims(argv.slice(1));
   }
   if (command === "facts") {
     const { runFacts } = await import("./facts.mjs");

@@ -357,3 +357,22 @@ test("a source that repeats itself does not make its rewrite report echoes", asy
   const source = "Visitors must sign the register at the front desk. Every visitor must sign the register at the front desk before entering.";
   assert.deepEqual(unsupportedSentences(source, source), []);
 });
+
+test("r8-3 sentences: an abbreviation or a version number does not end a sentence", () => {
+  assert.equal(sentenceStats("Use a tool, e.g. a hammer, to fix it.").count, 1);
+  assert.equal(sentenceStats("That is, i.e. the tenant pays. Dr. Smith agrees.").count, 2);
+  assert.equal(sentenceStats("Bring pens, paper, etc. to the meeting. Then leave.").count, 2);
+  assert.equal(sentenceStats("Mr. Lee and Mrs. Lee came, rent vs. deposit was discussed.").count, 1);
+  assert.equal(sentenceStats("See No. 5 for the rule. Done.").count, 2);
+  assert.equal(sentenceStats("Upgrade to v1.2 now. Version 3.4.5 is out.").count, 2);
+  assert.deepEqual(sentenceStats("The tool (e.g. v1.2) runs. Next one starts here."), { count: 2, words: 9, average: 4.5, longest: 5 });
+  // a normal word before a full stop still splits
+  assert.equal(sentenceStats("It is done. No one came.").count, 2);
+});
+
+test("r8-3 the length limit and the unsupported-sentence report use the same split", () => {
+  const source = "The tenant pays rent, e.g. 800 EUR, on the first day. The landlord keeps the deposit.";
+  assert.deepEqual(facts(source, source).unsupported, []);
+  const r = facts(source, `${source} Dr. Smith decides every dispute alone.`);
+  assert.deepEqual(r.unsupported.map((u) => u.sentence), ["Dr. Smith decides every dispute alone."]);
+});

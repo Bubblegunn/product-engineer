@@ -1311,8 +1311,7 @@ Decisions, each general (no fixture, task or flag value named in any rule or tes
    Go `panic("not implemented`, Rust `todo!(`/`unimplemented!(`, `expect.assertions(0)`. Extension-based language detection for go and rs.
    Re-written regexes; no code copied from dod-guard or groundtruth.
 5. **r8-3 Sentence split in `facts`**: an abbreviation (`e.g.`, `i.e.`, `etc.`, `vs.`, `Dr.`, `No.`, a version number such as `v1.2`) does not end a
-   sentence; the length limits and the "no counterpart in the source" report use the new split. Average counts only from 5 sentences? No: the
-   iso minimum of 10 is not adopted, because we have not counted our own sample (rule 5); the average rule stays as it is.
+   sentence; the length limits and the "no counterpart in the source" report use the new split. The iso-24495 minimum-sample rule (average counts from 10 sentences) is not adopted, because we have not counted our own sample (rule 5); the average rule stays as it is. (Wording of this sentence corrected in the implementation commit; the decision is unchanged.)
 6. **r8-4 `product-engineer claims <file|-> [--repo DIR] [--json]`**: deterministic read-back. It extracts numbers with units, version-like tokens
    and backticked names from the answer, searches the repository files and `git log -p -n 50` text for each, and prints each as `found <where>` or
    `not found`. Output says "candidates, not verdicts" and exits 0 when the check ran, 1 on empty input, 2 on bad arguments, 3 when the repository

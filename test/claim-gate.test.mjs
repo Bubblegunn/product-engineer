@@ -169,3 +169,66 @@ test("the block reason asks for the complete final answer, not the correction al
   assert.ok(verdict.reason.endsWith(REPLY_WHOLE));
   assert.match(REPLY_WHOLE, /complete final answer/);
 });
+
+test("addedtests: a claim that tests were added needs a write to a test path in the turn", () => {
+  const claim = "I added three unit tests for the reminder rule.";
+  const src = [write("src/reminder.js")];
+  const r = reasonsFor(src, claim);
+  assert.equal(r.length, 1);
+  assert.match(r[0], /tests were added/);
+  assert.deepEqual(reasonsFor([...src, write("test/reminder.test.js")], claim), []);
+  assert.deepEqual(reasonsFor([...src, write("src/__tests__/a.js")], claim), []);
+  // a shell write that names a test path counts
+  const s = readSession([JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "cat > test/a.test.js <<'X'\nx\nX" } }] } })]);
+  assert.deepEqual(reasonsFor(s.events, claim), []);
+  // a shell write to a non-test path does not
+  assert.equal(reasonsFor([bash("echo hi"), write("")].slice(0, 1).concat([{ kind: "write", path: "", text: "" }]), claim).length, 1);
+});
+
+test("addedtests: sentences that must fire", () => {
+  for (const s of [
+    "I added tests for the new rule.",
+    "I've added a few tests.",
+    "I wrote 4 new tests.",
+    "Created some regression tests for the bug.",
+    "Tests were added for the parser.",
+    "The tests added cover the edge case.",
+    "I have written a unit test for it.",
+    "We added several test cases.",
+  ]) assert.ok(findClaims(s).some((c) => c.family === "addedtests"), s);
+});
+
+test("addedtests: honest sentences that must not fire", () => {
+  for (const s of [
+    "I did not add tests.",
+    "I didn't add any tests.",
+    "I have not added tests yet.",
+    "No tests were added.",
+    "The tests were already there.",
+    "Tests were already added by the team.",
+    "I added no tests.",
+    "I will add tests next.",
+    "You asked me to add tests, and I left that out.",
+    "The README says \"added tests for the parser\" in its history.",
+    "The log line `added tests` is quoted from the commit.",
+    "Tests added in the previous commit still pass.",
+    "I added a new endpoint.",
+  ]) assert.ok(!findClaims(s).some((c) => c.family === "addedtests"), s);
+});
+
+test("addedtests: the gate hook asks once with the whole-answer restatement", () => {
+  const dir = mkdtempSync(join(tmpdir(), "pe-gate-"));
+  const tp = join(dir, "t.jsonl");
+  writeFileSync(tp, [
+    JSON.stringify({ type: "user", message: { content: "Add a weekly view." } }),
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "src/a.js" } }, { type: "text", text: "I added tests for the weekly view." }] } }),
+  ].join("\n"));
+  const out = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: tp, last_assistant_message: "I added tests for the weekly view." }), encoding: "utf8" });
+  const j = JSON.parse(out.stdout);
+  assert.equal(j.decision, "block");
+  assert.ok(j.reason.includes(REPLY_WHOLE));
+});
+
+test("addedtests does not fire on a passive sentence about existing tests", () => {
+  assert.deepEqual(findClaims("The existing tests were written for v1, so I reused them."), []);
+});
