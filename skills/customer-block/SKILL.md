@@ -19,9 +19,8 @@ nothing else. The full skill is `product-engineer` in the same repository.
 When the person tells you to commit, commit. Do not ask which files or for confirmation.
 If a staged file looks like a secret (`.env`, `*.pem`, `*.key`, `credentials.*`, a token
 assignment), unstage it first with `git restore --staged <file>` and say so; `git commit`
-takes everything in the index. If the rest holds unrelated work, make one commit per group
-(a group is the set of files that belong to one piece of work): stage one group, commit it
-with its own message, then stage the next. End with what you committed and what you left out.
+takes everything in the index. If the rest holds work with a different purpose (another fix or feature, not a cleanup or version bump that ships with the main change), make one commit per group:
+stage one group, commit it with its own message, then stage the next. Otherwise make ONE commit whose message lists every part. End with what you committed and what you left out.
 
 ## The block
 

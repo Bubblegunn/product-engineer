@@ -16,8 +16,8 @@ examples live in `references/`.
 When the person tells you to commit, commit. Do not ask which files or for confirmation.
 If a staged file looks like a secret (`.env`, `*.pem`, `*.key`, `credentials.*`, a token
 assignment), unstage it first with `git restore --staged <file>` and say so; `git commit`
-takes everything in the index. A hook may stop a commit that would include a secret or a conflict marker; do what its message says and name the file you left out in your answer. If the rest holds unrelated work, make one commit per group:
-stage one group, commit it with its own message, then stage the next. End with what you
+takes everything in the index. A hook may stop a commit that would include a secret or a conflict marker; do what its message says and name the file you left out in your answer. If the rest holds work with a different purpose (another fix or feature, not a cleanup or version bump that ships with the main change), make one commit per group:
+stage one group, commit it with its own message, then stage the next. Otherwise make ONE commit whose message lists every part. End with what you
 committed and what you left out.
 Name each file: `git add <path>`, then `git commit -- <paths>`. Never run `git add -A` or `git add .`. Never force-push on your own initiative. Never write `Fixes #N` or `Closes #N` unless the request names that issue.
 
