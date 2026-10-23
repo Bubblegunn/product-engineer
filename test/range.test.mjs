@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -468,4 +468,110 @@ test("the list is most-mentioned first: a name in two files comes before a name 
   assert.deepEqual(goneOf(report).slice(0, 2), ["alphaKnob", "betaKnob"]);
   assert.equal(report.gonenames[0].files, 2);
   assert.equal(report.gonenames[1].files, 1);
+});
+
+// A repo of `commits` built in one fast-import stream: each { subject, files } is one commit on master.
+function fastRepo(commits) {
+  const dir = newRepo();
+  const data = (text) => `data ${Buffer.byteLength(text)}\n${text}\n`;
+  const stream = commits.map((c, i) => `commit refs/heads/master\ncommitter Dev <dev@example.com> ${1767225600 + i * 60} +0000\n${data(c.subject)}${Object.entries(c.files).map(([p, t]) => `M 100644 inline ${p}\n${data(t)}`).join("")}\n`);
+  execFileSync("git", ["-C", dir, "fast-import", "--quiet"], { input: stream.join("") });
+  run(dir, "checkout", "-q", "master");
+  return dir;
+}
+
+// Runs the CLI with stdout as a pipe that is not read for 200 ms, so a write that is cut off by an early exit shows.
+function pipedRun(args, cwd) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [CLI, ...args], { cwd });
+    const chunks = [];
+    let stderr = "";
+    child.stderr.on("data", (c) => { stderr += c; });
+    child.stdout.on("data", (c) => chunks.push(c));
+    child.stdout.pause();
+    setTimeout(() => child.stdout.resume(), 200);
+    child.on("error", reject);
+    child.on("close", (code) => resolve({ code, stdout: Buffer.concat(chunks).toString("utf8"), stderr }));
+  });
+}
+
+test("a merge commit whose subject reads as a revert is a merge with no net state, and the ledger does not throw", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/a.js": "export const a = 1;\n" }, "chore: start");
+  run(dir, "checkout", "-q", "-b", "side");
+  commit(dir, { "src/side.js": "export const side = 1;\n" }, "feat(side): add the side");
+  run(dir, "checkout", "-q", "master");
+  const keep = commit(dir, { "src/keep.js": "export const keep = 1;\n" }, "feat(keep): keep the list");
+  run(dir, "merge", "-q", "--no-ff", "-m", 'Revert "feat(side): add the side"', "side");
+  const merge = head(dir);
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.equal(report.summary.commits, 3);
+  const m = find(report, merge);
+  assert.equal(m.merge, true);
+  assert.equal(m.net, null);
+  assert.deepEqual(m.classes, ["merge"]);
+  assert.ok(flagsOf(report, merge).some((t) => t.startsWith("merge commit whose subject reads as a revert")));
+  assert.ok(flagsOf(report, keep).includes("net: present"));
+  assert.ok(render(report).includes("merge commit whose subject reads as a revert"));
+});
+
+test("range --json through a pipe that is read slowly keeps every byte of a 600-commit ledger", async () => {
+  const commits = Array.from({ length: 601 }, (_, i) => ({ subject: `docs: note ${i}`, files: { [`notes/${i}.md`]: `note ${i}\n` } }));
+  const dir = fastRepo(commits);
+  const out = await pipedRun(["range", "HEAD~600..HEAD", "--json"], dir);
+  assert.equal(out.code, 0, out.stderr);
+  const parsed = JSON.parse(out.stdout);
+  assert.deepEqual(parsed.summary, { commits: 600, present: 600, cancelled: 0 });
+  assert.equal(parsed.commits.length, 600);
+  assert.ok(out.stdout.length > 65536, `only ${out.stdout.length} bytes: the pipe was not exercised past 64 KiB`);
+});
+
+test("a range of more than 3000 commits is read for its last 500, and the report says so", () => {
+  const total = 3101;
+  const dir = fastRepo(Array.from({ length: total }, (_, i) => ({ subject: `docs: note ${i}`, files: { [`notes/${i}.md`]: `note ${i}\n` } })));
+  const report = range({ from: `HEAD~${total - 1}`, to: "HEAD", cwd: dir });
+  assert.equal(report.summary.commits, 500);
+  assert.deepEqual(report.notes, ["range too large (3100 commits); showing the last 500"]);
+  assert.ok(render(report).includes("note: range too large (3100 commits); showing the last 500"));
+  // The first commit shown is the one 500 back from HEAD: the window is the newest 500 commits, oldest first.
+  assert.equal(report.commits[0].sha, run(dir, "rev-parse", "HEAD~499").trim());
+  assert.equal(report.commits.at(-1).sha, head(dir));
+});
+
+test("evidence lines are read for the first 40 flagged commits only, and the note says so", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/a.js": "export const a = 1;\n" }, "chore: start");
+  for (let i = 1; i <= 45; i++) commit(dir, { "src/a.js": `export const a = ${i + 1};\n` }, `docs: change the constant ${i}`);
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const withEvidence = report.commits.filter((c) => c.flags.some((f) => f.code === "type" && f.evidence.length > 0));
+  const flagged = report.commits.filter((c) => c.flags.some((f) => f.code === "type"));
+  assert.equal(flagged.length, 45, "every commit is still flagged");
+  assert.equal(withEvidence.length, 40);
+  assert.deepEqual(report.notes, ["evidence for the first 40 flagged commits only"]);
+  assert.ok(render(report).includes("note: evidence for the first 40 flagged commits only"));
+});
+
+test("names gone beyond the first 300 are not checked, and the report says how many there were", () => {
+  const dir = newRepo();
+  const names = Array.from({ length: 320 }, (_, i) => `tokenNumber${i}`);
+  const base = commit(dir, { "src/many.js": `${names.map((n) => `export const ${n} = 1;`).join("\n")}\n` }, "chore: start");
+  commit(dir, { "src/many.js": "export const kept = 1;\n" }, "refactor(many): replace the constants");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.notes, ["names gone: checked the first 300 of 320 removed names; the rest were not checked"]);
+});
+
+test("a removed name that survives only inside a longer name is still listed as gone (whole words only)", () => {
+  const dir = newRepo();
+  // `shared` is removed from other.js but kept in limits.js, so limits.js is read for the batch; `retryLimit` is only inside `retryLimitMax` there.
+  const base = commit(dir, {
+    "src/limits.js": "export const retryLimit = 3;\nexport const retryLimitMax = 5;\nexport const shared = 1;\n",
+    "src/other.js": "export const shared = 1;\n",
+  }, "chore: start the limits");
+  commit(dir, {
+    "src/limits.js": "export const retryLimitMax = 5;\nexport const shared = 1;\n",
+    "src/other.js": "export const other = 1;\n",
+  }, "refactor(limits): drop the short name");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.ok(goneOf(report).includes("retryLimit"), "retryLimitMax is a different word");
+  assert.ok(!goneOf(report).includes("shared"), "shared is still a whole word in limits.js");
 });

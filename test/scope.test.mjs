@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -88,4 +88,30 @@ test("spaces inside a line count as changes when tokens join, indentation change
   const dir = calendarRepo();
   writeFileSync(join(dir, "src", "slots.js"), "function free(a, b) {\n  returnb - a;\n}\nmodule.exports = { free };\n");
   assert.equal(scope({ cwd: dir }).files[0].whitespaceOnly, false);
+});
+
+test("scope --json through a pipe that is read slowly keeps every byte of a diff with more than 200 KB of output", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "scope-pipe-"));
+  run(dir, "init", "-q", "-b", "main");
+  writeFileSync(join(dir, "base.txt"), "base\n");
+  run(dir, "add", "-A");
+  run(dir, "commit", "-q", "-m", "chore: base");
+  const files = Array.from({ length: 1500 }, (_, i) => `bulk/part-${String(i).padStart(4, "0")}.txt`);
+  // Blank files: each is whitespace-only, so scope does not run one git call per file, and the JSON is still large.
+  for (const f of files) { mkdirSync(join(dir, "bulk"), { recursive: true }); writeFileSync(join(dir, f), "\n"); }
+  run(dir, "add", "-A");
+  run(dir, "commit", "-q", "-m", "docs: add the bulk parts");
+  const out = await new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [CLI, "scope", "HEAD~1..HEAD", "--json"], { cwd: dir });
+    const chunks = [];
+    child.stdout.on("data", (c) => chunks.push(c));
+    child.stdout.pause();
+    setTimeout(() => child.stdout.resume(), 200);
+    child.on("error", reject);
+    child.on("close", (code) => resolve({ code, stdout: Buffer.concat(chunks).toString("utf8") }));
+  });
+  assert.equal(out.code, 0);
+  assert.ok(out.stdout.length > 200 * 1024, `only ${out.stdout.length} bytes`);
+  const parsed = JSON.parse(out.stdout);
+  assert.equal(parsed.files.length, 1500);
 });

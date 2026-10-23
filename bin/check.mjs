@@ -562,6 +562,8 @@ if (invoked) {
         // The hint is a courtesy: a failure to show it never changes the run.
       }
     }
-    process.exit(code);
+    // Not process.exit: it ends the process before a piped stdout has drained (65536-byte cut on --json).
+    // Setting the code and letting the event loop finish keeps every written byte.
+    process.exitCode = code;
   });
 }

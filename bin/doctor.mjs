@@ -115,5 +115,6 @@ export function render(report) {
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const report = doctor();
   console.log(render(report));
-  process.exit(report.stale ? 1 : 0);
+  // process.exitCode, not process.exit: exit would cut the report when stdout is a pipe.
+  process.exitCode = report.stale ? 1 : 0;
 }

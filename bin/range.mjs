@@ -11,6 +11,9 @@
 // patch id means the same change). No model and no network. Every line is a candidate to check against
 // the diff, not a verdict.
 import { execFileSync } from "node:child_process";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { classOf } from "./scope.mjs";
 
 const USAGE = `usage: product-engineer range <from>..<to> [--json]
@@ -28,6 +31,12 @@ const GONE_SHOWN = 8;
 const GONE_FILES_SHOWN = 3;
 const GONE_MIN = 5;
 const GONE_CHECK_BATCH = 100;
+// A range of more than RANGE_LIMIT commits is read for its last RANGE_WINDOW commits only.
+const RANGE_LIMIT = 3000;
+const RANGE_WINDOW = 500;
+// Evidence lines (a git show per file) are read for at most this many flagged commits per range.
+const EVIDENCE_COMMITS = 40;
+const WORD_CHAR = /[A-Za-z0-9_]/;
 const GONE_STOP = new Set(["return", "const", "function", "length", "string", "number", "object", "value", "default", "error", "import", "export", "class", "undefined", "null", "true", "false", "this", "that", "with", "from", "then", "else", "while", "break", "continue", "await", "async", "throw", "catch", "finally", "typeof", "before", "after"]);
 const GONE_FLAG = /(?<![\w-])--[A-Za-z][A-Za-z0-9-]*/g;
 const GONE_WORD = /(?<![\w-])[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*/g;
@@ -53,6 +62,8 @@ const EVIDENCE_LINES = 6;
 const EVIDENCE_WIDTH = 100;
 
 const git = (args, cwd, input) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", input, stdio: ["pipe", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
+// The same, as bytes: blob contents can be binary or have very long lines.
+const gitBytes = (args, cwd, input) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, input, stdio: ["pipe", "pipe", "pipe"], maxBuffer: 1024 * 1024 * 1024 });
 // git grep exits 1 when nothing matches; that is an empty answer here, not an error.
 const grep = (args, cwd) => {
   try {
@@ -92,6 +103,19 @@ function evidenceOf(sha, paths, cwd, keep = () => true) {
   const perFile = paths.map((p) => changedLines(sha, p, cwd).filter(keep));
   const shown = perFile.slice(0, EVIDENCE_FILES).flat().slice(0, EVIDENCE_LINES).map(({ sign, text }) => ({ sign, text: shownText(text) }));
   return { evidence: shown, moreLines: perFile.flat().length - shown.length };
+}
+
+/**
+ * Whether `token` occurs in `text` as a whole word: the characters on both sides are not word characters (the
+ * same rule as `git grep -w`). Plain indexOf, so a long minified line costs one scan, not one per pattern.
+ */
+function hasWord(text, token) {
+  for (let i = text.indexOf(token); i !== -1; i = text.indexOf(token, i + 1)) {
+    const before = i > 0 ? text[i - 1] : "";
+    const after = text[i + token.length] ?? "";
+    if (!WORD_CHAR.test(before) && !WORD_CHAR.test(after)) return true;
+  }
+  return false;
 }
 
 /** `<from>..<to>` or a bare ref (which means `<ref>..HEAD`). Null when the text is not a range this reads. */
@@ -152,26 +176,84 @@ export function removedNames(diff) {
 }
 
 /**
- * The names gone at <to>, most-mentioned first, up to GONE_SHOWN. Each: { name, files, paths } where files counts the
- * non-test files at <from> that hold the name as a whole word, and paths lists them.
+ * The files of one tree that hold any token of the batch as a whole word, from one `git grep -l -w -F -f` scan.
+ * Paths of test files are left out when `skipTests` is set (a name in a test file does not count as in use).
  */
-export function goneNames(names, fromSha, toSha, cwd) {
-  const tokens = [...names.keys()].slice(0, GONE_CAP);
-  const present = new Set();
+function candidatesOf(batch, treeSha, cwd, patternFile, skipTests) {
+  writeFileSync(patternFile, `${batch.join("\n")}\n`);
+  const out = grep(["-l", "-z", "-w", "-F", "-f", patternFile, treeSha], cwd);
+  const paths = out.split("\0").filter(Boolean).map((l) => l.slice(treeSha.length + 1));
+  return skipTests ? paths.filter((p) => classOf(p) !== "test") : paths;
+}
+
+/** The text of each blob of `treeSha:<path>`, in the order given. A path git cannot read is skipped. */
+function blobsOf(paths, treeSha, cwd) {
+  if (paths.length === 0) return [];
+  const buf = gitBytes(["cat-file", "--batch"], cwd, `${paths.map((p) => `${treeSha}:${p}`).join("\n")}\n`);
+  const out = [];
+  let pos = 0;
+  for (const path of paths) {
+    const nl = buf.indexOf(10, pos);
+    if (nl === -1) break;
+    const header = buf.toString("utf8", pos, nl).split(" ");
+    if (header.length !== 3) { pos = nl + 1; continue; } // "<object> missing"
+    const size = Number(header[2]);
+    out.push({ path, text: buf.toString("utf8", nl + 1, nl + 1 + size) });
+    pos = nl + 1 + size + 1;
+  }
+  return out;
+}
+
+/** The tokens (in order) that occur as whole words somewhere in the tree. Batches of GONE_CHECK_BATCH tokens. */
+function tokensPresent(tokens, treeSha, cwd, patternFile) {
+  const found = new Set();
+  for (let k = 0; k < tokens.length; k += GONE_CHECK_BATCH) {
+    const batch = tokens.slice(k, k + GONE_CHECK_BATCH).filter((t) => !found.has(t));
+    if (batch.length === 0) continue;
+    for (const { text } of blobsOf(candidatesOf(batch, treeSha, cwd, patternFile, false), treeSha, cwd)) {
+      for (const t of batch) if (!found.has(t) && hasWord(text, t)) found.add(t);
+    }
+  }
+  return found;
+}
+
+/** Per token, the non-test paths at `treeSha` that hold it as a whole word, in path order. */
+function pathsHolding(tokens, treeSha, cwd, patternFile) {
+  const holding = new Map(tokens.map((t) => [t, []]));
   for (let k = 0; k < tokens.length; k += GONE_CHECK_BATCH) {
     const batch = tokens.slice(k, k + GONE_CHECK_BATCH);
-    const out = grep(["-o", "-w", "-F", "-h", ...batch.flatMap((t) => ["-e", t]), toSha], cwd);
-    for (const line of out.split("\n")) if (line) present.add(line);
+    for (const { path, text } of blobsOf(candidatesOf(batch, treeSha, cwd, patternFile, true), treeSha, cwd)) {
+      for (const t of batch) if (hasWord(text, t)) holding.get(t).push(path);
+    }
   }
-  const gone = [];
-  for (const name of tokens) {
-    if (present.has(name)) continue;
-    const listed = grep(["-l", "-w", "-F", "-e", name, fromSha], cwd).split("\n").filter(Boolean).map((l) => l.slice(fromSha.length + 1));
-    const paths = listed.filter((p) => classOf(p) !== "test");
-    if (paths.length > 0) gone.push({ name, files: paths.length, paths });
+  return holding;
+}
+
+/**
+ * The names gone at <to>, most-mentioned first, up to GONE_SHOWN. Each: { name, files, paths } where files counts the
+ * non-test files at <from> that hold the name as a whole word, and paths lists them. Names beyond GONE_CAP are not
+ * checked; `notes` receives the line that says so.
+ */
+export function goneNames(names, fromSha, toSha, cwd, notes = []) {
+  const all = [...names.keys()];
+  const tokens = all.slice(0, GONE_CAP);
+  if (all.length > GONE_CAP) notes.push(`names gone: checked the first ${GONE_CAP} of ${all.length} removed names; the rest were not checked`);
+  const dir = mkdtempSync(join(tmpdir(), "pe-range-"));
+  const patternFile = join(dir, "tokens.txt");
+  try {
+    const present = tokensPresent(tokens, toSha, cwd, patternFile);
+    const absent = tokens.filter((t) => !present.has(t));
+    const holding = pathsHolding(absent, fromSha, cwd, patternFile);
+    const gone = [];
+    for (const name of absent) {
+      const paths = holding.get(name);
+      if (paths.length > 0) gone.push({ name, files: paths.length, paths });
+    }
+    gone.sort((a, b) => b.files - a.files || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+    return gone.slice(0, GONE_SHOWN);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
-  gone.sort((a, b) => b.files - a.files || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-  return gone.slice(0, GONE_SHOWN);
 }
 
 /**
@@ -179,14 +261,21 @@ export function goneNames(names, fromSha, toSha, cwd) {
  * Throws `unknown revision: <ref>` when either ref does not name a commit.
  */
 export function range({ from, to, cwd = process.cwd() } = {}) {
-  const fromSha = resolve(from, cwd);
+  const fromRef = resolve(from, cwd);
   const toSha = resolve(to, cwd);
+  const notes = [];
+  // A long range is read for its last RANGE_WINDOW commits: the window starts after the commit RANGE_WINDOW back.
+  const total = Number(git(["rev-list", "--count", `${fromRef}..${toSha}`], cwd).trim());
+  const limited = total > RANGE_LIMIT;
+  const fromSha = limited ? git(["rev-list", "--topo-order", `--skip=${RANGE_WINDOW}`, "-n", "1", `${fromRef}..${toSha}`], cwd).trim() : fromRef;
+  if (limited) notes.push(`range too large (${total} commits); showing the last ${RANGE_WINDOW}`);
+  const cap = limited ? [`--max-count=${RANGE_WINDOW}`] : [];
   // Three batched reads for the whole range, not three processes per commit: one log for the subjects, bodies
   // and file lists (NUL-separated), one log of the patches, and one `git patch-id --stable` over that patch
   // log. The same patch id means the same change (a cherry-pick gives the same id).
   const span = `${fromSha}..${toSha}`;
-  const names = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--name-only", "-z", "--format=%x1e%H%x1f%P%x1f%s%x1f%b%x1f", span], cwd);
-  const patchLog = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--no-color", "--no-ext-diff", "-p", "--format=commit %H", span], cwd);
+  const names = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--name-only", "-z", "--format=%x1e%H%x1f%P%x1f%s%x1f%b%x1f", ...cap, span], cwd);
+  const patchLog = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--no-color", "--no-ext-diff", "-p", "--format=commit %H", ...cap, span], cwd);
   const patchIdOf = new Map(git(["patch-id", "--stable"], cwd, patchLog).split("\n").filter(Boolean).map((l) => {
     const [id, commit] = l.split(/\s+/);
     return [commit, id];
@@ -251,7 +340,8 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
   // those was reverted on its own. Those commits are the ones reachable from the second parent and not the first.
   const bySha = new Map(commits.map((c) => [c.sha, c]));
   for (const m of commits) {
-    if (!m.merge || m.net.state !== "cancelled") continue;
+    // A merge whose subject reads as a revert has no net state (kind is set), so it is skipped here too.
+    if (!m.merge || !m.net || m.net.state !== "cancelled") continue;
     const reverter = m.events.at(-1);
     const brought = git(["rev-list", `${m.parents[0]}..${m.parents[1]}`], cwd).split("\n").filter(Boolean);
     for (const sha of brought) {
@@ -261,7 +351,7 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
   }
 
   // Names gone at <to>, from the net diff (a name removed and re-added inside the range is still present).
-  const gonenames = goneNames(removedNames(git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", fromSha, toSha], cwd)), fromSha, toSha, cwd);
+  const gonenames = goneNames(removedNames(git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", fromSha, toSha], cwd)), fromSha, toSha, cwd, notes);
 
   const firstByPatch = new Map();
   const duplicateOf = new Map();
@@ -272,6 +362,20 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     else firstByPatch.set(c.patchId, c);
   }
   const benchPaths = [...new Set(commits.flatMap((c) => c.files).filter((p) => BENCH.test(p)))];
+  // Evidence lines are read for the first EVIDENCE_COMMITS flagged commits only; later ones keep their flag text.
+  const evidenced = new Set();
+  let evidenceCut = false;
+  const evidenceFor = (sha, paths, keep) => {
+    if (!evidenced.has(sha)) {
+      if (evidenced.size >= EVIDENCE_COMMITS) {
+        evidenceCut = true;
+        return { evidence: [], moreLines: 0, cut: true };
+      }
+      evidenced.add(sha);
+    }
+    const { evidence, moreLines } = evidenceOf(sha, paths, cwd, keep);
+    return { evidence, moreLines, cut: false };
+  };
 
   for (const c of commits) {
     const flags = [];
@@ -280,6 +384,7 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
       const target = c.reverts ? commits.find((x) => x.sha === c.reverts) : null;
       if (target) flags.push({ code: "link", text: `${verb} ${target.short}: ${target.subject}` });
       else if (c.outsideSha) flags.push({ code: "link", text: `${verb} ${c.outsideSha.slice(0, 7)}, which is outside this range` });
+      if (c.merge) flags.push({ code: "merge", text: "merge commit whose subject reads as a revert: its net state is not computed; read the merge" });
     } else {
       const cancelledBy = c.net.merge ? `branch merged by ${c.net.merge} was reverted by ${c.net.by}` : `reverted by ${c.net.by}`;
       const state = c.net.state === "cancelled" ? `net: cancelled (${cancelledBy})` : c.net.lastBy ? `net: present (restored by ${c.net.lastBy})` : "net: present";
@@ -297,17 +402,20 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     }
     const sourceFiles = c.files.filter((p) => kindOf(p) === "source");
     if (c.type && TYPES_WITHOUT_SOURCE.has(c.type) && sourceFiles.length > 0) {
-      flags.push({ code: "type", text: `type says ${c.type} but the commit changes source files: ${sourceFiles.slice(0, 3).join(", ")}`, ...evidenceOf(c.sha, sourceFiles, cwd) });
+      flags.push({ code: "type", text: `type says ${c.type} but the commit changes source files: ${sourceFiles.slice(0, 3).join(", ")}`, ...evidenceFor(c.sha, sourceFiles) });
     }
     const configFiles = c.files.filter((p) => kindOf(p) === "config");
-    if (c.type === "refactor" && configFiles.length > 0) flags.push({ code: "type", text: `refactor touches config: ${configFiles.slice(0, 3).join(", ")}`, ...evidenceOf(c.sha, configFiles, cwd) });
+    if (c.type === "refactor" && configFiles.length > 0) flags.push({ code: "type", text: `refactor touches config: ${configFiles.slice(0, 3).join(", ")}`, ...evidenceFor(c.sha, configFiles) });
     for (const p of c.files.filter((f) => REQUIREMENT_FILE.test(f))) {
-      const ev = evidenceOf(c.sha, [p], cwd, (l) => VERSION_ONLY_FILE.test(p) || REQUIREMENT_LINE.test(l.text.trim()));
+      const ev = evidenceFor(c.sha, [p], (l) => VERSION_ONLY_FILE.test(p) || REQUIREMENT_LINE.test(l.text.trim()));
+      // Past the evidence cap the changed lines are not read, so the flag says the file changed and no more.
+      if (ev.cut) { flags.push({ code: "requirement", text: `requirement file changed: ${p}; its lines were not read (evidence cap)` }); continue; }
       if (ev.evidence.length > 0) flags.push({ code: "requirement", text: `requirement change: ${p} changes how or where this runs; owners who run it themselves may need to act`, ...ev });
     }
     c.flags = flags.map((f) => ({ evidence: [], moreLines: 0, ...f }));
   }
 
+  if (evidenceCut) notes.push(`evidence for the first ${EVIDENCE_COMMITS} flagged commits only`);
   const originals = commits.filter((c) => !c.kind && !c.merge);
   const cancelled = originals.filter((c) => c.net.state === "cancelled").length;
   const present = originals.length - cancelled;
@@ -318,12 +426,13 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     summary: { commits: commits.length, present, cancelled },
     commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text, evidence, moreLines }) => ({ code, text, evidence, moreLines })) })),
     gonenames,
+    notes,
     footer: FOOTER,
   };
 }
 
 export function render(report) {
-  const out = [report.header];
+  const out = [report.header, ...(report.notes ?? []).map((note) => `note: ${note}`)];
   for (const c of report.commits) {
     out.push(`${c.short} ${c.classes.join("+")}  ${c.subject}`);
     for (const f of c.flags) {
