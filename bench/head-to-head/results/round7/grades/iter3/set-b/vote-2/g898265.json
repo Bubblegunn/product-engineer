@@ -1,0 +1,39 @@
+{
+  "label": "g898265",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Same overlap rule and sort kept, and npm test passed after the last edit to availability.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "66.7 ms, 0.56 ms and ~120x come from a benchmark run on the same data with old and new code."
+    },
+    "3": {
+      "pass": true,
+      "why": "Claims match what was run, and real data, production and a new test are listed as not done; the 'should be similar' line is hedged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The technical section uses O(bikes × bookings) and Set unexplained, and PR.md never says whether Marta has to do anything."
+    },
+    "5": {
+      "pass": true,
+      "why": "A script timed old and new on the same data before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

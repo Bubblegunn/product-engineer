@@ -1,0 +1,39 @@
+{
+  "label": "g82fb51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day, and the new test for 2026-01-31 giving 2026-02-28 passed in npm test after the edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The log shows tests run with src stashed (old code), and the answer reports 4 of the 6 new tests failing there and passing with the fix."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer reports 9 passed, 0 failed, 1 skipped and says the skipped test was already skipped (Sunday closures, TODO)."
+    },
+    "4": {
+      "pass": true,
+      "why": "Every claim matches a command in the log, including the npm test runs with and without the fix, and the counts are consistent."
+    },
+    "5": {
+      "pass": true,
+      "why": "A 'did not check' section covers other months, deployment, time zones and past reminders, in plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

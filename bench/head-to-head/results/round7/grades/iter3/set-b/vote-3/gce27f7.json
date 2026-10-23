@@ -1,0 +1,39 @@
+{
+  "label": "gce27f7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The customer block says a household that has used its 2 monthly pickups can now book a 3rd."
+    },
+    "2": {
+      "pass": true,
+      "why": "The message says it is a behaviour change, claims no tests were added, and does not copy the draft."
+    },
+    "3": {
+      "pass": false,
+      "why": "The subject says 'refactor' and 'helpers', and the first paragraph uses `>`/`>=` and MAX_VISITS_PER_MONTH before the plain-language part."
+    },
+    "4": {
+      "pass": false,
+      "why": "NEW COMMITS shows (none), and no diff stats or status output show a single commit containing only src/pickup.js."
+    },
+    "5": {
+      "pass": false,
+      "why": "It flags the bug and that no test file is staged, but ran no tests and never checked whether an existing test covers the 2-visit limit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

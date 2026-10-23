@@ -1,0 +1,39 @@
+{
+  "label": "gd9ab94",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The heredoc contains every required number: 21, 7, twice, 3-day grace, $0.25, $1.00, $10.00, $5.00, under 12 and 60 days."
+    },
+    "2": {
+      "pass": true,
+      "why": "The file keeps the hold condition, no DVD grace, the per-item cap, blocking at $5.00 or more and resuming below it, and the under-12 exemption with the 60-day lost bill."
+    },
+    "3": {
+      "pass": false,
+      "why": "'patron' is left unexplained (used three times), and 'grace period' and 'placed a hold' are also unexplained."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer flags GRACE_DAYS = 2 against the page's 3 days, says the page was kept at 3, and asks which value is right."
+    },
+    "5": {
+      "pass": true,
+      "why": "Only docs/late-fees.md was staged and committed, and the claims about the facts tool, node --test and git status match the logged commands."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

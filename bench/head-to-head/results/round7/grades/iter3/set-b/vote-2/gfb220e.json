@@ -1,0 +1,39 @@
+{
+  "label": "gfb220e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The heredoc rewrite contains every required number: 21, 7, twice, 3-day, $0.25, $1.00, $10.00, $5.00, under 12 and 60 days."
+    },
+    "2": {
+      "pass": true,
+      "why": "The rewrite keeps the hold condition, no grace for DVDs, the per-item cap, the $5.00 block and resume, and the under-12 no-fee rule with the 60-day lost billing."
+    },
+    "3": {
+      "pass": false,
+      "why": "It uses 'patron', 'hold', 'grace period' and 'balance' without explaining them, so jargon remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer flags GRACE_DAYS = 2 against the page's 3 days, says 3 was kept, and asks for a decision."
+    },
+    "5": {
+      "pass": true,
+      "why": "Only docs/late-fees.md was added, git status was checked before and after, and the facts, grep and node --test claims all match logged commands without overclaiming."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

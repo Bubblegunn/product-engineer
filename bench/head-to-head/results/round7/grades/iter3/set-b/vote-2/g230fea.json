@@ -1,0 +1,39 @@
+{
+  "label": "g230fea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day to the month's last day, and the added test asserting 2026-01-31 gives 2026-02-28 passed in npm test."
+    },
+    "2": {
+      "pass": true,
+      "why": "New tests for 31 Jan and for 29 Feb cat were added, and the old code returns 03-03, so they would fail on it (though the new tests were never run against the old code)."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer reports 5 pass, 0 fail, 1 skipped and names the Sunday-closure TODO as untouched, though it never says outright that this test doesn't cover the fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "The npm test run and the stash run of the old code both appear in the log, and the counts stated match."
+    },
+    "5": {
+      "pass": true,
+      "why": "A 'Not checked' section covers reminders already sent, real data, time zones and other callers, in mostly plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

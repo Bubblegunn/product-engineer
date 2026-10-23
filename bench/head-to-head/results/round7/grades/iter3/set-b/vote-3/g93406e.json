@@ -1,0 +1,39 @@
+{
+  "label": "g93406e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The edit was followed by bench runs and npm test, with 2 pass and 0 fail shown, and the sort and overlap logic are unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "The ~63 ms and ~0.5 ms figures and ~130x come from running bench.js on old.js and the new file with the same data."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md claims only the made-up 400/50,000 test, the 234 matching bikes and the 2 existing tests, and says real data and the live system were not measured."
+    },
+    "4": {
+      "pass": false,
+      "why": "The technical section uses an unexplained `Set` and '20 million checks', the document is fairly long, and it does not say what Marta must do."
+    },
+    "5": {
+      "pass": true,
+      "why": "A bench script ran old and new code 20 times each before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

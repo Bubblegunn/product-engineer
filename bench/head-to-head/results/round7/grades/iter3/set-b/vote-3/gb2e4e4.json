@@ -1,0 +1,39 @@
+{
+  "label": "gb2e4e4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "npm test was run after the edit and PR.md write, and the final answer shows 2 pass, 0 fail; the old/new comparison on 200 random ranges also matched."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 66.83 ms and 0.54 ms figures and the ~124x ratio come from the same bench script run on old (git HEAD) and new code with the same seed."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md describes the made-up data accurately, cites only the 2 existing tests, and lists real data, the live site and a new test as not done."
+    },
+    "4": {
+      "pass": false,
+      "why": "It uses 'database index' unexplained, has odd headings ('For the customer:', 'Hi Marta, how much faster?'), and never says whether Marta needs to do anything."
+    },
+    "5": {
+      "pass": true,
+      "why": "A bench script timed old and new code over 20 runs before any speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

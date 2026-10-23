@@ -1,0 +1,39 @@
+{
+  "label": "g4704a9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The behaviour is unchanged (200 random searches matched), and npm test showed 2 of 2 passing after the last edit of availability.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 66.83 ms, 0.54 ms and ~124x figures come from the same-data bench runs of old.js and the new file."
+    },
+    "3": {
+      "pass": true,
+      "why": "The claims are backed by the bench, the 200-range comparison and the 2 passing tests, and the 'Not shipped' list covers real data and new tests, though a few forward-looking remarks go beyond what was measured."
+    },
+    "4": {
+      "pass": false,
+      "why": "It uses 'database index' without explanation, never says what Marta must do, and is longer than needed."
+    },
+    "5": {
+      "pass": true,
+      "why": "bench.js timed the old and new versions on the same data before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

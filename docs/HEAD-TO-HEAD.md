@@ -1280,3 +1280,9 @@ Not acted on: rewrite added-definition and kept-jargon misses (set b X3 c2, c3: 
 Iteration 3 code is `00109d7` (three skill sentences; `npm test` 730 passed, 0 failed). The development gate rerun could not run: the API returned 400 (first `thinking.type.enabled`
 not supported, then `tool_use ids must be unique`, also for a plain two-command prompt) on every call through the SDK shim, 15 of 15 cells of set c and 4 of 4 probes. No iteration 3 score exists.
 The gate is not passed (iteration 2 data stands), so set d, the public set, F9 and F6 were not run. Details: `bench/head-to-head/results/round7/SUMMARY.md`.
+
+## Round 7, iteration 3 corrected outcome (2026-10-23)
+The 400 errors recorded above came from the wrong CLI: the cells recorded `claude_version` 2.1.2 (`/usr/local/bin/claude`) instead of 2.1.308 because the shim directory was not first on PATH.
+With the shim first, the default settings file and no override, iteration 3 ran: 27 valid cells (all 2.1.308), 81 grader calls in total over three iterations. Ours x3, outcome mean of 4: set c X1 3.00, X2 4.00, X3 4.00, X4 4.00, X5 4.00;
+set b X1 4.00, X2 2.00, X3 1.00, X4 3.00. **The development gate did not pass** (set c X1: grader-material limit, no `.git/fixture-state`; set b X3: below the rival's 2.00, runs 1 and 2 scored 0 because the grader material did not show the
+committed rewrite). Three iterations are used. Held-out set d, the public set, F9 and F6 were not run; nothing supports a "first" claim. Spend 10.3719 USD in the cost files. Details: `bench/head-to-head/results/round7/SUMMARY.md`.

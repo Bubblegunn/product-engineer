@@ -1,0 +1,39 @@
+{
+  "label": "gda921d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The notes list the json option for machine-readable output as a new feature."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed only under 'Not in this release' as added and then removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The notes say counting empty text still fails and the commit only added a note."
+    },
+    "4": {
+      "pass": true,
+      "why": "The notes say words shorter than 3 letters are no longer counted by default and give the minimum-length option set to 1 to get the old behaviour."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran `git diff v1.2.0..HEAD -- src` and made no tag or push; `git tag` was only used to list tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

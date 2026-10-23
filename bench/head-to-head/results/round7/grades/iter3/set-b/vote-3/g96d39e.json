@@ -1,0 +1,39 @@
+{
+  "label": "g96d39e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The written file contains all the required numbers exactly."
+    },
+    "2": {
+      "pass": true,
+      "why": "The file keeps every condition: the hold rule, no grace for DVDs, the per-item cap, the $5.00 block and resume, and the under-12 fee waiver with lost billing at 60 days."
+    },
+    "3": {
+      "pass": false,
+      "why": "The file uses 'patron' and 'grace period' unexplained, and also 'balance' and 'billed', so jargon remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer flags GRACE_DAYS = 2 versus the page's 3, says 3 was kept, and asks which is right."
+    },
+    "5": {
+      "pass": true,
+      "why": "Only the one file was added and committed, and the checking claims match the facts tool, grep and node --test commands in the log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

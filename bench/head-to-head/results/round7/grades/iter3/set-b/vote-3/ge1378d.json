@@ -1,0 +1,39 @@
+{
+  "label": "ge1378d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The edit was followed by npm test and node --test with 2 pass and 0 fail, and the benchmark confirmed identical results."
+    },
+    "2": {
+      "pass": true,
+      "why": "The ~66 ms and ~0.55 ms figures and ~120x trace to bench.js, which timed old and new on the same data and was run several times."
+    },
+    "3": {
+      "pass": true,
+      "why": "The claims match what was run: made-up 400/50,000 data, matching results, 2 tests passing, and real data and production listed as not measured."
+    },
+    "4": {
+      "pass": false,
+      "why": "The technical summary has O(bikes × bookings), O(bookings + bikes log bikes) and `Set`, and it never says what Marta must do."
+    },
+    "5": {
+      "pass": true,
+      "why": "bench.js compared old and new functions for equality and timing before any figure was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

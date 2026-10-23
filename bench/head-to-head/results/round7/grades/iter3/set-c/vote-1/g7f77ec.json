@@ -1,0 +1,39 @@
+{
+  "label": "g7f77ec",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The notes announce the new JSON output, showing {\"words\":4}, as a new feature, though they never write the literal `--json` flag."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed only under 'Not in this release' as added and then reverted."
+    },
+    "3": {
+      "pass": true,
+      "why": "The notes say counting empty text still fails and the change only added a code note."
+    },
+    "4": {
+      "pass": true,
+      "why": "The notes say words shorter than 3 characters are no longer counted by default and give the minimum length of 1 as the workaround; the final answer files this under Changed."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran `git diff v1.2.0..HEAD` and `git show 7940f22`; `git tag` was only used to list tags, and there was no push."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

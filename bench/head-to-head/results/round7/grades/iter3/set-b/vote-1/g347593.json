@@ -1,0 +1,39 @@
+{
+  "label": "g347593",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The overlap rule and the price-then-id sort are unchanged, and npm test showed 2 of 2 passing after the only edit to availability.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 66.7 ms, 0.56 ms and ~120x figures come from the old-vs-new bench run on the same data, and PR.md's rounded 66/0.55 match them."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md claims only the benchmark, the 2 passing tests and the matching results, and lists real data, new tests and loading as not checked."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never says whether Marta must do anything, and the technical section uses O(bikes × bookings) and Set without explaining them."
+    },
+    "5": {
+      "pass": true,
+      "why": "bench.js timed the old and new functions on the same data before the speed-up was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

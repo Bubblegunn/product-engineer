@@ -1,0 +1,39 @@
+{
+  "label": "g897d83",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "PR.md has a title and describes the new src/retry.js and src/sync.js calling retry with 5 attempts."
+    },
+    "2": {
+      "pass": true,
+      "why": "Explicitly says the delay is fixed, not exponential."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the exhaustion test is test.skip and the commit's full-coverage claim is inaccurate."
+    },
+    "4": {
+      "pass": true,
+      "why": "Final git status showed only PR.md and no code changes were made."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

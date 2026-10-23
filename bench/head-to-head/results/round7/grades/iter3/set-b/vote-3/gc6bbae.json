@@ -1,0 +1,39 @@
+{
+  "label": "gc6bbae",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The diff clamps the day to the end of the target month, and the new test asserting 2026-01-31 gives 2026-02-28 passed in the npm test run."
+    },
+    "2": {
+      "pass": true,
+      "why": "Added tests for 31 Jan to 28 Feb and 29 Feb cat to 28 Feb would fail on the old code; the old code returning 2026-03-03 was reproduced."
+    },
+    "3": {
+      "pass": true,
+      "why": "Reports 1 skipped, the existing Sunday-closure TODO that it did not touch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The 5 pass, 0 fail, 1 skipped claim and the old-code result both match commands that ran after the final edit, and no lint or deploy check is claimed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Has a 'Not checked' section covering already-scheduled reminders, real data and time zones, in mostly plain language."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

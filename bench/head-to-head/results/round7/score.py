@@ -7,7 +7,7 @@ import json, os, glob, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 RIVAL = {"c": {"X1": 4.0, "X2": 4.0, "X3": 4.0, "X4": 4.0, "X5": 4.0}, "b": {"X1": 4.0, "X2": 4 / 3, "X3": 2.0, "X4": None}}
 out = []
-for it in ("1", "2"):
+for it in ("1", "2", "3"):
     for s in ("c", "b"):
         labels = json.load(open(f"{HERE}/tasks/set-{s}.labels.json"))
         raw = {}

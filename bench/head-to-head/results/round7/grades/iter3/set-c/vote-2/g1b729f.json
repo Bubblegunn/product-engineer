@@ -1,0 +1,39 @@
+{
+  "label": "g1b729f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes say you can now get the word count in JSON form, with the {\"words\":4} example."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV is listed as added then taken back out, so not available."
+    },
+    "3": {
+      "pass": true,
+      "why": "Notes state empty-text counting still fails and the change only added a code note."
+    },
+    "4": {
+      "pass": true,
+      "why": "Notes say words under 3 characters are no longer counted by default, with the example and the minimum-length-1 workaround."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD and git show 7940f22; the only git tag call was a list, with no push."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X3",
+    "sessions": 3,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
