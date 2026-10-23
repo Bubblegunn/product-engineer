@@ -1,0 +1,39 @@
+{
+  "label": "g31434f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The file opens with 'Changes since v1.4.0'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Late checkout is announced once, with no mention of a revert."
+    },
+    "3": {
+      "pass": true,
+      "why": "It says the rate went from 120 EUR to 135 EUR and asks owners to check it."
+    },
+    "4": {
+      "pass": false,
+      "why": "The header contains commit hashes (8353ee3 to 70e79e5)."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log v1.4.0..HEAD and git show -p on 9b9896c before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X94",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

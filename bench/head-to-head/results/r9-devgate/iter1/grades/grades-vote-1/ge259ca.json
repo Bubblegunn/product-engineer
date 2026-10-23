@@ -1,0 +1,39 @@
+{
+  "label": "ge259ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only says 'StayHub 1.5.0' and never names v1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "Late checkout appears once as new."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the new rate €135, up from €120."
+    },
+    "4": {
+      "pass": true,
+      "why": "No hash, path, function name or prefix, and the CSV fix is framed as protection."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log on the range and git diff v1.4.0..HEAD -- src, which includes the pricing change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X94",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gcb5bcb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "It starts at v1.4.0, gives no version number, and leaves out the reverted README change."
+    },
+    "2": {
+      "pass": true,
+      "why": "The JSON export is announced."
+    },
+    "3": {
+      "pass": true,
+      "why": "Totals are stated as rounded to two decimals."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no Node 20 requirement."
+    },
+    "5": {
+      "pass": false,
+      "why": "It showed dc7f089, 9eaf9e5, 8f71bc3, 38f69e3 and bb3d24b with --stat only, never the dependency-bump patch."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X100",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

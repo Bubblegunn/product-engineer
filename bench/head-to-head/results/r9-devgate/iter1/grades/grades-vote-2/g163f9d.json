@@ -1,0 +1,39 @@
+{
+  "label": "g163f9d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The first line says 'Changes since v1.4.0'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Late checkout appears once with no revert mention."
+    },
+    "3": {
+      "pass": true,
+      "why": "States 135 EUR instead of 120 EUR as a quote-price change to check."
+    },
+    "4": {
+      "pass": false,
+      "why": "The header contains commit hashes 8353ee3 and 70e79e5."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log for the range and git show 9b9896c with -p."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X94",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

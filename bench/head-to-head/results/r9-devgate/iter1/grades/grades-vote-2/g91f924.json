@@ -1,0 +1,39 @@
+{
+  "label": "g91f924",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says 'What's new since 1.4.0', which names the starting point."
+    },
+    "2": {
+      "pass": true,
+      "why": "Late checkout appears once under New with no mention of a revert."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the rate is now €135, was €120, under Changed."
+    },
+    "4": {
+      "pass": true,
+      "why": "No hashes, paths, function names or prefixes; the CSV fix is described generally."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log v1.4.0..HEAD and git diff v1.4.0..HEAD over src, which includes the pricing change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X94",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

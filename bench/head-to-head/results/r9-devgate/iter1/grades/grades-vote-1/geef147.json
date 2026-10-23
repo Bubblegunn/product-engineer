@@ -1,0 +1,39 @@
+{
+  "label": "geef147",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Opens with 'Changes since v1.4.0'."
+    },
+    "2": {
+      "pass": false,
+      "why": "A 'Not in this release' note says late checkout was added, taken out and put back."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the rate is now 135 euros instead of 120 euros."
+    },
+    "4": {
+      "pass": false,
+      "why": "The first line includes commit hashes."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log on the range and git show including 9b9896c -p."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X94",
+    "sessions": 18,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
