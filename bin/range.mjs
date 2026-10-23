@@ -3,7 +3,9 @@
 // Each commit of the range is listed oldest first with its class (docs, test, config, source, version,
 // merge) and a flag for each thing git shows that a reader should check: a change reverted later in the
 // range, a patch-identical duplicate (cherry-pick), security or performance wording in the subject, a
-// breaking-change marker, and a conventional type that the changed files contradict. A revert names the
+// breaking-change marker, a conventional type that the changed files contradict, and a requirement change
+// (a runtime or engine line in a manifest). A flag on a changed-file contradiction or a requirement change
+// prints up to six of the changed lines under it. A revert names the
 // commit it undoes; a revert of a revert puts that change back, so the net state follows the chain in
 // order. Facts come from `git log`, `git diff-tree`, `git show` and `git patch-id --stable` (the same
 // patch id means the same change). No model and no network. Every line is a candidate to check against
@@ -27,8 +29,48 @@ const TYPES_WITHOUT_SOURCE = new Set(["docs", "test", "chore", "style", "ci", "b
 const KIND_NAME = { doc: "docs", test: "test", config: "config", source: "source" };
 const ORDER = ["docs", "test", "config", "source"];
 const kindOf = (p) => KIND_NAME[classOf(p)];
+// A requirement change: a file that says how or where the project runs, and a changed line that says so.
+const REQUIREMENT_FILE = /(^|\/)(package\.json|pyproject\.toml|Cargo\.toml|go\.mod|\.nvmrc|\.node-version|\.python-version|\.tool-versions|Dockerfile)$/;
+const REQUIREMENT_LINE = /engines|"node"|node-version|python|rust-version|requires-python|FROM |^go [0-9]/i;
+// A file whose content is only a runtime version: every changed line in it is a requirement change.
+const VERSION_ONLY_FILE = /(^|\/)(\.nvmrc|\.node-version|\.python-version|\.tool-versions)$/;
+// Evidence under a flag: at most this many changed lines, from at most this many files, each cut to this width.
+const EVIDENCE_FILES = 2;
+const EVIDENCE_LINES = 6;
+const EVIDENCE_WIDTH = 100;
 
 const git = (args, cwd, input) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", input, stdio: ["pipe", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
+
+/**
+ * The changed lines of one commit in one file, whitespace-only changes skipped (the same `-b --ignore-blank-lines`
+ * as scope.mjs): [{ sign, text }]. Diff headers are skipped by position, so a removed line that starts with `--` is kept.
+ */
+function changedLines(sha, path, cwd) {
+  const patch = git(["show", "-U0", "-b", "--ignore-blank-lines", "--no-color", "--no-ext-diff", "--format=", sha, "--", path], cwd);
+  const out = [];
+  let inHunk = false;
+  for (const line of patch.split("\n")) {
+    if (line.startsWith("diff ")) inHunk = false;
+    else if (line.startsWith("@@")) inHunk = true;
+    else if (inHunk && (line[0] === "+" || line[0] === "-")) out.push({ sign: line[0], text: line.slice(1) });
+  }
+  return out;
+}
+
+const shownText = (text) => {
+  const t = text.trim();
+  return t.length > EVIDENCE_WIDTH ? `${t.slice(0, EVIDENCE_WIDTH - 3)}...` : t;
+};
+
+/**
+ * Evidence for a flag: up to EVIDENCE_LINES changed lines from the first EVIDENCE_FILES paths, and moreLines, the
+ * count of matching changed lines in all paths that were not printed. `keep` filters the changed lines.
+ */
+function evidenceOf(sha, paths, cwd, keep = () => true) {
+  const perFile = paths.map((p) => changedLines(sha, p, cwd).filter(keep));
+  const shown = perFile.slice(0, EVIDENCE_FILES).flat().slice(0, EVIDENCE_LINES).map(({ sign, text }) => ({ sign, text: shownText(text) }));
+  return { evidence: shown, moreLines: perFile.flat().length - shown.length };
+}
 
 /** `<from>..<to>` or a bare ref (which means `<ref>..HEAD`). Null when the text is not a range this reads. */
 export function parseRange(arg) {
@@ -170,11 +212,15 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     }
     const sourceFiles = c.files.filter((p) => kindOf(p) === "source");
     if (c.type && TYPES_WITHOUT_SOURCE.has(c.type) && sourceFiles.length > 0) {
-      flags.push({ code: "type", text: `type says ${c.type} but the commit changes source files: ${sourceFiles.slice(0, 3).join(", ")}` });
+      flags.push({ code: "type", text: `type says ${c.type} but the commit changes source files: ${sourceFiles.slice(0, 3).join(", ")}`, ...evidenceOf(c.sha, sourceFiles, cwd) });
     }
     const configFiles = c.files.filter((p) => kindOf(p) === "config");
-    if (c.type === "refactor" && configFiles.length > 0) flags.push({ code: "type", text: `refactor touches config: ${configFiles.slice(0, 3).join(", ")}` });
-    c.flags = flags;
+    if (c.type === "refactor" && configFiles.length > 0) flags.push({ code: "type", text: `refactor touches config: ${configFiles.slice(0, 3).join(", ")}`, ...evidenceOf(c.sha, configFiles, cwd) });
+    for (const p of c.files.filter((f) => REQUIREMENT_FILE.test(f))) {
+      const ev = evidenceOf(c.sha, [p], cwd, (l) => VERSION_ONLY_FILE.test(p) || REQUIREMENT_LINE.test(l.text.trim()));
+      if (ev.evidence.length > 0) flags.push({ code: "requirement", text: `requirement change: ${p} changes how or where this runs; owners who run it themselves may need to act`, ...ev });
+    }
+    c.flags = flags.map((f) => ({ evidence: [], moreLines: 0, ...f }));
   }
 
   const originals = commits.filter((c) => !c.kind && !c.merge);
@@ -185,7 +231,7 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
     range: { from, to },
     header: `range ${label}: ${commits.length} commit${commits.length === 1 ? "" : "s"}, ${present} net change${present === 1 ? "" : "s"} present, ${cancelled} cancelled`,
     summary: { commits: commits.length, present, cancelled },
-    commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text }) => ({ code, text })) })),
+    commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text, evidence, moreLines }) => ({ code, text, evidence, moreLines })) })),
     footer: FOOTER,
   };
 }
@@ -194,7 +240,11 @@ export function render(report) {
   const out = [report.header];
   for (const c of report.commits) {
     out.push(`${c.short} ${c.classes.join("+")}  ${c.subject}`);
-    for (const f of c.flags) out.push(`    ${f.text}`);
+    for (const f of c.flags) {
+      out.push(`    ${f.text}`);
+      for (const e of f.evidence) out.push(`    ${e.sign} ${e.text}`);
+      if (f.moreLines > 0) out.push(`    (${f.moreLines} more changed lines; read the diff)`);
+    }
   }
   out.push(report.footer);
   return out.join("\n");

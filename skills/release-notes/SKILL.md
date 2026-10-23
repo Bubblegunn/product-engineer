@@ -18,7 +18,7 @@ it: release notes, changelog entries, status updates to a founder or a client, a
 
 ## Check before you save
 
-Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled; then check the saved file with `product-engineer notes <file> --range <tag>`. Notes never contain code identifiers or file names: no function, variable or module
+Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled. For each commit it flags as `type says ...` or `requirement change`, read the printed lines, decide whether the reader would notice the change, and write it as what the reader sees (a changed limit, a price, a new requirement), never as the commit title says. Then check the saved file with `product-engineer notes <file> --range <tag>`. Notes never contain code identifiers or file names: no function, variable or module
 names, no paths, no backticks, no commit prefixes, no file with an extension. Write the
 notes to their file, then run `product-engineer notes <file>` (`npx product-engineer notes
 <file>` where it is not installed; from version 0.8.0). Fix every error it reports and run
@@ -40,22 +40,24 @@ it again until it passes. Only then say the notes are done.
 5. Say what is not in this release. A closing `Not in this release:` list lists only
    what a reader would expect from the commits in the range: a reverted item, a flag
    left off, a known limit. One line each with the reason. Omit the section when there
-   is nothing to list, and never list something nobody was promised. A thing added and
-   reverted inside the range is not announced as available.
+   is nothing to list, and never list something nobody was promised. A change added
+   and reverted inside the range is not announced as available. A change added, reverted
+   and re-applied is announced once, as present, and its history is not mentioned.
 6. Describe the cause, not an unmeasured effect. "Shows 20 events at a time" is true;
    "opens faster" needs a measurement or is left out. A security fix says what it
    protects, for example "Exported calendar files can no longer run code when a colleague
    opens them", and gives no steps that show how to abuse the flaw.
-7. State the range on the first line: `Changes since v2.3.0 (commit abc1234 to def5678)`,
-   or "the last 6 commits: abc1234 to def5678". A version number goes on that line only.
+7. State the range on the first line. When a tag exists, write `Changes since v2.3.0` and
+   no commit hashes: a hash means nothing to the reader. Without a tag, write
+   `commit abc1234 to def5678`, or "the last 6 commits: abc1234 to def5678". A version number goes on that line only.
    Name the new version only when the person gives it to you; a version bump in the range
-   is not a change. Check the range against `git log` before writing. Naming the range is common
-   changelog practice; the wording here is this skill's own.
+   is not a change. Check the range against `git log` before writing. Naming the range is
+   common changelog practice; the wording here is this skill's own.
 
 ## Shape
 
 ```
-Changes since v2.3.0 (commit abc1234 to def5678)
+Changes since v2.3.0
 
 You can now <outcome>, so that <why it matters>.
 You no longer <suffering>, because <what changed, in plain words>.
@@ -78,7 +80,7 @@ Before:
 After:
 
 ```
-Changes since v2.3.0 (commit 3a9f2c1 to 8d0b7e4)
+Changes since v2.3.0
 
 You can now export a month of events as a file, so sharing a schedule with a colleague stops being a copy-paste job.
 Cancelled events no longer send a reminder; only events that are still on the calendar do.

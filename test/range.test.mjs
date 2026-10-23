@@ -250,3 +250,88 @@ test("a 300-commit range is read in under 5 seconds", () => {
   assert.equal(report.commits[0].files.length, 1);
   assert.ok(ms < 5000, `took ${ms} ms`);
 });
+
+const flagOf = (report, sha, code) => find(report, sha).flags.find((f) => f.code === code);
+
+test("a chore commit that changes a limit prints the changed lines under its type flag", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/x.js": "export const LIMIT = 50;\nexport const pick = (xs) => xs.slice(0, LIMIT);\n" }, "chore: start the list");
+  const change = commit(dir, { "src/x.js": "export const LIMIT = 25;\nexport const pick = (xs) => xs.slice(0, LIMIT);\n" }, "chore: tidy the list");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const flag = flagOf(report, change, "type");
+  assert.ok(flag.text.startsWith("type says chore but the commit changes source files: src/x.js"));
+  assert.deepEqual(flag.evidence, [{ sign: "-", text: "export const LIMIT = 50;" }, { sign: "+", text: "export const LIMIT = 25;" }]);
+  assert.equal(flag.moreLines, 0);
+  assert.ok(render(report).includes("\n    - export const LIMIT = 50;\n    + export const LIMIT = 25;\n"));
+});
+
+test("a docs-titled commit that changes a constant prints the changed lines too", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/page.js": "export const PAGE = 25;\n" }, "chore: start paging");
+  const doc = commit(dir, { "src/page.js": "export const PAGE = 40;\n" }, "docs: note the page size");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const flag = flagOf(report, doc, "type");
+  assert.ok(flag.text.startsWith("type says docs but the commit changes source files: src/page.js"));
+  assert.deepEqual(flag.evidence, [{ sign: "-", text: "export const PAGE = 25;" }, { sign: "+", text: "export const PAGE = 40;" }]);
+  assert.ok(render(report).includes("    - export const PAGE = 25;\n    + export const PAGE = 40;"));
+});
+
+test("an engines.node bump is a requirement change and its lines are printed", () => {
+  const dir = newRepo();
+  const manifest = (node) => `{\n  "name": "shop",\n  "engines": {\n    "node": "${node}"\n  }\n}\n`;
+  const base = commit(dir, { "package.json": manifest(">=20") }, "chore: start");
+  const bump = commit(dir, { "package.json": manifest(">=22") }, "chore: raise the node floor");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const flag = flagOf(report, bump, "requirement");
+  assert.equal(flag.text, "requirement change: package.json changes how or where this runs; owners who run it themselves may need to act");
+  assert.deepEqual(flag.evidence, [{ sign: "-", text: "\"node\": \">=20\"" }, { sign: "+", text: "\"node\": \">=22\"" }]);
+  assert.ok(render(report).includes("    requirement change: package.json changes how or where this runs; owners who run it themselves may need to act\n    - \"node\": \">=20\"\n    + \"node\": \">=22\""));
+});
+
+test("a plain dependency version bump is not a requirement change", () => {
+  const dir = newRepo();
+  const manifest = (v) => `{\n  "name": "shop",\n  "dependencies": {\n    "dep": "${v}"\n  }\n}\n`;
+  const base = commit(dir, { "package.json": manifest("^1.0.0") }, "chore: start");
+  const bump = commit(dir, { "package.json": manifest("^1.1.0") }, "chore: update dep");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.ok(!find(report, bump).flags.some((f) => f.code === "requirement"));
+  assert.ok(!render(report).includes("requirement change"));
+});
+
+test("a runtime pin file with a changed version is a requirement change, whatever the line says", () => {
+  const dir = newRepo();
+  const base = commit(dir, { ".nvmrc": "20\n" }, "chore: start");
+  const bump = commit(dir, { ".nvmrc": "22\n" }, "chore: pin the runtime");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(flagOf(report, bump, "requirement").evidence, [{ sign: "-", text: "20" }, { sign: "+", text: "22" }]);
+});
+
+test("a large flagged diff prints six lines and the count of the rest; every printed line is at most 100 characters", () => {
+  const dir = newRepo();
+  // Ten lines all change: git lists the ten removed lines first, so the first printed line is the long one.
+  const old = ["export const note = \"" + "w".repeat(150) + "\";", ...Array.from({ length: 9 }, (_, i) => `export const v${i} = ${i};`)];
+  const next = old.map((l, i) => (i === 0 ? `export const note = "${"x".repeat(150)}";` : l.replace(/= (\d+);/, (_, n) => `= ${Number(n) + 100};`)));
+  const base = commit(dir, { "src/big.js": `${old.join("\n")}\n` }, "chore: start the table");
+  const change = commit(dir, { "src/big.js": `${next.join("\n")}\n` }, "chore: rewrite the table");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  const flag = flagOf(report, change, "type");
+  assert.equal(flag.evidence.length, 6);
+  assert.ok(flag.evidence.every((e) => e.text.length <= 100), "each printed line is cut to 100 characters");
+  assert.ok(flag.evidence[0].text.endsWith("..."));
+  assert.equal(flag.moreLines, 20 - 6, "ten removed and ten added lines, six printed");
+  assert.ok(render(report).includes("    (14 more changed lines; read the diff)"));
+});
+
+test("the JSON report carries the evidence arrays and the count of lines not printed", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/x.js": "export const LIMIT = 50;\n" }, "chore: start");
+  commit(dir, { "src/x.js": "export const LIMIT = 25;\n" }, "chore: tidy the list");
+  const json = spawnSync(process.execPath, [CLI, "range", `${base}..HEAD`, "--json"], { cwd: dir, encoding: "utf8" });
+  assert.equal(json.status, 0, json.stderr);
+  const parsed = JSON.parse(json.stdout);
+  assert.equal(parsed.commits.length, 1, "base..HEAD leaves out the base");
+  const flag = parsed.commits[0].flags.find((f) => f.code === "type");
+  assert.deepEqual(flag.evidence, [{ sign: "-", text: "export const LIMIT = 50;" }, { sign: "+", text: "export const LIMIT = 25;" }]);
+  assert.equal(flag.moreLines, 0);
+  assert.ok(parsed.commits[0].flags.filter((f) => f.code !== "type").every((f) => Array.isArray(f.evidence) && f.evidence.length === 0), "a flag with no evidence carries an empty array");
+});

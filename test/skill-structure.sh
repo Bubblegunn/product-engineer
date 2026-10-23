@@ -75,7 +75,7 @@ grep -qF 'docs-only' "$rn" || fail "$rn: rule 2 must name the docs-only commit t
 grep -qF 'version-bump' "$rn" || fail "$rn: rule 2 must name the version-bump commit that gets no line"
 grep -qF 'Not in this release:' "$rn" || fail "$rn: rule 5 must keep the Not in this release section"
 grep -qF 'reverted' "$rn" || fail "$rn: rule 5 must say a reverted item is not announced"
-grep -qF 'Changes since v2.3.0 (commit abc1234 to def5678)' "$rn" || fail "$rn: rule 7 must show the range line"
+grep -qF 'Changes since v2.3.0' "$rn" || fail "$rn: rule 7 must show the range line"
 grep -qF 'A version number goes on that line only' "$rn" || fail "$rn: rule 7 must keep version numbers on the range line"
 grep -qF 'git log' "$rn" || fail "$rn: rule 7 must check the range against git log"
 grep -qF 'faster' "$rn" || fail "$rn: rule 6 must name the unmeasured effect it forbids"
