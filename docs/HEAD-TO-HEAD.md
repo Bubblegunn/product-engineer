@@ -1340,3 +1340,24 @@ Protocol `docs/FINAL-PROTOCOL-r9.md` (frozen `5b4dcf5`, amendments A1 and A2), e
 
 Per the owner (brief RD-BRIEF-2) the graded held-out set d (`results/r9-final/heldout-d/`) is read from this point on. It is no longer held-out and never counts as held-out again.
 Rules for r10: develop against capabilities, never against the fixtures, file names, numbers or criteria of d; all work directories under `/private/tmp`; no frozen protocol is changed mid-round.
+
+## Resume (r10 paused 2026-10-23 evening, usage limit)
+
+State at commit `5a5e557` on `plugin-leadership` (all pushed). `npm test` 961 passed, `claude plugin validate . --strict` passed (before the last two merges of tool output; re-run on resume).
+
+**Done in r10**
+- Set d diagnosed (read since the r10 start note above). Capabilities behind the losses: (1) fix every copy of a defect (X4: only dod-invoked fixed the duplicate formula); (2) audience-aware release notes (X3: our rule forbade naming the renamed option, integrators need it); everything else was shared by all arms (author judgement calls on X1, X2).
+- Implemented: `twins` (near-copies of removed lines, reviewed and fixed), `range` section `names gone at <to>`, `notes --audience developers|customers`, skill routing by audience, sweep harness `bench/head-to-head/sweep/{sweep.mjs,repos.json,README.md}`.
+- Rival issue trackers (read-only): dod-guard none, iso-24495 only edge-case parser bugs, gwc none: no user demand signal worth adopting.
+- Fresh writers: three Sonnet writers wrote 12 tasks (X11-X14, X21-X24, X31-X34) in `/private/tmp/pe-r10-writers/W1..W3/heldout`; combined and prepared in `/private/tmp/pe-r10-gate/{tasks,prep}`. Their text has NOT been read by the controller. Gate protocol frozen in `docs/DEV-GATE-r10.md` (commit `9a606d7`): clear lead = I1 lower bound > 0 on the 12 tasks, point >= +0.5, ours >= best other in each writer's set, no task > 0.67 below base.
+
+**Sets**: set d and the r9 public set are development material (unsealed). The 12 W-tasks are unsealed to the sessions only (controller has not read them; read them only after the gate result). No sealed final set exists yet: the final measurement needs a NEW fresh writer set, written after the gate, never read by the controller.
+
+**Next**
+1. Re-run `bash /tmp/gate10.sh ...`-style driver (the script lives in `/tmp/gate10.sh`, recreate from DEV-GATE-r10.md if lost): arms base,dod,dod-invoked,iso,iso-invoked,gwc,gwc-invoked on the 12 tasks x 3 (129 of 252 sessions were DONE in `/private/tmp/pe-r10-gate-work` when paused; incomplete cells there have no DONE marker and re-run; any session with "session limit" in its result must be set aside, not graded), then ours at the gate commit (use a work dir whose `ours/` copy matches; the old copy is read-only, use a new work dir name or `chmod -R u+w`). Use `PE_BENCH_CLAUDE=/private/tmp/claude-wrap.sh` (the subscription wrapper now refuses any cwd below /Users/efe, including the `--version` probe).
+2. Also re-run ours on set d (X1-X5) at the gate commit; others reused from `results/r9-final/heldout-d/`.
+3. Grade 5 votes reason-first, merge, `final-score.mjs`; apply the clear-lead rule exactly as written. If no clear lead: read the 12 tasks, diagnose, new fresh writers, new gate.
+4. Real-repository sweep: `bench/head-to-head/sweep/sweep.mjs` may still be running as a pure local process (`/private/tmp/pe-sweep/run.log`, `digest.txt`); read its digest, write `docs/SWEEP-2026-10-23.md`, fix real discrepancies with tests.
+5. Only on a clear lead: fresh sealed set, frozen final protocol, F6-grader, F6-runs, F9 descriptive, evidence folder.
+
+**Running processes at pause**: all benchmark sessions and runall/gate drivers stopped. Possibly still running: the local sweep process (no model calls). Uncommitted: nothing under `bin/`, `skills/`, `test/`; untracked `bench/head-to-head/sweep/results.json` may appear when the sweep ends.
