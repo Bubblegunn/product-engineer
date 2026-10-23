@@ -166,7 +166,7 @@ test("a staged file that looks like a secret is named; an example or sample env 
   try {
     const f = crossCheck("Adds local config.", readDiff({ cwd: dir }), { cwd: dir });
     assert.ok(has(f, "warn", /staged file looks like a secret: \.env; remove it from the commit/), JSON.stringify(f));
-    assert.ok(has(f, "warn", /staged file looks like a secret: certs\/server\.pem; remove it from the commit/));
+    assert.ok(!has(f, "warn", /looks like a secret: certs\/server\.pem/), JSON.stringify(f));
     assert.ok(has(f, "warn", /staged file looks like a secret: config\/credentials\.json;/));
     assert.ok(!has(f, "warn", /looks like a secret: \.env\.example/));
     assert.ok(!has(f, "warn", /looks like a secret: src\/a\.ts/));
@@ -616,4 +616,19 @@ test("a Stripe restricted live key is reported", () => {
 test("a conflict marker split line that ends in CRLF is reported with its line number", () => {
   const patch = addedPatch("src/a.js", "const a = 1;\r", "<<<<<<< HEAD\r", "const a = 2;\r", "=======\r", "const a = 3;\r", ">>>>>>> feature\r");
   assert.deepEqual(conflictMarkerHitsIn(patch).map((h) => h.line), [2, 4, 6]);
+});
+
+// isSecretPath is a path-name rule only. Content is checked separately, so the rule must not flag names that merely contain a credential word.
+import { isSecretPath } from "../bin/diff.mjs";
+
+test("isSecretPath flags real credential file names", () => {
+  for (const p of [".env", ".env.local", ".env.production", ".env.prod", ".env.staging", "config/.env.local", "credentials", "credentials.env", "config/credentials.json", "id_rsa", "id_ed25519", "deploy/server.key", "keys/privkey.pem", "certs/server-key.pem", "tls/private.pem", "id.p12", "bundle.pfx"]) {
+    assert.equal(isSecretPath(p), true, p);
+  }
+});
+
+test("isSecretPath allows test, development and template env files, and public or CA material", () => {
+  for (const p of [".env.test", ".env.development", ".env.example", ".env.sample", ".env.template", ".env.dist", ".env.local.example", "src/credentials.ts", "docs/credentials.md", "certs/ca.pem", "ca.pem", "certs/server.pem", "public.key", "certs/public-key.pem", "keys/ssh.pub.key", "id_rsa.pub", "certs/server.crt"]) {
+    assert.equal(isSecretPath(p), false, p);
+  }
 });

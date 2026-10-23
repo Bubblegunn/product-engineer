@@ -78,8 +78,17 @@ export function readDiff({ range, cwd = process.cwd(), patchBuffer = PATCH_BUFFE
 /** A path whose name says it holds a credential. A `.env` example or sample is a template, not a secret. */
 export const isSecretPath = (p) => {
   const base = p.split("/").pop();
-  if (/^\.env(\..+)?$/.test(base)) return !/^\.env\.(example|sample|template)$/.test(base);
-  return /\.(pem|key|p12|pfx)$/i.test(base) || /^(id_rsa|id_ed25519)$/.test(base) || /^credentials\./i.test(base);
+  if (/^\.env(\..+)?$/.test(base)) {
+    // Test, development and template env files hold placeholders by convention; .env, .env.local, .env.production and the like hold real values.
+    return !(/^\.env\.(test|development|example|sample|template|dist)$/.test(base) || /^\.env\..+\.(example|sample|template|dist)$/.test(base));
+  }
+  if (/\.(p12|pfx)$/i.test(base)) return true;
+  // A private key is named as one; a *.pub.key or public*.key is the public half.
+  if (/\.key$/i.test(base)) return !(/\.pub\.key$/i.test(base) || /^public/i.test(base));
+  // A certificate or CA file is public; a .pem is secret only when its name says it holds a private key.
+  if (/\.pem$/i.test(base)) return /(priv|key|secret|id_)/i.test(base) && !/public/i.test(base);
+  if (/^(id_rsa|id_ed25519)$/.test(base)) return true;
+  return /^credentials(\.(json|ya?ml|xml|ini|txt|csv|toml|env|cfg|conf))?$/i.test(base);
 };
 
 // A long value assigned to a name a reader would call a secret. A value counts when it is quoted,
