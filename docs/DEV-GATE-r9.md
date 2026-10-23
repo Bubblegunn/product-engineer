@@ -89,3 +89,10 @@ Changes to the protocol (decided from the above, so they are logged here):
 3. Arms for the new tasks: ours, base, dod, dod-invoked on all; gwc and gwc-invoked on the release-notes tasks (X94, X95, X97, X99, X100).
 4. Grading: 3 votes per task over all arms together, then the same votes re-run once in reverse arm order; a disagreement is asked once more. Objective greps above are descriptive only.
 5. Final-measurement F6 is registered in two parts (coordinator note, from the surviving-lines round 11 lesson): F6-grader re-grades the ORIGINAL answers of the sampled cells with fresh grader sessions (all arms of the task and run graded together as before; pass if no cell differs by more than 1 point and criterion agreement is at least 90 percent); F6-runs re-runs the sampled cells once on fresh fixtures and reports, descriptively, how many re-run scores fall inside the min-max of the cell's three runs (no pass or fail).
+
+## 8. Iteration 2 (2026-10-23, logged before the run)
+
+Iteration 1 (`results/r9-devgate/iter1/SUMMARY.md`) did not pass (+0.389, interval -0.111 to +0.833). Product changes from its misses are in `e0f3d72`
+(evidence lines and a requirement flag in `range`, tag-only range line, PR first-look sentence). Iteration 2 re-runs ONLY the ours arm (6 decision tasks x 3 runs, fresh fixtures)
+at `e0f3d72`; the base and rival cells of iteration 1 are reused unchanged (same tasks, model, CLI, path; they do not depend on our code), and all arms of a task are graded
+together again by 3 fresh votes, so one standard applies. Thresholds are the same. These tasks were seen in iteration 1, so a pass here is a development signal only, not evidence of generalisation.
