@@ -1,0 +1,39 @@
+{
+  "label": "g42c661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed, throws, use toCsv."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse works with a console warning and the doc says to move to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Trim no longer happens by default; { trim: true } restores it."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported; the final answer flags the README and says the summary was partly wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff 14f14a1 HEAD (the 2.5.0 commit) on src and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

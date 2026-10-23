@@ -1,0 +1,32 @@
+{
+  "label": "gd3367151",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the columns date,description,amount and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "States 1,234 goes from 1234 to 1.234 and the existing monthly report is affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Does not claim export-only scope."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says two existing tests were updated, including the amount and monthly total tests; no false claims."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...export-csv."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g130e5b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named exactly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says full refunds only, and the final answer says so."
+    },
+    "3": {
+      "pass": false,
+      "why": "Attributes the removal to the revert commit 6de2bec rather than the 'docs: update readme' commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not present the tax change as this PR's work."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

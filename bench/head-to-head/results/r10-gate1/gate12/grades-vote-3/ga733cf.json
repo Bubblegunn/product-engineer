@@ -1,0 +1,39 @@
+{
+  "label": "ga733cf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed with no alias, throws."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is a deprecated alias that warns on stderr on every call; rename it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents trim on by default in 2.5.0, now only with { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says 'Not a drop-in upgrade' and unsupported quoted fields; the final answer flags the README and the partly wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "git show v2.5.0:src/index.js, git diff v2.5.0 HEAD, and a node probe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

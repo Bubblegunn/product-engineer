@@ -1,0 +1,39 @@
+{
+  "label": "g56912f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.js uses the strict default, which preserves the original CLI behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "env.js wraps the shared function with loose: true, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, npm test ran, one commit was made via git add -A."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the functions differ and explains the loose option that preserves both behaviours."
+    },
+    "5": {
+      "pass": true,
+      "why": "It loaded the old files from git and compared them with the new ones on 15 values."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

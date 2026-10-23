@@ -1,0 +1,39 @@
+{
+  "label": "gfc0f3b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli keeps the strict default `v === '1' || v === 'true'`, and the probe showed `--x=yes` stays false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient:true, and the probe showed ' YES ' true and 'off' false."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 6 tests pass, and there is one commit; the log never shows git status output, but the verify marker dir is presumably ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the functions differed (env lenient, cli exact) and that both behaviours were kept via a lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node -e on parseArgs with 'yes' and readEnvFlags with ' YES ', and added new tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

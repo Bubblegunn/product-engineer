@@ -1,0 +1,39 @@
+{
+  "label": "gb2f402",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Euros, pounds and the USD default are covered, plus the empty-invoice fix, though the flag is not named."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV appears only under 'Not in this release'; no PDF."
+    },
+    "3": {
+      "pass": true,
+      "why": "The one-cent difference and its example are in the notes."
+    },
+    "4": {
+      "pass": true,
+      "why": "Final answer says the README still lists a --csv that does not exist."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read diffs and ran a notes checker, but never ran tests or the CLI; it says it did not run old against new."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X21",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

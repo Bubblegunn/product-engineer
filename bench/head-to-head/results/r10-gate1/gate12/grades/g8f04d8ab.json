@@ -1,0 +1,32 @@
+{
+  "label": "g8f04d8ab",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the three columns and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "States comma is now a decimal mark, 1,234 reads as 1.234, and it affects the existing monthly report."
+    },
+    "3": {
+      "pass": true,
+      "why": "Flags the parsing change as a decision item, not as a tidy-up."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the monthly total test change is noted; the amount test edit is missing from both PR.md and the final answer."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...export-csv in full."
+    }
+  }
+}

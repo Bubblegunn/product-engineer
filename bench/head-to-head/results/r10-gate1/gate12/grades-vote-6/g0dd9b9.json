@@ -1,0 +1,39 @@
+{
+  "label": "g0dd9b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Strict is the default and cli uses it directly."
+    },
+    "2": {
+      "pass": true,
+      "why": "env passes loose: true, which keeps the original lenient rule."
+    },
+    "3": {
+      "pass": true,
+      "why": "Shared file and imports are in place, tests passed, and the change is one commit via git add -A."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the two versions differed and how it handled that. It also admits it did not run old and new side by side."
+    },
+    "5": {
+      "pass": true,
+      "why": "node -e ran both exports on inputs such as ' yes ' and 'on'."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

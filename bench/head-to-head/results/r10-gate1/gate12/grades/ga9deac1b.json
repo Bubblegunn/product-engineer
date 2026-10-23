@@ -1,0 +1,32 @@
+{
+  "label": "ga9deac1b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the columns date, description, amount and two-decimal amounts such as 800.00."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the comma is now a decimal mark (1,000 becomes 1) and that the monthly total test and export are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the commit is not part of the export and changes behaviour."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test claims are accurate (5 passed), but only the monthly total test edit is mentioned, not the amount test."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show 65b4899 and read the diff."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gd420b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli wrapper passes exact:true, and the probe showed yes and TRUE false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses the lenient default, and the probe showed ' On ' true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js created, both files import it, 6 tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the functions differed and kept both via an exact option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e probe with yes and TRUE and added new tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

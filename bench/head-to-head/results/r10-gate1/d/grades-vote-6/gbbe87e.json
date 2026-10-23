@@ -1,0 +1,39 @@
+{
+  "label": "gbbe87e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of 5 to 10."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a console.warn and the function stays."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md only says totalValue is unchanged and never states the test fails on main; main was not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

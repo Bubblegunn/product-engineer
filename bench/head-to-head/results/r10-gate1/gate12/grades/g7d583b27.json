@@ -1,0 +1,32 @@
+{
+  "label": "g7d583b27",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the columns and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "States 1,234 reads as 1.234 and the monthly total and export are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the branch is not only the export."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test counts are accurate (5 pass) but only the monthly total test edit is mentioned, not the amount test."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...export-csv."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g22dc9c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default."
+    },
+    "2": {
+      "pass": true,
+      "why": "The env wrapper passes lenient: true."
+    },
+    "3": {
+      "pass": true,
+      "why": "The change is in place, tests passed and the commit used git add -A."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the difference and the option used to preserve both behaviours."
+    },
+    "5": {
+      "pass": true,
+      "why": "It stashed to capture old output, ran new output and compared with cmp on 14 inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

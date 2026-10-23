@@ -1,0 +1,32 @@
+{
+  "label": "gf568b1c7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the columns and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "States 1,234 goes from 1234 to 1.234 and the report is affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Flagged as a decision item; no export-only claim."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the report test change is noted; the amount test edit is not mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main..export-csv."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g89365d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed and throws, use toCsv."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse still works with a console deprecation warning, under 'What you can change later: Rename parse to parseCsv'."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents the no-trim default and the { trim: true } fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported; the final answer flags the README and says the summary was partly wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and node behaviour checks."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

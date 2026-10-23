@@ -1,0 +1,39 @@
+{
+  "label": "g81fed5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files are bumped and 3 tests passed."
+    },
+    "2": {
+      "pass": false,
+      "why": "It has the 50-per-page line but no faster-search mention, since it explicitly avoids that claim."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changelog lists the export button."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files, names 1.4.0, and the entry has no hashes or file names."
+    },
+    "5": {
+      "pass": true,
+      "why": "It looked at the log and commits since v1.3.0 and grepped for export before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

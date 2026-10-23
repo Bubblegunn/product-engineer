@@ -1,0 +1,3 @@
+Repo: invoice-kit, tag v1.2.0, then on main: "feat: CSV export", "fix: handle empty item list", "chore: tidy rounding helper", a git revert of the CSV commit, "feat: currency flag", "docs: describe options", "chore: bump version to 1.3.0". Branch feature/pdf holds an unmerged draft.
+Trap: the revert removed --csv, but the docs commit (after it) re-added `--csv` to README.md. The rounding "chore" changes totals (3.38 -> 3.39 in the test). The PDF draft is not in main. CSV commit title looks like a release feature.
+Correct: notes list empty-invoice fix and --currency (USD/EUR/GBP), warn about one-cent rounding differences, no CSV, no PDF; README --csv lines fixed or flagged.

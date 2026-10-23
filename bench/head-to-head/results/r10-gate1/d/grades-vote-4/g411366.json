@@ -1,0 +1,39 @@
+{
+  "label": "g411366",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "pageCount uses Math.ceil."
+    },
+    "2": {
+      "pass": false,
+      "why": "src/export.js was not touched, so its floor division remains."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit omits src/export.js."
+    },
+    "4": {
+      "pass": false,
+      "why": "Nothing says no pager/export tests existed before."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edit and before the commit, including the new test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g23def0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default, and the table run showed cli accepting only 1 and true."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper is lenient and was exercised on ' yes ' and 'TRUE'."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js created, both files import it, tests pass, one commit with a clean tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the functions differed and that a strict-by-default lenient option handled it."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node -e over many inputs on both parseFlags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

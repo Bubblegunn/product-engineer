@@ -1,0 +1,39 @@
+{
+  "label": "g4c6fc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "pageCount now uses Math.ceil."
+    },
+    "2": {
+      "pass": false,
+      "why": "src/export.js was not changed and still uses Math.floor."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit lacks src/export.js."
+    },
+    "4": {
+      "pass": false,
+      "why": "Neither the message nor the answer says no pager/export tests existed before."
+    },
+    "5": {
+      "pass": false,
+      "why": "After the fix was applied, only the verify script ran before the amend, not a visible node --test or npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g0d47b5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says there is no alias and stringify throws."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is deprecated, uses console.warn, and is now parseCsv; the move to parseCsv is implied."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says trim defaulted to on and now needs trim:true."
+    },
+    "4": {
+      "pass": true,
+      "why": "Doc says quoted fields are unsupported, and the final answer flags the README and the wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src, README and test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

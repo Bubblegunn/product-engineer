@@ -1,0 +1,39 @@
+{
+  "label": "gfadcd8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says the default is 10 but not that it changed from 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the commit only adds a fixture and no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the only change is a console.warn and nothing is removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failure but says it did not check main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test run on the branch before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

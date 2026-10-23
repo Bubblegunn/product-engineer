@@ -1,0 +1,39 @@
+{
+  "label": "g3b580e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files say 1.4.0 and npm test showed 3 passed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Has the 50 vs 20 change but deliberately does not mention faster search."
+    },
+    "3": {
+      "pass": false,
+      "why": "Export is not in the changelog, but the answer never says it is on the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Exactly three files, message names 1.4.0, customer wording."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed from the base and checked tags, but never grepped for export or listed branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

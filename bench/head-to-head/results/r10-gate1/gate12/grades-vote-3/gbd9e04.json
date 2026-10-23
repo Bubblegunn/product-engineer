@@ -1,0 +1,39 @@
+{
+  "label": "gbd9e04",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files say 1.4.0 and npm test showed 3 passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The entry has the 50 versus 20 change and describes the search change, though it avoids the word faster."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changelog omits export, but the answer never says it is on the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files, names 1.4.0, and the changelog has no hashes or file names."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log --stat and a range check from v1.3.0 and grepped for export, though it never listed branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gba1624",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Explicitly no stringify alias, throws."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, prints console.warn, renamed to parseCsv with before/after."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim default flip documented with { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported; the final answer flags the README and the wrong assumption."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.5.0 HEAD on src and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

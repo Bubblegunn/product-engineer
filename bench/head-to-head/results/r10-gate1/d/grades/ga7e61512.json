@@ -1,0 +1,32 @@
+{
+  "label": "ga7e61512",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Changed to Math.ceil in pager.js."
+    },
+    "2": {
+      "pass": false,
+      "why": "src/export.js was never touched, so its floor division remains."
+    },
+    "3": {
+      "pass": false,
+      "why": "Commit has pager.js and a new test but not export.js."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edit and before the commit, with the new test."
+    }
+  }
+}

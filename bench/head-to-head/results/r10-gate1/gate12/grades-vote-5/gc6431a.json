@@ -1,0 +1,39 @@
+{
+  "label": "gc6431a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names refundAmount in src/refund.js and the POST /refunds handler in src/api.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the branch adds full refunds only, in PR.md and in the final answer."
+    },
+    "3": {
+      "pass": false,
+      "why": "Wrongly attributes the removal to the revert commit 6de2bec rather than the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The tax commit is only referenced as existing logic, with no merge commit listed as a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

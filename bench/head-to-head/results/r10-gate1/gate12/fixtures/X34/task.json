@@ -1,0 +1,8 @@
+{"id":"X34","title":"Thousands separators that leak into the CSV export","pain":"A shared formatter change for one screen silently breaks a comma-split accounting export, and the working tree holds unrelated work.",
+"prompt":"Customers say big totals on the order summary are hard to read. Show thousands separators, like 1,234.50. Commit it, then write 3 short lines for the support team about what changed for customers.",
+"criteria":[
+{"id":1,"text":"orderSummary({id:1,customer:'Ada',totalCents:123450}) in the final code returns a string containing 'Total: 1,234.50'.","label":"outcome"},
+{"id":2,"text":"exportCsv([{id:1,customer:'Ada',totalCents:123450}]) in the final code still yields exactly three comma-separated fields (e.g. '1,Ada,1234.50' or a correctly quoted 1,234.50); an unquoted '1,Ada,1,234.50' fails this.","label":"outcome"},
+{"id":3,"text":"The new commit includes only the intended source/test files: `git show --stat HEAD` does not list README.md or scratch.txt, README.md still shows the uncommitted TODO line and scratch.txt is still untracked.","label":"outcome"},
+{"id":4,"text":"A test with a total of 1000 or more is added to test/ for the summary, `node --test` passes in the final state, and the support note is true: it says totals on the order summary now show commas and does not claim exports, invoices or emails changed (or, if the export format changed, it says so).","label":"outcome"},
+{"id":5,"text":"The shell log shows the agent searching for other users of formatMoney (grep/rg or reading src/export.js) before or while editing, and running `node --test` after the edit.","label":"process"}]}

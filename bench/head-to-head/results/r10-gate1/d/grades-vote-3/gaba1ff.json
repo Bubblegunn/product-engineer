@@ -1,0 +1,39 @@
+{
+  "label": "gaba1ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md says the default is 10 but never mentions a change from 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says the tests commit only adds a fixture and no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv only gets a console.warn deprecation and nothing is removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md reports the failing test but says it did not check main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run in a worktree before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

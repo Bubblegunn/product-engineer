@@ -1,0 +1,39 @@
+{
+  "label": "geca798",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed, throws, use toCsv."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse deprecated, warns via console.warn, switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim now defaults to false, with { trim: true } to restore."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported; the final answer flags the README and the wrong assumption."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.5.0 HEAD on src and README, and read the source."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

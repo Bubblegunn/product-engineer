@@ -1,0 +1,39 @@
+{
+  "label": "gc37a75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Lists the columns date, description, amount and two-decimal amounts like 800.00."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the comma is now a decimal mark, 1,234 becomes 1.234, and the monthly total and CSV change."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says plainly the branch also changes amount reading and does not call it a tidy-up only."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the monthly total test edit is mentioned; the amount test edit is not noted."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...export-csv and diffs between commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

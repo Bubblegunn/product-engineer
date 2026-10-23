@@ -1,0 +1,39 @@
+{
+  "label": "g2853da",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The cli wrapper passes exact: true, so the strict rule is preserved."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses the default lenient mode, which matches the original."
+    },
+    "3": {
+      "pass": true,
+      "why": "Imports are in place, 6 tests pass and the change is one commit. No status check shows a dirty tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the copies differed and that the option keeps both behaviours."
+    },
+    "5": {
+      "pass": true,
+      "why": "The node -e probe called parseArgs with 'yes' and 'TRUE', which the existing tests do not use."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

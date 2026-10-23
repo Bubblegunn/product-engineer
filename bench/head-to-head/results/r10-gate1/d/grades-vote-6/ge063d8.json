@@ -1,0 +1,39 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of 5 to 10."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock and the commit only adds a fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says the change is a console.warn deprecation and nothing is removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md reports the failing test but says it did not check main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

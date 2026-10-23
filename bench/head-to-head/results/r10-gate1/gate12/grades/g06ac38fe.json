@@ -1,0 +1,32 @@
+{
+  "label": "g06ac38fe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The cli wrapper calls the shared function in strict mode, which preserves the original CLI behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "The env wrapper passes lenient: true, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the functions differed and that the two modes keep both behaviours."
+    },
+    "5": {
+      "pass": true,
+      "why": "It compared the copied original src against the new code on 18 inputs."
+    }
+  }
+}

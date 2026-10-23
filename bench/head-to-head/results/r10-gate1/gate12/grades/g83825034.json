@@ -1,0 +1,32 @@
+{
+  "label": "g83825034",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.js uses the strict default, which preserves the original CLI behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "env.js passes lenient: true, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, six tests pass and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the functions differed and how the lenient option keeps both behaviours."
+    },
+    "5": {
+      "pass": true,
+      "why": "The probe ran parseArgs with '--x=yes' and readEnvFlags with ' YES ', and new tests add further inputs."
+    }
+  }
+}

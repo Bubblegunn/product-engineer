@@ -1,0 +1,39 @@
+{
+  "label": "g66266d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is removed with no alias and throws a TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is a deprecated alias that warns on every call, and tells users to rename it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explains the trim default flip and the { trim: true } fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported and that this is not a drop-in upgrade; the final answer flags the README and says the premise was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and git show v2.5.0:src/index.js, and executed the code."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

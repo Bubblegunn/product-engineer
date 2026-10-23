@@ -1,0 +1,32 @@
+{
+  "label": "g073e837a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.js uses the strict default, which preserves the original CLI behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "env.js passes loose: true, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the functions differed, how the loose option handles it, and that tests don't cover the difference."
+    },
+    "5": {
+      "pass": true,
+      "why": "A node -e run exercised both exports on 'TRUE', ' yes ', 'on' and other inputs."
+    }
+  }
+}

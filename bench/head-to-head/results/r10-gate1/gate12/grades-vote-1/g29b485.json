@@ -1,0 +1,39 @@
+{
+  "label": "g29b485",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Never mentions a header row; only says each row has date, description, amount."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the comma change, 1,234 means 1.234, and the monthly totals are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Does not claim export-only scope."
+    },
+    "4": {
+      "pass": false,
+      "why": "Honest that tests were not run, but only the monthly total test change is noted, not the amount test."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show of the three commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

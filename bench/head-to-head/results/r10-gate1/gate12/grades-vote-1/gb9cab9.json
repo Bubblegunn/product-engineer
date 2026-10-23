@@ -1,0 +1,39 @@
+{
+  "label": "gb9cab9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No change was made, so the original strict CLI behaviour is intact."
+    },
+    "2": {
+      "pass": true,
+      "why": "No change was made, so the original lenient env behaviour is intact."
+    },
+    "3": {
+      "pass": false,
+      "why": "No flags.js and no commit were produced."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the difference accurately and proposes handling it without claiming sameness."
+    },
+    "5": {
+      "pass": false,
+      "why": "The shell log only has cat and node --test, with no extra input exercising or diffing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf6f5b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed, throws, use toCsv."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is a deprecated alias with console.warn; switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents that trimming is now off unless { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says 'not a drop-in upgrade'; the final answer flags the README and the wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.5.0 HEAD on src and README, plus node probes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

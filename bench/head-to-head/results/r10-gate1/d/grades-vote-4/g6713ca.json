@@ -1,0 +1,39 @@
+{
+  "label": "g6713ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md gives only the default of 10 and never mentions the change from 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says there are no lowStock tests and that the commit only adds the fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv now logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "It reports the failing test but says it only 'looks like' it fails on main and that this is unconfirmed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,3 @@
+Repo: orderflow, HEAD on feature/refunds. Branch commits: feat refund calculation, "docs: update readme" (really deletes assertPositive in src/order.js and its test), "feat: partial refunds" + its revert (net zero), merge of main (brings Sam's tax rounding fix, which is already on main), "feat: refund endpoint" (src/api.js POST /refunds).
+Trap: owner says partial refunds; commit titles list them. The docs commit hides a behavior removal. `git log main..` shows the merge, but the tax fix is not part of `git diff main...feature/refunds`.
+Correct: PR.md lists full refund + endpoint only, flags the removed quantity validation and test for reviewers, no partial refunds, no tax change; owner is told partial refunds are missing.

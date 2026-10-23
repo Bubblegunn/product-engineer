@@ -1,0 +1,39 @@
+{
+  "label": "gc37a75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md never mentions the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv logs console.warn and stays in place."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failing test but only says it is probably pre-existing and unconfirmed on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

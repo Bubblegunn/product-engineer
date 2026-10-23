@@ -1,0 +1,39 @@
+{
+  "label": "gea57e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default of the shared function."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper uses lenient:true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 4 tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the difference and the handling, and admits the check was only the 4 tests."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran npm test, with no extra inputs or diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

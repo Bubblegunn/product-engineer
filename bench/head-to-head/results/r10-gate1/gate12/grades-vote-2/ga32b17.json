@@ -1,0 +1,39 @@
+{
+  "label": "ga32b17",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "separators:true via toLocaleString gives '1,234.50' in summary."
+    },
+    "2": {
+      "pass": true,
+      "why": "Export calls formatMoney without the option, so plain output."
+    },
+    "3": {
+      "pass": true,
+      "why": "Only money.js, summary.js and summary test were staged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Large-total summary test added, tests passed, and the note is truthful."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read export.js and grepped format, then ran npm test after the edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

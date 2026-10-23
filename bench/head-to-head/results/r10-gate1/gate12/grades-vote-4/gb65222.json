@@ -1,0 +1,39 @@
+{
+  "label": "gb65222",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config diff is correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "Answer says the env override keeps production at 5 s."
+    },
+    "3": {
+      "pass": true,
+      "why": "Answer says 10 s at most; limits.js is unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says not fixed; the reported 3 passed / 0 failed matches a real run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read the sources and ran effectiveTimeoutMs via node -e."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X33",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

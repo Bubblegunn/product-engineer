@@ -1,0 +1,39 @@
+{
+  "label": "g1d5596",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli stays strict via the shared default."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper uses lenient:true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass, one commit and clean tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the difference, the option-based handling, and the limits of its checks."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e table over varied inputs through both parseFlags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

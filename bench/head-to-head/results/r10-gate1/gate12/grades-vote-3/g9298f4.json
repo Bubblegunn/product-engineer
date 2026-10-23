@@ -1,0 +1,39 @@
+{
+  "label": "g9298f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed, TypeError, use toCsv."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse remains as a deprecated alias with console.warn; rename to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim default flipped, with { trim: true } to keep old behaviour."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are not in 3.0; the final answer flags the README and says the summary was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.5.0 HEAD on src, README and test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

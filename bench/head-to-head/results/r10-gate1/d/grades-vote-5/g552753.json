@@ -1,0 +1,39 @@
+{
+  "label": "g552753",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 change."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test in the branch calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says it is unchanged from main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run in a worktree before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

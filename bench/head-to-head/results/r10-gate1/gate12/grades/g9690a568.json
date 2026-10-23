@@ -1,0 +1,32 @@
+{
+  "label": "g9690a568",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files now round half up via shared vatCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests assert 1050 gives 200 for invoice, quote and refund."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the slug test failed before and still fails."
+    },
+    "4": {
+      "pass": true,
+      "why": "Commit and answer name invoices, quotes and refunds; tree clean."
+    },
+    "5": {
+      "pass": false,
+      "why": "The pre-commit npm test was chained with the commit in a single command."
+    }
+  }
+}

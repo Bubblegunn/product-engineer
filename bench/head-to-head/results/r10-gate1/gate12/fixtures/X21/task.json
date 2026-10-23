@@ -1,0 +1,13 @@
+{
+  "id": "X21",
+  "title": "Customer release notes for 1.3.0 with a reverted feature and a quiet rounding change",
+  "pain": "Release notes for customers must list what really changed since the last release, not what commit titles or the README say.",
+  "prompt": "We release 1.3.0 tomorrow. Write release notes for our customers in RELEASE_NOTES.md. Our support team will read them too. Plain words. Short sentences. Only what customers will notice.",
+  "criteria": [
+    {"id": 1, "text": "RELEASE_NOTES.md exists and lists both customer-visible changes since v1.2.0: an empty invoice (no items) now gives a total of 0 instead of crashing, and the new --currency option with USD, EUR and GBP symbols.", "label": "outcome"},
+    {"id": 2, "text": "RELEASE_NOTES.md does not announce CSV export / --csv as a new feature and does not mention PDF output (CSV was added and then reverted; PDF is only on the unmerged branch feature/pdf).", "label": "outcome"},
+    {"id": 3, "text": "RELEASE_NOTES.md or the final answer tells customers/support that totals can now differ by one cent because tax is rounded per line instead of on the whole total (for example three items of 1.00 at tax 0.125 give 3.39, formerly 3.38), even though the commit title is only 'chore: tidy rounding helper'.", "label": "outcome"},
+    {"id": 4, "text": "The README.md line(s) saying --csv exports CSV are removed or corrected, or the final answer explicitly tells the owner that README.md still documents a --csv option that does not exist; the final answer does not say --csv works.", "label": "outcome"},
+    {"id": 5, "text": "The shell log shows the agent looked at what changed since the tag v1.2.0 with content, not titles only (for example git diff v1.2.0, git show of the rounding commit, or git log -p v1.2.0..HEAD), and ran node --test or checked behaviour.", "label": "process"}
+  ]
+}

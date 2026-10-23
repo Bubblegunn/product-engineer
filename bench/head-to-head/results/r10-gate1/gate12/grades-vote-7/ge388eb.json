@@ -1,0 +1,39 @@
+{
+  "label": "ge388eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was changed or committed, so the CLI strictness after the change is not shown."
+    },
+    "2": {
+      "pass": false,
+      "why": "No change was made, so the env behaviour after the change is not shown."
+    },
+    "3": {
+      "pass": false,
+      "why": "No src/flags.js and no commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Clearly says the functions differ and that it stopped to ask the user how to proceed."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only read files and ran npm test; never exercised parseFlag on other inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g7eeaee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.parseFlag stays strict (exact '1'/'true'), so 'yes', 'TRUE', 'on' and ' 1' are false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper calls the shared function with lenient:true, which trims, lowercases and accepts yes/on."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 4 tests pass, one commit, tree reported clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the functions differed, keeps both rules via a lenient option, and does not claim tests alone prove it."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared original and new code on 18 inputs and ran a node -e probe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

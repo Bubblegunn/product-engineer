@@ -1,0 +1,39 @@
+{
+  "label": "gb1129f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil used."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll now uses pageCount and the test checks 25 items."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has pager.js, export.js and a new test that passes."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not say no tests existed before."
+    },
+    "5": {
+      "pass": true,
+      "why": "run-full-suite.sh ran the tests after the edits and before the commit; it is not a literal node --test, but I counted it."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

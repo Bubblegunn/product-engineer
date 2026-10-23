@@ -1,0 +1,39 @@
+{
+  "label": "g4caeb2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 default change; it only asks reviewers to confirm the default of 10."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no lowStock tests are in the diff."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says it logs a deprecation warning, is not removed, and the commit only adds a console.warn."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says 1 fails and it fails the same on main; npm test was run on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test run before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

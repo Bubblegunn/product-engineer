@@ -1,0 +1,39 @@
+{
+  "label": "ga40dc7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says stringify is not exported and calls throw TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is deprecated, logs a console warning, and to switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the trim default flip and the {trim:true} fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "Doc claims no quoted support or lack of breaking changes; the final answer flags the README and corrects the premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

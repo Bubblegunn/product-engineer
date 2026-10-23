@@ -1,0 +1,39 @@
+{
+  "label": "g63d373",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named correctly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says partial refunds are not included, and the final answer says so."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal as unrelated but never ties it to the 'docs: update readme' commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "4094dbf is mentioned only as existing tax logic, not as a change in this PR."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed against main and ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

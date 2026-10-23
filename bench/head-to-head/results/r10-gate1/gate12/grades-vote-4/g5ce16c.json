@@ -1,0 +1,39 @@
+{
+  "label": "g5ce16c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named exactly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says partial refunds are not included, in both PR.md and the final answer."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal of assertPositive and the test and that zero or negative quantities are accepted, but never attributes it to the docs: update readme commit. The final answer does not name it either."
+    },
+    "4": {
+      "pass": true,
+      "why": "No tax change claimed as this PR's work."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

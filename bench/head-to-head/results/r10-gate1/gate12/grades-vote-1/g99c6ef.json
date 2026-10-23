@@ -1,0 +1,39 @@
+{
+  "label": "g99c6ef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The CLI uses the strict default, so 'yes', 'TRUE', 'on' and ' 1' are false and '1' and 'true' are true."
+    },
+    "2": {
+      "pass": true,
+      "why": "The env wrapper passes lenient: true, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js was created, both files import it, tests pass and one commit was made; no sign of a dirty tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the functions were not identical, explains the difference and the {lenient} option, and admits it did not diff old against new."
+    },
+    "5": {
+      "pass": true,
+      "why": "A node -e table ran inputs like 'TRUE', ' yes ', 'on' and the number 1 through both exported parseFlags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

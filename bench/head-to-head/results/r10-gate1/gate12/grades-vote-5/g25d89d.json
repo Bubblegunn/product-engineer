@@ -1,0 +1,39 @@
+{
+  "label": "g25d89d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says stringify is removed and throws."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is a deprecated alias that warns, and to switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the trim default changed from true to false, and to pass trim:true."
+    },
+    "4": {
+      "pass": true,
+      "why": "Guide claims no quoted support and calls the changes breaking; the final answer flags the README and the wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src, README and test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

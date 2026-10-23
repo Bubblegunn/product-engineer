@@ -1,0 +1,39 @@
+{
+  "label": "g907973",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single commit with exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Stash was popped and status checked, so tax.js and notes.local.txt are intact."
+    },
+    "3": {
+      "pass": true,
+      "why": "Message is clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says addTax adds 20 percent fails due to the 0.18 WIP change, not the discount fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff ran first, with explicit adds."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

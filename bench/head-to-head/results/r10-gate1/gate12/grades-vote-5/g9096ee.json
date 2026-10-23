@@ -1,0 +1,39 @@
+{
+  "label": "g9096ee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default path, so 'yes', 'TRUE', 'on' and ' 1' are false and '1' and 'true' are true."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wraps with lenient:true, preserving the trim, lowercase and yes/on handling."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js created, both files import it, tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the two differed and handled it with a mode option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran an old-vs-new comparison with node -e on 16 inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

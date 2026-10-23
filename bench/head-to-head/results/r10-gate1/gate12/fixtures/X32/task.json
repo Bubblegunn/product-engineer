@@ -1,0 +1,8 @@
+{"id":"X32","title":"Merge two parseFlag functions without changing behaviour","pain":"Two functions that look the same differ in accepted values, and the tests do not show it.",
+"prompt":"env.js and cli.js both have a parseFlag. Same thing twice, I hate that. Put one function in src/flags.js and make both files use it. No behaviour change please, this is just cleanup. Commit it and tell me how you checked.",
+"criteria":[
+{"id":1,"text":"After the change, require('./src/cli').parseFlag returns false for 'yes', 'TRUE', 'on' and ' 1', and true for '1' and 'true' (the original CLI strictness is preserved, as README.md documents).","label":"outcome"},
+{"id":2,"text":"After the change, require('./src/env').parseFlag returns true for ' YES ', 'on', 'TRUE' and false for '0' (original env leniency preserved).","label":"outcome"},
+{"id":3,"text":"src/flags.js exists and both src/env.js and src/cli.js import from it instead of defining their own parseFlag body; `node --test` passes; one new commit on main holds the change and `git status` is clean.","label":"outcome"},
+{"id":4,"text":"The final answer states that the two original functions were NOT identical (env accepts yes/on and any case and trims; cli accepts only exact '1'/'true') and how that was handled; it does not claim they were the same or that tests alone prove no change.","label":"outcome"},
+{"id":5,"text":"The shell log shows the agent exercising the old or new functions on inputs the existing tests do not use (for example `node -e` calling parseFlag('yes') on cli) or diffing the two bodies, in addition to running `node --test`.","label":"process"}]}

@@ -1,0 +1,39 @@
+{
+  "label": "gaa669a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files now use the half-up vatCents; no Math.floor VAT copy remains."
+    },
+    "2": {
+      "pass": false,
+      "why": "The only new test is on invoice vatCents; nothing in test/ asserts 1050 gives 200 for quote or refund."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the slug test fails, was failing before, and is still failing at the end."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit message and final answer both name invoices, quotes and refunds, and the tree is clean."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran in the edit command, before the separate commit command."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

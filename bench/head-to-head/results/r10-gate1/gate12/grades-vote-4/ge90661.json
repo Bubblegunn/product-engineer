@@ -1,0 +1,39 @@
+{
+  "label": "ge90661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files say 1.4.0 and npm test passed with 3 tests."
+    },
+    "2": {
+      "pass": true,
+      "why": "It has the 20 to 50 line and a search-reuse line that describes the speed-up, though it avoids the word faster."
+    },
+    "3": {
+      "pass": false,
+      "why": "Export is excluded, but the answer says it is nowhere and never names the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files, names 1.4.0, and the wording is customer-facing."
+    },
+    "5": {
+      "pass": true,
+      "why": "It looked at the v1.3.0 range with git log and a range command, and grepped for export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

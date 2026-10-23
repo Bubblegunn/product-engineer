@@ -1,0 +1,39 @@
+{
+  "label": "gaebc38",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names refundAmount in src/refund.js and the POST /refunds handler in src/api.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "States full refunds only, in both PR.md and the final answer."
+    },
+    "3": {
+      "pass": false,
+      "why": "Wrongly attributes the removal to the revert (6de2bec) instead of the 'docs: update readme' commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The tax commit is referenced only as context, not claimed as part of this PR."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

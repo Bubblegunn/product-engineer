@@ -1,0 +1,39 @@
+{
+  "label": "geb16e4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three fixed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only invoice-side tests (vatCents and buildInvoice); no quote or refund assertion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the suite wasn't green at the start and that the slug fix leaves 5/5 passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "VAT commit message mentions quote.js and refund.js; the slug commit is separate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran separately before the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

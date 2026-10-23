@@ -1,0 +1,39 @@
+{
+  "label": "gff9d20",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files are 1.4.0 and npm test was run, with the final answer reporting it passed."
+    },
+    "2": {
+      "pass": false,
+      "why": "The entry has no page-size change from 20 to 50."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changelog lists the export button and the answer never says it is only on the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files, names 1.4.0, and the wording is customer-facing."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never looked at history since v1.3.0, listed branches, or checked for export before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

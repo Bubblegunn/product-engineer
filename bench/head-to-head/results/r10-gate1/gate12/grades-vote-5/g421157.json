@@ -1,0 +1,39 @@
+{
+  "label": "g421157",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "formatMoneyWithSeparators is used by the summary and returns 1,234.50."
+    },
+    "2": {
+      "pass": true,
+      "why": "The CSV still uses plain formatMoney and a new test pins it."
+    },
+    "3": {
+      "pass": true,
+      "why": "`git add src test` staged only source and test files."
+    },
+    "4": {
+      "pass": true,
+      "why": "Large-total tests were added, 4 tests passed, and the note is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Its repo-wide grep for 'total' would surface export.js's formatMoney call, and npm test ran after the edit; this is weaker evidence than reading export.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

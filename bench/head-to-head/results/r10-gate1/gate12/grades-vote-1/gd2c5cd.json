@@ -1,0 +1,39 @@
+{
+  "label": "gd2c5cd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the columns and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table gives 1,234 becoming 1.234 and says the monthly total is affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Flagged as a change that needs attention."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the monthly total test change is noted; the amount test edit is not mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main..export-csv."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

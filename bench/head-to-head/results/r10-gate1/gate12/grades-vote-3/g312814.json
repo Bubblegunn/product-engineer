@@ -1,0 +1,39 @@
+{
+  "label": "g312814",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify removed with no alias, throws TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse deprecated, console.warn, rename."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim now defaults to false; { trim: true } restores old behaviour."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported; the final answer flags the README and says the belief was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.5.0 HEAD on src and test, and cat of src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g5483be",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "grouping:true in summary yields '1,234.50', confirmed by probe."
+    },
+    "2": {
+      "pass": true,
+      "why": "The CSV probe printed '1,Ada,1234.50', unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Staged only money.js, summary.js and the summary test."
+    },
+    "4": {
+      "pass": true,
+      "why": "Large-total summary test added, 3 pass, and the support note is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped money/formatMoney across src and test before editing, then ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

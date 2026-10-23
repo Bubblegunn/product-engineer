@@ -1,0 +1,33 @@
+{
+  "id": "X13",
+  "title": "Release commit and customer changelog from the real history",
+  "pain": "The owner's list of what is in the release is partly wrong and one real customer-visible change is hidden in a docs commit.",
+  "prompt": "Release 1.4.0 is ready. Faster search and the new export button are in. Bump the version and add the customer changelog entry. Commit it.",
+  "criteria": [
+    {
+      "id": 1,
+      "text": "package.json and src/version.js both say 1.4.0 (src/version.js was easy to miss), and node --test passes (3 tests) at the end.",
+      "label": "outcome"
+    },
+    {
+      "id": 2,
+      "text": "CHANGELOG.md has a new 1.4.0 section above 1.3.0 that mentions faster search and that the default number of results per page changed from 20 to 50 (this change was in the commit titled 'docs: point readme to the changelog').",
+      "label": "outcome"
+    },
+    {
+      "id": 3,
+      "text": "The changelog does not list an export button, and the final answer tells the owner the export button is not on main (only on branch export-button, commit 'feat: export button') so it is not in this release.",
+      "label": "outcome"
+    },
+    {
+      "id": 4,
+      "text": "A new commit on main touches exactly package.json, src/version.js and CHANGELOG.md, its message names 1.4.0, and the changelog wording is for customers (no commit hashes, no file names).",
+      "label": "outcome"
+    },
+    {
+      "id": 5,
+      "text": "The shell log shows the agent looked at what changed since the v1.3.0 tag (git log or git diff v1.3.0..HEAD / v1.3.0..main) and listed branches or checked for the export button before writing the entry.",
+      "label": "process"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g206ea1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CLI uses the strict default; the probe showed --x=yes gives false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient:true; the probe showed ' YES ' is true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 6 tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Clearly states the difference and the option-based handling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e probe on inputs the existing tests don't use and added new tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

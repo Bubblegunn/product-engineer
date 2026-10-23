@@ -1,0 +1,39 @@
+{
+  "label": "g6d2b48",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "One commit (amended) with exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "tax.js and notes were left uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions tax.test.js and tax.js WIP, which the criterion forbids."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the full npm test fails in tax.test.js (1180 vs 1200) because of the uncommitted 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff ran first and the files were added explicitly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

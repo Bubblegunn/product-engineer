@@ -1,0 +1,39 @@
+{
+  "label": "g5315ba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is no longer exported and throws, with no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse still works, warns on every call, and tells users to rename to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explains trim was on by default in 2.5.0 and now needs { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The doc says quoted fields are unsupported and that this is not a drop-in upgrade; the final answer flags the README and says the owner's belief was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0..HEAD on src, package.json and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

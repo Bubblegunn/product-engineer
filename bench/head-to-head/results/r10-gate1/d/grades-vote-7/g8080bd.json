@@ -1,0 +1,39 @@
+{
+  "label": "g8080bd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 change."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no lowStock tests, only the fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv is not removed and logs a deprecation warning."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names the failing test and says the failure predates the branch, based on the unchanged diff."
+    },
+    "5": {
+      "pass": true,
+      "why": "The suite ran via the full-suite script and npm test (node --test) before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

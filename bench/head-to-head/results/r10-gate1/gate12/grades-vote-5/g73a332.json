@@ -1,0 +1,39 @@
+{
+  "label": "g73a332",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "PR.md names the three columns and gives two-decimal amounts such as 800.00."
+    },
+    "2": {
+      "pass": true,
+      "why": "It says a comma is now a decimal mark, gives 1,000 going from 1000 to 1, and says the monthly-total test and export are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "It says the tidy-parsing commit is not part of the export and changes how amounts are read."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not note that test/amount.test.js was edited, and only the monthly-total test change is mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "The log includes git show 65b4899."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

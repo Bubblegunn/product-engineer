@@ -1,0 +1,39 @@
+{
+  "label": "gc1d654",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default, so 'yes', 'TRUE', 'on' and ' 1' are false and '1' and 'true' are true."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient:true, so the original leniency is preserved."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js added, both files import it, tests passed, one commit made with add -A."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the copies differed and explains the lenient option that preserves both."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e old-vs-new comparison on 16 inputs beyond the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g91b084",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single commit with exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "tax.js modified and notes untracked remain."
+    },
+    "3": {
+      "pass": true,
+      "why": "Message is clean and about discount rounding."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only guesses the failure is 'probably tax.test.js' and says it didn't investigate; no confirmed cause."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff and status before the commit and added specific files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

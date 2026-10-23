@@ -1,0 +1,39 @@
+{
+  "label": "gd11432",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli imports the shared function with the strict default."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper uses lenient:true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass, one commit via add -A."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the functions differed and how both rules were kept."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared old logic against the new exports on 16 inputs with cmp.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g11ecd2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli is strict by default; the probe showed x=yes gives false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper uses lenient:true; the probe showed ' YES ' is true."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 6 tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the difference and the handling clearly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e probe and added tests on extra inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

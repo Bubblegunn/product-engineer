@@ -1,0 +1,32 @@
+{
+  "label": "g8ae5c268",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The cli wrapper passes exact: true, which preserves the original CLI strictness."
+    },
+    "2": {
+      "pass": true,
+      "why": "env.js imports the lenient default, which preserves the original lenient behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, six tests pass and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the functions were not identical and how the exact option keeps both."
+    },
+    "5": {
+      "pass": true,
+      "why": "A node -e probe ran parseArgs with 'yes' and 'TRUE' and readEnvFlags with ' On ', and new tests cover extra inputs."
+    }
+  }
+}

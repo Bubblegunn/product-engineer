@@ -1,0 +1,39 @@
+{
+  "label": "g921196",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The 5 to 10 change is not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock and the commit only adds a fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says only a console.warn was added and nothing is removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md reports the failure but explicitly says it did not check whether it fails on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

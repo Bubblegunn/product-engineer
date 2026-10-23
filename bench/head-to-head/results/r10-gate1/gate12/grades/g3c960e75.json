@@ -1,0 +1,32 @@
+{
+  "label": "g3c960e75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Grouped option enabled in summary yields 'Total: 1,234.50'."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV still calls formatMoney without grouping, so output is 1,Ada,1234.50."
+    },
+    "3": {
+      "pass": true,
+      "why": "Commit staged only money.js, summary.js and the test file; README edit and scratch.txt remain uncommitted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Test with 123450 and 123456789 added, npm test run, and the support note only claims summary change with CSV unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep and cat of export.js came before the edit, and npm test ran after it."
+    }
+  }
+}

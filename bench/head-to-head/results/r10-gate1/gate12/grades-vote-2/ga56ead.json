@@ -1,0 +1,39 @@
+{
+  "label": "ga56ead",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the date, description and amount columns and gives two-decimal amounts (800.00)."
+    },
+    "2": {
+      "pass": true,
+      "why": "States 1,234 now reads as 1.234 and that existing monthly totals change too."
+    },
+    "3": {
+      "pass": true,
+      "why": "Presents the parsing change as a behaviour change under a warning, not as a cleanup."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says existing amount and report tests were updated, and makes no false test claims."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main..export-csv."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g9c276c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files use the shared vatCents with +50 rounding, giving 200 for 1050."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only a vatCents(1050) test in invoice.test.js; no quote or refund assertion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the suite is not green and the slug failure predates the change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Commit message and answer mention invoices, quotes and refunds, and the working tree is clean."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran in a separate command before the commit command."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

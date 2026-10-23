@@ -1,0 +1,39 @@
+{
+  "label": "g90f814",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names refundAmount in src/refund.js and the POST /refunds handler in src/api.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "States partial refunds are not in the PR, in PR.md and in the final answer."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal but attributes it to the revert or merge and never names the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The tax commit appears only as already in history, not as this PR's change."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed main..feature/refunds by content but never ran the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
