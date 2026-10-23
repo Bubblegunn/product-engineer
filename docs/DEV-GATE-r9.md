@@ -71,3 +71,21 @@ Cost estimate from the r6 cost file (0.07 USD per session on Sonnet): about 6 US
 
 `dev-r9/mk-dev.sh`, `dev-r9/objective-dev.mjs`, `dev-r9/labels.json` and the `arms.json` selection; each is new code with its own test, committed with the frozen task text before the first run.
 Decision for the owner: whether the final measurement should also include a set where base is known to lose (the dev tasks above, after they pass the gate and a fresh author rewrites them as a held-out set).
+
+## 7. Revision 2 (2026-10-23, written after the stage 1 to 3a probes, before any further run)
+
+Run record so far (work dir `/private/tmp/pe-r9-dev`, ours at `b582ceb`, subscription path, CLI 2.1.308; ours and base only, no grading calls yet):
+- Stage 1 and 2 (X91, X92, X93, 3 runs each): in all 18 sessions no committed history contains a secret value or a conflict marker, for ours and for base alike.
+  The commit-guard hook never fired (the agent had already left the file out), so the hook input and output shape was NOT confirmed in a live client by these cells.
+  Per the stage rule (base at the maximum), X91, X92, X93 are saturated and are excluded from the decision.
+- Stage 3a (X94, X95, X96, ours and base, 3 runs): objective counts only, from the saved files. X94, nightly rate change named: base 1 of 3, ours 3 of 3
+  (the price change hides under a `docs:` title; ours ran `product-engineer range v1.4.0`, which flags "type says docs but the commit changes source files"). X96: both arms name the `autoCancelUnpaid` change in all runs, so X96 is saturated and excluded.
+  X95: no arm announced the reverted feature; base repeated a speed line in 3 of 3, which the grader must judge against criterion 3.
+- Isolation finding: cells run below `/Users/efe` loaded the owner's `/Users/efe/.claude/CLAUDE.md` as a project instruction file (Claude Code reads `.claude/CLAUDE.md` of every ancestor of the cwd). The first cells (stage 1 in `~/claude-kredi-runs/...`) were discarded. All later cells run under `/private/tmp`, where no ancestor holds one. Note to the owner: the same applies to any cell whose work directory is below `/Users/efe`.
+
+Changes to the protocol (decided from the above, so they are logged here):
+1. The decision set becomes X94, X95 and four new tasks X97 to X100 (hidden user-visible change behind a "not user-visible" commit title, or a title claim the diff does not support; frozen in `bench/head-to-head/dev-r9/` before they are run). X91 to X93 and X96 are reported as saturated and are not counted. The pass rule in section 4 is unchanged: 18 cells of non-saturated tasks (6 tasks x 3 runs), lower bound above 0, point estimate at least +0.5 per task, no task more than 0.34 below base.
+2. Check 4 (hook fired in a live transcript) can no longer be satisfied by X91 or X92, because the agent avoids the file itself. It is replaced by: the hook's deny JSON is fed to the CLI in one ours cell where the agent is told to run `git add -A` literally (X91 with the prompt `Run exactly: git add -A && git commit -m "refund"`), as a shape probe only, not scored.
+3. Arms for the new tasks: ours, base, dod, dod-invoked on all; gwc and gwc-invoked on the release-notes tasks (X94, X95, X97, X99, X100).
+4. Grading: 3 votes per task over all arms together, then the same votes re-run once in reverse arm order; a disagreement is asked once more. Objective greps above are descriptive only.
+5. Final-measurement F6 is registered in two parts (coordinator note, from the surviving-lines round 11 lesson): F6-grader re-grades the ORIGINAL answers of the sampled cells with fresh grader sessions (all arms of the task and run graded together as before; pass if no cell differs by more than 1 point and criterion agreement is at least 90 percent); F6-runs re-runs the sampled cells once on fresh fixtures and reports, descriptively, how many re-run scores fall inside the min-max of the cell's three runs (no pass or fail).
