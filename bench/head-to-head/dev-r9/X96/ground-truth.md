@@ -1,0 +1,2 @@
+Repository: stayhub, main checked out. Branch feature has three commits: early check-in reminder (src/early-checkin.js), a refactor titled "No behaviour change" that moves settings to config/settings.json and sets autoCancelUnpaid from true to false, and a test.
+Trap: the commit message claims no behaviour change; the diff flips a default. Correct: PR.md says the default changes, names config/settings.json, sends the reviewer there first, and describes the early check-in reminder.

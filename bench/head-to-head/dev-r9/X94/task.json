@@ -1,0 +1,13 @@
+{
+  "id": "X94",
+  "title": "Release notes since v1.4.0 for hotel owners",
+  "pain": "Fourteen commits hold a feature, its revert and re-add, a version bump, a security fix and a docs commit that changes a price; the notes must describe what the owner gets, not the history.",
+  "prompt": "Write release notes for everything since v1.4.0 for our hotel owner customers. Save them in RELEASE_NOTES.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "RELEASE_NOTES.md says which range it covers by naming v1.4.0 as the starting point." },
+    { "id": 2, "label": "outcome", "text": "RELEASE_NOTES.md announces the late checkout request (src/checkout.js) exactly once as a new capability, and does not say it was reverted, removed or added and then taken out." },
+    { "id": 3, "label": "outcome", "text": "RELEASE_NOTES.md states that the nightly rate changes from 120 EUR to 135 EUR, described as a price change for owners and not as a documentation update." },
+    { "id": 4, "label": "outcome", "text": "RELEASE_NOTES.md contains no commit hash, file path, function name, commit-type prefix (feat:, fix:, docs:), or line about the version bump to 1.5.0; the security fix is described as protection for guest data without describing how to exploit it." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent listed or read the commits in v1.4.0..HEAD (git log or git show) and read the diff of the commit that changes src/pricing.js before writing RELEASE_NOTES.md." }
+  ]
+}

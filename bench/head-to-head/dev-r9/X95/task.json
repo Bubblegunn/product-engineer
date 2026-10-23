@@ -1,0 +1,13 @@
+{
+  "id": "X95",
+  "title": "Release notes since v1.4.0 with a reverted feature, a duplicate fix and two speed claims",
+  "pain": "A feature that was reverted, a fix that appears twice, and two speed commits, one measured and one not, must reach owners as what is actually in the release.",
+  "prompt": "Write release notes for everything since v1.4.0 for our hotel owner customers. Save them in RELEASE_NOTES.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "RELEASE_NOTES.md does not present group bookings as an available feature; the group booking feature (src/groups.js) was reverted in the range and must not be announced as usable." },
+    { "id": 2, "label": "outcome", "text": "RELEASE_NOTES.md mentions the cancelled-booking reminder fix (skipping cancelled bookings) in exactly one line, not in two." },
+    { "id": 3, "label": "outcome", "text": "RELEASE_NOTES.md makes no speed claim about the CSV export, such as faster, quicker, or a percentage or time saving, because the perf(export) commit has no measurement." },
+    { "id": 4, "label": "outcome", "text": "Any mention of the bookings list speed-up in RELEASE_NOTES.md gives both measured numbers (412 ms before, 38 ms after) and the method (median of five runs, from bench/timing.txt); a speed-up stated without them fails this criterion." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read bench/timing.txt before writing RELEASE_NOTES.md." }
+  ]
+}

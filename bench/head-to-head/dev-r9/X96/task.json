@@ -1,0 +1,13 @@
+{
+  "id": "X96",
+  "title": "Pull request description for a branch whose refactor flips a default",
+  "pain": "A commit message says no behaviour change while its diff flips a default in a JSON config; the pull request description must not repeat the claim and must send the reviewer to the flip.",
+  "prompt": "Write the pull request description for the range main..feature. Save it as PR.md.",
+  "criteria": [
+    { "id": 1, "label": "outcome", "text": "PR.md does not say that behaviour is unchanged; it contains none of the phrases no behaviour change, behaviour is the same, behavior is unchanged, or no functional change." },
+    { "id": 2, "label": "outcome", "text": "PR.md names config/settings.json and says the autoCancelUnpaid default changes from true to false." },
+    { "id": 3, "label": "outcome", "text": "PR.md tells the reviewer to look at the config/settings.json change first, naming autoCancelUnpaid, rather than only at the refactor commit." },
+    { "id": 4, "label": "outcome", "text": "PR.md describes the early check-in reminder feature (src/early-checkin.js, a reminder for guests who check in within six hours)." },
+    { "id": 5, "label": "process", "text": "The shell log shows the agent read the diff of config/settings.json or the full diff of main..feature, not only the commit messages of main..feature." }
+  ]
+}

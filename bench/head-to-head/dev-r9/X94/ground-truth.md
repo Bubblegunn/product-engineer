@@ -1,0 +1,2 @@
+Repository: stayhub, tag v1.4.0 on the export commit, 14 commits after it: checkout feature, its revert, a revert of the revert (titled Reapply), docs, version bump to 1.5.0, a security fix (formula characters neutralised in CSV), a docs-titled commit that moves NIGHTLY_RATE_EUR from 120 to 135, and filler.
+Trap: the feature appears three times and the docs commit hides a price change. Correct: announce checkout once as present, state the 120 to 135 EUR change as a price change, describe the security fix as protection, and keep identifiers out.

@@ -1,0 +1,2 @@
+Repository: stayhub, tag v1.4.0, 10 commits after it: group bookings added then reverted; a reminder fix, reverted and cherry-picked back (identical patch and message); perf(list) with bench/timing.txt (412 ms to 38 ms, median of 5 runs); perf(export) with no measurement; docs; version bump; test.
+Trap: group bookings are gone, the reminder fix is in the release once, and only the list speed-up is measured. Correct: omit group bookings, mention the reminder fix once, no export speed claim, list speed-up only with the numbers and method.
