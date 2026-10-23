@@ -232,3 +232,62 @@ test("addedtests: the gate hook asks once with the whole-answer restatement", ()
 test("addedtests does not fire on a passive sentence about existing tests", () => {
   assert.deepEqual(findClaims("The existing tests were written for v1, so I reused them."), []);
 });
+
+test("count: a stated count needs a repository counter after the last edit", () => {
+  const claim = "The branch has 12 commits ahead of main.";
+  const edited = [write("src/a.js")];
+  assert.match(reasonsFor(edited, claim)[0], /git rev-list --count/);
+  assert.match(reasonsFor([bash("git rev-list --count main..HEAD"), write("src/a.js")], claim)[0], /git rev-list --count/);
+  assert.deepEqual(reasonsFor([...edited, bash("git rev-list --count main..HEAD")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("git log --oneline main..HEAD | wc -l")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("git diff --stat main..HEAD")], "There are 3 files changed."), []);
+  assert.deepEqual(reasonsFor([...edited, bash("product-engineer range main..HEAD")], claim), []);
+  // with no write in the turn, a counter anywhere in the turn settles it
+  assert.match(reasonsFor([bash("ls")], claim)[0], /counted it/);
+  assert.deepEqual(reasonsFor([bash("grep -c helper src/a.js")], "All 8 tests are in place."), []);
+});
+
+test("count: negated and hedged counts are not claims", () => {
+  assert.deepEqual(findClaims("I did not count the commits."), []);
+  assert.deepEqual(findClaims("This is not 12 commits of work."), []);
+  assert.deepEqual(findClaims("I will run 3 tests later."), []);
+  assert.deepEqual(findClaims("I can count 12 commits if you want."), []);
+  assert.equal(findClaims("There are 3 files changed.")[0].family, "count");
+});
+
+test("exhaustive: a nothing-else-uses claim needs a search after the last edit", () => {
+  const claim = "Nothing else uses this helper.";
+  const edited = [write("src/a.js")];
+  assert.match(reasonsFor(edited, claim)[0], /git grep or rg/);
+  assert.match(reasonsFor([bash("git grep -n helper"), write("src/a.js")], claim)[0], /git grep or rg/);
+  assert.deepEqual(reasonsFor([...edited, bash("git grep -n helper")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("rg helper src")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("grep -rn helper src")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("git ls-files | xargs grep -l helper")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, bash("product-engineer twins")], "No other callers exist."), []);
+  assert.deepEqual(reasonsFor([...edited, bash("grep helper src/a.js")], claim), [reasonsFor(edited, claim)[0]]);
+});
+
+test("exhaustive: negated and hedged absence sentences are not claims", () => {
+  assert.deepEqual(findClaims("It is not the only place that uses it."), []);
+  assert.deepEqual(findClaims("I did not check for other callers."), []);
+  assert.deepEqual(findClaims("I need to confirm there are no other places."), []);
+  assert.equal(findClaims("No other callers exist.")[0].family, "exhaustive");
+});
+
+test("landed: a stated push, deploy or release needs a remote read after the last edit", () => {
+  const claim = "The fix is pushed to origin.";
+  assert.match(reasonsFor([write("src/a.js")], claim)[0], /git ls-remote/);
+  assert.match(reasonsFor([bash("git ls-remote origin main"), write("src/a.js")], claim)[0], /git ls-remote/);
+  assert.deepEqual(reasonsFor([write("src/a.js"), bash("git ls-remote origin main")], claim), []);
+  assert.deepEqual(reasonsFor([write("src/a.js"), bash("git status -sb")], "The page went live this morning."), []);
+  assert.deepEqual(reasonsFor([write("src/a.js"), bash("npm view product-engineer version")], "It was published to npm."), []);
+});
+
+test("landed: negated and conditional sentences are not claims", () => {
+  assert.deepEqual(findClaims("I did not push anything."), []);
+  assert.deepEqual(findClaims("Nothing was deployed."), []);
+  assert.deepEqual(findClaims("The change can be pushed after review."), []);
+  assert.deepEqual(findClaims("It is not pushed yet."), []);
+  assert.equal(findClaims("The page went live this morning.")[0].family, "landed");
+});

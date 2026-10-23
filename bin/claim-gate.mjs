@@ -18,6 +18,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { isTestPath, isDocPath } from "./diff.mjs";
 import { verify } from "./verify.mjs";
+import { secondEye } from "./second-eye.mjs";
 
 const WRITE_TOOLS = new Set(["Write", "Edit", "MultiEdit", "NotebookEdit"]);
 const BASH_WRITE = /\bsed\s+(?:-[a-zA-Z]*i|--in-place)\b|\bperl\s+-[a-zA-Z]*i\b|\btee\s+(?!\/dev\/null)\S|\bgit\s+(?:apply|checkout\s+--|restore|reset|stash(?!\s+list))\b|\bpatch\s+-|(?:^|[\s\d])>>?\s*(?!&|\/dev\/null)[^\s&|;>]+|\b(?:mv|rm|cp)\s/;
@@ -36,10 +37,22 @@ const CLAIMS = {
   passing: /\b(?:(?:all |the |every )?(?:\d+ )?(?:tests?|specs?|suite|checks?)\s+(?:(?:are|is|now|all|still) )*(?:pass(?:ed|es|ing)?|green)|all green|\d+ (?:passing|passed))\b/i,
   addedtests: /\b(?:(?:added|wrote|written|created|authored)(?: (?:an?|the|some|several|a few|a couple of|few|\d+|one|two|three|four|five|six|new|more|additional|extra|regression|unit|integration|failing|e2e)\b)* (?:tests?|test cases?|specs?)\b|(?<!\b(?:existing|old|current|original|legacy|those|these|prior|previous|earlier|other)\s)(?:tests?|test cases?|specs?) (?:were |was |have been |has been )?(?:added|written|created)\b(?! (?:earlier|previously|before|already|in (?:the )?(?:previous|last|earlier|prior)\b)))/i,
   fixed: /\b(?:i (?:have )?(?:fixed|resolved|patched|corrected)|(?:is|are|now) (?:fixed|resolved)|the fix|fixes)\b/i,
+  // A count or range summary about the repository ("12 commits", "3 files changed", "all 8 tests", "since v1 there were").
+  count: /\b(?:(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty)\s+(?:new\s+|more\s+|total\s+)?(?:commits?|files? changed|tests?|occurrences?|usages?|call sites)\b|\ball\s+\d+\b|\bsince\s+\S+\s+there\s+(?:were|are|was|is)\b)/i,
+  // A claim that nothing else is affected ("nothing else uses", "no other callers", "only used in").
+  exhaustive: /\b(?:nothing else (?:uses?|calls?|references?|depends on|imports?)|no (?:other|remaining|more) (?:places?|usages?|callers?|references?|occurrences?|uses|call sites|copies)|only (?:used|referenced|called|imported) (?:in|by|from)\b|(?:the )?only (?:place|usage|caller|occurrence|reference)s? (?:is|left|of|that)\b|no remaining references?|(?:all|every) (?:call sites?|usages?|references?|occurrences?) (?:are |have been |were |was )?(?:updated|changed|migrated|renamed|replaced))\b/i,
+  // A change stated as done on a remote or in production ("is pushed", "I deployed", "went live", "merged to main").
+  landed: /\b(?:(?:has|have|had|was|were|is|are|been|got)\s+(?:been\s+|now\s+|also\s+|already\s+|successfully\s+|just\s+)*(?:pushed|deployed|published|released|merged)|(?:i|we)\s+(?:have\s+|just\s+|already\s+)*(?:pushed|deployed|published|released|merged)\b|(?:is|are|went|has gone|have gone) live\b|(?:pushed|deployed|published|released|merged)\s+(?:to|on|into)\s+(?:origin|master|main|production|prod|npm|pypi|vercel|railway|github)\b)/i,
 };
+// A word that makes a count, an absence or a remote state a plan, a condition or a negation when it stands in the same clause before the match.
+const HEDGE_BEFORE = /\b(?:can|could|will|would|should|may|might|must|to|if|until|no|none|nothing|neither|nor|without)\b/i;
 const ABSENCE = /\b(?:no|without|zero|none|already)\b/i;
 const PLAIN_REQUEST = /\bplain[- ]language\b|\bplain english\b|\bin plain (?:words|terms|english)\b|\bsimpl(?:e|er|ify) (?:words|terms|language)\b/i;
 const FACTS_RUN = /\bproduct-engineer\s+facts\b|\bcheck\.mjs\s+facts\b/;
+// Commands that settle a count (the repository's own counters), a search for every use, or a remote state.
+const COUNT_RUN = /\bproduct-engineer\s+(?:range|claims|facts)\b|\bcheck\.mjs\s+(?:range|claims|facts)\b|\bgit\s+(?:-\S+\s+)*rev-list\b[^|;&\n]*--count\b|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*\S\.\.\S|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*--oneline[^\n]*\|\s*wc\b|\bgit\s+(?:-\S+\s+)*diff\b[^|;&\n]*--(?:stat|numstat|shortstat)\b|\bwc\s+-l\b|\b(?:grep|rg)\s+(?:[^|;&\n]*\s)?-[a-zA-Z]*c\b|\brg\b[^|;&\n]*--count\b|\bfind\b[^\n]*\|\s*wc\b/;
+const SEARCH_RUN = /\bproduct-engineer\s+twins\b|\bcheck\.mjs\s+twins\b|\bgit\s+(?:-\S+\s+)*grep\b|\brg\b|\back\b|\bgrep\b[^|;&\n]*\s(?:-[a-zA-Z]*[rR][a-zA-Z]*|--recursive)\b|\bgit\s+(?:-\S+\s+)*ls-files\b[^\n]*\|\s*xargs\b[^\n]*\bgrep\b/;
+const REMOTE_RUN = /\bgit\s+(?:-\S+\s+)*ls-remote\b|\bgit\s+(?:-\S+\s+)*status\b[^|;&\n]*\s-[a-zA-Z]*b\b|\bgit\s+(?:-\S+\s+)*status\b[^|;&\n]*--branch\b|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*\borigin\/|\bgh\s+(?:run|pr|release)\b|\bcurl\b|\bnpm\s+view\b|\bvercel\b|\brailway\b/;
 export const FIX_REQUEST = /\b(?:bug|fix|broken|regression|crash(?:es|ing)?|fails?|failing|not working)\b/i;
 const WRITTEN_CLAIM_FILE = /^(?:pr|pull[-_ ]?request|summary|notes?|report|description|answer|review)(?:\b|[-_.\d])/i;
 
@@ -70,6 +83,7 @@ export function findClaims(text) {
       if (family === "addedtests" && ABSENCE.test(before)) continue;
       const self = family === "nochange" || family === "startstate";
       if (!self && NEGATION.test(before)) continue;
+      if (["count", "exhaustive", "landed"].includes(family) && HEDGE_BEFORE.test(before)) continue;
       found.push({ family, sentence });
     }
   }
@@ -172,6 +186,16 @@ export function gate({ events, prompt, last }, claimTexts = [last]) {
       reasons.push(`You report a fix ("${quote("fixed")}"), but no test file was written. Add a test that fails without the fix and passes with it, run it, and report both results.`);
     }
   }
+  // Tool steering: a count, an exhaustive search and a remote state each need the command that settles it, run after the last edit.
+  if (families.has("count") && !after(runs(COUNT_RUN))) {
+    reasons.push(`You state a count ("${quote("count")}") without a command that counted it. Run product-engineer range <from>..<to> (commits) or git rev-list --count, then quote the printed number.`);
+  }
+  if (families.has("exhaustive") && !after(runs(SEARCH_RUN))) {
+    reasons.push(`You claim nothing else uses it ("${quote("exhaustive")}") without a search after your last edit. Run git grep or rg for the name (or product-engineer twins), quote the hits, or drop the claim.`);
+  }
+  if (families.has("landed") && !after(runs(REMOTE_RUN))) {
+    reasons.push(`You say the work is pushed, deployed, published, released or live ("${quote("landed")}"), but no command read the remote after your last edit. Run git ls-remote or git status -sb (or gh, npm view, curl, vercel or railway for the target) and quote the result, or drop the claim.`);
+  }
   if (PLAIN_REQUEST.test(prompt) && lastWrite >= 0 && !after(runs(FACTS_RUN))) {
     reasons.push("You were asked for a plain-language rewrite, but product-engineer facts <source> <rewrite> did not run after your last edit. Run it and fix every warning, in particular each sentence with no counterpart in the source.");
   }
@@ -181,8 +205,8 @@ export function gate({ events, prompt, last }, claimTexts = [last]) {
 // The next message becomes the final answer. Without this sentence the agent answers only the check and the deliverable report is lost.
 export const REPLY_WHOLE = "After that, write your complete final answer again: everything the person asked for and everything you did and found, with the correction inside it. Never reply with the correction alone.";
 
-function main() {
-  try { run(); } catch { /* a hook that fails must not stop the agent */ }
+async function main() {
+  try { await run(); } catch { /* a hook that fails must not stop the agent */ }
 }
 
 // Blocks at most twice per session. The state file is keyed by session id; without one the loop is bounded by stop_hook_active alone.
@@ -199,7 +223,7 @@ const readState = (sid) => {
 const writeState = (sid, state) => { try { writeFileSync(stateFile(sid), JSON.stringify(state)); } catch { /* the state is a bound, not a result */ } };
 const hashOf = (text) => createHash("sha1").update(text).digest("hex");
 
-function run() {
+async function run() {
   if (process.env.PRODUCT_ENGINEER_NO_GATE === "1") return;
   let input;
   try { input = JSON.parse(readFileSync(0, "utf8") || "{}"); } catch { return; }
@@ -215,8 +239,17 @@ function run() {
   const reasons = active ? [] : gate(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
   const findings = verify({ cwd: input.cwd || process.cwd(), session, answer: String(input.last_assistant_message ?? session.last) });
   const texts = [...reasons, ...findings.map((f) => f.text)];
+  // The second eye runs only when the other checks leave the answer nearly clean, and never on a repair round (one call per session at most).
+  let eyeText = null;
+  if (!active && texts.length < 2 && findings.length < 3) {
+    const eye = await secondEye({ answer: String(input.last_assistant_message ?? session.last), commands: session.events.filter((e) => e.kind === "bash").map((e) => e.command), files: session.events.filter((e) => e.kind === "write" && e.path).map((e) => e.path) });
+    if (eye.unchecked.length) {
+      eyeText = `A second reading of your answer found claims with no supporting command: ${eye.unchecked.map((u) => u.claim.replace(/[.!?]+$/, "")).join("; ")}. Check each (name the command) or remove it.`;
+      texts.push(eyeText);
+    }
+  }
   if (!texts.length) return;
-  const hash = hashOf(findings.map((f) => f.text).join("\n"));
+  const hash = hashOf([...findings.map((f) => f.text), ...(eyeText ? [eyeText] : [])].join("\n"));
   if (state.hash !== null && state.hash === hash) return;
   if (sid) writeState(sid, { blocks: state.blocks + 1, hash });
   process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${texts.join(" ")} ${REPLY_WHOLE}` }) + "\n");
