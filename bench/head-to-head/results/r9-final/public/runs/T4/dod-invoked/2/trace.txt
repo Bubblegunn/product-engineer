@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag; git log --oneline v1.4.0..HEAD; ls
+002 Skill dod-guard:verify
+003 Bash cd <WORK>/runs/T4-dod-invoked-2/repo; ls -a; cat .dod-guard.json | head -5; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; cat package.json; git diff v1.4.0..HEAD --stat; git show c8ef254 f37976b 
+004 Bash cd <WORK>/runs/T4-dod-invoked-2/repo; git diff v1.4.0..HEAD -- README.md src/list.js src/pricing.js src/export.js; R=$CLAUDE_PLUGIN_ROOT; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -30; python3 "$R/scripts/detect-empty-func
+005 Bash cd <WORK>/runs/T4-dod-invoked-2/repo; cat > RELEASE_NOTES.md <<'EOF'\n# What's new in StayHub 1.4.1\n\n## Safer guest-list exports\nWhen you export your bookings to a spreadsheet, a guest name that starts with a character like `=`, `+`, `-` or `@` could be treated b
+006 Bash cd <WORK>/runs/T4-dod-invoked-2/repo; mkdir -p .dod-guard; date +%s > .dod-guard/last-verify-passed; git status --short

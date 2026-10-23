@@ -1,0 +1,39 @@
+{
+  "label": "g4c6fc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "pageCount uses Math.ceil."
+    },
+    "2": {
+      "pass": false,
+      "why": "src/export.js was never changed, so its own Math.floor still drops the remainder page."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit has no src/export.js."
+    },
+    "4": {
+      "pass": false,
+      "why": "Nothing says no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only run-full-suite and a node -e probe ran after the edit; no node --test or npm test appears in the log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

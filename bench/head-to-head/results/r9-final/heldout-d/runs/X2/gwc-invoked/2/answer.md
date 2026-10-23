@@ -1,0 +1,4 @@
+I saved a short PR description to `PR.md` in the repo root. It covers the `lowStock` report, the tests and fixture added for it, and the `exportCsv` deprecation warning.
+
+- **Tests line:** I didn't write "tests pass", because I haven't run them and the skill I used is read-only. `PR.md` says "CI was green at last check; not re-run locally". If you've confirmed CI on the latest commit, change it to "Tests pass".
+- **`exportCsv`:** The commit `refactor: remove legacy exportCsv` doesn't remove anything. It only adds a `console.warn` deprecation message. `PR.md` describes what the diff does. You may want to reword that commit message.

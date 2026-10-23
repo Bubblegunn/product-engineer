@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash ls CLAUDE.md 2>&1; git status --short --branch; git diff --cached --stat; git diff --cached; echo ---; cat test/price.test.js; date '+%Y-%m-%d %H:%M:%S %Z'
+003 Bash git add test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): clamp discount percent to 0-100\n\napplyDiscount produced negative prices when percent exceeded 100 and\nraised prices for negative percents. Clamp percent to [0, 100].\n\nAlso remove a leftover debug console.log from mon

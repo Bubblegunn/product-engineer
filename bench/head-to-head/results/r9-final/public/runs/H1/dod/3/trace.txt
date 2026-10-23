@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json; wc -l $(git ls-files | grep -v lock)
+002 Bash cat README.md src/*.js test/*.js
+003 Bash cat > src/config.js <<'EOF'\n// Settings for sign-in. MAX_FAILED_LOGINS wrong passwords in a row lock the account.\nmodule.exports = { MAX_FAILED_LOGINS: Number(process.env.MAX_FAILED_LOGINS) || 3 };\nEOF\ncat > src/login.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser 

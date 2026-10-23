@@ -1,0 +1,3 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Bash git diff --staged
+003 Bash git commit -q -F - <<'EOF'\nfix(reminders): skip cancelled bookings in day-before email\n\ndueReminders returned every booking starting within 24 hours, so guests\nwho had cancelled still received "your stay starts tomorrow".\n\nSkip bookings with status "cancelled". Add a test that mixes a

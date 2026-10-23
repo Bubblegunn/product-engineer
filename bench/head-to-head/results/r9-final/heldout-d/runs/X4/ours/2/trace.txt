@@ -1,0 +1,6 @@
+001 Bash git ls-files && grep -rniE "page|ceil|// ?10|/ ?10" --include=* . --exclude-dir=.git | head -30
+002 Bash cat src/pager.js package.json; ls test; grep -rn pager src test
+003 bash cd <WORK>/runs/X4-ours-2/repo && sed -i 's/Math.floor(total/Math.ceil(total/' src/pager.js && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('page
+004 Bash sed -i.bak 's/Math.floor(total/Math.ceil(total/' src/pager.js && rm src/pager.js.bak && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial la
+005 Skill product-engineer:customer-block
+006 Bash git add src/pager.js test/pager.test.js && git commit -q -F - <<'E'\nfix(pager): count a partial last page so 25 items give 3 pages\n\nran `npm test`: 3 passed, 0 failed (new test/pager.test.js checks\npageCount for 0, 10 and 25 items, and that page 3 of 25 items holds 5).\nnot run: the rea

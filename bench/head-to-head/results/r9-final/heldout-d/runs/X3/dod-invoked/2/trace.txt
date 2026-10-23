@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50; ls
+003 Bash ls -a; cat .dod-guard.json; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff --stat v1.2.0 v1.3.0; cat package.json; ls src test
+004 Bash git diff v1.2.0 v1.3.0 -- src README.md package.json
+005 Bash git show 36eee57 -- src | tail -8; git show 2ab0657 --stat | tail -5; git log -3 --format=%H%n%s -- src/config.js | head; git diff v1.2.0 v1.3.0 -- test | tail -15\nR="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head\nbash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -15\npython3 
+006 Bash node -e "\nconst {fetchAll,withRetry}=require('./src');let n=0;\nconsole.log(fetchAll({list:()=>[1,2,3,4]},{limit:2}).length, fetchAll({list:()=>[1,2,3]},{maxItems:1}).length, withRetry(()=>{if(++n<3)throw new Error('x');return 'ok'}), require('./src/config'))"; echo exit=$?
+007 Write <WORK>/runs/X3-dod-invoked-2/repo/RELEASE_NOTES.md
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain

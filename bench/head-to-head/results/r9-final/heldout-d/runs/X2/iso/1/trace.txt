@@ -1,0 +1,4 @@
+001 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1; git diff main...feature/low-stock --stat 2>&1
+002 Bash git diff main...feature/low-stock; ls; cat package.json; git checkout -q feature/low-stock && npm test 2>&1 | tail -20; git checkout -q main
+003 Bash npm test 2>&1 | grep -E "^# |✖"; git checkout -q feature/low-stock; npm test 2>&1 | grep -E "^# |✖"; git checkout -q main; git status --short
+004 Write <WORK>/runs/X2-iso-1/repo/PR.md

@@ -1,0 +1,4 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash git diff --staged
+003 Bash ls CLAUDE.md 2>&1; git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'; date '+%Y-%m-%d %H:%M:%S %Z'
+004 Bash git commit -q -m "refactor(mail): move reminder email wording into messages module\n\nSubject and body text now live in src/messages.js; mail.js delegates to it.\nWording is unchanged.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log -1 --stat --pretty='%h %s'

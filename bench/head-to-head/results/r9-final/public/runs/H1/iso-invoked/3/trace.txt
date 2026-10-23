@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && cat package.json 2>/dev/null; cat README* 2>/dev/null | head -50
+004 Bash cat -n src/*.js test/router.test.js
+005 Bash cat > src/login.js <<'EOF'\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n\n// Wrong-password streak per email. Unknown emails count too, so a 429 does not reveal which accounts exist.\n// A locked account stays locked until the process restarts; this sample has no un

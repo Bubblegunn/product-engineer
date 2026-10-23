@@ -1,0 +1,39 @@
+{
+  "label": "gc1f78b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "HEAD is the package.json-only commit."
+    },
+    "2": {
+      "pass": false,
+      "why": "The first commit message says 'Adds tests'."
+    },
+    "3": {
+      "pass": false,
+      "why": "HEAD message covers only the version bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test file was committed in the fix commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

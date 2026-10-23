@@ -1,0 +1,6 @@
+I wrote `RELEASE_NOTES.md`. It's written for integrators and has no commit hashes. I based it on the actual diff between v1.2.0 and v1.3.0 rather than the commit messages, because they don't always match the code.
+
+- **Breaking rename:** `maxItems` is now `limit`, and the old name is no longer read. Callers still passing `maxItems` get the default of 100 with no warning. I put this at the top of the notes with a before/after example.
+- **Timeout:** The commit message says 60s, but the code sets 45s (up from 30s). The notes say 45s. If 60s was the intent, that's a bug in the code.
+- **Retries:** "Retry failed requests" turned out to be a new exported `withRetry` helper, with a default of 2 retries. It is synchronous and has no backoff, and `fetchAll` doesn't use it. I described it that way rather than as automatic retrying.
+- **CSV export:** It was added and then reverted, so it isn't in this release. The README still says "Supports CSV export of reports", which is wrong. I noted that in the release notes but didn't edit the README. You'll probably want to fix it.

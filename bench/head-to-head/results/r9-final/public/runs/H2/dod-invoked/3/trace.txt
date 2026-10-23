@@ -1,0 +1,11 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash grep -rniE "email|regex|RegExp" --include=* -l . --exclude-dir=node_modules --exclude-dir=.git | head -20; ls
+002 Bash grep -rniE "email" src test README.md package.json; ls -R src test
+003 Bash cat src/validate.js test/validate.test.js; cat package.json
+004 Bash sed -i 's/\[A-Za-z0-9._-\]+@/[A-Za-z0-9._+-]+@/' src/validate.js\ncat >> test/validate.test.js <<'EOF'\n\ntest('accepts plus-addressed local part', () => {\n  assert.equal(isValidEmail('user@example.com'), true);\n});\n\ntest('still rejects numeric local part with plus', () => {\n  as
+005 Skill dod-guard:verify
+006 Edit <WORK>/runs/H2-dod-invoked-3/repo/src/validate.js
+007 Bash cd <WORK>/runs/H2-dod-invoked-3/repo; ls -a; echo ---; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo "--- plugin root: $CLAUDE_PLUGIN_ROOT"; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+008 Bash cd <WORK>/runs/H2-dod-invoked-3/repo; npm test 2>&1 | tail -14; echo "exit=${pipestatus[1]}"; node -e "const {isValidEmail:v}=require('./src/validate');console.log(v('user@example.com'),v('user@example.com'),v('user@example.com'),v('no-at-sign'))"; grep -rnE "TODO|FIX
+009 Bash cd <WORK>/runs/H2-dod-invoked-3/repo; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; echo "--- suite"; bash "$CLAUDE_PLUGIN_RO
+010 Bash cd <WORK>/runs/H2-dod-invoked-3/repo; mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain

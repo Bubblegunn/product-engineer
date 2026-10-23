@@ -1,0 +1,32 @@
+{
+  "label": "g50261a5b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "HEAD commit changes only package.json; the test file went into an earlier commit."
+    },
+    "2": {
+      "pass": false,
+      "why": "First commit message says 'Adds tests'."
+    },
+    "3": {
+      "pass": false,
+      "why": "No single message covers all three parts; they are split across commits."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test file was committed, in the fix commit, not left uncommitted or in its own commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before commits."
+    }
+  }
+}

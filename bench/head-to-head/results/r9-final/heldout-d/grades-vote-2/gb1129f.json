@@ -1,0 +1,39 @@
+{
+  "label": "gb1129f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "pageCount uses Math.ceil."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll now calls pageCount."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has pager.js, export.js and test/pager.test.js, with the test passing."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": true,
+      "why": "The suite ran via run-full-suite.sh (npm-test runner, 4 pass) after the edits and before the commit; there is no direct node --test line in the log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

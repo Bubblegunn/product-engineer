@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/T3-dod-invoked-3/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff --stat main...HEAD; echo ROOT=$CLAUDE_PLUGIN_ROOT
+003 Bash cd <WORK>/runs/T3-dod-invoked-3/repo; ls "$CLAUDE_PLUGIN_ROOT/scripts"; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --
+004 Bash cd <WORK>/runs/T3-dod-invoked-3/repo; git show bd97d27:src/pricing.js | head -5; node -e "\nconst {nightlyTotal:n}=require('./src/pricing');\nfor (const [r,k] of [[0.29,1],[19.99,3],[100,2],[0.57,1],[1.15,1]]) console.log(r,k,'->',n(r,k),'raw',r*k)"; grep -rn nightl
+005 Write <WORK>/runs/T3-dod-invoked-3/repo/PR.md

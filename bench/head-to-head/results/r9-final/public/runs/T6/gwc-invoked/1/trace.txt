@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash cd <WORK>/runs/T6-gwc-invoked-1/repo; date '+%Y-%m-%d %H:%M:%S %Z'; cat CLAUDE.md 2>/dev/null; git status --short --branch; git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'; git diff --cached --stat; git diff --cached
+003 Bash cd <WORK>/runs/T6-gwc-invoked-1/repo; git commit -q -m "refactor(mail): move reminder email wording into messages module\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log -1 --stat --pretty='%h %s'

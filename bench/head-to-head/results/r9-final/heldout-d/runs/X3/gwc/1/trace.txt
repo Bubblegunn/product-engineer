@@ -1,0 +1,3 @@
+001 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50
+002 Bash git diff v1.2.0 v1.3.0 --stat; git diff v1.2.0 v1.3.0 -- . ':!*.md'; git show 11e4c9f 869d97d 36eee57 4fa8b8b --format='--- %s%n%b' | head -300
+003 Write <WORK>/runs/X3-gwc-1/repo/RELEASE_NOTES.md

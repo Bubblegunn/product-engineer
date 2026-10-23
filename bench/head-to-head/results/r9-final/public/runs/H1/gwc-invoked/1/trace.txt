@@ -1,0 +1,4 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash date '+%Y-%m-%d %H:%M:%S %Z' && git status --short --branch && git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)' && git ls-files && cat CLAUDE.md 2>/dev/null
+003 Bash for f in README.md package.json src/*.js test/*.js; do echo "=== $f"; cat $f; done; git log --date=iso-strict --pretty='%h %ad %s' 
+004 Bash cat > src/login.js <<'EOF'\nconst { findUser } = require('./users');\nconst { isValidEmail } = require('./validate');\n\nconst MAX_FAILURES = 3;\n// Wrong passwords in a row per email. An email at MAX_FAILURES is locked.\nconst failures = new Map();\n\n// Checks {email, password}. Returns {

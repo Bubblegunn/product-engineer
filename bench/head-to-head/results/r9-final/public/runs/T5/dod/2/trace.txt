@@ -1,0 +1,13 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --cached && git status --short && (npm test 2>&1 | tail -20)
+002 Bash grep -rn "listBookings" src test | grep -v "^src/list.js"
+003 Bash git commit -q -m "$(cat <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nAdd a small TTL cache and use it in listBookings so repeated calls\nreuse the loaded bookings instead of loading each time.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>\nEOF\n)" && git log
+004 Skill dod-guard:verify
+005 Bash ls -a . .dod-guard 2>&1 | head -30; cat .dod-guard.json; echo "PLUGIN_ROOT=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only HEAD~1 HEAD
+006 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -40; echo ---; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -40; echo ---; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -30; echo "exit=$?"
+007 Bash node -e "\nconst {listBookings}=require('./src/list');let n=0;const load=()=>(n++,[{id:1}]);\nconst a=listBookings(load),b=listBookings(load);console.log(JSON.stringify(a),'loads='+n,a===b)"; echo "exit=$?"
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed && git status --short
+009 Bash python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-suspicious-returns.py" . --json 2>&1 | head -40; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-test-tautology.py" . --json 2>&1 | head -20
+010 Edit <WORK>/runs/T5-dod-2/repo/test/list.test.js
+011 Bash python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-suspicious-returns.py" . --json; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-test-tautology.py" . --json; np
+012 Bash date +%s > .dod-guard/last-verify-passed && git add test/list.test.js && git commit -q -m "$(cat <<'EOF'\ntest(list): use a non-empty loader result in the TTL test\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>\nEOF\n)" && git log --oneline -2 && git status --short

@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash grep -rniE "regex|@.*\\\\\.|\.test\(|match\(" --include=*.js --include=*.ts --include=*.py --include=*.go . -l 2>/dev/null | grep -v node_modules | head; git ls-files
+002 Read <WORK>/runs/H2-dod-1/repo/src/validate.js
+003 Read <WORK>/runs/H2-dod-1/repo/test/validate.test.js
+004 Edit <WORK>/runs/H2-dod-1/repo/src/validate.js
+005 Edit <WORK>/runs/H2-dod-1/repo/test/validate.test.js
+006 Bash node --test 2>&1 | tail -15; echo exit=$?

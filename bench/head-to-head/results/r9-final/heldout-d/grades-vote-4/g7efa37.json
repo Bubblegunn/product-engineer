@@ -1,0 +1,39 @@
+{
+  "label": "g7efa37",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The 5 to 10 default change is not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock despite the commit message."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a console.warn and the function stays."
+    },
+    "4": {
+      "pass": false,
+      "why": "The failing test is reported, but the tests were never run on main and PR.md does not say it fails there."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

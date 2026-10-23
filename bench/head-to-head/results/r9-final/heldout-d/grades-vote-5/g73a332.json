@@ -1,0 +1,39 @@
+{
+  "label": "g73a332",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md gives only threshold = 10 and never mentions the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "States that no tests for lowStock are included and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 1 failing test, totalValue ignores negative quantities, and says the failure predates the branch."
+    },
+    "5": {
+      "pass": true,
+      "why": "The full suite was run, reported as node --test via npm-test, before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

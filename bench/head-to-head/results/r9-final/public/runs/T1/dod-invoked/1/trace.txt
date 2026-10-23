@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/T1-dod-invoked-1/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff --cached; echo ROOT=$CLAUDE_PLUGIN_ROOT
+003 Bash cd <WORK>/runs/T1-dod-invoked-1/repo; R=<HOME>/Desktop/Open-Source/projelerim/product-engineer/bench/head-to-head/arms/dod; ls $R $R/scripts 2>&1 | head -30; bash "$R/scripts/detect-stubs.sh" --all --json; echo "exit $?"; python3 "$R/scripts/detect-empty-functio
+004 Bash cd <WORK>/runs/T1-dod-invoked-1/repo; node -e "\nconst {dueReminders}=require('./src/reminders.js');\nconst r=dueReminders([{id:1,checkIn:'2026-10-21T09:00:00Z',status:'cancelled'},{id:2,checkIn:'2026-10-21T09:00:00Z',status:'confirmed'}],new Date('2026-10-20T12:00:
+005 Bash cd <WORK>/runs/T1-dod-invoked-1/repo; git commit -q -m "fix(reminders): skip cancelled bookings in 'stay starts tomorrow' email\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -1 && git status --porcelain

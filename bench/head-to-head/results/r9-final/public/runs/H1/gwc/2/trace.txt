@@ -1,0 +1,3 @@
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30
+002 Bash cat README.md src/*.js test/router.test.js
+003 Bash python3 - <<'EOF'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// The token check""","""const { login } = require('./users');\n\n// The token check""",1)\ns=s.replace("""  if (req.method === 'POST' && req.path === '/orders') {""","""  if (req.method === 'POST' && req.path === '/logi

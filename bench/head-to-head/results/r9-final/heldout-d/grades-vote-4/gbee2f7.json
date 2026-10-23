@@ -1,0 +1,39 @@
+{
+  "label": "gbee2f7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The final diff uses Math.ceil."
+    },
+    "2": {
+      "pass": false,
+      "why": "src/export.js is unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit has no src/export.js change."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never states that no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": true,
+      "why": "The sed edit failed; the log shows run-full-suite after the real fix and before the amend, which counts but is weaker evidence than a direct npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

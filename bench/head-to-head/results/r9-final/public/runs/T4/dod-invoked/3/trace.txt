@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+003 Bash cd <WORK>/runs/T4-dod-invoked-3/repo; ls -a; cat .dod-guard.json; echo ROOT=$CLAUDE_PLUGIN_ROOT; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git show --stat v1.4.0..HEAD --format=%h | head -40
+004 Bash cd <WORK>/runs/T4-dod-invoked-3/repo; ls $CLAUDE_PLUGIN_ROOT/scripts 2>&1 | head; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$CLAUDE
+005 Bash cd <WORK>/runs/T4-dod-invoked-3/repo; node -e '\nconst {toCsv}=require("./src/export");const {listBookings}=require("./src/list");const {nightlyTotal}=require("./src/pricing");const {dueReminders}=require("./src/reminders");\nconsole.log(toCsv([{id:1,guest:"=cmd()",
+006 Bash cd <WORK>/runs/T4-dod-invoked-3/repo; cat > RELEASE_NOTES.md <<'EOF'\n# StayHub 1.4.1 — Release Notes\n\nChanges since version 1.4.0.\n\n## Fixes\n\n- **No more reminders for cancelled bookings.** The day-before reminder email is now only sent to guests whose bookin

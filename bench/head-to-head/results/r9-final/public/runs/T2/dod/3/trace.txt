@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/T2-dod-3/repo; ls -a; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; cat package.json
+003 Bash cd <WORK>/runs/T2-dod-3/repo; git diff
+004 Bash cd <WORK>/runs/T2-dod-3/repo; R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head -20; echo --- STUBS; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -40; echo --- EMPTY; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -40; echo --- 
+005 Bash cd <WORK>/runs/T2-dod-3/repo; node -e '\nconst {dueReminders}=require("./src/reminders.js");\nconst now=new Date("2026-10-20T12:00:00Z");\nfor (const s of ["cancelled","Cancelled","confirmed"]) console.log(s, dueReminders([{id:1,checkIn:"2026-10-21T09:00:00Z",status

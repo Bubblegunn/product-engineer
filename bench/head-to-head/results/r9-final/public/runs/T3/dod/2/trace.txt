@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git log --stat main..HEAD | head -50; git diff main...HEAD --stat | tail -20
+002 Bash git diff main...HEAD; git log --oneline main..HEAD; ls; cat package.json; npm test 2>&1 | tail -15
+003 Bash node -e 'const f=(r,n)=>Math.floor(r*n*100)/100;for(const [r,n] of [[19.99,3],[0.29,100],[89.99,2],[110.1,3],[45.5,2.5]])console.log(r,n,r*n,f(r,n))'; grep -rn nightlyTotal src test | grep -v "^src/pricing.js"
+004 Write <WORK>/runs/T3-dod-2/repo/PR.md

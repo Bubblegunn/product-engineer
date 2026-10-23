@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash git status --short --branch; git diff --cached; git log --date=iso-strict --pretty='%h %ad %s (%an)'; ls CLAUDE.md 2>&1 | head -1
+003 Bash git commit -q -m "fix(reminders): skip cancelled bookings in stay-starts-tomorrow email\n\ndueReminders now excludes bookings with status 'cancelled', so guests who\ncancelled no longer receive the reminder. Adds a regression test.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com

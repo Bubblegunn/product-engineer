@@ -1,0 +1,4 @@
+001 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50; git status --short
+002 Bash git diff v1.2.0 v1.3.0 --stat; git diff v1.2.0 v1.3.0 -- . ':!*.lock'
+003 Bash git show 36eee57 --stat --format='%B' | head; git show 36eee57 -- src/config.js | tail -5; git show 11e4c9f --format='%B' | head -20
+004 Write <WORK>/runs/X3-iso-1/repo/RELEASE_NOTES.md

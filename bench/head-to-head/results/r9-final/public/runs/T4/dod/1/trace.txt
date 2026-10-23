@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag; git log v1.4.0..HEAD --format='%h %s%n%b'; ls
+002 Bash git diff v1.4.0..HEAD --stat; grep -n -i bulk -r README.md src | head; git show d85083e --stat --format=%b | head -20
+003 Bash git diff v1.4.0..HEAD -- README.md src/list.js src/pricing.js src/export.js
+004 Write <WORK>/runs/T4-dod-1/repo/RELEASE_NOTES.md

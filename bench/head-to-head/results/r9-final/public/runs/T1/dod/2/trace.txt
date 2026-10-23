@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --staged
+002 Bash git commit -q -m "fix(reminders): skip cancelled bookings in stay-starts-tomorrow email\n\nGuests with cancelled bookings were still receiving the reminder.\ndueReminders now filters out bookings with status 'cancelled', with a\nregression test.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply
+003 Skill dod-guard:verify
+004 Bash ls .dod-guard.json; echo "root=$CLAUDE_PLUGIN_ROOT"; git rev-parse --abbrev-ref HEAD; git rev-parse --short HEAD; git status --porcelain; git diff --name-only HEAD~1 HEAD; ls; cat package.json 2>/dev/null
+005 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo "exit=$?"
+006 Bash node -e '\nconst {dueReminders}=require("./src/reminders.js");\nconst now=new Date("2026-10-20T12:00:00Z");\nconsole.log(JSON.stringify(dueReminders([{id:1,checkIn:"2026-10-21T09:00:00Z",status:"cancelled"},{id:2,checkIn:"2026-10-21T09:00:00Z",status:"confirmed"}],now).map(b=>b.id)))'; echo
+007 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --short

@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git show dab1e52 --stat && git show dab1e52 && ls
+002 Bash ls -R src test; cat package.json; cat test/* | head -50; git show dab1e52^:src/refund.js; grep -rn -i "refund\|iade" --include=* . -l --exclude-dir=.git
+003 Write <WORK>/runs/X5-dod-1/repo/DESTEK_NOTU.md

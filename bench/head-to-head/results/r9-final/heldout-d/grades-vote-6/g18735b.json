@@ -1,0 +1,39 @@
+{
+  "label": "g18735b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 change."
+    },
+    "2": {
+      "pass": true,
+      "why": "States that no tests for lowStock are included."
+    },
+    "3": {
+      "pass": true,
+      "why": "Not removed and logs a deprecation warning."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failure but only ran the branch, not main, and the claim that it predates the branch is unverified."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test and the suite were run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

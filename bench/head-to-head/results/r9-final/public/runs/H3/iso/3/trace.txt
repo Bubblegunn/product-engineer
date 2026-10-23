@@ -1,0 +1,3 @@
+001 Bash git ls-files && cat $(git ls-files | grep -v lock | head -20)
+002 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""  return { status: 404""","""  if (req.method === 'POST' && req.path === '/refund') {\n    if (!requireAuth(req)) return { status: 401, body: { error: 'unauthorized' } };\n    const orderId = (req.body || {}).orderId;\n   
+003 Bash npm test 2>&1 | tail -12

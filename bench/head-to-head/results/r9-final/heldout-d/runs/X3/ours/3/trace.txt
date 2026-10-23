@@ -1,0 +1,7 @@
+001 Skill product-engineer:release-notes
+002 Bash git tag && product-engineer range v1.2.0 2>&1 || npx product-engineer range v1.2.0 2>&1; git log --oneline v1.2.0..v1.3.0
+003 Bash git show 36eee57 869d97d 11e4c9f --stat -p | head -150; git rev-parse v1.3.0 HEAD
+004 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.2.0\n\nYou now have a retry helper for failed requests, so a brief hiccup no longer has to become an error in your app. By default it tries again up to 2 times after the first failure (3 attempts in total) and reports the last error if all of
+005 Bash python3 - <<'EOF'\np='RELEASE_NOTES.md'\ns=open(p).read().split('\n')\ns[4]='The option that caps how many items come back has been renamed to "limit". Action needed: if your code sets this cap under its old name, change it to "limit". The old name is no longer read and is silently ignored,
+006 Bash git log --format='%s%n%b' v1.2.0..v1.3.0 > /tmp/src-log.txt; product-engineer facts /tmp/src-log.txt RELEASE_NOTES.md 2>&1 | head -40
+007 Bash git diff v1.2.0 v1.3.0 -- src > /tmp/src-diff.txt; product-engineer facts /tmp/src-diff.txt RELEASE_NOTES.md 2>&1 | head -30

@@ -1,0 +1,6 @@
+001 Bash git ls-files && grep -rniE "page" --include=* . --exclude-dir=.git | head -30
+002 Bash cat src/pager.js package.json; ls test; grep -rn pager src test
+003 Bash sed -i 's/Math.floor(total \/ size)/Math.ceil(total \/ size)/' src/pager.js && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial pages', () 
+004 Edit <WORK>/runs/X4-gwc-1/repo/src/pager.js
+005 Write <WORK>/runs/X4-gwc-1/repo/test/pager.test.js
+006 Bash npm test 2>&1 | grep -E "^(ℹ (tests|pass|fail)|✖)" ; git add -A && git commit -qm "Fix pageCount dropping the last partial page\n\npageCount used Math.floor, so 25 items gave 2 pages. Use Math.ceil.\n\nTested: added test/pager.test.js (pageCount for 0, 10, 25 items; page 3 of 25 items has 5

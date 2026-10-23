@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "auth" --include=* -l . --exclude-dir=.git --exclude-dir=node_modules
+002 Bash grep -rniE "auth|middleware" . --exclude-dir=.git --exclude-dir=node_modules; cat src/router.js package.json
+003 Bash cat test/router.test.js README.md
+004 Write <WORK>/runs/H4-dod-2/repo/src/auth.js
+005 Write <WORK>/runs/H4-dod-2/repo/test/auth.test.js
+006 Edit <WORK>/runs/H4-dod-2/repo/src/router.js
+007 Bash npm test 2>&1 | tail -15; echo exit=$?

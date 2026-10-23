@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50; git diff --stat v1.2.0 v1.3.0 2>&1 | tail -20
+002 Bash git diff v1.2.0 v1.3.0 -- README.md src test; git show 11e4c9f --stat | tail -5
+003 Write <WORK>/runs/X3-dod-2/repo/RELEASE_NOTES.md

@@ -1,0 +1,39 @@
+{
+  "label": "g1e61f8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md gives only the new default of 10 and not the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no lowStock tests are in the diff and the fixture is the only test-side change."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv only adds a console.warn and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says 1 test fails and that it fails on main; main was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

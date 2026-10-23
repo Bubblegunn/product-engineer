@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat README.md src/*.js test/router.test.js
+003 Bash cat > src/login.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = Number(process.env.LOGIN_MAX_FAILURES) || 3;\n\nconst failures = new Map(); // email -> consecutive wrong-password count\nconst tokens = new Set(); // tokens 

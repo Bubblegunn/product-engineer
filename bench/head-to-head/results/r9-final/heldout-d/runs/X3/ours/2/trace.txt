@@ -1,0 +1,8 @@
+001 Skill product-engineer:release-notes
+002 Bash git tag && git log --oneline v1.2.0..v1.3.0 && (product-engineer range v1.2.0 || npx product-engineer range v1.2.0)
+003 Bash git show 36eee57 869d97d --stat -p | head -80; grep -n "timeout\|retries" -r src README.md | head -30
+004 Write <WORK>/runs/X3-ours-2/repo/RELEASE_NOTES.md
+005 Bash (product-engineer notes RELEASE_NOTES.md --range v1.2.0 || npx product-engineer notes RELEASE_NOTES.md --range v1.2.0)
+006 Edit <WORK>/runs/X3-ours-2/repo/RELEASE_NOTES.md
+007 Bash (product-engineer notes RELEASE_NOTES.md --range v1.2.0 || npx product-engineer notes RELEASE_NOTES.md --range v1.2.0) 2>&1 | head -8
+008 Bash mkdir -p /tmp/rn-src && git log --format='%s%n%b' v1.2.0..v1.3.0 > /tmp/rn-src/log.txt && git diff v1.2.0 v1.3.0 -- src >> /tmp/rn-src/log.txt && (product-engineer facts /tmp/rn-src/log.txt RELEASE_NOTES.md || npx product-engineer facts /tmp/rn-src/log.txt RELEASE_NOTES.md) 2>&1 | head -40

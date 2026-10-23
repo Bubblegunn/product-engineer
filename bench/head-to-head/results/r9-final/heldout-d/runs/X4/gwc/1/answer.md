@@ -1,0 +1,3 @@
+Fixed and committed as `2cf85f2`. `pageCount` in `src/pager.js` used `Math.floor`, so 25 items gave 2 pages. It now uses `Math.ceil`, so 25 items give 3.
+
+I added `test/pager.test.js`. It checks that `pageCount` returns 0, 1 and 3 for 0, 10 and 25 items, and that page 3 of 25 items holds the last 5. `npm test` passes all 3 tests, and the commit message says what I tested. I didn't run `src/export.js`, which is the only other file that uses the pager.

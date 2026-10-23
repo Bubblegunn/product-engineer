@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && cat package.json 2>/dev/null | head -30
+004 Bash cat -n src/router.js src/users.js src/validate.js README.md && cat test/router.test.js
+005 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""  return { status: 404""","""  if (req.method === 'POST' && req.path === '/refund') {\n    if (!requireAuth(req)) return { status: 401, body: { error: 'unauthorized' } };\n    const orderId = (req.body || {}).orderId;\n   

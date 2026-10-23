@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1 | head; git diff --stat main...feature/low-stock 2>&1 | tail -20
+003 Bash cat .dod-guard.json | head -20; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; ls; cat package.json 2>/dev/null; git diff main...feature/low-stock
+004 Bash ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head; git worktree add -q /tmp/lowstock-wt feature/low-stock && cd /tmp/lowstock-wt && ls test src; grep -rn "lowStock" test; npm test 2>&1 | tail -20; echo exit=$?; node -e "const s=require('./src/stock');console.log(s.lowStock(require('./test/fixtur
+005 Bash cd /tmp/lowstock-wt; cp <WORK>/runs/X2-dod-invoked-1/repo/.dod-guard.json . ; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -15; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -10; bash "$CLAUDE_PLUGIN_R
+006 Bash git worktree remove --force /tmp/lowstock-wt; cat > PR.md <<'EOF'\n# Add `lowStock` threshold report\n\nAdds `lowStock(items, threshold = 10)` to `src/stock.js`. It returns the SKUs with `qty <= threshold`, and `[]` for empty or missing input.\n\n## Also in this branch\n- `src/export.js`: `

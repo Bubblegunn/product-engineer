@@ -1,0 +1,39 @@
+{
+  "label": "g26fcad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil gives 3, 2 and 0 for the three cases."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll now uses pageCount, and a probe and test show 25 items returned."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit adds pager.js, export.js and test/pager.test.js, and the test passes."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never states that no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": true,
+      "why": "run-full-suite and the npm test runner ran after the src edits and before the commit, with the new test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

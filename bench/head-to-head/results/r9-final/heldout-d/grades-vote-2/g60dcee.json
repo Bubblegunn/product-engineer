@@ -1,0 +1,39 @@
+{
+  "label": "g60dcee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The test file went into the fix commit, and HEAD is only the version bump, so the commit does not match the expected three files."
+    },
+    "2": {
+      "pass": false,
+      "why": "The fix commit says 'Adds tests for both cases'."
+    },
+    "3": {
+      "pass": false,
+      "why": "HEAD mentions only the version bump; the clamp and the log removal are in separate commits."
+    },
+    "4": {
+      "pass": false,
+      "why": "The test file was committed, in the fix commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

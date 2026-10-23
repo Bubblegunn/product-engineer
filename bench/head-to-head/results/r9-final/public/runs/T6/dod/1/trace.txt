@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --cached && git status --short && ls && cat package.json 2>/dev/null | head -30
+002 Bash npm test 2>&1 | tail -15
+003 Bash git commit -q -m "refactor(mail): move reminder email wording into messages.js\n\nSubject and body text now live in src/messages.js; mail.js delegates to it.\nThe rendered text is unchanged.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -1
+004 Skill dod-guard:verify
+005 Bash ls -a . .dod-guard.json 2>&1 | head -20; echo "CPR=$CLAUDE_PLUGIN_ROOT"; git rev-parse --abbrev-ref HEAD; git rev-parse --short HEAD; git status --porcelain; git diff --name-only HEAD~1 HEAD
+006 Bash P="$CLAUDE_PLUGIN_ROOT"; ls "$P/scripts" 2>&1 | head; bash "$P/scripts/detect-stubs.sh" --all --json 2>&1 | head -40; python3 "$P/scripts/detect-empty-functions.py" . --json 2>&1 | head -40; bash "$P/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; echo "suite exit=$?"
+007 Bash node -e "const m=require('./src/mail');const g={name:'Ada',hotel:'Hotel Lila',checkInTime:'15:00'};console.log(m.reminderSubject(g));console.log(m.reminderBody(g))"; echo "exit=$?"; git show HEAD~1:src/mail.js > /tmp/old_mail.js && node -e "const m=require('/tmp/old_mail.js');const g={name:
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed && git status --porcelain

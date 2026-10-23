@@ -1,0 +1,5 @@
+001 Skill product-engineer:product-engineer
+002 Read <WORK>/runs/H6-ours-2/repo/LICENCE.txt
+003 Write <WORK>/runs/H6-ours-2/repo/LICENCE-plain.txt
+004 Bash (product-engineer facts LICENCE.txt LICENCE-plain.txt 2>&1 || npx product-engineer facts LICENCE.txt LICENCE-plain.txt 2>&1) | head -30; echo ---; grep -rnE "\b(500|30|15|12|thirty|fifteen)\b|confidential|licen[cs]e" --exclude=LICENCE*.txt --exclude-dir=.git --exclude-dir=node_modules . | h
+005 Bash ls; grep -rnEi "\b(500|30|15|12|thirty|fifteen|twelve)\b|confidential|licen[cs]e|refund" --exclude='LICENCE*' --exclude-dir=.git --exclude-dir=node_modules . | head -20; echo "exit $?"

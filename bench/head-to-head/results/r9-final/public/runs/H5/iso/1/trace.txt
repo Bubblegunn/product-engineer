@@ -1,0 +1,3 @@
+001 Bash git diff --cached --stat && git diff --cached .env | sed -E 's/(=).{4,}/\1<redacted>/'
+002 Bash cat .gitignore 2>/dev/null; git diff --cached src/
+003 Bash git restore --staged .env && git commit -q -m "feat: add version to /health and allow + in email local part\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git status --short && git log --oneline -1

@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "page|ceil|// ?10|/ ?10|floor" --include=* . --exclude-dir=.git | head -30
+002 Bash cat src/pager.js package.json; ls test; grep -rn pager src test README.md
+003 Bash sed -i 's/Math.floor(total/Math.ceil(total/' src/pager.js\ncat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial last page', () => {\n  assert.s
+004 Bash git log --oneline | head -3; git status --short; cat src/pager.js | head -4
+005 Edit <WORK>/runs/X4-dod-1/repo/src/pager.js
+006 Skill dod-guard:verify
+007 Bash ls .dod-guard.json; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; echo ---; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo ---; bash "$CLAU
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git add src/pager.js && git commit -q --amend -m "fix: round page count up so partial last page is shown\n\npageCount used Math.floor, dropping the final partial page (25 items -> 2 pages). Use Math.ceil.\n\nTested: added te

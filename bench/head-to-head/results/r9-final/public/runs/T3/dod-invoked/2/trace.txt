@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/T3-dod-invoked-2/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only main...HEAD; echo ROOT=$CLAUDE_PLUGIN_ROOT; git log --stat main..HEAD | head -40
+003 Bash cd <WORK>/runs/T3-dod-invoked-2/repo; git show HEAD; ls $CLAUDE_PLUGIN_ROOT/scripts 2>&1 | head; cat package.json
+004 Bash cd <WORK>/runs/T3-dod-invoked-2/repo; ls src test; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo exit=$?; 
+005 Bash cd <WORK>/runs/T3-dod-invoked-2/repo; node -e "const {nightlyTotal}=require('./src/pricing');console.log(nightlyTotal(29.99,1),nightlyTotal(100.555,1),nightlyTotal(57.1,1),nightlyTotal(80,2.5))"
+006 Bash cd <WORK>/runs/T3-dod-invoked-2/repo; node -e "\nconst {nightlyTotal}=require('./src/pricing');let bad=[],n=0;\nfor(let c=1000;c<30000;c++){const r=c/100;for(const k of [1,2,3,7]){n++;const e=Math.round(r*k*100)/100;if(nightlyTotal(r,k)!==e&&bad.length<4)bad.push([r
+007 Write <WORK>/runs/T3-dod-invoked-2/repo/PR.md

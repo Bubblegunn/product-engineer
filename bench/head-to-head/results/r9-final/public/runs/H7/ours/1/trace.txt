@@ -1,0 +1,8 @@
+001 Skill product-engineer:release-notes
+002 Bash git log --since=2026-10-14T00:00:00 --until=2026-10-21T00:00:00 --format='%h %ad %s' --date=short --no-merges; echo; git log -5 --format='%h %ad %s' --date=iso
+003 Bash git tag | tail -3; (product-engineer range e7293a8^ 2>&1 || npx product-engineer range e7293a8^ 2>&1) | head -40; git show 6be51f2 af6cd4b --stat --format='%h %s%n%b' | head -30
+004 Bash git show 6be51f2 af6cd4b 2353c31 --format='== %h %s' | grep -v '^index'
+005 Bash cat > CHANGELOG-WEEK.md <<'EOF'\nChanges for 14 to 20 October 2026 (commit e7293a8 to 921093e)\n\n**Search**\n- You can now search bookings by guest name, so finding a booking no longer means scrolling through the whole list.\n- You can now filter bookings by date, so you can look at just t
+006 Bash cat package.json 2>/dev/null | grep -A5 '"scripts"'; ls; (npm test 2>&1 | tail -15); npx product-engineer notes CHANGELOG-WEEK.md --range e7293a8^ 2>&1 | tail -3
+007 Bash npx product-engineer notes CHANGELOG-WEEK.md --range e7293a8^ 2>&1 | head -8; echo "exit ${PIPESTATUS[0]}"; npx product-engineer notes CHANGELOG-WEEK.md 2>&1 | head -5
+008 Bash which product-engineer; product-engineer notes CHANGELOG-WEEK.md --range e7293a8^ 2>&1 | head -5; echo "exit ${PIPESTATUS[0]}"

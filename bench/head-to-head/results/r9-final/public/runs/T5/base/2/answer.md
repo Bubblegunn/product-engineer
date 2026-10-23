@@ -1,0 +1,1 @@
+I committed the staged cache change as `1184294`, "feat(list): cache bookings list for 60 seconds". It includes `src/cache.js`, `src/list.js` and `test/list.test.js`. I didn't run the tests.

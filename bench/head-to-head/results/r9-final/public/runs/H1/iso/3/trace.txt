@@ -1,0 +1,3 @@
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30
+002 Bash cat README.md src/*.js test/router.test.js
+003 Bash cat > src/login.js <<'EOF'\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n// The sample token is a fixed value, the same one requireAuth in router.js accepts.\nconst TOKEN = 'secret';\n\n// Wrong-password count in a row, per email. Kept in memory, so it resets on rest

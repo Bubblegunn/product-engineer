@@ -1,0 +1,39 @@
+{
+  "label": "gdbe5b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Test file went into the fix commit, and no single commit has exactly the three files."
+    },
+    "2": {
+      "pass": false,
+      "why": "The fix commit message says 'Adds tests for both cases'."
+    },
+    "3": {
+      "pass": true,
+      "why": "The three split commit messages together cover the clamp, the log removal and the 1.4.3 bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer says the test file was untracked but also that it was committed in the fix commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the first commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

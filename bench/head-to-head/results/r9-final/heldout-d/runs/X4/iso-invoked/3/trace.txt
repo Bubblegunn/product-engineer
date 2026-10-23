@@ -1,0 +1,8 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && grep -rniE "page|ceil|// ?10|/ ?10" --include=* . --exclude-dir=.git | head -30
+004 Bash cat -n src/pager.js package.json; cat test/format.test.js | head -30; grep -n pager -r src
+005 Bash sed -i 's/Math.floor(total \/ size)/Math.ceil(total \/ size)/' src/pager.js\ncat > test/pager.test.js <<'EOF'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\ntest('pageCount rounds up partial pages', () =>
+006 Edit <WORK>/runs/X4-iso-invoked-3/repo/src/pager.js
+007 Bash npm test 2>&1 | grep -E "^# (pass|fail)" ; git add -A && git commit -q --amend --no-edit && git show --stat --oneline HEAD | head
+008 Bash npm test 2>&1 | grep -E "^ℹ (pass|fail)"

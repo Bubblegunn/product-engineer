@@ -1,0 +1,32 @@
+{
+  "label": "g11063982",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil in pageCount."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll uses pageCount and the test checks 25 items."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has pager.js, export.js and test/pager.test.js, which passes."
+    },
+    "4": {
+      "pass": false,
+      "why": "Describes the tests it ran but never says no pager/export tests existed."
+    },
+    "5": {
+      "pass": true,
+      "why": "The full suite (run-full-suite.sh, the npm-test runner) ran after the edits and before the commit."
+    }
+  }
+}

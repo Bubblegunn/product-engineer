@@ -1,0 +1,14 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --cached; git status --short
+002 Bash node --test 2>&1 | tail -15
+003 Bash git commit -q -m "feat(list): cache the bookings list for 60 seconds\n\nAdd a small TTL cache and use it in listBookings so repeated calls\nwithin 60s reuse the loaded result.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -1
+004 Skill dod-guard:verify
+005 Bash ls .dod-guard.json; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only HEAD~1; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+006 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -30; echo "=== empty"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -30; echo "=== suite"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet 2>&1 | tail -30; echo "
+007 Bash node -e "\nconst {listBookings,makeListCache}=require('./src/list');\nlet n=0;const load=()=>{n++;return [{id:1}]};\nconst c=makeListCache();\nconst a=listBookings(load,c),b=listBookings(load,c);\nconsole.log(JSON.stringify(a),a===b,'loads='+n);"; echo "exit=$?"
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain
+009 Bash python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-suspicious-returns.py" . --json 2>&1 | tail -30
+010 Edit <WORK>/runs/T5-dod-1/repo/test/list.test.js
+011 Edit <WORK>/runs/T5-dod-1/repo/test/list.test.js
+012 Bash for s in detect-suspicious-returns detect-test-tautology; do python3 "$CLAUDE_PLUGIN_ROOT/scripts/$s.py" . --json 2>&1 | tail -3; done; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json | tail -2; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json | tail 
+013 Bash date +%s > .dod-guard/last-verify-passed && git add test/list.test.js && git commit -q -m "test(list): assert real bookings in the cache expiry test\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -2 && git status --porcelain

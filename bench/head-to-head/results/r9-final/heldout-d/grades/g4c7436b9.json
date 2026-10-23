@@ -1,0 +1,32 @@
+{
+  "label": "g4c7436b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of 5→10."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "exportCsv deprecation warning, not removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "It reports the failing test, but main's test suite was never run, only the test file inspected."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran npm test in a worktree before writing."
+    }
+  }
+}

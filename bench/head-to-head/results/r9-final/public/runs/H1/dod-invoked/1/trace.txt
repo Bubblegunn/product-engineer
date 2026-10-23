@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat src/*.js test/router.test.js README.md
+003 Skill dod-guard:dod-enforcement
+004 Bash cat > config.json <<'EOF'\n{ "maxFailedLogins": 3 }\nEOF\ncat > src/auth.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser } = require('./users');\nconst { maxFailedLogins } = require('../config.json');\n\n// Consecutive wrong-password count per email. An email at the lim
+005 Skill dod-guard:verify
+006 Bash echo "root=$CLAUDE_PLUGIN_ROOT"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$CLAUDE_PLUGIN_ROOT/s
+007 Bash node -e "\nconst {handle}=require('./src/router');\nconst p=b=>handle({method:'POST',path:'/login',headers:{},body:b}).status;\nconst g={email:'user@example.com',password:'pw123'},b={email:'user@example.com',password:'x'};\nconsole.log([p(b),p(b),p(b),p(g)].join(' '));"; echo exit=$?
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git status --porcelain

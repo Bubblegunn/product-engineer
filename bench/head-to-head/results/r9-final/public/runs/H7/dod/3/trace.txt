@@ -1,0 +1,3 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git log --since="2026-10-14 00:00" --until="2026-10-20 23:59:59" --no-merges --format='%h %ad %an %s' --date=short; echo ---; git log -8 --format='%h %ad %s' --date=short
+002 Write <WORK>/runs/H7-dod-3/repo/CHANGELOG-WEEK.md

@@ -1,0 +1,4 @@
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30
+002 Bash cat README.md src/*.js test/router.test.js
+003 bash cd <WORK>/runs/H1-base-1/repo && python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// Routes one""","""const { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n// Consecutive wrong passwords per email. An email at MAX_FAILURES is locke
+004 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// Routes one""","""const { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n// Consecutive wrong passwords per email. An email at MAX_FAILURES is locked until the process restarts.\nconst failures = new Map();

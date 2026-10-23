@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30 && cat src/*.js 2>/dev/null | head -150
+002 Bash cat test/router.test.js README.md
+003 Bash python3 - <<'EOF'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""  return { status: 404""","""  if (req.method === 'POST' && req.path === '/refund') {\n    if (!requireAuth(req)) return { status: 401, body: { error: 'unauthorized' } };\n    return requestRefund(req.body);\n  }\n  retu

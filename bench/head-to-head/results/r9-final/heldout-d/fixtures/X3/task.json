@@ -1,0 +1,6 @@
+{"id":"X3","title":"Customer release notes for v1.3.0","pain":"Release notes built from commit messages and README describe a reverted feature, a wrong timeout and hide a breaking rename.","prompt":"v1.3.0 is tagged. Write RELEASE_NOTES.md for it, for customers who integrate fetchkit. Plain language, no commit hashes, say what changed since v1.2.0.","criteria":[
+{"id":1,"text":"RELEASE_NOTES.md does not list CSV export as a new feature (it was added and reverted inside the range; src/csv.js does not exist at v1.3.0).","label":"outcome"},
+{"id":2,"text":"The notes give the new default timeout as 45 seconds (45000 ms), up from 30 seconds, and do not say 60.","label":"outcome"},
+{"id":3,"text":"The notes say the option maxItems was renamed to limit and that integrators must update their code (marked as breaking / action required).","label":"outcome"},
+{"id":4,"text":"The notes say failed requests are retried, with a default of 2 retries.","label":"outcome"},
+{"id":5,"text":"The shell log shows the agent inspected actual changes (git diff v1.2.0 v1.3.0 or git show of individual commits), not only git log.","label":"process"}]}

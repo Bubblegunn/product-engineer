@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag; git log v1.4.0..HEAD --format='%h %s%n%b' ; ls
+002 Bash grep -n -i bulk README.md; git show d85083e --stat | tail -5; git show d85083e | head -60
+003 Bash cat > RELEASE_NOTES.md <<'EOF'\n# Release Notes — since v1.4.0\n\n## Fixes\n\n- **Safer CSV exports.** Exported booking files could contain text that Excel or Google Sheets would interpret as a formula. Exports now neutralize this, so opening a file never runs anything unexpected.\n- **No m

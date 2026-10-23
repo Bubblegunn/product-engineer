@@ -1,0 +1,6 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && grep -rn -i "auth" --include=* . --exclude-dir=.git --exclude-dir=node_modules | head -40
+004 Bash cat -n src/router.js src/users.js package.json; grep -n -i "auth\|token" README.md test/*.js
+005 Bash cat > src/auth.js <<'EOF'\n// The token check for routes that need a signed-in caller. The token is a fixed value in this sample.\nfunction requireAuth(req) {\n  return (req.headers || {})['x-token'] === 'secret';\n}\n\nmodule.exports = { requireAuth };\nEOF\npython3 - <<'EOF'\np='src/route
+006 Bash npm test 2>&1 | tail -12

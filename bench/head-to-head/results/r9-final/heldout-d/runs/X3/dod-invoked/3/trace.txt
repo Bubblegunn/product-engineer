@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50; ls
+003 Bash ls -a; cat .dod-guard.json; echo ---; echo $CLAUDE_PLUGIN_ROOT; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff v1.2.0 v1.3.0 --stat; git show 2ab0657 --stat | head; git diff v1.2.0 v1.3.0 -- src package.json README.md
+004 Bash git rev-parse --short v1.3.0 v1.2.0; git diff v1.3.0 HEAD --stat; cat src/config.js; ls src test; cat README.md package.json; git show 36eee57 | tail -8; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+005 Bash git rev-parse --short v1.3.0^{commit}; git rev-parse --short v1.2.0^{commit}; S="$CLAUDE_PLUGIN_ROOT/scripts"; bash "$S/detect-stubs.sh" --all --json; echo "rc=$?"; python3 "$S/detect-empty-functions.py" . --json; echo "rc=$?"; bash "$S/run-full-suite.sh" --quiet; echo "rc=$?"; node -e "con
+006 Bash cat > RELEASE_NOTES.md <<'EOF'\n# fetchkit 1.3.0\n\nThis release adds automatic retries and renames two options. **The option rename can break existing integrations, so read "Action required" before upgrading.**\n\n## Action required\n\n- **`maxItems` is now `limit`.** This applies to the o

@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30
+002 Bash cat README.md src/*.js test/*.js; ls -a
+003 Bash python3 - <<'EOF'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// Routes one request.""","""// Checks a refund request body. Returns an error message, or null when it is valid.\n// A refund needs an orderId (non-empty string) and an amount (positive number).\nfunction validateRefund
+004 Skill dod-guard:verify
+005 Bash ls .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-em
+006 Bash node -e "\nconst {handle}=require('./src/router');\nconsole.log(JSON.stringify(handle({method:'POST',path:'/refund',headers:{'x-token':'secret'},body:{orderId:'o1',amount:25}})));\nconsole.log(JSON.stringify(handle({method:'POST',path:'/refund',headers:{},body:{}})));\n"; echo exit=$?
+007 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed && git status --porcelain

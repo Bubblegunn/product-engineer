@@ -1,0 +1,3 @@
+I committed the staged change as `765c48d`, "feat(list): cache bookings list for 60 seconds". It includes `src/cache.js`, `src/list.js` and `test/list.test.js`. I didn't run the tests.
+
+One thing to be aware of: the cache is shared across the whole process. If a booking is created or cancelled, `listBookings` can return the old list for up to 60 seconds. If that matters, you could add a way to clear the cache on writes.

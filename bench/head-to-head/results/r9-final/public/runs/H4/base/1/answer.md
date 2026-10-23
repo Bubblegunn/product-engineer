@@ -1,0 +1,1 @@
+I moved `requireAuth` out of `src/router.js` into a new `src/auth.js`. The router now imports it from there, and the logic is unchanged. All 6 tests pass. I haven't committed anything.

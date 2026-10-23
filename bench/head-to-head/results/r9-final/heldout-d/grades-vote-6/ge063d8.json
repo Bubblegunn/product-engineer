@@ -1,0 +1,39 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "HEAD is the version-bump commit touching only package.json, and the test file went into an earlier commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "None of the messages claims tests were added."
+    },
+    "3": {
+      "pass": false,
+      "why": "HEAD message covers only the version bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "The test file was committed in the fix commit, not left out or committed separately."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

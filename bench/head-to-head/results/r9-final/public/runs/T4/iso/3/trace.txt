@@ -1,0 +1,4 @@
+001 Bash git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag | tail
+002 Bash grep -n -i "bulk" -r README.md . --include=*.md --include=*.py --include=*.js --include=*.ts 2>/dev/null | grep -v node_modules | head; git show d85083e --stat | tail -5
+003 Bash grep -rni "bulk" README.md src | head
+004 Write <WORK>/runs/T4-iso-3/repo/RELEASE_NOTES.md

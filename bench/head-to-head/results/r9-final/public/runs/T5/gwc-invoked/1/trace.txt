@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash ls CLAUDE.md 2>&1; git status --short --branch; git log --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'; git diff --cached --stat; git diff --cached; date '+%Y-%m-%d %H:%M:%S %Z'
+003 Bash git commit -q -F - <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nAdd a small TTL cache (src/cache.js) and use it in listBookings so\nrepeated calls within 60s reuse the previous result instead of calling\nload again. The cache is injectable for testing; tests cover the\ncac

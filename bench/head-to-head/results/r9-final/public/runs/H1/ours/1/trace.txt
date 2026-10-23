@@ -1,0 +1,2 @@
+001 Bash git ls-files && cat package.json 2>/dev/null; cat $(git ls-files | grep -E '\.(js|ts|py)$' | head -10)
+002 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// The token check""","""const { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n// Wrong passwords in a row per email. An account at MAX_FAILURES stays locked until the process restarts.\nconst failures = new

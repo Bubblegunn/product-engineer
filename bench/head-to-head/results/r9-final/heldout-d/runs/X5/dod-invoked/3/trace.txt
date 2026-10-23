@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git show HEAD --stat && git show HEAD
+003 Bash cd <WORK>/runs/X5-dod-invoked-3/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head; cat package.json; ls test* src 2>&1
+004 Bash cd <WORK>/runs/X5-dod-invoked-3/repo; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo exit=$?; cat src/format.js 
+005 Write <WORK>/runs/X5-dod-invoked-3/repo/DESTEK_NOTU.md

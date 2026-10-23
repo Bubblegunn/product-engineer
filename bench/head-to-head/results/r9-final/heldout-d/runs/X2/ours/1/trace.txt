@@ -1,0 +1,9 @@
+001 Bash git branch -a && git log --oneline main..feature/low-stock 2>&1 && git diff --stat main...feature/low-stock 2>&1
+002 Skill product-engineer:customer-block
+003 Bash git diff main...feature/low-stock; git log main..feature/low-stock --stat --format='== %h %s'; cat package.json; ls . test
+004 Bash git checkout -q feature/low-stock && npm test 2>&1 | tail -20; cat test/stock.test.js; git checkout -q main
+005 Bash npm test 2>&1 | grep -E '^# (pass|fail)'; git checkout -q feature/low-stock && npm test 2>&1 | grep -E '^# (pass|fail)'; git checkout -q main
+006 Bash npm test 2>&1 | grep -E '^. (pass|fail)|^ℹ (pass|fail)'; git checkout -q feature/low-stock && npm test 2>&1 | grep -E '^. (pass|fail)|^ℹ (pass|fail)'; git checkout -q main; git status --short
+007 Write <WORK>/runs/X2-ours-1/repo/PR.md
+008 Bash git checkout -q feature/low-stock && npm test 2>&1 | grep -E '^ℹ (tests|pass|fail)|^✖'; git checkout -q main; git status --short
+009 Edit <WORK>/runs/X2-ours-1/repo/PR.md

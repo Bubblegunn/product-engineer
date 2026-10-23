@@ -1,0 +1,11 @@
+001 Skill product-engineer:customer-block
+002 Bash git log --stat main..HEAD; git diff main...HEAD --stat | tail -20
+003 Bash git diff main...HEAD; cat package.json; npm test 2>&1 | tail -20
+004 Bash node -e 'const f=(r,n)=>Math.floor(r*n*100)/100;for(const [r,n] of [[19.99,3],[0.29,1],[89.99,2],[33.333,3]])console.log(r,n,r*n,f(r,n))'; grep -rn nightlyTotal --include=*.js . | grep -v node_modules
+005 Bash grep -rn nightlyTotal src test
+006 Write <WORK>/runs/T3-ours-1/repo/PR.md
+007 Bash npx product-engineer check PR.md --kind pr 2>&1 | tail -15
+008 Bash ls -a; git ls-files
+009 Bash git diff -w main...HEAD --stat; npm test 2>&1 | tail -14
+010 Edit <WORK>/runs/T3-ours-1/repo/PR.md
+011 Bash npx product-engineer check PR.md --kind pr 2>&1 | tail -5

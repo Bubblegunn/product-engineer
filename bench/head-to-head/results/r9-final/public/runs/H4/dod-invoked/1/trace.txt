@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "auth" --include=* -l . 2>/dev/null | grep -v '^./.git/' | head
+002 Bash cat package.json src/*.js README.md; grep -rni auth src test README.md
+003 Bash cat test/router.test.js && cat > src/auth.js <<'EOF'\n// The token check for routes that need a signed-in caller. The token is a fixed value in this sample.\n/**\n * Returns true when the request carries the expected x-token header.\n * @param {{headers?: Object<string,string>}} req\n * @re
+004 Bash cat > test/auth.test.js <<'EOF'\nconst { test } = require('node:test');\nconst assert = require('node:assert/strict');\nconst { requireAuth } = require('../src/auth');\n\ntest('requireAuth accepts the correct token', () => {\n  assert.equal(requireAuth({ headers: { 'x-token': 'secret' } }),
+005 Skill dod-guard:verify
+006 Bash ls -a; echo ROOT=$CLAUDE_PLUGIN_ROOT; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+007 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo "exit=$?"\nnode -e "\nconst {handle}=require('./src/r
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed

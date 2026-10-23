@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat src/*.js test/router.test.js README.md
+003 Bash cat > src/auth.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n\n// Creates a login service with its own failure counters and issued tokens.\n// login(email, password) returns {status, body}: 200 {token}, 401 on bad cr
+004 Skill dod-guard:verify
+005 Bash R="${CLAUDE_PLUGIN_ROOT:-}"; echo "root=$R"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; if [ -n "$R" ]; then bash "$R/scripts/detect-stubs.sh" --all --json; python3 "$R/scripts/detect-empty-functions.py" . --json; bash "$R/scripts/ru
+006 Bash node -e "\nconst {handle}=require('./src/router');\nconst l=(p)=>handle({method:'POST',path:'/login',headers:{},body:{email:'user@example.com',password:p}});\nconst out=[l('x').status,l('x').status,l('x').status,l('pw123').status];\nconsole.log(JSON.stringify(out));\nconst t=handle({method:'

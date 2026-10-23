@@ -1,0 +1,4 @@
+001 Skill product-engineer:customer-block
+002 Bash git status --short && git diff --cached --stat && git diff --cached
+003 Bash cat test/price.test.js; npm test 2>&1 | tail -15
+004 Bash git restore --staged package.json src/format.js && git add test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): cap discounts to the 0-100% range\n\nA discount above 100% produced a negative price, and a negative discount\nraised the price. The percentage is now clamped before it i

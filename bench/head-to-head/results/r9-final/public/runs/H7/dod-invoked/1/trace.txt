@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git log --since=2026-10-14 --until=2026-10-21 --format='%h %ad %an %s' --date=short
+003 Bash cd <WORK>/runs/H7-dod-invoked-1/repo; ls -a; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; echo "root=$CLAUDE_PLUGIN_ROOT"; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+004 Bash cd <WORK>/runs/H7-dod-invoked-1/repo; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --qu
+005 Bash cd <WORK>/runs/H7-dod-invoked-1/repo; node -e "const r=require('./src/router');console.log(Object.keys(r))"; echo "exit=$?"\ncat > CHANGELOG-WEEK.md <<'EOF'\n# Changelog — 14 to 20 October 2026\n\n## Search\n- **Filter bookings by date** (17e9fb2, 16 Oct)\n- **Fix:*

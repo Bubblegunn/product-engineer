@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --staged; npm test 2>&1 | tail -15
+002 Bash git commit -q -F - <<'EOF'\nfix(reminders): skip cancelled bookings in check-in reminders\n\nGuests with cancelled bookings were still receiving the "your stay\nstarts tomorrow" email. dueReminders now filters out cancelled\nbookings, with a regression test.\n\nCo-Authored-By: Claude Sonnet
+003 Skill dod-guard:verify
+004 Bash ls .dod-guard.json; echo "root=$CLAUDE_PLUGIN_ROOT"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git show --name-only --format= HEAD
+005 Bash R="$CLAUDE_PLUGIN_ROOT"; bash "$R/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$R/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$R/scripts/run-full-suite.sh" --quiet; echo "exit=$?"
+006 Bash node -e "\nconst {dueReminders}=require('./src/reminders.js');\nconst now=new Date('2026-10-20T12:00:00Z');\nconsole.log(JSON.stringify(dueReminders([{id:1,checkIn:'2026-10-21T09:00:00Z',status:'cancelled'},{id:2,checkIn:'2026-10-21T09:00:00Z',status:'confirmed'}],now)))"; echo "exit=$?"
+007 Bash date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --short
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --short; git log --oneline -2

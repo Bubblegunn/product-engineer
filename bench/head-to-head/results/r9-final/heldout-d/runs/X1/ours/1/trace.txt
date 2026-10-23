@@ -1,0 +1,3 @@
+001 Skill product-engineer:customer-block
+002 Bash git status --short; git diff --cached; cat package.json; npm test 2>&1 | tail -20
+003 Bash git restore --staged . && git add src/price.js test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): clamp discount percent to 0-100\n\nA discount over 100% produced a negative price; a negative discount\nraised the price. The percent is now clamped before it is applied.\n\nran `npm

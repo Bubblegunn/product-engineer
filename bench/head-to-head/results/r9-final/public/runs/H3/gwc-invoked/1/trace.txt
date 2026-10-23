@@ -1,0 +1,4 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash date '+%Y-%m-%d %H:%M:%S %Z' && git status --short --branch && git ls-files && cat CLAUDE.md 2>/dev/null; git log --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'
+003 Bash cat package.json src/*.js test/router.test.js README.md; git log --date=iso-strict --pretty='%h %ad %s'
+004 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("  return { status: 404","""  if (req.method === 'POST' && req.path === '/refund') {\n    if (!requireAuth(req)) return { status: 401, body: { error: 'unauthorized' } };\n    const orderId = (req.body || {}).orderId;\n    if 

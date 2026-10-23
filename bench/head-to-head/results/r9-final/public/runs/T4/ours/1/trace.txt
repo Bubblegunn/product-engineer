@@ -1,0 +1,6 @@
+001 Skill product-engineer:release-notes
+002 Bash git log v1.4.0..HEAD --stat --format='--- %h %s%n%b' | head -80; product-engineer range v1.4.0 || npx product-engineer range v1.4.0
+003 Bash git show b751f09 d85083e --format=%h -- src | cat
+004 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.4.0\n\nThe bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving as one block.\nCancelled bookings no longer get a day-before reminder; only bookings that are still on will.\nExported spreadshee
+005 Bash (product-engineer notes RELEASE_NOTES.md || npx product-engineer notes RELEASE_NOTES.md) 2>&1 | head -20; echo exit $?
+006 Bash cat package.json; npm test 2>&1 | tail -15; echo "npm exit $?"; (product-engineer notes RELEASE_NOTES.md || npx product-engineer notes RELEASE_NOTES.md) 2>&1 | head -5

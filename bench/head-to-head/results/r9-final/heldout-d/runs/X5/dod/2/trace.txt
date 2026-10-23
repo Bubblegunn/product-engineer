@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git show HEAD --stat && git show HEAD
+002 Bash git ls-files && cat src/refund.js && grep -rniE "kind|currency|EUR|subscription|amount" --include=* . --exclude-dir=.git | grep -v "^./src/refund.js" | head -30
+003 Bash cat src/format.js package.json
+004 Write <WORK>/runs/X5-dod-2/repo/DESTEK_NOTU.md

@@ -1,0 +1,39 @@
+{
+  "label": "g6d2b48",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "HEAD commit changes only package.json; the test file is in an earlier commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "No message says tests were added."
+    },
+    "3": {
+      "pass": false,
+      "why": "No single message covers all three parts."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test file was committed with the fix commit, not separately."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

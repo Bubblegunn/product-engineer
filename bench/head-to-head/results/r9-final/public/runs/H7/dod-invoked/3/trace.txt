@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git log --since="2026-10-14 00:00" --until="2026-10-20 23:59:59" --format='%h %ad %s' --date=short
+003 Bash cd <WORK>/runs/H7-dod-invoked-3/repo; ls -a; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head -20
+004 Bash cd <WORK>/runs/H7-dod-invoked-3/repo; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "rc=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "rc=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet;
+005 Write <WORK>/runs/H7-dod-invoked-3/repo/CHANGELOG-WEEK.md
+006 Bash cd <WORK>/runs/H7-dod-invoked-3/repo; test -s CHANGELOG-WEEK.md && grep -c '^- ' CHANGELOG-WEEK.md; mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed; git status --porcelain

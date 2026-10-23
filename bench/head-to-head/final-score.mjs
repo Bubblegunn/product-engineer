@@ -6,7 +6,7 @@
 // Scores come from collectRuns and outcomeScore in summarize.mjs, the code summarize.mjs itself uses.
 // Lost points of an arm = sum over the set's tasks of (the task's maximum outcome count - the arm's mean on that task).
 // Rule A: lost points of ours <= 0.8 x lost points of the best other arm.
-// Rule B (per task): ours strictly above every other arm, or ours and the best other arm both at the task maximum.
+// Rule B (per task): ours strictly above every other arm, or ours and the highest other arm both at the task maximum.
 // Rule B-prime: Rule B, except that ours may sit up to 0.34 below the best other arm on at most one task.
 // Bootstrap: the paired (task, run) cells of ours minus the best other arm, resampled 10000 times with a fixed LCG seed.
 // I1 holds when the 2.5% bound of that interval is above zero.
@@ -79,8 +79,14 @@ export function scoreSet({ runsDir, gradesDir, tasks, labels, taskList = null })
       .map(([id]) => asId(id));
     if (errIds.length > 0) errRuns.push({ run: run.id, task: run.task, arm: run.arm, criteria: errIds });
   }
+  return summarizeCells({ scoreOf, taskMax, runCount: runs.length, errRuns });
+}
+
+// The table, the rules and the bootstrap from per-cell scores: scoreOf[task][arm][rep] = outcome score, taskMax[task] = outcome maximum.
+// recompute.mjs calls this with the cells of cells.csv, so both paths share one set of numbers.
+export function summarizeCells({ scoreOf, taskMax, runCount, errRuns = [] }) {
   const tasksInSet = Object.keys(scoreOf).sort();
-  const armsSeen = [...new Set(runs.map((r) => r.arm))].sort();
+  const armsSeen = [...new Set(tasksInSet.flatMap((t) => Object.keys(scoreOf[t])))].sort();
   if (!armsSeen.includes(OURS)) throw new Error(`no ${OURS} runs in the set`);
   const arms = [OURS, ...armsSeen.filter((a) => a !== OURS)];
   const others = arms.filter((a) => a !== OURS);
@@ -163,7 +169,7 @@ export function scoreSet({ runsDir, gradesDir, tasks, labels, taskList = null })
   return {
     tasks: tasksInSet,
     arms,
-    runs: runs.length,
+    runs: runCount,
     cells,
     taskMax,
     totals,
@@ -182,7 +188,7 @@ export function scoreSet({ runsDir, gradesDir, tasks, labels, taskList = null })
 
 const f2 = (n) => (n === null || n === undefined ? "-" : n.toFixed(2));
 
-function renderText(setName, s) {
+export function renderText(setName, s) {
   const out = [];
   out.push(`set ${setName}: ${s.runs} DONE runs on ${s.tasks.join(", ")}`);
   const header = ["task", ...s.arms, "max"];
@@ -213,8 +219,12 @@ function renderText(setName, s) {
   );
   out.push(`I1: ${s.bootstrap.i1 ? "HOLDS" : "does not hold"} (interval lower bound ${s.bootstrap.i1 ? "above" : "not above"} zero)`);
   if (s.missing.length) out.push(`missing cells: ${s.missing.map((m) => `${m.task} ${m.arm}`).join("; ")}`);
-  out.push(`runs with an error criterion: ${s.errRuns.length === 0 ? "none" : ""}`);
-  for (const e of s.errRuns) out.push(`  ${e.run} (${e.task} ${e.arm}): criteria ${e.criteria.join(", ")}`);
+  // errRuns null: the caller has no grade files (recompute.mjs reads only cells.csv), so the line says so.
+  if (s.errRuns === null) out.push("runs with an error criterion: not recomputed here (see grades/ERRORS.json)");
+  else {
+    out.push(`runs with an error criterion: ${s.errRuns.length === 0 ? "none" : ""}`);
+    for (const e of s.errRuns) out.push(`  ${e.run} (${e.task} ${e.arm}): criteria ${e.criteria.join(", ")}`);
+  }
   return `${out.join("\n")}\n`;
 }
 

@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/X1-dod-invoked-3/repo; ls -a; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; git diff --cached --name-only; echo PLUGIN=$CLAUDE_PLUGIN_ROOT; cat package.json
+003 Bash cd <WORK>/runs/X1-dod-invoked-3/repo; export CLAUDE_PLUGIN_ROOT=<HOME>/Desktop/Open-Source/projelerim/product-engineer/bench/head-to-head/arms/dod; ls $CLAUDE_PLUGIN_ROOT/scripts; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit $?"; python
+004 Bash cd <WORK>/runs/X1-dod-invoked-3/repo; node -e "const p=require('./src/price');console.log(p.applyDiscount(1000,150),p.applyDiscount(1000,-5),p.applyDiscount(1000,10))"; echo "exit $?"; mkdir -p .dod-guard; date +%s > .dod-guard/last-verify-passed; git check-ignore .dod-g

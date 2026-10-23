@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rn -i "auth" --include=* . -l --exclude-dir=.git | head
+002 Bash cat src/router.js src/users.js package.json; grep -rni auth src test README.md
+003 Bash cat > src/auth.js <<'EOF'\n// The token check for routes that need a signed-in caller. The token is a fixed value in this sample.\n/**\n * Returns true when the request carries the expected x-token header.\n * @param {{headers?: Object<string,string>}} req\n * @returns {boolean}\n */\nfunct
+004 Skill dod-guard:verify
+005 Bash ls -a . .dod-guard 2>&1 | head -20; echo "root=$CLAUDE_PLUGIN_ROOT"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only
+006 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; echo "suite exit=$?"
+007 Bash node -e "\nconst {handle}=require('./src/router');\nconsole.log(JSON.stringify(handle({method:'POST',path:'/orders',headers:{}})));\nconsole.log(JSON.stringify(handle({method:'POST',path:'/orders',headers:{'x-token':'secret'}})));"; echo exit=$?
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed

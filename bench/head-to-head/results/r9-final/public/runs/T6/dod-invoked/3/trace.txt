@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git diff --cached
+003 Bash ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT; ls; cat package.json
+004 Bash R=$CLAUDE_PLUGIN_ROOT; bash "$R/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$R/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$R/scripts/run-full-suite.sh" --quiet; echo "exit=$?"
+005 Bash node -e "const m=require('./src/mail');const g={name:'Ana',hotel:'Hotel Lila',checkInTime:'15:00'};console.log(m.reminderSubject(g));console.log(m.reminderBody(g))"; echo "exit=$?"; ls test; grep -rn "mail\|messages" README.md test | head
+006 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git commit -q -m "refactor(mail): move reminder email wording into messages.js\n\nReminder subject and body text now live in src/messages.js; mail.js\ndelegates to it. Rendered text is unchanged.\n\nCo-Authored-By: Claude So

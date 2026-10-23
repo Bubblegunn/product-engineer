@@ -1,0 +1,7 @@
+001 Bash git ls-files && grep -rniE "auth|middleware" --include=* -l . 2>/dev/null | grep -v '^./.git/'
+002 Bash grep -niE "auth|middleware|token" -r src test README.md package.json; wc -l src/*
+003 Read <WORK>/runs/H4-ours-3/repo/src/router.js
+004 Read <WORK>/runs/H4-ours-3/repo/src/users.js
+005 Write <WORK>/runs/H4-ours-3/repo/src/auth.js
+006 Edit <WORK>/runs/H4-ours-3/repo/src/router.js
+007 Bash cat package.json | grep -A3 scripts; npm test 2>&1 | tail -15

@@ -1,0 +1,23 @@
+set f9-claude-opus-5-d: 15 DONE runs on X1, X2, X3, X4, X5
+task   ours   base   dod-invoked  max
+X1     0.00   1.00   1.00         4  
+X2     4.00   3.00   3.00         4  
+X3     3.00   4.00   4.00         4  
+X4     3.00   3.00   3.00         4  
+X5     4.00   4.00   4.00         4  
+total  14.00  15.00  15.00        20 
+lost   6.00   5.00   5.00            
+best other arm: base (total 15.00)
+best natural other arm (not -invoked): base (total 15.00) (same as the best other arm)
+Rule A: FAIL (ours lost 6.00 against 5.00 for base, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  X1: ours 0.00, best other base 1.00, max 4, B FAIL
+  X2: ours 4.00, best other base 3.00, max 4, B pass
+  X3: ours 3.00, best other base 4.00, max 4, B FAIL
+  X4: ours 3.00, best other base 3.00, max 4, B FAIL
+  X5: ours 4.00, best other base 4.00, max 4, B pass
+Rule B: FAIL: X1, X3, X4
+Rule B-prime: FAIL
+bootstrap: 5 paired cells, ours minus base: mean -0.20, 95% interval [-0.80, 0.40] (10000 resamples, seed 12345)
+I1: does not hold (interval lower bound not above zero)
+runs with an error criterion: none

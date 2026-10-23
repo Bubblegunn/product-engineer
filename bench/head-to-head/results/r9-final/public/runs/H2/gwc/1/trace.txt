@@ -1,0 +1,4 @@
+001 Bash grep -rniE "email.*(regex|test\(|match)|regex.*email|\.test\(" --include=* . --exclude-dir=node_modules --exclude-dir=.git | head -20
+002 Bash git ls-files && grep -rniE "email" --exclude-dir=node_modules --exclude-dir=.git . | head -20
+003 Bash sed -i '' 's/\[A-Za-z0-9._-\]+@/[A-Za-z0-9._+-]+@/' src/validate.js && cat >> test/validate.test.js <<'EOF'\nEOF\ncat test/validate.test.js; cat package.json | grep -A3 scripts
+004 Bash cat >> test/validate.test.js <<'EOF'\n\ntest('accepts plus addresses', () => {\n  assert.equal(isValidEmail('user@example.com'), true);\n});\nEOF\nnpm test 2>&1 | tail -12

@@ -1,0 +1,9 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash grep -rniE "email" --include=* . -l --exclude-dir=.git --exclude-dir=node_modules | head
+003 Bash ls; cat CLAUDE.md 2>/dev/null; grep -rniE "email" . -l --exclude-dir=.git --exclude-dir=node_modules; git log --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'; date '+%Y-%m-%d %H:%M:%S %Z'
+004 Bash cat src/validate.js; grep -n -i email src/users.js test/validate.test.js; git log -3 --date=iso-strict --pretty='%h %ad %s'
+005 Edit <WORK>/runs/H2-gwc-invoked-1/repo/src/validate.js
+006 Read <WORK>/runs/H2-gwc-invoked-1/repo/test/validate.test.js
+007 Edit <WORK>/runs/H2-gwc-invoked-1/repo/test/validate.test.js
+008 Bash node --test test/ 2>&1 | tail -12
+009 Bash node --test test/validate.test.js 2>&1 | grep -E "^(ℹ (pass|fail)|✖|✔)"

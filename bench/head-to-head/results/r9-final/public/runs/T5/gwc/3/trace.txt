@@ -1,0 +1,2 @@
+001 Bash git status --short && git diff --cached
+002 Bash git commit -q -m "feat(list): cache bookings list for 60 seconds\n\nAdd a small TTL cache and use it in listBookings so repeated calls\nreuse the loaded result. Includes tests for cache hit and expiry.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -1

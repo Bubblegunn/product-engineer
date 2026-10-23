@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git log --oneline main..HEAD && git diff main...HEAD --stat && git diff main...HEAD | head -400
+002 Bash node -e "const {nightlyTotal:n}=require('./src/pricing');console.log(n(19.99,3),19.99*3,n(0.29,100),n(100,2))"; node --test 2>&1 | tail -8; grep -rn nightlyTotal --include=*.js . | grep -v node_modules
+003 Write <WORK>/runs/T3-dod-1/repo/PR.md

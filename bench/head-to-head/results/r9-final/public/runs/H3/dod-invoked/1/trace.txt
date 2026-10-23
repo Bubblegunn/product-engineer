@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat src/router.js src/users.js src/validate.js test/router.test.js README.md
+003 Bash python3 - <<'EOF'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// Routes one request.""","""const refunds = [];\n\n// Records a refund request as pending. No payment gateway is called yet, so a refund stays pending until one is connected.\n// Expects body {orderId: non-empty string,
+004 Skill dod-guard:verify
+005 Bash echo "root=$CLAUDE_PLUGIN_ROOT"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; ls .dod-guard 2>&1 | head; R="${CLAUDE_PLUGIN_ROOT:-}"; ls "$R/scripts" 2>&1 | head -20
+006 Bash R="$CLAUDE_PLUGIN_ROOT"; bash "$R/scripts/detect-stubs.sh" --all --json; echo "stubs exit=$?"; python3 "$R/scripts/detect-empty-functions.py" . --json; echo "empty exit=$?"; bash "$R/scripts/run-full-suite.sh" --quiet; echo "suite exit=$?"\nnode -e '\nconst {handle}=require("./src/router");
+007 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain

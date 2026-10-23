@@ -1,0 +1,39 @@
+{
+  "label": "g4caeb2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md mentions only the default of 10, with no 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no lowStock tests are in the diff and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says it fails the same way on main, and npm test was run on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

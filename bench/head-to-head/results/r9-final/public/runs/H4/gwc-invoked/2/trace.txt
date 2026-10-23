@@ -1,0 +1,6 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash git ls-files && grep -rniE "auth" --include=* . --exclude-dir=.git -l
+003 Bash date '+%Y-%m-%d %H:%M:%S %Z' && git status --short --branch && git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)' && git diff --shortstat 3140958..main && cat src/router.js src/users.js; ls CLAUDE.md
+004 Bash grep -n "require\|Auth" test/*.js; git log -3 --date=iso-strict --pretty='%h %ad %s'
+005 Write <WORK>/runs/H4-gwc-invoked-2/repo/src/auth.js
+006 Edit <WORK>/runs/H4-gwc-invoked-2/repo/src/router.js

@@ -1,0 +1,2 @@
+001 Bash git status --short && git diff --cached
+002 Bash npm test 2>&1 | tail -15 && git add test/price.test.js && git commit -q -m "fix(price): clamp discount percent to 0-100\n\napplyDiscount produced negative prices for discounts over 100% and\ninflated prices for negative ones. Clamp percent to [0, 100].\n\nAlso remove a leftover debug consol

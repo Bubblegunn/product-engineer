@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git branch -a && git log --oneline main..feature/low-stock 2>&1 | head -20 && git diff --stat main...feature/low-stock 2>&1 | tail -20
+002 Bash git diff main...feature/low-stock; ls; cat package.json; git checkout -q feature/low-stock && npm test 2>&1 | tail -30; git checkout -q main
+003 Bash npm test 2>&1 | grep -E "^ℹ (pass|fail)"; cat test/stock.test.js; git status --short
+004 Write <WORK>/runs/X2-dod-3/repo/PR.md

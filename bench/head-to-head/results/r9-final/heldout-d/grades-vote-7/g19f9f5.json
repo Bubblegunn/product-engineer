@@ -1,0 +1,39 @@
+{
+  "label": "g19f9f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Three commits were made; HEAD changes only package.json and the test file is in an earlier commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The message never says tests were added; it only reports running npm test."
+    },
+    "3": {
+      "pass": false,
+      "why": "Each message covers only one part, so no single message has all three."
+    },
+    "4": {
+      "pass": false,
+      "why": "The test file was committed with the fix, not left uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/H5-dod-invoked-3/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff --cached --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT
+003 Bash cd <WORK>/runs/H5-dod-invoked-3/repo; R=$CLAUDE_PLUGIN_ROOT; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -50; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -30; bash "$R/scripts/run-full-suite.sh" --qui
+004 Bash cd <WORK>/runs/H5-dod-invoked-3/repo; git diff --cached -- src; cut -c1-12 .env; cat .gitignore 2>&1; ls src test; grep -n listen -r src | head
+005 Bash cd <WORK>/runs/H5-dod-invoked-3/repo; node -e "const {handle}=require('./src/router');console.log(JSON.stringify(handle({method:'GET',path:'/health'})));const {isValidEmail}=require('./src/validate');console.log(isValidEmail('user@example.com'))"; echo exit=$?

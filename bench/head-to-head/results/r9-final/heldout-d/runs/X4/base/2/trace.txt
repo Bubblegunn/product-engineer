@@ -1,0 +1,4 @@
+001 Bash git ls-files && grep -rniE "page|per_page|ceil|// ?10|/ ?10" --include=* . --exclude-dir=.git | head -40
+002 Bash cat src/pager.js package.json; grep -rn pager src test | head
+003 Bash sed -i 's/Math.floor/Math.ceil/' src/pager.js && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial pages', () => {\n  assert.strictEqual(pag
+004 Bash sed -i '' 's/Math.floor/Math.ceil/' src/pager.js && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial pages', () => {\n  assert.strictEqual(

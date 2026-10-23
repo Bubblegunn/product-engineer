@@ -1,0 +1,4 @@
+001 Bash git ls-files && cat package.json 2>/dev/null | head -30
+002 Bash cat src/router.js src/validate.js test/router.test.js README.md
+003 Bash python3 - <<'E'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""  return { status: 404""","""  if (req.method === 'POST' && req.path === '/refund') {\n    if (!requireAuth(req)) return { status: 401, body: { error: 'unauthorized' } };\n    // Payment gateway is not wired up yet, so no 
+004 Bash npm test 2>&1 | tail -15

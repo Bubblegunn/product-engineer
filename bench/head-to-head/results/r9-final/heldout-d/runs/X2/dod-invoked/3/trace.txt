@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1 | head; git diff --stat main...feature/low-stock 2>&1 | tail -20
+003 Bash ls -a; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git diff --name-only main...feature/low-stock; echo ---; git diff main...feature/low-stock; echo; echo $CLAUDE_PLUGIN_ROOT; ls $CLAUDE_PLUGIN_ROOT/scripts 2>&1
+004 Bash W=/tmp/dod-wt-lowstock; git worktree add --detach $W feature/low-stock >/dev/null 2>&1; cd $W; git rev-parse --short HEAD; ls test; cat package.json; echo ---STUBS; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -30; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-e
+005 Bash cd /tmp/dod-wt-lowstock && node -e "const {lowStock}=require('./src/stock');console.log(JSON.stringify(lowStock(require('./test/fixtures/items.json'))), JSON.stringify(lowStock([])))"; echo exit=$?; git -C <WORK>/runs/X2-dod-invoked-3/repo worktree remove --force /tmp/do

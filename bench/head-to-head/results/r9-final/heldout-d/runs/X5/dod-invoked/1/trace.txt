@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git show HEAD --stat && git show HEAD
+003 Bash ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; ls; cat package.json 2>/dev/null; git show HEAD~1 --stat | head; cat src/refund.js; ls test* 2>/dev/null
+004 Bash R=<HOME>/Desktop/Open-Source/projelerim/product-engineer/bench/head-to-head/arms/dod; ls $R/scripts 2>&1 | head -20; bash $R/scripts/detect-stubs.sh --all --json 2>&1 | head -30; python3 $R/scripts/detect-empty-functions.py . --json 2>&1 | head -20; bash $R/scripts/run-full-suite.sh --q
+005 Write <WORK>/runs/X5-dod-invoked-1/repo/DESTEK_NOTU.md

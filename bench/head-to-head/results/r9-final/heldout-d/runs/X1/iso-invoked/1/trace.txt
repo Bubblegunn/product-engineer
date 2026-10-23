@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git status --short && git diff --cached
+004 Bash cat test/price.test.js && npm test 2>&1 | tail -15
+005 Bash git add test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): clamp discount percent to 0-100\n\napplyDiscount returned a negative price when percent was above 100,\nand a higher price when percent was negative. Clamp percent to the\nrange 0-100 before applying it.\n\nAlso:\n- Remov

@@ -1,0 +1,3 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Bash git diff --staged
+003 Bash git commit -q -F - <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nAdd a small time-limited cache and use it in listBookings, so repeat\ncalls within 60 seconds reuse the last result instead of loading again.\nTests cover a repeat call and a call after the cache expires.\n\nC

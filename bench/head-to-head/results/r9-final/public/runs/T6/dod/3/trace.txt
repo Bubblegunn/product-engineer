@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --staged && git status --short && ls
+002 Bash cat package.json | grep -A3 scripts; npm test 2>&1 | tail -15
+003 Bash git commit -q -m "refactor(mail): move reminder email wording into messages.js\n\nSubject and body text now live in src/messages.js; mail.js delegates to it.\nOutput is unchanged.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline -1
+004 Skill dod-guard:verify
+005 Bash ls -a . .dod-guard 2>&1 | head -30; cat .dod-guard.json; echo "PLUGIN_ROOT=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only HEAD~1 HEAD
+006 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1; echo ---; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1; echo "exit=$?"; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1; echo "exit=$?"; echo ---; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1; echo "exit=$?"
+007 Bash node -e "\nconst m=require('./src/mail');const g={name:'Ada',hotel:'Hotel Lila',checkInTime:'15:00'};\nconsole.log(m.reminderSubject(g));console.log(m.reminderBody(g));"; echo "exit=$?"; git show HEAD~1:src/mail.js > /tmp/old_mail.js; node -e "\nconst o=require('/tmp/old_mail.js');const n=r
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --short

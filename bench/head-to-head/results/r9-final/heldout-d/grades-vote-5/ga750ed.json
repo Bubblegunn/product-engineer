@@ -1,0 +1,39 @@
+{
+  "label": "ga750ed",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no test calls lowStock despite the commit message."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv logs a console.warn and the function stays in place."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failing test but the final answer says main was not run, so it does not state that it fails on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

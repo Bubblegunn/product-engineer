@@ -1,0 +1,39 @@
+{
+  "label": "gc37a75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md never mentions the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "States no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv stays and only logs console.warn."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failure but only says totalValue is unchanged; the final answer says it did not check main."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran npm test on the branch before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

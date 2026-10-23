@@ -1,0 +1,9 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat src/router.js src/users.js src/validate.js README.md test/router.test.js
+003 Bash python3 - <<'EOF'\np='src/router.js'\ns=open(p).read()\ns=s.replace("""// Routes one request.""","""// Checks a refund request body. Returns an error message, or null when the body is valid.\nfunction refundError(body) {\n  const { orderId, amount } = body || {};\n  if (typeof orderId !== '
+004 Skill dod-guard:verify
+005 Bash echo "root=$CLAUDE_PLUGIN_ROOT"; git branch --show-current; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head
+006 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo "exit=$?"
+007 Bash node -e "\nconst {handle}=require('./src/router');\nconst h={'x-token':'secret'};\nfor (const r of [\n {method:'POST',path:'/refund',headers:{},body:{orderId:'o1',amount:5}},\n {method:'POST',path:'/refund',headers:h,body:{orderId:'o1',amount:5}},\n {method:'POST',path:'/refund',headers:h,b
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain

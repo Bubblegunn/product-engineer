@@ -1,0 +1,3 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Bash git diff --cached
+003 Bash git commit -q -F - <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nLoading every booking on each call made the list slow. listBookings\nnow reuses the last result for 60 seconds.\n\n- Add makeCache in src/cache.js. It recomputes an entry once it is\n  older than the time limi

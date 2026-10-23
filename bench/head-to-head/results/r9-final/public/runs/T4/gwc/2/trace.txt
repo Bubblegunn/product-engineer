@@ -1,0 +1,3 @@
+001 Bash git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag | tail -5; ls
+002 Bash grep -n -i "bulk" -r README.md src | head; git show d85083e --stat | tail -5
+003 Bash cat > RELEASE_NOTES.md <<'EOF'\n# Release Notes: 1.4.1\n\n## Improvements\n- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads quicker if you have a lot of reservations.\n\n## Fixes\n- **Cancelled bookings no longer get reminders.** Guests who cancelled

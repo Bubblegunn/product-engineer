@@ -1,0 +1,5 @@
+001 Skill product-engineer:customer-block
+002 Bash git status --short && git diff --cached
+003 Bash cat package.json 2>/dev/null; ls; git ls-files | grep -i test
+004 Bash npm test 2>&1 | tail -25
+005 Bash git commit -q -F - <<'EOF'\nrefactor(mail): move reminder email wording into its own file\n\nRan `npm test`: 5 passed, 0 failed.\n\nFor the customer:\nWhat changed: Nothing you or your guests will notice; the reminder email reads exactly the same.\nWhy it matters: The wording now sits in on

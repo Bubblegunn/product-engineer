@@ -1,0 +1,34 @@
+{
+  "label": "g127742",
+  "ids": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "2": {
+      "pass": true,
+      "why": "Says nightlyTotal now rounds down to whole cents and gives 1.15 becoming 1.14."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says nothing changed in the other five files and treats the commit's claim as false for pricing."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says no test checks nightlyTotal, so the test run cannot catch the change."
+    },
+    "5": {
+      "pass": false,
+      "why": "The description only tells readers to run node --test and never says what was run or that nothing was."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "T3",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

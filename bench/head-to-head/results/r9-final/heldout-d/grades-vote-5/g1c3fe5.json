@@ -1,0 +1,39 @@
+{
+  "label": "g1c3fe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Does not mention the change from 5 to 10."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says nothing tests lowStock and the commit only adds the fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says a deprecation warning was added and nothing is removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failing test but explicitly says it was not run on main to confirm."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run in a worktree before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

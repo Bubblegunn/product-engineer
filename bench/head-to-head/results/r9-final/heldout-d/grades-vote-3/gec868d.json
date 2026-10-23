@@ -1,0 +1,39 @@
+{
+  "label": "gec868d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil applied."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll now uses pageCount and a test covers 25 items."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit includes pager.js, export.js and the new test, and the tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never states that no pager/export tests existed before."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only run-full-suite and a node -e probe appear after the edits; no node --test or npm test command is in the log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

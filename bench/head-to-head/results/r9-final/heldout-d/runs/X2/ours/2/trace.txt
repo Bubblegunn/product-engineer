@@ -1,0 +1,9 @@
+001 Skill product-engineer:customer-block
+002 Bash git branch -a && git log --oneline main..feature/low-stock 2>&1 && git diff --stat main...feature/low-stock 2>&1
+003 Bash git diff main...feature/low-stock; cat package.json; git status --short
+004 Bash d=$(mktemp -d) && git worktree add -q $d feature/low-stock && cd $d && npm test 2>&1 | tail -15; ls test; cd - >/dev/null; git worktree remove --force $d
+005 Bash cat test/stock.test.js; d=$(mktemp -d) && git worktree add -q $d feature/low-stock && cd $d && npm test 2>&1 | grep -E "^# |not ok|ok " ; cd - >/dev/null; git worktree remove --force $d; git status --short
+006 Bash d=$(mktemp -d) && git worktree add -q $d feature/low-stock && cd $d && npm test 2>&1 | grep -E "^ℹ (tests|pass|fail)|✖|✔"; cd - >/dev/null; git worktree remove --force $d
+007 Write <WORK>/runs/X2-ours-2/repo/PR.md
+008 Bash d=$(mktemp -d) && git worktree add -q $d feature/low-stock && cd $d && npm test 2>&1 | grep -E "^ℹ (tests|pass|fail)|^✖|^✔"; cd - >/dev/null; git worktree remove --force $d; git status --short
+009 Edit <WORK>/runs/X2-ours-2/repo/PR.md

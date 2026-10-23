@@ -1,0 +1,32 @@
+{
+  "label": "g00491753",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of 5→10."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says no lowStock tests, only a fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "exportCsv deprecation warning, not removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "It reports the failing test, but only infers it predates the branch and main was not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "The test suite (node --test via the suite script) ran before PR.md was written."
+    }
+  }
+}

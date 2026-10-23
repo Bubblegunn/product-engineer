@@ -1,0 +1,10 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && grep -rniE "page|/ ?10|PAGE_SIZE" --include=* . --exclude-dir=.git | head -30
+004 Bash cat -n src/pager.js package.json && cat test/format.test.js | head -30 && grep -n pager -r src test README.md
+005 Bash sed -i 's/Math.floor(total \/ size)/Math.ceil(total \/ size)/' src/pager.js && cat > test/pager.test.js <<'EOF'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\ntest('pageCount rounds up partial pages', () 
+006 Edit <WORK>/runs/X4-iso-invoked-2/repo/src/pager.js
+007 Write <WORK>/runs/X4-iso-invoked-2/repo/test/pager.test.js
+008 Bash npm test 2>&1 | grep -E "^# (pass|fail)" && git add -A && git commit -qm "fix: round page count up so the last partial page shows\n\npageCount used Math.floor, so 25 items gave 2 pages and hid the last 5.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline | h
+009 Bash npm test 2>&1 | tail -20
+010 Bash git add -A && git commit -qm "fix: round page count up so the last partial page shows\n\npageCount used Math.floor, so 25 items gave 2 pages and hid the last 5.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>" && git log --oneline | head -1

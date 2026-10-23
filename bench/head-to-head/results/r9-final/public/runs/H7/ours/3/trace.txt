@@ -1,0 +1,5 @@
+001 Skill product-engineer:release-notes
+002 Bash git log --since="2026-10-14 00:00" --until="2026-10-20 23:59:59" --format='%h %ad %an %s' --date=short --no-merges
+003 Bash git tag | tail -3; git log -1 --format='%h %ad' --date=iso ebe42d6; (product-engineer range e7293a8~1 2>&1 || npx --no-install product-engineer range e7293a8~1 2>&1) | head -30; git show 6be51f2 --stat --format=%b | head; git show 6be51f2 | head -40
+004 Bash cat > CHANGELOG-WEEK.md <<'EOF'\nChanges from 14 to 20 October 2026 (commit e7293a8 to 921093e)\n\n## Search\nYou can now search bookings by guest name, so finding a guest's booking no longer means scrolling the whole list.\nYou can now filter bookings by date, so you can look at just the d
+005 Bash ls; cat package.json 2>/dev/null | grep -A5 '"scripts"'; npm test 2>&1 | tail -15; (product-engineer notes CHANGELOG-WEEK.md --range e7293a8~1 2>&1 || npx --no-install product-engineer notes CHANGELOG-WEEK.md 2>&1) | tail -5

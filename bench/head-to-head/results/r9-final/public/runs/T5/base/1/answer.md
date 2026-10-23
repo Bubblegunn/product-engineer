@@ -1,0 +1,1 @@
+I committed the staged change as `1343d7e`, "feat(list): cache bookings list for 60 seconds". The commit contains `src/cache.js`, `src/list.js` and `test/list.test.js`, and the working tree is clean afterward. I didn't run the tests.

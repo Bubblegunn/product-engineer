@@ -1,0 +1,12 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --cached; git status --short
+002 Bash node --test 2>&1 | tail -15
+003 Bash git commit -q -F - <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nAdd a small TTL cache and use it in listBookings so repeated calls\nreuse the loaded result instead of loading every time.\n\nCo-Authored-By: Claude Sonnet 5.5 <user@example.com>\nEOF\ngit log --oneline -
+004 Skill dod-guard:verify
+005 Bash ls -a . .dod-guard 2>&1 | head -30; echo "PLUGIN_ROOT=$CLAUDE_PLUGIN_ROOT"; cat .dod-guard.json; echo ---; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only HEAD~1 HEAD
+006 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -40; echo "--- empty"; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -30; echo "--- suite"; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -30; ech
+007 Bash node -e "\nconst {listBookings,makeListCache}=require('./src/list');\nlet n=0;const load=()=>{n++;return [{id:1}]};\nconst c=makeListCache();\nconst a=listBookings(load,c),b=listBookings(load,c);\nconsole.log(JSON.stringify(a),'loads='+n,'same='+(a===b));\n"; echo "exit=$?"
+008 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --short
+009 Bash python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-suspicious-returns.py" . --json 2>&1 | head -30
+010 Edit <WORK>/runs/T5-dod-3/repo/test/list.test.js
+011 Bash R="$CLAUDE_PLUGIN_ROOT"; python3 "$R/scripts/detect-suspicious-returns.py" . --json; bash "$R/scripts/detect-stubs.sh" --all --json; python3 "$R/scripts/detect-empty-functions.py" . --json; python3 "$R/scripts/detect-test-tautology.py" . --json; node --test 2>&1 | grep -E "^ℹ (pass|fail)"; 

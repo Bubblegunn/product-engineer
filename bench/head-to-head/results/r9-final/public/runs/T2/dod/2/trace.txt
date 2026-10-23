@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash ls -a && cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo "ROOT=$CLAUDE_PLUGIN_ROOT"
+003 Bash git diff
+004 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -30; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -30; cat package.json; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -40
+005 Bash npm test 2>&1 | tail -40; echo "exit=${PIPESTATUS[0]}"

@@ -1,0 +1,2 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git diff --cached --stat && git diff --cached .env | sed -E 's/(=.{0,3}).*/\1…/'

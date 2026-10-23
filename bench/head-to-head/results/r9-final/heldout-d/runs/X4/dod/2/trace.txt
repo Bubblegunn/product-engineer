@@ -1,0 +1,12 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "page|/ *10|// *10" --include=* . --exclude-dir=.git | head -30
+002 Bash cat src/pager.js package.json; ls test; head -20 test/format.test.js
+003 Bash sed -i 's/Math.floor(total \/ size)/Math.ceil(total \/ size)/' src/pager.js\nsed -i 's|^function pageCount|/** Number of pages needed to show `total` items, including a partial last page. */\nfunction pageCount|' src/pager.js\ncat > test/pager.test.js <<'E'\nconst test = require('node:test'
+004 Edit <WORK>/runs/X4-dod-2/repo/src/pager.js
+005 Bash npm test 2>&1 | grep -E "^# (tests|pass|fail)"
+006 Bash npm test 2>&1 | tail -12; echo exit=$?
+007 Bash git add -A && git commit -q -m "fix: include partial last page in pageCount\n\npageCount used Math.floor, so 25 items yielded 2 pages and the last 5\nwere unreachable. Use Math.ceil.\n\nTested: added test/pager.test.js (pageCount for 25/20/0/1 items; getPage\npage 3 of 25 returns items 20-2
+008 Skill dod-guard:verify
+009 Bash ls -a . .dod-guard 2>&1 | head -20; cat .dod-guard.json; echo "CPR=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only HEAD~1
+010 Bash P=$CLAUDE_PLUGIN_ROOT; ls $P/scripts 2>&1 | head; bash "$P/scripts/detect-stubs.sh" --all --json 2>&1 | tail -15; python3 "$P/scripts/detect-empty-functions.py" . --json 2>&1 | tail -15; bash "$P/scripts/run-full-suite.sh" --quiet 2>&1 | tail -15; echo exit=$?; node -e "const p=require('./s
+011 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git status --porcelain

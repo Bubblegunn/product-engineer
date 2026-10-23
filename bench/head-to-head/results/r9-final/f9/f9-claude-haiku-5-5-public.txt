@@ -1,0 +1,39 @@
+set f9-claude-haiku-5-5-public: 39 DONE runs on H1, H2, H3, H4, H5, H6, H7, T1, T2, T3, T4, T5, T6
+task   ours   base   iso-invoked  max
+H1     5.00   5.00   4.00         5  
+H2     5.00   5.00   5.00         5  
+H3     5.00   4.00   5.00         5  
+H4     5.00   5.00   4.00         5  
+H5     5.00   3.00   3.00         5  
+H6     5.00   3.00   4.00         5  
+H7     4.00   5.00   5.00         5  
+T1     5.00   4.00   4.00         5  
+T2     4.00   3.00   3.00         4  
+T3     4.00   4.00   4.00         5  
+T4     4.00   2.00   2.00         4  
+T5     4.00   3.00   3.00         5  
+T6     4.00   3.00   2.00         5  
+total  59.00  49.00  48.00        63 
+lost   4.00   14.00  15.00           
+best other arm: base (total 49.00)
+best natural other arm (not -invoked): base (total 49.00) (same as the best other arm)
+Rule A: PASS (ours lost 4.00 against 14.00 for base, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  H1: ours 5.00, best other base 5.00, max 5, B pass
+  H2: ours 5.00, best other base 5.00, max 5, B pass
+  H3: ours 5.00, best other iso-invoked 5.00, max 5, B pass
+  H4: ours 5.00, best other base 5.00, max 5, B pass
+  H5: ours 5.00, best other base 3.00, max 5, B pass
+  H6: ours 5.00, best other iso-invoked 4.00, max 5, B pass
+  H7: ours 4.00, best other base 5.00, max 5, B FAIL
+  T1: ours 5.00, best other base 4.00, max 5, B pass
+  T2: ours 4.00, best other base 3.00, max 4, B pass
+  T3: ours 4.00, best other base 4.00, max 5, B FAIL
+  T4: ours 4.00, best other base 2.00, max 4, B pass
+  T5: ours 4.00, best other base 3.00, max 5, B pass
+  T6: ours 4.00, best other base 3.00, max 5, B pass
+Rule B: FAIL: H7, T3
+Rule B-prime: FAIL
+bootstrap: 13 paired cells, ours minus base: mean 0.77, 95% interval [0.31, 1.23] (10000 resamples, seed 12345)
+I1: HOLDS (interval lower bound above zero)
+runs with an error criterion: none

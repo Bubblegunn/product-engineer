@@ -1,0 +1,5 @@
+001 Skill product-engineer:product-engineer
+002 Read <WORK>/runs/H6-ours-1/repo/LICENCE.txt
+003 Write <WORK>/runs/H6-ours-1/repo/LICENCE-plain.txt
+004 Bash (product-engineer facts LICENCE.txt LICENCE-plain.txt 2>&1 || npx --no-install product-engineer facts LICENCE.txt LICENCE-plain.txt 2>&1) | head -30; grep -rnEi "licen[cs]e|\b(500|thirty|fifteen|twelve)\b" --exclude-dir=.git --exclude-dir=node_modules --exclude=LICENCE*.txt . | head
+005 Bash grep -rnEi "licen[cs]e|\b(500|30|15|12|thirty|fifteen|twelve)\b" --exclude-dir=.git --exclude-dir=node_modules . | grep -v "LICENCE" | head

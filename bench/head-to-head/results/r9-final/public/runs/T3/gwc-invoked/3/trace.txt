@@ -1,0 +1,5 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash cd <WORK>/runs/T3-gwc-invoked-3/repo; ls; cat CLAUDE.md 2>/dev/null; git status --short --branch; git log --date=iso-strict --pretty='%h %ad %s (%an)'; git diff --shortstat main..HEAD; git diff --dirstat=files,5 main..HEAD; git log main --oneline | head
+003 Bash cd <WORK>/runs/T3-gwc-invoked-3/repo; git show 8737e17 --stat --format=%B; git diff -w main..HEAD
+004 Bash node -e 'const f=(r,n)=>Math.floor(r*n*100)/100;for(const [r,n] of [[19.99,3],[89.99,3],[110.1,3],[57.1,1],[0.29,1],[100.35,1]])console.log(r,n,r*n,f(r,n))'
+005 Write <WORK>/runs/T3-gwc-invoked-3/repo/PR.md

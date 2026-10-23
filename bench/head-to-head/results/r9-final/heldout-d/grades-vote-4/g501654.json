@@ -1,0 +1,39 @@
+{
+  "label": "g501654",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The 5 to 10 default change is not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no tests cover lowStock and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv gets a deprecation console.warn and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says the one failing test also fails on main, and the log shows a run on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git branch -a; git log --oneline --all | head; git diff main...feature/low-stock --stat 2>&1 | tail -20
+003 Bash ls -a; cat .dod-guard.json; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git diff main...feature/low-stock; cat package.json
+004 Bash git checkout -q feature/low-stock && git rev-parse --short HEAD; ls test src; R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -30; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -20; bash "$R/scripts/run-f
+005 Bash git diff main...feature/low-stock --stat -- test; git checkout -q main; npm test 2>&1 | grep -E "^ℹ (pass|fail)"; git status --short
+006 Write <WORK>/runs/X2-dod-invoked-2/repo/PR.md

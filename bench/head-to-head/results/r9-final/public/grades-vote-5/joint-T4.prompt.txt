@@ -1,0 +1,1412 @@
+grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory
+
+--- prompt (-p) ---
+You are grading several coding-assistant sessions against the same fixed criteria.
+The material on stdin holds one block per session, each starting with a line like === SESSION <label> ===.
+The sessions are in mixed order, and nothing about the order or the label tells you anything. Each block holds
+the task the user gave, the criteria, the assistant's final answer, the Bash commands it ran, the commits it made
+with their messages and diff statistics, and any file it wrote.
+Grade every session independently against the criteria listed under GRADE in its own block. A session passes a
+criterion only if its own material supports it. If a session's material does not show it, that session fails that
+criterion. Do not let one session's material count for another. Apply the same standard to every session.
+
+Reply with one JSON object and nothing else: {"<label>":{"<id>":{"why":"one short sentence of reasoning","pass":true or false}}}.
+It has one key per session label, and under each label one key per criterion id as a string. Reasoning comes first, the verdict after it.
+Example: {"g0a1b2c":{"1":{"why":"...","pass":true}}}
+
+--- material (stdin) ---
+=== SESSION gd346ca ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover the 8 commits since v1.4.0, written for hotel owners. I followed the three skills you named (parts 1, 3 and 5 of [tool]).
+
+The notes cover five points:
+- **CSV export:** guest names that start with `=`, `+`, `-` or `@` can no longer run as spreadsheet formulas.
+- **Reminders:** guests with a cancelled booking no longer get the day-before reminder.
+- **Bookings list:** the list now loads 50 bookings at a time.
+- **Nightly totals:** totals are now rounded to the cent.
+- **Bulk cancel:** it was added and then reverted, so the notes say it is not in this release.
+
+Two things need your attention:
+- **README is wrong.** `README.md` still has a "Bulk cancel" section from commit e94ed75, but the feature was reverted. You should remove that section.
+- **Pagination is unconfirmed.** `listBookings` in `src/list.js` now takes a `page` argument that defaults to 1. I saw no page controls in this repo. If the bookings page doesn't pass a page number, owners would only see their first 50 bookings. Please check this before you ship. The notes say that later bookings "appear on the following pages", which assumes the page controls exist.
+
+I did not commit anything.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'; git tag
+$ git diff v1.4.0..HEAD -- src README.md package.json; ls
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# stayhub 1.4.1 release notes
+
+This page tells hotel owners what changed since version 1.4.0 and what to do about it. Version 1.4.1, 23 October 2026.
+
+## What changed in 1.4.1
+
+Update to 1.4.1 to get a safer guest export, correct reminders and faster booking lists. You need to take no action. Check the note on the bookings list below if you have more than 50 bookings.
+
+## Safer guest export
+
+Exported CSV files (spreadsheet files) are now safe to open in Excel or Google Sheets. A guest could type a name that starts with `=`, `+`, `-` or `@`. A spreadsheet can read such text as a formula and run it. Stayhub now adds a leading apostrophe to these values, so the spreadsheet shows them as plain text.
+
+If a guest name in your export now begins with an apostrophe, this change caused it.
+
+## Reminders no longer go to cancelled bookings
+
+Stayhub sends each guest a reminder email the day before they arrive. Before this fix, guests with a cancelled booking could still receive that email. Cancelled bookings now get no reminder.
+
+## Faster bookings list
+
+The bookings list now loads 50 bookings at a time instead of all at once. Large lists open faster. Bookings beyond the first 50 appear on the following pages.
+
+## Nightly totals are rounded to the cent
+
+The total for a stay (nightly rate times number of nights) is now rounded to two decimal places. This removes odd amounts such as 100.30000000000001. Your rates and the amounts you charge do not change.
+
+## Bulk cancel is not part of this release
+
+We built a button to cancel several bookings at once, then removed it before release. You cannot use it in 1.4.1. Cancel bookings one at a time.
+
+=== SESSION g371c11 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md` as version 1.4.1. They cover the three fixes and one improvement since v1.4.0. I haven't committed the file.
+
+- **Fixes:**
+  - Cancelled bookings no longer get the day-before reminder email.
+  - CSV exports no longer let spreadsheet formulas run.
+  - Stay totals are rounded to cents.
+- **Improvement:** the bookings list now shows 50 bookings per page.
+
+I left out the bulk cancel button. It was added and then reverted within this range, so it isn't in the release.
+
+The README still has a "Bulk cancel" section from the commit `e94ed75`. That section now describes a feature that doesn't exist, so you probably want to remove it.
+
+The pagination change gives `listBookings` a `page` argument that defaults to 1. Any code that expected the full list will now get only the first 50 bookings. I only checked the diff, not the callers, and I didn't mention this in the notes.
+
+BASH COMMANDS
+$ git tag -l; git log v1.4.0..HEAD --format='%h %s%n%b' ; git diff --stat v1.4.0..HEAD
+$ git diff v1.4.0..HEAD -- README.md src/pricing.js src/list.js
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# stayhub 1.4.1
+
+## Fixes
+
+- **Cancelled bookings no longer get reminders.** The day-before arrival email was still going out to guests whose bookings had been cancelled. It now only goes to active bookings.
+- **Safer spreadsheet exports.** If a guest typed something that looks like a spreadsheet formula into a booking (for example in a name or notes field), opening the CSV export in Excel or Google Sheets could run it. Exports now neutralize these entries, so they show up as plain text.
+- **Stay totals are rounded to cents.** The total for a stay (nightly rate × nights) is now rounded to two decimal places, so you won't see odd fractions of a cent.
+
+## Improvements
+
+- **Faster bookings list.** The bookings page now shows 50 bookings per page instead of loading everything at once, which keeps it quick as your booking history grows.
+
+=== SESSION g3cfb58 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I wrote the release notes to `RELEASE_NOTES.md`. My earlier message said a check "passes", and that was the notes checker, not the project's tests. I've now run both after the last edit:
+
+- **Notes checker:** `[tool] notes RELEASE_NOTES.md --range v1.4.0` printed `notes: ok (0 warnings)`.
+- **Project tests:** `npm test` (which runs `node --test`) printed `tests 5`, `pass 5`, `fail 0`, `cancelled 0`, `skipped 0`. The tests are unit tests only. I didn't launch the app, so I haven't watched any of these changes work in it.
+
+The notes start with "Changes since v1.4.0" and cover four changes:
+- **Bookings list:** it now shows 50 bookings at a time. I made no claim that it is faster, because nothing in the range measures that.
+- **Reminders:** cancelled bookings no longer get a day-before reminder.
+- **CSV export:** exported spreadsheet files can no longer run commands when opened, because entries that start like a formula are saved as plain text. The note gives no steps for abusing the old behaviour.
+- **Stay totals:** nightly rate times nights is now rounded to two decimal places. This came from the pricing refactor commit, which also changed the rounding, so I wrote it as a customer-visible change.
+
+The notes end with a "Not in this release" line saying the bulk cancel button was added and then withdrawn, so bookings are still cancelled one at a time.
+
+I left out the version bump and the README change. The README edit documents bulk cancel, which isn't in this release, so you may want to remove that section from the README.
+
+BASH COMMANDS
+$ git tag; ([tool] range v1.4.0 || npx [tool] range v1.4.0) 2>&1; git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'
+$ git diff v1.4.0..HEAD -- src/list.js src/export.js src/reminders.js src/pricing.js
+$ cat > RELEASE_NOTES.md <<'EOF'
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once. We have not measured whether it is faster.
+Guests whose booking was cancelled no longer get a day-before reminder; only bookings that are still on are reminded.
+Spreadsheet files exported from your bookings can no longer run commands when you open them in a spreadsheet program, because any entry that starts like a formula is now saved as plain text.
+Stay totals (nightly rate times number of nights) are now rounded to two decimal places, so a total never shows stray fractions of a cent.
+
+Not in this release:
+- Bulk cancel button on the bookings page: it was added and then withdrawn, so you still cancel bookings one at a time. The project's README still describes it; ignore that section.
+EOF
+([tool] notes RELEASE_NOTES.md --range v1.4.0 || npx [tool] notes RELEASE_NOTES.md --range v1.4.0) 2>&1
+$ cat > RELEASE_NOTES.md <<'EOF'
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.
+Guests whose booking was cancelled no longer get a day-before reminder; only bookings that are still on are reminded.
+Spreadsheet files exported from your bookings can no longer run commands when you open them in a spreadsheet program, because any entry that starts like a formula is now saved as plain text.
+Stay totals (nightly rate times number of nights) are now rounded to two decimal places, so a total never shows stray fractions of a cent.
+
+Not in this release:
+- Bulk cancel button on the bookings page: it was added and then withdrawn, so you still cancel bookings one at a time.
+EOF
+[tool] notes RELEASE_NOTES.md --range v1.4.0 2>&1 | head -8 || npx [tool] notes RELEASE_NOTES.md --range v1.4.0 2>&1 | head -8
+$ [tool] notes RELEASE_NOTES.md --range v1.4.0 2>&1 | head -3; echo "--- tests"; grep -A5 '"scripts"' package.json; npm test 2>&1 | tail -8
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.
+Guests whose booking was cancelled no longer get a day-before reminder; only bookings that are still on are reminded.
+Spreadsheet files exported from your bookings can no longer run commands when you open them in a spreadsheet program, because any entry that starts like a formula is now saved as plain text.
+Stay totals (nightly rate times number of nights) are now rounded to two decimal places, so a total never shows stray fractions of a cent.
+
+Not in this release:
+- Bulk cancel button on the bookings page: it was added and then withdrawn, so you still cancel bookings one at a time.
+
+=== SESSION g7eca2a ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`, covering everything since v1.4.0 under the 1.4.1 version bump. I didn't run `[tool]verify` or the tests, since this only added a docs file.
+
+They list three fixes (no reminders for cancelled bookings, formula-safe CSV exports, prices rounded to the cent) and one improvement (the bookings list loads 50 at a time).
+
+- **Bulk cancel is left out.** It was added and then reverted within this range, so customers never received it.
+- **The README still documents bulk cancel.** The commit that added that section wasn't reverted along with the feature. Its "Bulk cancel" section is still in `README.md`, and it describes something that doesn't exist. I didn't change it because you only asked for release notes. It should probably be removed.
+- **The rounding fix started as a refactor.** The commit message called it a refactor ("extract round2 helper"), but it also changed `nightlyTotal` to round its result. I listed it as a fix on that basis.
+- **The paging change has no page controls yet.** `listBookings` now returns only the first 50 bookings unless a page number is passed. If the bookings page has no next/previous controls, owners with more than 50 bookings won't see the rest. I worded the note as a speed improvement, so check that before you ship.
+
+BASH COMMANDS
+$ git tag; git log v1.4.0..HEAD --format='%h %s%n%b'; ls
+$ git diff v1.4.0..HEAD --stat; grep -n -i bulk -r README.md src | head; git show d85083e --stat --format=%b | head -20
+$ git diff v1.4.0..HEAD -- README.md src/list.js src/pricing.js src/export.js
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# What's new in StayHub 1.4.1
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before arrival email was still going out to guests whose bookings had been cancelled. Cancelled bookings are now skipped.
+- **Safer CSV exports.** Guest names or other fields that begin with `=`, `+`, `-` or `@` could be run as formulas when you opened an export in Excel or Google Sheets. These cells are now exported as plain text.
+- **Prices rounded to the cent.** Stay totals (nightly rate × nights) are now rounded to two decimal places, so you won't see stray fractions of a cent.
+
+## Improvements
+
+- **Faster bookings list.** The bookings list now loads 50 bookings at a time instead of all at once, which keeps it quick as your booking history grows.
+
+=== SESSION g67b6b4 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+Release notes are written and the verify run passed. I'm now giving the final report.
+
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: stayhub, runner: npm-test / node --test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          d85083e
+  - dirty:         yes (only the new RELEASE_NOTES.md, untracked)
+  - changed files: 1
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s)
+  (detect-stubs: 8 files scanned, detect-empty-functions: 8 files scanned)
+
+[3/5] Tests
+  - runner: node (npm test)
+  - 5 passed, 0 failed, 0 skipped (1927 ms)
+  - The script's JSON summary says passed: 0. Its raw output shows 5 pass, 0 fail, exit 0.
+
+[4/5] E2E probe
+  - not_applicable: the only change is a markdown file. There is no endpoint or CLI to exercise.
+  - exit_code: 0 (from the test run)
+  - evidence:  npm test, 5/5 tests pass
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+I wrote the verify marker to `.[tool]/last-verify-passed`. I had to create the `.[tool]/` directory first because it didn't exist.
+
+**Release notes (`RELEASE_NOTES.md`)**
+- **Covers:** the three customer-visible changes since v1.4.0.
+  - Cancelled bookings no longer get the day-before reminder.
+  - CSV exports no longer let spreadsheets run formulas.
+  - The bookings list now loads 50 at a time.
+- **Left out:** bulk cancel. It was added and then reverted inside this range, so customers never get it. The pricing refactor and version bump are internal, so they're not in the notes either.
+
+**Things you should know**
+- **README still documents bulk cancel.** Commit e94ed75 added a "Bulk cancel" section, and the revert (f37976b) didn't remove it. `README.md` now describes a feature that doesn't exist. I left it alone because you didn't ask me to touch it, but it probably needs removing.
+- **Pagination changes what callers get.** `listBookings` now returns only the first 50 bookings unless you pass a page number. If anything else calls it expecting the full list, it will silently get a truncated one.
+- **No tests cover the three changes.** The 5 existing tests cover the CSV header, the email text and the 24-hour window. None cover the cancelled-booking skip, the formula escaping or pagination, which your [tool] asks for.
+
+BASH COMMANDS
+$ git tag; git log --oneline v1.4.0..HEAD; ls
+$ echo $CLAUDE_PLUGIN_ROOT; cat .[tool].json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff v1.4.0..HEAD --stat; cat package.json; git log v1.4.0..HEAD --format='%h %s%n%b'
+$ P="$CLAUDE_PLUGIN_ROOT"; bash "$P/scripts/detect-stubs.sh" --all --json; echo "rc=$?"; python3 "$P/scripts/detect-empty-functions.py" . --json; echo "rc=$?"; bash "$P/scripts/run-full-suite.sh" --quiet; echo "rc=$?"; git diff v1.4.0..HEAD -- README.md src/list.js src/reminders.js src/export.js; grep -n -i bulk -r README.md src
+$ date +%s > .[tool]/last-verify-passed; git status --porcelain
+$ mkdir -p .[tool] && date +%s > .[tool]/last-verify-passed && cat .[tool]/last-verify-passed; git status --porcelain
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# StayHub 1.4.1 — Release Notes
+
+What's new since 1.4.0.
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before arrival email is no longer sent to guests whose booking you have cancelled.
+- **Safer spreadsheet exports.** If a guest name or other field starts with `=`, `+`, `-` or `@`, your CSV export now marks it as plain text, so Excel or Google Sheets won't try to run it as a formula. Exports otherwise look the same.
+
+## Improvements
+
+- **Faster bookings list.** The bookings list now loads 50 bookings at a time instead of everything at once, which keeps it quick as your booking history grows.
+
+=== SESSION g2a5d37 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`, covering everything since v1.4.0. They have three entries:
+
+- **Faster bookings list:** it now shows 50 bookings per page.
+- **Reminder fix:** guests who cancelled no longer get the day-before reminder.
+- **CSV export fix:** exported files can't run formulas when opened in a spreadsheet.
+
+I left out the bulk cancel button, because it was added and then reverted within this range, so customers never get it. I also left out the pricing refactor and the version bump, since neither changes anything customers see.
+
+The README still has a "Bulk cancel" section, added in `e94ed75`, for a feature that no longer exists. I didn't touch it, but you may want to remove it.
+
+I titled the notes "1.4.1" because of the version bump commit, but the pagination and reminder commits came after that bump. If they ship in a later release, the heading needs changing.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag | tail -5; ls
+$ grep -n -i "bulk" -r README.md src | head; git show d85083e --stat | tail -5
+$ cat > RELEASE_NOTES.md <<'EOF'
+# Release Notes: 1.4.1
+
+## Improvements
+- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads quicker if you have a lot of reservations.
+
+## Fixes
+- **Cancelled bookings no longer get reminders.** Guests who cancelled will no longer receive the day-before reminder email.
+- **Safer CSV exports.** Exported booking files can no longer run formulas when opened in Excel or Google Sheets, which protects you from malicious content in guest-entered fields.
+EOF
+git status --short
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: 1.4.1
+
+## Improvements
+- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads quicker if you have a lot of reservations.
+
+## Fixes
+- **Cancelled bookings no longer get reminders.** Guests who cancelled will no longer receive the day-before reminder email.
+- **Safer CSV exports.** Exported booking files can no longer run formulas when opened in Excel or Google Sheets, which protects you from malicious content in guest-entered fields.
+
+=== SESSION g99fc5e ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three customer-visible changes since v1.4.0:
+
+- **CSV export:** Text that looks like a formula is now treated as plain text, so it can't run when opened in a spreadsheet.
+- **Day-before reminders:** They no longer go out for cancelled bookings.
+- **Bookings list:** It now shows 50 bookings per page, so it loads faster.
+
+I left out the version bump and the pricing refactor because customers wouldn't notice them. The bulk cancel button was added and then reverted within the same range, so it isn't in the notes either.
+
+`README.md` still has a "Bulk cancel" section, even though the feature was reverted. The commit that added it (`e94ed75`) wasn't reverted along with it. You may want to remove that section so the docs match the product.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag | tail
+$ grep -n -i "bulk" -r README.md . --include=*.md --include=*.py --include=*.js --include=*.ts 2>/dev/null | grep -v node_modules | head; git show d85083e --stat | tail -5
+$ grep -rni "bulk" README.md src | head
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# What's new since version 1.4.0
+
+## Fixes
+
+- **Safer spreadsheet exports.** When you export bookings to CSV and open the file in Excel or Google Sheets, text that looks like a formula can no longer run. Guest-entered text, such as a name or a note, is now treated as plain text.
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. It now skips them.
+
+## Improvements
+
+- **A faster bookings list.** The list now shows 50 bookings per page instead of loading them all at once. Pages open faster, especially if you have a lot of bookings.
+
+=== SESSION geebc99 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I wrote the release notes to `RELEASE_NOTES.md`. The notes checker passes, and the project tests pass.
+
+I ran `npm test` just now and it printed `ℹ tests 5`, `ℹ pass 5`, `ℹ fail 0`. The checker printed `notes: ok (0 warnings)`. My earlier message called the checker result a pass without running the tests, so this is the first time I've actually run them. These tests don't cover the notes file, and none of them look aimed at the pagination, rounding or CSV escaping changes. Passing says nothing about whether those changes work. I haven't run the app, so I haven't seen any of them work in practice.
+
+The notes cover everything since v1.4.0:
+- **Bookings list:** it now shows 50 bookings at a time.
+- **Reminders:** cancelled bookings no longer get the day-before reminder.
+- **Spreadsheet export:** exported files can no longer run commands when opened. The note says what this protects and nothing about how to abuse it.
+- **Stay totals:** totals are now rounded to cents. This comes from a commit titled as a refactor, but I read the diff and it changes the amount a guest sees, so I wrote it as a customer-facing change.
+- **Not in this release:** the bulk cancel button was added and then reverted, so it isn't announced as available. I listed it so owners who saw it mentioned don't expect it.
+
+I left out the version bump, since you didn't give me a new version name. I also left out the README commit, which documents bulk cancel. The README still describes bulk cancel even though the feature was reverted. That's worth fixing separately, and I haven't touched it.
+
+I wrote no speed claim for the paginated list, because nothing in the range measures it.
+
+My first checker run used `--range v1.4.0` and printed the help text instead of a result, so I re-ran it without that flag. The range cross-check came from `[tool] range v1.4.0`, which I ran before writing.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --stat --format='--- %h %s%n%b' | head -80; [tool] range v1.4.0 || npx [tool] range v1.4.0
+$ git show b751f09 d85083e --format=%h -- src | cat
+$ cat > RELEASE_NOTES.md <<'EOF'
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving as one block.
+Cancelled bookings no longer get a day-before reminder; only bookings that are still on will.
+Exported spreadsheet files can no longer run commands when you or a colleague open them, because the export now treats booking text as plain text.
+The total for a stay is now rounded to two decimal places (cents), so a nightly rate times the number of nights never shows a stray fraction of a cent.
+
+Not in this release:
+- Bulk cancel button on the bookings page: it was added and then taken out again, so you cannot cancel several bookings at once yet.
+EOF
+([tool] notes RELEASE_NOTES.md --range v1.4.0 || npx [tool] notes RELEASE_NOTES.md --range v1.4.0) 2>&1 | tail -20
+$ ([tool] notes RELEASE_NOTES.md || npx [tool] notes RELEASE_NOTES.md) 2>&1 | head -20; echo exit $?
+$ cat package.json; npm test 2>&1 | tail -15; echo "npm exit $?"; ([tool] notes RELEASE_NOTES.md || npx [tool] notes RELEASE_NOTES.md) 2>&1 | head -5
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving as one block.
+Cancelled bookings no longer get a day-before reminder; only bookings that are still on will.
+Exported spreadsheet files can no longer run commands when you or a colleague open them, because the export now treats booking text as plain text.
+The total for a stay is now rounded to two decimal places (cents), so a nightly rate times the number of nights never shows a stray fraction of a cent.
+
+Not in this release:
+- Bulk cancel button on the bookings page: it was added and then taken out again, so you cannot cancel several bookings at once yet.
+
+=== SESSION g2a8574 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`, titled "version 1.4.1". They cover everything since v1.4.0 and are written for hotel owners, not developers. I haven't committed the file.
+
+- **Fixes:** cancelled bookings no longer get the day-before reminder email. CSV exports now escape formula-like text, so spreadsheets don't run it. Stay totals are rounded to the cent.
+- **Improvements:** the bookings list now loads 50 bookings per page, so it stays quick as history grows.
+- **Left out on purpose:** the bulk cancel button was added and then reverted within this range, so customers never get it. The pricing helper refactor and the version bump are internal.
+
+**README still documents bulk cancel:** commit `e94ed75` added a "Bulk cancel" section to `README.md`, and the revert didn't remove it. The README now describes a feature that doesn't exist. I left it alone since you only asked for release notes, but it should probably be removed.
+
+**Pagination needs a page control:** `listBookings` takes a `page` argument. I didn't check whether the bookings page has a way to move between pages. If it doesn't, owners can only see the first 50 bookings. You may want to check that before shipping.
+
+BASH COMMANDS
+$ git tag -l; git log v1.4.0..HEAD --format='%h %s%n%b---'; git diff v1.4.0..HEAD --stat
+$ git diff v1.4.0..HEAD -- README.md src/pricing.js src/list.js
+$ git diff v1.4.0..HEAD -- src/export.js | head -30
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: version 1.4.1
+
+## Fixes
+
+- **Cancelled bookings no longer get reminder emails.** Guests who had cancelled were still receiving the "see you tomorrow" email the day before their arrival date. They no longer do.
+- **Safer CSV exports.** If a booking contained text that a spreadsheet could read as a formula (for example, a guest name starting with `=`), Excel or Google Sheets could run it when you opened the export. Exports now escape these values so they show up as plain text.
+- **Stay totals are rounded to the cent.** Nightly rate × number of nights is now rounded to two decimal places, so you won't see totals with stray fractions of a cent.
+
+## Improvements
+
+- **Faster bookings list.** The bookings page now shows 50 bookings at a time instead of loading all of them at once. This keeps the page quick as your booking history grows.
+
+=== SESSION g71a3f5 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`, covering everything since v1.4.0 (this release is 1.4.1). They have three items:
+
+- **Improvement:** the bookings list is now paginated at 50 per page, so it loads faster.
+- **Fix:** the day-before reminder no longer goes out for cancelled bookings.
+- **Fix:** CSV exports are escaped so spreadsheets don't run booking text as formulas.
+
+I left out the bulk cancel button. It was added and then reverted within this range, so customers never see it. The internal pricing refactor is also left out, since it doesn't change anything customers can see.
+
+Commit `e94ed75` added bulk cancel to the README, and the revert didn't undo it. If the README still describes bulk cancel, it's now wrong, and you may want to remove that section.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag | tail
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes
+
+## Version 1.4.1
+
+### Improvements
+- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads quickly even when you have a lot of bookings.
+
+### Fixes
+- **No more reminders for cancelled bookings.** The day-before reminder was still going out for bookings that had been cancelled. It now skips them, so guests won't get a reminder for a stay they cancelled.
+- **Safer CSV exports.** Exported booking files could contain text that spreadsheet programs such as Excel or Google Sheets would treat as a formula and run. Exports are now escaped, so they open as plain data.
+
+=== SESSION g59410d ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I'm wrapping up: verification is done, so here's the report and the release notes summary.
+
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: stayhub, runner: npm-test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          d85083e
+  - dirty:         yes (RELEASE_NOTES.md, untracked)
+  - changed files: 0 tracked, 1 untracked
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s)
+  (detect-stubs.sh and detect-empty-functions.py each scanned 8 files)
+
+[3/5] Tests
+  - runner: npm-test (node --test)
+  - 5 passed, 0 failed, 0 skipped (1398 ms)
+  (The runner's summary said 0 passed because it couldn't parse node's output. Its raw output and my own `node --test` run both show 5 pass, 0 fail.)
+
+[4/5] E2E probe
+  - node -e calling listBookings and toCsv
+  - exit_code: 0
+  - evidence:  120 bookings give a 50-row page 1 and a 20-row page 3; a guest "=HYPERLINK(...)" is exported as '=HYPERLINK(...)
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+Verify marker refreshed; you can now `git commit` within the TTL.
+
+**Release notes:** `RELEASE_NOTES.md` covers the four customer-visible changes since v1.4.0, which is version 1.4.1:
+- CSV exports now neutralise spreadsheet formulas.
+- The bookings list loads 50 at a time.
+- Cancelled bookings no longer get the day-before reminder.
+- Stay totals are rounded to the cent.
+
+I left out the bulk cancel button. It was added and then reverted inside this range, so customers never get it.
+
+**Problem for you:** `README.md` still has a "Bulk cancel" section from commit e94ed75, and that commit wasn't reverted. The README now describes a feature that doesn't exist. I didn't touch it because you didn't ask, but you should remove that section.
+
+**[tool] items still open:**
+- The pagination and rounding changes have no tests. The 5 tests don't cover them.
+- `[tool]` still has its placeholder project-specific criterion.
+
+BASH COMMANDS
+$ git tag; git log --oneline v1.4.0..HEAD; ls
+$ cd <WORK>/runs/[path]/repo; ls -a; cat .[tool].json | head -5; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; cat package.json; git diff v1.4.0..HEAD --stat; git show c8ef254 f37976b 6f63e9a d85083e --stat --format='%h %s%n%b'
+$ cd <WORK>/runs/[path]/repo; git diff v1.4.0..HEAD -- README.md src/list.js src/pricing.js src/export.js; R=$CLAUDE_PLUGIN_ROOT; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -30; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -30; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; node --test 2>&1 | tail -12
+$ cd <WORK>/runs/[path]/repo; cat > RELEASE_NOTES.md <<'EOF'
+# What's new in StayHub 1.4.1
+
+## Safer guest-list exports
+When you export your bookings to a spreadsheet, a guest name that starts with a character like `=`, `+`, `-` or `@` could be treated by Excel or Google Sheets as a formula and run. Exports now neutralise these entries, so the file opens safely and shows the guest name as written.
+
+## Faster bookings page
+The bookings list now loads 50 bookings at a time instead of everything at once, so the page stays quick as your booking history grows.
+
+## Reminder emails
+Guests whose booking was cancelled no longer receive the day-before arrival reminder.
+
+## Pricing
+Stay totals are now rounded to the nearest cent, so you won't see totals with stray fractions of a cent.
+EOF
+node -e "
+const {listBookings}=require('./src/list');const {toCsv}=require('./src/export');
+const l=()=>Array.from({length:120},(_,i)=>({id:i}));
+console.log(listBookings(l).length,listBookings(l,3).length);
+console.log(toCsv([{id:1,guest:'=HYPERLINK(\"x\")',checkIn:'2026-01-01'}]))"; echo exit=$?
+$ cd <WORK>/runs/[path]/repo; mkdir -p .[tool]; date +%s > .[tool]/last-verify-passed; git status --short
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# What's new in StayHub 1.4.1
+
+## Safer guest-list exports
+When you export your bookings to a spreadsheet, a guest name that starts with a character like `=`, `+`, `-` or `@` could be treated by Excel or Google Sheets as a formula and run. Exports now neutralise these entries, so the file opens safely and shows the guest name as written.
+
+## Faster bookings page
+The bookings list now loads 50 bookings at a time instead of everything at once, so the page stays quick as your booking history grows.
+
+## Reminder emails
+Guests whose booking was cancelled no longer receive the day-before arrival reminder.
+
+## Pricing
+Stay totals are now rounded to the nearest cent, so you won't see totals with stray fractions of a cent.
+
+=== SESSION ga0558e ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover the 8 commits from `v1.4.0` to `HEAD` (2026-10-16 to 2026-10-22). I only read git history and files. I didn't run any tests or builds.
+
+The notes are written for hotel owners and have four sections:
+- **Security:** CSV exports no longer let guest-entered text run as spreadsheet formulas.
+- **Fixes:** the day-before reminder now skips cancelled bookings.
+- **Speed:** the bookings list loads 50 bookings per page.
+- **Under the hood:** an internal change to price rounding that owners shouldn't notice.
+
+Bulk cancel was added and then reverted inside this range, so it isn't listed as a feature. I added a one-line note saying it isn't in this version. You may want to drop that note.
+
+`README.md` still has a "Bulk cancel" section from the docs commit, and the revert didn't remove it. It now describes a feature that doesn't exist, so you probably want to delete that section. I left the README alone.
+
+I couldn't check how the pagination looks in the app. The code change is only the `src/list.js` change, which takes a page number. I described it as a faster list and didn't claim a visible page control.
+
+BASH COMMANDS
+$ git status --short --branch; ls; git tag; git log v1.4.0..HEAD --date=iso-strict --pretty='%h %ad %s'; git diff --shortstat v1.4.0..HEAD; date '+%Y-%m-%d %H:%M:%S %Z'
+$ grep -n -i bulk -r README.md src test; git show d85083e --stat --format=%b | head -20; git diff v1.4.0..HEAD -- src | grep -i -A3 -B3 'page\|limit' | head -50
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: What's New Since v1.4.0
+
+Version 1.4.1 and the updates after it.
+
+## Security
+
+- **Safer spreadsheet exports.** When you export bookings to CSV and open the file in Excel or Google Sheets, guest-entered text can no longer run as a spreadsheet formula. Your exports are now safe to open.
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. It now skips them, so guests who cancelled won't get a confusing message.
+
+## Speed
+
+- **Faster bookings list.** The bookings list now loads 50 bookings per page instead of everything at once. This is most noticeable if you have a lot of bookings.
+
+## Under the hood
+
+- Tidied up how prices are rounded internally. You shouldn't see any change.
+
+## A note on bulk cancel
+
+A "bulk cancel" button for the bookings page was added during this period and then removed before release. It is not part of this version.
+
+=== SESSION g38613e ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover everything since v1.4.0 and are written for hotel owners, not developers.
+
+The notes list four changes:
+- **CSV exports:** Names that start with `=`, `+`, `-` or `@` no longer run as spreadsheet formulas. They now show a leading apostrophe.
+- **Reminders:** Cancelled bookings no longer get the day-before reminder email.
+- **Bookings list:** The list now shows 50 bookings per page.
+- **Stay totals:** Totals are now rounded to cents.
+
+I did not include these:
+- **Bulk cancel:** It was added and then reverted, so owners never see it.
+- **Version bump:** It is an internal change.
+
+I used the core and technical plain-language skills, but not the document-design one. The notes are a short, simple document, not a complex one. The technical skill's file-citation rule doesn't fit a non-technical reader, so I left citations out.
+
+**Check:** The pricing rounding came from a commit labelled "refactor", but it changes totals. I listed it as a user-facing change. Remove that bullet if you disagree.
+
+**README still documents bulk cancel:** `README.md` has a "Bulk cancel" section, but that feature was reverted. Say if you want me to remove it.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag; ls
+$ grep -n -i -B2 -A2 'bulk' README.md; git diff v1.4.0..HEAD --stat; git show d85083e 6f63e9a c8ef254 | head -150; cat package.json | grep version
+$ git show b751f09 | tail -25
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# StayHub 1.4.1 release notes
+
+This update is for hotel owners who use StayHub. It covers every change since version 1.4.0.
+
+## What changed for you
+
+- **Safer CSV exports:** Guest names that start with `=`, `+`, `-` or `@` no longer run as formulas when you open an export in a spreadsheet. StayHub now adds a leading apostrophe (`'`) to those cells. You may see the apostrophe in front of such a name. Nothing else in the file changes.
+- **No reminders for cancelled bookings:** The day-before reminder email no longer goes to guests whose booking you cancelled. Before this fix, those guests could still get a reminder.
+- **Faster bookings list:** The bookings page now shows 50 bookings at a time instead of all of them. Large lists open more quickly. Use the pages to see older or later bookings.
+- **Stay totals rounded to cents:** The total for a stay (nightly rate times nights) is now rounded to two decimal places. A total can no longer show a stray fraction of a cent.
+
+## What you need to do
+
+Nothing. All four changes apply as soon as you update.
+
+If you share CSV exports with others, tell them an apostrophe in front of a name is intended.
+
+=== SESSION g611fe9 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes in `RELEASE_NOTES.md`, and they pass the `[tool] notes` check against v1.4.0. They start with "Changes since v1.4.0" and cover the 8 commits since then. The notes say what each change means for hotel owners:
+
+- **Bookings list:** it now shows 50 bookings at a time. I didn't claim it's faster, because nothing in the range measures that.
+- **Reminders:** guests with a cancelled booking no longer get the day-before reminder.
+- **Spreadsheet export:** exported files can no longer run commands when opened. The note says what this protects and gives no steps for abusing the flaw.
+- **Stay totals:** totals are now rounded to whole cents. This is my reading of the pricing cleanup, since the code change also rounds the total.
+- **Not in this release:** bulk cancel, because it was added and then reverted. I did not announce it as available.
+
+I left out the version bump and the README change, since neither is something customers would notice.
+
+Two things need your attention:
+- **README:** it still says "Select several bookings on the bookings page and cancel them in one step", but that feature was reverted. The README should be corrected.
+- **Pagination:** I found nothing in the code that lets a user move to page 2. Please check that the bookings page has a way to do it. If it doesn't, owners would see only their first 50 bookings.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'; git tag
+$ [tool] range v1.4.0 2>&1 || npx [tool] range v1.4.0 2>&1; git show d85083e 6f63e9a c8ef254 b751f09 -- src | cat
+$ grep -rn "listBookings\|page" src README.md | grep -v "^src/list.js"
+$ cat > RELEASE_NOTES.md <<'EOF'
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.
+Guests whose booking was cancelled no longer get the day-before reminder; only bookings that are still on will.
+Exported booking spreadsheets can no longer run commands when you open them. A guest name that starts with a symbol such as "=" is now shown as plain text, which protects your computer and your data.
+Stay totals are now rounded to two decimal places (whole cents), so a price never shows a fraction of a cent.
+
+Not in this release:
+- Cancelling several bookings in one step: it was started and then taken back before release, so the bookings page does not have it yet.
+EOF
+([tool] notes RELEASE_NOTES.md --range v1.4.0 || npx [tool] notes RELEASE_NOTES.md --range v1.4.0) 2>&1
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+Changes since v1.4.0
+
+The bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.
+Guests whose booking was cancelled no longer get the day-before reminder; only bookings that are still on will.
+Exported booking spreadsheets can no longer run commands when you open them. A guest name that starts with a symbol such as "=" is now shown as plain text, which protects your computer and your data.
+Stay totals are now rounded to two decimal places (whole cents), so a price never shows a fraction of a cent.
+
+Not in this release:
+- Cancelling several bookings in one step: it was started and then taken back before release, so the bookings page does not have it yet.
+
+=== SESSION g55f835 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three changes since v1.4.0:
+
+- **Fix:** cancelled bookings no longer get the day-before reminder.
+- **Fix:** CSV exports no longer let spreadsheets run guest names that start with `=`, `+`, `-` or `@` as formulas.
+- **Improvement:** the bookings list is now paginated at 50 per page.
+
+I left out the bulk cancel button. It was added and then reverted within the same range, so customers never see it. I also left out the internal pricing refactor and the version bump. I added a short "Good to know" line saying bulk cancel isn't part of this version. Delete it if you'd rather not mention it.
+
+`README.md` still has a "Bulk cancel" section from the docs commit, even though the feature was reverted. I didn't touch it, since you only asked for release notes. I can remove that section if you want.
+
+I only edited the notes file, so I didn't run the tests or `[tool]verify`.
+
+BASH COMMANDS
+$ git tag; git log v1.4.0..HEAD --format='%h %s%n%b' ; ls
+$ grep -n -i "bulk" -r README.md src | head; git show d85083e --stat --format=%b | head -20; git show 6f63e9a c8ef254 | head -80
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes
+
+## What's new since v1.4.0
+
+### Fixes
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. Cancelled bookings are now skipped, so guests who cancelled won't get a reminder.
+- **Safer CSV exports.** Guest names or other fields that begin with `=`, `+`, `-` or `@` could be treated as formulas when you opened an export in Excel or Google Sheets. Exports now neutralize these, so your spreadsheet shows them as plain text.
+
+### Improvements
+- **Faster bookings list.** The bookings list now shows 50 bookings per page instead of loading everything at once, so it stays quick even with a large number of bookings.
+
+### Good to know
+- A bulk cancel button was tried for the bookings page but was withdrawn before release. It is not part of this version.
+
+=== SESSION gdf51bc ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three changes since v1.4.0, all written for hotel owners:
+
+- **Fix:** guests who cancelled no longer get the day-before reminder.
+- **Fix:** CSV exports no longer let spreadsheets run booking details as formulas.
+- **Improvement:** the bookings list now shows 50 bookings per page, so it loads faster.
+
+I left some changes out because they don't affect customers:
+
+- **Bulk cancel:** the button was added and then reverted, so customers never see it.
+- **Pricing change:** a pricing refactor.
+- **Version bump:** the bump to 1.4.1.
+
+The README commit `e94ed75` still documents the bulk cancel button, which no longer exists. You may want to remove that section.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: version 1.4.1
+
+## Fixes
+
+- **Cancelled bookings no longer get reminders.** Guests who cancelled were still receiving the day-before reminder. They no longer do.
+- **Safer spreadsheet exports.** Some booking details, such as a guest name that starts with `=`, could be run as a formula when you opened a CSV export in Excel or Google Sheets. Exports now prevent this.
+
+## Improvements
+
+- **Faster bookings list.** The list now shows 50 bookings per page, so it opens faster when you have a lot of bookings.
+
+=== SESSION gc910ae ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three changes since v1.4.0:
+
+- **Safer CSV exports:** exported files can no longer contain content that a spreadsheet might run as a formula.
+- **Reminders:** the day-before reminder now skips cancelled bookings.
+- **Faster bookings list:** the page now shows 50 bookings at a time.
+
+I left out the bulk cancel button, because it was added and then reverted, so customers never see it. I also left out the internal pricing refactor and the version bump.
+
+The README still has a "Bulk cancel" section, left over from `e94ed75`, even though the feature was reverted. You may want to remove it. I didn't touch it.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+$ grep -n -i "bulk" -r . --exclude-dir=.git | head; git show d85083e --stat | tail -5
+$ cat > RELEASE_NOTES.md <<'EOF'
+# Release Notes
+
+## What's new since v1.4.0
+
+### Fixes
+- **Safer CSV exports.** Exported booking files can no longer contain content that a spreadsheet program (Excel, Google Sheets) might mistakenly run as a formula when you open them.
+- **Day-before reminders skip cancelled bookings.** Guests who cancelled will no longer receive a reminder about a stay they aren't coming to.
+
+### Improvements
+- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads faster, especially if you have a lot of reservations.
+EOF
+git status --short
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes
+
+## What's new since v1.4.0
+
+### Fixes
+- **Safer CSV exports.** Exported booking files can no longer contain content that a spreadsheet program (Excel, Google Sheets) might mistakenly run as a formula when you open them.
+- **Day-before reminders skip cancelled bookings.** Guests who cancelled will no longer receive a reminder about a stay they aren't coming to.
+
+### Improvements
+- **Faster bookings list.** The bookings page now shows 50 bookings per page, so it loads faster, especially if you have a lot of reservations.
+
+=== SESSION g49d452 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three changes since v1.4.0:
+
+- **CSV export:** exports no longer let a spreadsheet run formulas.
+- **Reminders:** the day-before reminder skips cancelled bookings.
+- **Bookings list:** it now shows 50 bookings per page.
+
+I left out the internal changes: the pricing refactor and the version bump. The bulk cancel button was added and then reverted, so I mentioned it only in a short note saying it isn't in this version.
+
+The README still has a "Bulk cancel" section from commit `e94ed75`, and it is now out of date. I didn't change it because you only asked for the release notes. I can remove that section if you want.
+
+I didn't run the DoD verification, because this was a docs-only change.
+
+BASH COMMANDS
+$ git tag; git log v1.4.0..HEAD --format='%h %s%n%b' ; ls
+$ grep -n -i bulk README.md; git show d85083e --stat | tail -5; git show d85083e | head -60
+$ cat > RELEASE_NOTES.md <<'EOF'
+# Release Notes — since v1.4.0
+
+## Fixes
+
+- **Safer CSV exports.** Exported booking files could contain text that Excel or Google Sheets would interpret as a formula. Exports now neutralize this, so opening a file never runs anything unexpected.
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. It now only goes to guests whose booking is still active.
+
+## Improvements
+
+- **Faster bookings list.** The bookings list now shows 50 bookings per page instead of loading everything at once, so it stays quick even with a lot of history.
+
+## Notes
+
+- The bulk cancel button was briefly added and then removed again before release, so it is not part of this version.
+EOF
+git diff --stat
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes — since v1.4.0
+
+## Fixes
+
+- **Safer CSV exports.** Exported booking files could contain text that Excel or Google Sheets would interpret as a formula. Exports now neutralize this, so opening a file never runs anything unexpected.
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. It now only goes to guests whose booking is still active.
+
+## Improvements
+
+- **Faster bookings list.** The bookings list now shows 50 bookings per page instead of loading everything at once, so it stays quick even with a lot of history.
+
+## Notes
+
+- The bulk cancel button was briefly added and then removed again before release, so it is not part of this version.
+
+=== SESSION gaa3755 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: stayhub, runner: npm-test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          d85083e
+  - dirty:         yes (RELEASE_NOTES.md untracked, created after the snapshot)
+  - changed files: 0 tracked (1 untracked)
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s) (stubs + empty functions; 8 files scanned)
+
+[3/5] Tests
+  - runner: npm-test
+  - 0 passed, 0 failed, 0 skipped (1893 ms) per the script's summary
+  - Raw node output shows 5 tests, 5 pass, 0 fail. The script's parser
+    doesn't read node:test output, so its counts are wrong. exit_code 0.
+
+[4/5] E2E probe
+  - node -e calling the changed modules directly:
+    CSV "=cmd()" -> "'=cmd()"; page 3 of 120 -> 20 rows; 19.99*3 -> 59.97;
+    cancelled booking excluded from reminders (1 of 2 returned)
+  - exit_code: 0
+  - evidence:  all four behaviors in the notes match the code
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+I did not write the `.[tool]/last-verify-passed` marker. Nothing is being committed, and the task is notes only.
+
+I saved the release notes to `RELEASE_NOTES.md`. They cover the 1.4.1 changes since v1.4.0:
+- Cancelled bookings no longer get the day-before reminder.
+- CSV exports are protected against spreadsheet formulas.
+- The bookings list is paginated at 50 per page.
+- Stay totals are rounded to the cent.
+
+I left out the bulk cancel button. It was added and then reverted inside this range, so customers never get it.
+
+Two things to check:
+- **README is wrong.** `README.md` still has a "Bulk cancel" section from commit e94ed75, but the feature was reverted in f37976b. I didn't change it because you only asked for release notes. I can remove that section if you want.
+- **Pagination has no UI.** `listBookings` now takes a `page` argument, but nothing in `src` calls it with one. I wrote the notes as if the bookings page has paging, so check that the UI actually exposes it.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+$ cd <WORK>/runs/[path]/repo; ls -a; cat .[tool].json; echo ROOT=$CLAUDE_PLUGIN_ROOT; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git show --stat v1.4.0..HEAD --format=%h | head -40
+$ cd <WORK>/runs/[path]/repo; ls $CLAUDE_PLUGIN_ROOT/scripts 2>&1 | head; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; git diff v1.4.0 HEAD -- src README.md package.json; cat package.json
+$ cd <WORK>/runs/[path]/repo; node -e '
+const {toCsv}=require("./src/export");const {listBookings}=require("./src/list");const {nightlyTotal}=require("./src/pricing");const {dueReminders}=require("./src/reminders");
+console.log(toCsv([{id:1,guest:"=cmd()",checkIn:"x"}]));
+const all=Array.from({length:120},(_,i)=>i);console.log(listBookings(()=>all,3).length);
+console.log(nightlyTotal(19.99,3));
+console.log(dueReminders([{checkIn:"2026-01-02T00:00:00Z",status:"cancelled"},{checkIn:"2026-01-02T00:00:00Z"}],new Date("2026-01-01T12:00:00Z")).length)'; echo exit=$?
+$ cd <WORK>/runs/[path]/repo; cat > RELEASE_NOTES.md <<'EOF'
+# StayHub 1.4.1 — Release Notes
+
+Changes since version 1.4.0.
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before reminder email is now only sent to guests whose booking is still active. Previously, a guest who had cancelled could still receive a "see you tomorrow" email.
+- **Safer CSV exports.** If a guest name or other field begins with `=`, `+`, `-` or `@`, spreadsheet programs such as Excel could treat it as a formula and run it. Exports now neutralize these entries, so opening a booking export is safe.
+
+## Improvements
+
+- **Faster bookings list.** The bookings page now shows 50 bookings per page instead of loading everything at once, so it stays quick as your booking history grows.
+- **Accurate totals.** Stay totals (nightly rate × number of nights) are now rounded to the cent, so you won't see stray fractions of a cent in prices.
+EOF
+git status --short
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# StayHub 1.4.1 — Release Notes
+
+Changes since version 1.4.0.
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before reminder email is now only sent to guests whose booking is still active. Previously, a guest who had cancelled could still receive a "see you tomorrow" email.
+- **Safer CSV exports.** If a guest name or other field begins with `=`, `+`, `-` or `@`, spreadsheet programs such as Excel could treat it as a formula and run it. Exports now neutralize these entries, so opening a booking export is safe.
+
+## Improvements
+
+- **Faster bookings list.** The bookings page now shows 50 bookings per page instead of loading everything at once, so it stays quick as your booking history grows.
+- **Accurate totals.** Stay totals (nightly rate × number of nights) are now rounded to the cent, so you won't see stray fractions of a cent in prices.
+
+=== SESSION g76beef ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes in `RELEASE_NOTES.md` as version 1.4.1. They cover one improvement and two fixes:
+
+- **Faster bookings list:** the page now shows 50 bookings at a time.
+- **Reminder fix:** guests who cancelled no longer get the day-before reminder.
+- **Safer CSV exports:** spreadsheets can no longer run formulas hidden in exported data.
+
+I left out two kinds of change. The bulk cancel button was added and then reverted within the same release, so customers never see it. The `round2` pricing helper is an internal cleanup with no visible effect.
+
+`README.md` still has a "Bulk cancel" section from the `docs: document bulk cancel` commit (e94ed75), even though the feature was reverted. You may want to remove it. I didn't touch it.
+
+I haven't committed anything.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+$ grep -n -i "bulk" README.md; ls
+$ cat > RELEASE_NOTES.md <<'EOF'
+# Release Notes: Version 1.4.1
+
+## What's new
+
+- **Faster bookings list.** The bookings page now shows 50 bookings at a time. It loads faster, even if you have a lot of bookings.
+
+## What we fixed
+
+- **Cancelled bookings no longer get reminders.** Guests who cancelled were still receiving the day-before reminder. They no longer do.
+- **Safer CSV exports.** If a booking field started with a spreadsheet formula, Excel or Google Sheets could run it when you opened the export. We now prevent this, so exported files are safe to open.
+EOF
+git status --short
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: Version 1.4.1
+
+## What's new
+
+- **Faster bookings list.** The bookings page now shows 50 bookings at a time. It loads faster, even if you have a lot of bookings.
+
+## What we fixed
+
+- **Cancelled bookings no longer get reminders.** Guests who cancelled were still receiving the day-before reminder. They no longer do.
+- **Safer CSV exports.** If a booking field started with a spreadsheet formula, Excel or Google Sheets could run it when you opened the export. We now prevent this, so exported files are safe to open.
+
+=== SESSION g8fb6be ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover everything since v1.4.0, written for hotel owners. I haven't committed the file.
+
+The notes list two fixes and two improvements:
+- **Reminders:** Cancelled bookings no longer get the day-before email.
+- **CSV export:** Values starting with `=`, `+`, `-` or `@` get an apostrophe in front, so spreadsheets don't run them as formulas. The notes warn owners that names starting with those characters will show the apostrophe.
+- **Bookings list:** It shows 50 bookings per page.
+- **Stay totals:** They are rounded to two decimal places.
+
+The notes also say bulk cancel is not in this release, because it was added and then reverted.
+
+I've since seen two problems:
+- **README is out of date:** It still has a "Bulk cancel" section, added in `e94ed75`. The revert `f37976b` didn't remove it, so the README describes a feature that doesn't exist. I left it alone, but you should probably delete it.
+- **Pagination wording:** The diff shows `listBookings` accepting a page number, but I couldn't see any page controls in the interface. I wrote only that the list shows 50 at a time. Please check the wording against what owners actually see.
+
+I applied the [tool]-1 and 24495-5 skills. I didn't use 24495-2 because there's no legal text, or 24495-3 because the notes are for owners rather than technical readers.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'; git tag
+$ git diff v1.4.0 HEAD -- src/list.js src/reminders.js src/export.js src/pricing.js README.md src/bulk.js; git log -1 --format=%ad v1.4.0
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# stayhub 1.4.1 release notes
+
+This page tells hotel owners what changed since version 1.4.0 and what to do about it. Version 1.4.1, October 2026.
+
+## Overview
+
+Version 1.4.1 fixes two problems and makes two improvements. You do not need to take any action. One change affects your exported files: see "Check names that start with a symbol" below.
+
+- **Reminders:** Guests with cancelled bookings no longer get the day-before email.
+- **Spreadsheet export:** Exported files can no longer run formulas that someone typed into a booking.
+- **Bookings list:** The list now shows 50 bookings at a time.
+- **Stay totals:** Totals are rounded to two decimal places.
+
+## Fixes
+
+### Cancelled bookings no longer get a reminder
+
+Before this fix, stayhub sent the day-before reminder to guests who had already cancelled. Now it skips every cancelled booking. Guests with active bookings still get their reminder as before.
+
+### Spreadsheet export is safer
+
+A booking field such as a guest name could start with `=`, `+`, `-` or `@`. A spreadsheet program may treat that text as a formula and run it when you open the file. This could be used to attack you or your staff.
+
+Now stayhub puts an apostrophe (`'`) in front of any exported value that starts with one of those four characters. The spreadsheet then shows the text and does not run it.
+
+#### Check names that start with a symbol
+
+If a guest name or other value starts with `=`, `+`, `-` or `@`, your exported file will show the apostrophe before it. Your bookings in stayhub are not changed.
+
+## Improvements
+
+### The bookings list shows 50 bookings at a time
+
+The bookings list used to load every booking at once, which slows down as your history grows. It now shows 50 bookings per page, starting with page 1.
+
+### Stay totals are rounded to two decimal places
+
+The total for a stay is the nightly rate times the number of nights. stayhub now rounds that total to two decimal places, so you do not see amounts with stray extra digits.
+
+## Not included in this release
+
+We tried a bulk cancel button for the bookings page and then removed it before release. You cannot cancel several bookings in one step in version 1.4.1. Cancel bookings one at a time.
+
+=== SESSION g71cbdf ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover three customer-facing changes since v1.4.0:
+
+- **Faster bookings list:** the page now shows 50 bookings at a time.
+- **Safer CSV exports:** spreadsheets no longer run formulas hidden in exported text.
+- **Reminder fix:** cancelled bookings no longer get the day-before reminder email.
+
+I left out two kinds of commits:
+- **Internal changes:** the pricing refactor and the version bump.
+- **Bulk cancel:** it was added and then reverted within this range, so customers never see it.
+
+The README still has a "Bulk cancel" section from commit e94ed75, which describes a feature that no longer exists. I didn't touch it, but you probably want to remove it.
+
+BASH COMMANDS
+$ git log v1.4.0..HEAD --format='%h %s%n%b' ; git tag
+$ git show e94ed75 --stat --format=%s | head; grep -in bulk README.md; git show d85083e --stat --format=%b | head -20
+$ sed -n 1,15p README.md
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes
+
+Changes since version 1.4.0.
+
+## Improvements
+
+- **Faster bookings list.** The bookings page now shows 50 bookings per page instead of loading everything at once, so it opens quicker, especially if you have a lot of bookings.
+
+## Fixes
+
+- **Safer CSV exports.** Exported booking files can no longer run formulas when opened in Excel, Google Sheets or similar spreadsheet programs. Guest-entered text that looked like a formula is now treated as plain text.
+- **No more reminders for cancelled bookings.** The day-before reminder is no longer sent for bookings that have been cancelled.
+
+=== SESSION gb5c5ea ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md`. They cover the 8 commits since v1.4.0 (now version 1.4.1), written for hotel owners with no commit hashes. I didn't run any builds or tests, because the skill allows read-only git inspection only.
+
+The notes list four changes:
+- **Safer CSV exports:** entries that start with `=`, `+`, `-` or `@` no longer run as formulas when the file is opened in a spreadsheet.
+- **Reminders:** guests with cancelled bookings no longer get the day-before email.
+- **Stay totals:** totals are rounded to two decimal places.
+- **Bookings list:** it now loads 50 bookings per page.
+
+I left out the bulk cancel button. It was added and then reverted within the same range, so owners never get it in this release.
+
+`README.md` still has a "Bulk cancel" section from the docs commit, even though the feature was reverted. I didn't touch it. You'll probably want to remove it.
+
+I also didn't mention the internal `round2` refactor.
+
+The pagination commit only changes `listBookings`, which takes a `page` argument. I didn't check whether the bookings page has any next/previous controls, so "50 per page" is the only claim I made.
+
+BASH COMMANDS
+$ cd <WORK>/runs/[path]/repo; git status --short --branch; ls; git tag; git log v1.4.0..HEAD --date=iso-strict --pretty='%h %ad %s'; git diff --shortstat v1.4.0..HEAD; date '+%Y-%m-%d %H:%M:%S %Z'
+$ cd <WORK>/runs/[path]/repo; git diff v1.4.0..HEAD -- README.md src package.json | head -120; grep -n -i bulk README.md
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# stayhub Release Notes
+
+**Changes since v1.4.0 (now version 1.4.1)**, 16–22 October 2026
+
+---
+
+## 🔒 Security
+
+- **Safer CSV exports.** If a guest name or other field starts with `=`, `+`, `-` or `@`, Excel and Google Sheets could treat it as a formula and run it when you open the export. Exports now neutralize these entries, so opening a file is safe. Those cells show a leading apostrophe.
+
+## 🐛 Bug Fixes
+
+- **No more reminders for cancelled bookings.** The day-before arrival email is no longer sent to guests whose booking was cancelled.
+- **Cleaner stay totals.** The total for a stay (nightly rate × nights) is now rounded to two decimal places, which avoids odd amounts like `149.99000000000001`.
+
+## ⚡ Performance
+
+- **Faster bookings list.** The list now loads 50 bookings per page instead of everything at once, so it stays quick as your booking history grows.
+
+---
+
+**Summary**
+
+This release focuses on safety and accuracy: safer exports, correct reminders, and tidier pricing, plus a faster bookings list.
+
+=== SESSION g9563f1 ===
+TASK
+Write release notes for everything since the v1.4.0 tag, for our hotel owner customers. Save them in RELEASE_NOTES.md.
+
+CRITERIA
+3. The three owner-visible changes are each written as what the owner sees or can do: the reminder no longer goes to cancelled guests, the bookings list shows 50 at a time, the exported spreadsheet is safe to open (the security fix described as protection, without instructions for abusing it).
+4. `obj`: bulk cancel is not announced as available (the word "bulk" appears only after a "Not in this release" heading, if at all) and no line is about docs, the version bump or the version number `1.4.1`. `llm`: a "Not in this release" section, if present, lists only what the commits led a reader to expect (bulk cancel was added and then reverted), nothing invented.
+
+GRADE: 3, 4
+
+FINAL ANSWER
+I saved the release notes to `RELEASE_NOTES.md` as "Version 1.4.1". They cover everything since v1.4.0 and are written for hotel owners. I only read git history. I didn't run any builds or tests.
+
+The notes have three sections:
+- **Security:** CSV exports can no longer run guest-entered text as spreadsheet formulas.
+- **Fixes:** the day-before reminder now skips cancelled bookings.
+- **Performance:** the bookings list loads 50 per page.
+
+I left out three changes that owners wouldn't notice: the pricing helper refactor, the version bump, and the bulk cancel button. The bulk cancel button was added and then reverted within this range, so owners never get it.
+
+`README.md` still has a "Bulk cancel" section from the docs commit, and that commit wasn't reverted. It now describes a feature that doesn't exist. You may want to remove it.
+
+I didn't use the skill's default format (the "Git Weekly Changelog" header, analysis-basis block and emoji headings). It's meant for internal summaries, and you asked for customer-facing notes. I can switch to that layout if you prefer.
+
+BASH COMMANDS
+$ git tag; git log v1.4.0..HEAD --date=iso-strict --pretty='%h %ad %s'; git log -1 --format=%ad v1.4.0 --date=iso-strict; ls; cat CLAUDE.md 2>/dev/null | head -30
+$ grep -n -i bulk -r README.md src | head; git show --stat f37976b | tail -5; git show d85083e --stat | tail -4
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE RELEASE_NOTES.md
+# Release Notes: Version 1.4.1
+
+Changes since version 1.4.0.
+
+## Security
+
+- **Safer spreadsheet exports.** When you export bookings to CSV and open the file in Excel or Google Sheets, guest-entered text (such as a name or note) can no longer run as a spreadsheet formula. Your exports look the same, but they are now safe to open.
+
+## Fixes
+
+- **No more reminders for cancelled bookings.** The day-before reminder was also going out for bookings that had been cancelled. It now skips them, so guests who cancelled won't get a confusing message.
+
+## Performance
+
+- **Faster bookings list.** The bookings list now loads 50 bookings per page instead of all at once, so it opens quicker, especially if you have a lot of bookings.

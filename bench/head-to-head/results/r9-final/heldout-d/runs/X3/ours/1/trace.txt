@@ -1,0 +1,5 @@
+001 Skill product-engineer:release-notes
+002 Bash git tag && git log --oneline v1.2.0..v1.3.0 && product-engineer range v1.2.0 2>&1 || npx product-engineer range v1.2.0 2>&1
+003 Bash git show 36eee57 869d97d 11e4c9f --stat -p | head -150; cat src/config.js
+004 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.2.0\n\nFailed requests are now retried automatically, up to 2 more times, so a brief hiccup no longer ends your call with an error.\nRequests now wait up to 45 seconds before giving up (it was 30), so slower responses have time to finish inst
+005 Bash git log --format=%B v1.2.0..v1.3.0 > /tmp/src.txt; git diff v1.2.0 v1.3.0 >> /tmp/src.txt; node --test 2>&1 | tail -15; product-engineer facts /tmp/src.txt RELEASE_NOTES.md 2>&1 || npx product-engineer facts /tmp/src.txt RELEASE_NOTES.md 2>&1; product-engineer notes RELEASE_NOTES.md --range

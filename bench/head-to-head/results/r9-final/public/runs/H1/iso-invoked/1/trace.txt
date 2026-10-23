@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && cat package.json 2>/dev/null | head -30
+004 Bash cat src/router.js src/users.js src/validate.js test/router.test.js; head -30 test/validate.test.js; cat README.md
+005 Bash cat > src/login.js <<'EOF'\nconst { findUser } = require('./users');\nconst { isValidEmail } = require('./validate');\n\nconst MAX_FAILURES = 3;\n// The token that requireAuth in router.js accepts. It is a fixed value in this sample.\nconst TOKEN = 'secret';\n\n// Wrong passwords in a row, 

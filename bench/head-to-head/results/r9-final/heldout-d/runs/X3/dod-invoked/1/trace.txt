@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git tag -l; git log --oneline v1.2.0..v1.3.0 2>&1 | head -50; git diff --stat v1.2.0 v1.3.0 2>&1 | tail -20
+003 Bash cat .dod-guard.json; ls; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; echo ---; echo "root=$CLAUDE_PLUGIN_ROOT"; git diff v1.2.0 v1.3.0; cat package.json
+004 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; node -e "const {fetchAll,withRetry}=req
+005 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed\ncat > RELEASE_NOTES.md <<'EOF'\n# fetchkit v1.3.0 — Release Notes\n\nChanges since v1.2.0.\n\n## Action required: option renamed\n\nThe `maxItems` option has been renamed to `limit`. This applies both to the option you pass to

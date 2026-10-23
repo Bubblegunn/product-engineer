@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag; git log v1.4.0..HEAD --format='%h %s%n%b' ; ls
+002 Bash grep -n -i "bulk" -r README.md src | head; git show d85083e --stat --format=%b | head -20; git show 6f63e9a c8ef254 | head -80
+003 Write <WORK>/runs/T4-dod-3/repo/RELEASE_NOTES.md

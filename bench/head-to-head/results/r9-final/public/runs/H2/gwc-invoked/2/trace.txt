@@ -1,0 +1,5 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash cat CLAUDE.md 2>/dev/null; git ls-files; grep -rniE "email|regex|RegExp" --include=* . --exclude-dir=.git | head -30
+003 Bash cat src/validate.js test/validate.test.js package.json
+004 Edit <WORK>/runs/H2-gwc-invoked-2/repo/src/validate.js
+005 Bash cat >> test/validate.test.js <<'EOF'\n\ntest('accepts plus-addressed local part', () => {\n  assert.equal(isValidEmail('user@example.com'), true);\n});\nEOF\nnpm test 2>&1 | tail -15

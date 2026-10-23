@@ -1,0 +1,39 @@
+set public: 312 DONE runs on H1, H2, H3, H4, H5, H6, H7, T1, T2, T3, T4, T5, T6
+task   ours   base   dod    dod-invoked  gwc    gwc-invoked  iso    iso-invoked  max
+H1     5.00   5.00   5.00   5.00         5.00   5.00         5.00   5.00         5  
+H2     5.00   4.33   5.00   5.00         5.00   4.67         5.00   5.00         5  
+H3     5.00   2.00   2.33   3.00         2.00   2.67         2.00   3.00         5  
+H4     5.00   5.00   5.00   5.00         5.00   4.67         5.00   5.00         5  
+H5     5.00   2.00   2.00   2.00         2.00   2.33         2.33   2.00         5  
+H6     5.00   5.00   5.00   5.00         5.00   5.00         4.00   4.00         5  
+H7     5.00   4.00   4.67   3.67         4.00   3.33         5.00   4.33         5  
+T1     5.00   3.00   3.00   3.00         3.00   3.00         3.00   3.00         5  
+T2     4.00   3.33   3.00   3.00         3.00   4.00         3.00   3.33         4  
+T3     5.00   5.00   5.00   5.00         5.00   5.00         4.67   4.33         5  
+T4     4.00   2.67   2.00   2.00         2.00   2.00         2.33   2.33         4  
+T5     5.00   3.00   3.00   2.33         4.00   3.67         3.67   4.00         5  
+T6     4.33   3.00   3.00   3.00         2.67   3.00         3.00   3.00         5  
+total  62.33  47.33  48.00  47.00        47.67  48.33        48.00  48.33        63 
+lost   0.67   15.67  15.00  16.00        15.33  14.67        15.00  14.67           
+best other arm: iso-invoked (total 48.33)
+best natural other arm (not -invoked): dod (total 48.00)
+Rule A: PASS (ours lost 0.67 against 14.67 for iso-invoked, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  H1: ours 5.00, best other base 5.00, max 5, B pass
+  H2: ours 5.00, best other dod 5.00, max 5, B pass
+  H3: ours 5.00, best other dod-invoked 3.00, max 5, B pass
+  H4: ours 5.00, best other base 5.00, max 5, B pass
+  H5: ours 5.00, best other gwc-invoked 2.33, max 5, B pass
+  H6: ours 5.00, best other base 5.00, max 5, B pass
+  H7: ours 5.00, best other iso 5.00, max 5, B pass
+  T1: ours 5.00, best other base 3.00, max 5, B pass
+  T2: ours 4.00, best other gwc-invoked 4.00, max 4, B pass
+  T3: ours 5.00, best other base 5.00, max 5, B pass
+  T4: ours 4.00, best other base 2.67, max 4, B pass
+  T5: ours 5.00, best other gwc 4.00, max 5, B pass
+  T6: ours 4.33, best other base 3.00, max 5, B pass
+Rule B: PASS
+Rule B-prime: PASS
+bootstrap: 39 paired cells, ours minus iso-invoked: mean 1.08, 95% interval [0.79, 1.36] (10000 resamples, seed 12345)
+I1: HOLDS (interval lower bound above zero)
+runs with an error criterion: none

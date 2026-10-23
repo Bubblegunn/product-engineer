@@ -1,0 +1,4 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash cd <WORK>/runs/H7-gwc-invoked-2/repo; ls; cat CLAUDE.md 2>/dev/null | head -30; git status --short --branch; git log main --since='2026-10-14 00:00' --until='2026-10-20 23:59:59' --date=iso-strict --pretty='%h %ad %s (%an)'; echo; git log main --first-parent --date=
+003 Bash cd <WORK>/runs/H7-gwc-invoked-2/repo; git log main --date=iso-strict --pretty='%h %ad %cd %s' f555c4d 3140958 -2; git log --graph --oneline | tail -8; git show --stat --format=%h f555c4d | tail -5; git diff --shortstat 0dcafb4..921093e
+004 Write <WORK>/runs/H7-gwc-invoked-2/repo/CHANGELOG-WEEK.md

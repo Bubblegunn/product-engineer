@@ -1,0 +1,6 @@
+001 Skill product-engineer:release-notes
+002 Bash git tag; (product-engineer range v1.4.0 || npx product-engineer range v1.4.0) 2>&1; git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'
+003 Bash git diff v1.4.0..HEAD -- src/list.js src/export.js src/reminders.js src/pricing.js
+004 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.4.0\n\nThe bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once. We have not measured whether it is faster.\nGuests whose booking was cancelled no longer get a day-before reminder; 
+005 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.4.0\n\nThe bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.\nGuests whose booking was cancelled no longer get a day-before reminder; only bookings that are still on are reminde
+006 Bash product-engineer notes RELEASE_NOTES.md --range v1.4.0 2>&1 | head -3; echo "--- tests"; grep -A5 '"scripts"' package.json; npm test 2>&1 | tail -8

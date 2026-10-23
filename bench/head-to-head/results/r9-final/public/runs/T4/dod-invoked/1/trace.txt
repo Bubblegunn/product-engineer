@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git tag; git log --oneline v1.4.0..HEAD; ls
+002 Skill dod-guard:verify
+003 Bash echo $CLAUDE_PLUGIN_ROOT; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff v1.4.0..HEAD --stat; cat package.json; git log v1.4.0..HEAD --format='%h %s%n%b'
+004 Bash P="$CLAUDE_PLUGIN_ROOT"; bash "$P/scripts/detect-stubs.sh" --all --json; echo "rc=$?"; python3 "$P/scripts/detect-empty-functions.py" . --json; echo "rc=$?"; bash "$P/scripts/run-full-suite.sh" --quiet; echo "rc=$?"; git diff v1.4.0..HEAD -- README.md src/list.js src/reminders.js src/export
+005 Write <WORK>/runs/T4-dod-invoked-1/repo/RELEASE_NOTES.md
+006 Bash date +%s > .dod-guard/last-verify-passed; git status --porcelain
+007 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed; git status --porcelain

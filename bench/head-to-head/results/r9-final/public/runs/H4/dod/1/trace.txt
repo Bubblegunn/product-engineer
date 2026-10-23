@@ -1,0 +1,4 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "auth" --include=* -l . --exclude-dir=.git --exclude-dir=node_modules | head
+002 Bash grep -rniE "auth|middleware" . --exclude-dir=.git --exclude-dir=node_modules; cat src/router.js package.json
+003 Bash cat > src/auth.js <<'EOF'\n// The token check for routes that need a signed-in caller. The token is a fixed value in this sample.\n/**\n * Returns true when the request carries the expected `x-token` header.\n * @param {{headers?: Record<string, string>}} req\n * @returns {boolean}\n */\nfu

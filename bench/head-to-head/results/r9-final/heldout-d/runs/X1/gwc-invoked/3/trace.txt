@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash date '+%Y-%m-%d %H:%M:%S %Z' && ls CLAUDE.md 2>&1 | head -1; git status --short --branch; git diff --cached --stat; git diff --cached; git log --date=iso-strict --pretty='%h %ad %s (%an)'
+003 Bash cat test/price.test.js && git add test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): clamp discount percent to 0-100\n\napplyDiscount produced negative prices when percent exceeded 100.\nClamp the percent to the 0-100 range. Add tests covering the bug.\n\nAlso remove a leftover d

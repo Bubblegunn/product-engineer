@@ -1,0 +1,3 @@
+001 Bash git ls-files && cat package.json 2>/dev/null; wc -l $(git ls-files | grep -v lock)
+002 Bash cat src/*.js test/router.test.js README.md
+003 Bash cat > src/auth.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\nconst failures = new Map(); // email -> consecutive wrong passwords\nconst tokens = new Set();\n\n// Returns {status, body}. Once an email has 3 wrong pass

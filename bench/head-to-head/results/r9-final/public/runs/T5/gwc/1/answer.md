@@ -1,0 +1,3 @@
+I committed the staged change as `3faef91` on `main`: "feat(list): cache bookings list for 60 seconds". It covers `src/cache.js`, `src/list.js` and `test/list.test.js`. I didn't run the tests.
+
+A cached list can be up to 60 seconds out of date. A booking created or cancelled within that window won't show up until the entry expires. That's fine if the list is only for display, but check any code that reads it right after a write.

@@ -1,0 +1,6 @@
+001 Skill product-engineer:customer-block
+002 Bash git restore --staged .env && git status --short && git diff --cached --stat && git diff --cached && cat package.json | grep -A5 '"scripts"'
+003 Bash ls; ls test* 2>/dev/null; grep -rn "isValidEmail" --include=*.js . | grep -v node_modules | head
+004 Bash cat test/validate.test.js; grep -n "health" -B2 -A6 test/router.test.js
+005 Bash cat >> test/validate.test.js <<'EOF'\n\ntest('accepts plus-tag addresses like user@example.com', () => {\n  assert.equal(isValidEmail('user@example.com'), true);\n});\nEOF\nnpm test 2>&1 | tail -12
+006 Bash git restore --staged src/router.js && git add src/validate.js test/validate.test.js && git commit -q -F - <<'EOF'\nfix(validate): accept + in the local part of email addresses\n\nran `npm test`: 7 passed, 0 failed\n\nFor the customer:\nWhat changed: Customers can now place orders with email

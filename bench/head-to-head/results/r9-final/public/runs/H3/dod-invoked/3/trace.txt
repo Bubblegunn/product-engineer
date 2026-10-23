@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json 2>/dev/null; cat .dod-guard.json
+002 Bash cat src/*.js test/*.js README.md
+003 Skill dod-guard:verify
+004 Bash cat > src/refunds.js <<'EOF'\n// Records refund requests. No payment gateway is connected yet, so every accepted refund stays "pending".\nconst refunds = [];\n\n// Validates {orderId, amount} and stores a pending refund. Returns {refund} or {error}.\nfunction createRefund(input) {\n  const 
+005 Bash git rev-parse --abbrev-ref HEAD; git rev-parse --short HEAD; git diff --name-only; echo ---STUBS; bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; echo ---EMPTY; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; echo --
+006 Bash node -e "\nconst {handle}=require('./src/router');\nconsole.log(JSON.stringify(handle({method:'POST',path:'/refund',headers:{'x-token':'secret'},body:{orderId:'o1',amount:12.5}})));\nconsole.log(JSON.stringify(handle({method:'POST',path:'/refund',headers:{'x-token':'secret'},body:{orderId:'
+007 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && cat .dod-guard/last-verify-passed

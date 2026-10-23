@@ -1,0 +1,4 @@
+001 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1; git diff --stat main...feature/low-stock 2>&1
+002 Bash git diff main...feature/low-stock; git ls-tree -r --name-only feature/low-stock
+003 Bash git checkout -q feature/low-stock && cat package.json test/stock.test.js; npm test 2>&1 | tail -15; git checkout -q main
+004 Write <WORK>/runs/X2-gwc-1/repo/PR.md

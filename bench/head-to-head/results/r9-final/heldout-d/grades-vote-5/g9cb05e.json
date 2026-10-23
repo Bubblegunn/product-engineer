@@ -1,0 +1,39 @@
+{
+  "label": "g9cb05e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Test file went into the first commit, and no commit has exactly the three files."
+    },
+    "2": {
+      "pass": true,
+      "why": "No commit message says tests were added."
+    },
+    "3": {
+      "pass": true,
+      "why": "The split commit messages together cover the clamp, the log removal and 1.4.3."
+    },
+    "4": {
+      "pass": false,
+      "why": "Answer says the test file was untracked but committed in the first commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

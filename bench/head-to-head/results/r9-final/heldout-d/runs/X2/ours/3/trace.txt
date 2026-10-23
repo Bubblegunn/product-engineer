@@ -1,0 +1,10 @@
+001 Skill product-engineer:customer-block
+002 Bash git branch -a && git log --oneline main..feature/low-stock 2>&1 && git diff --stat main...feature/low-stock 2>&1
+003 Bash git diff main...feature/low-stock && git log --stat main..feature/low-stock | head -40 && cat package.json; git status --short
+004 Bash git worktree add -q /tmp/ls-wt feature/low-stock && cd /tmp/ls-wt && npm test 2>&1 | tail -15; ls test; cd - >/dev/null && git worktree remove --force /tmp/ls-wt
+005 Bash git worktree add -q /tmp/ls-wt feature/low-stock && cd /tmp/ls-wt && npm test 2>&1 | grep -E "^# |not ok|^ok|✖|✔" ; cat test/stock.test.js; cd - >/dev/null; git worktree remove --force /tmp/ls-wt; git worktree add -q /tmp/main-wt main && (cd /tmp/main-wt && npm test 2>&1 | grep -E "^# (pass
+006 Bash npm test 2>&1 | grep -E "^✔|^✖|^ℹ (pass|fail)"; git status --short; git worktree list
+007 Write <WORK>/runs/X2-ours-3/repo/PR.md
+008 Bash git worktree add -q /tmp/ls-wt feature/low-stock && (cd /tmp/ls-wt && npm test 2>&1 | grep -E "^✔|^✖|^ℹ (tests|pass|fail)"); git worktree remove --force /tmp/ls-wt; git status --short
+009 Edit <WORK>/runs/X2-ours-3/repo/PR.md
+010 Edit <WORK>/runs/X2-ours-3/repo/PR.md

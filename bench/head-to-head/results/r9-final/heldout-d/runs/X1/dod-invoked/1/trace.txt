@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/X1-dod-invoked-1/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --cached --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT; cat package.json
+003 Bash cd <WORK>/runs/X1-dod-invoked-1/repo; R=$CLAUDE_PLUGIN_ROOT; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -40; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | head -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>
+004 Bash cd <WORK>/runs/X1-dod-invoked-1/repo; node -e "const {applyDiscount:a}=require('./src/price');console.log(a(1000,150),a(1000,-5),a(1000,10))"; echo exit=$?; ls test; mkdir -p .dod-guard; date +%s > .dod-guard/last-verify-passed; git check-ignore .dod-guard/last-verify-pa
+005 Bash cd <WORK>/runs/X1-dod-invoked-1/repo; git add test/price.test.js && git commit -q -F - <<'EOF'\nfix(price): clamp discount percent to 0-100\n\napplyDiscount produced negative prices for discounts over 100% and\nraised prices for negative discounts. Clamp percent to [0, 1

@@ -1,0 +1,8 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1; git diff --stat main...feature/low-stock 2>&1
+004 Bash git diff main...feature/low-stock; ls; cat package.json; (npm test 2>&1 | tail -15)
+005 Bash git worktree add -q /tmp/ls-wt feature/low-stock && cd /tmp/ls-wt && npm test 2>&1 | grep -E "^# |not ok|Error|expected|actual" ; ls test; cd - >/dev/null; git worktree remove --force /tmp/ls-wt
+006 Bash git worktree add -q /tmp/ls-wt feature/low-stock && cd /tmp/ls-wt && cat test/stock.test.js; npm test 2>&1 | grep -E "^# (tests|pass|fail)|^not ok|^ok"; cd - >/dev/null; git worktree remove --force /tmp/ls-wt
+007 Write <WORK>/runs/X2-iso-invoked-1/repo/PR.md
+008 Edit <WORK>/runs/X2-iso-invoked-1/repo/PR.md

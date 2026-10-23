@@ -1,0 +1,8 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "email|regex|RegExp" --include=* . -l --exclude-dir=.git | head
+002 Bash cat src/validate.js test/validate.test.js package.json; grep -n -i email README.md src/*.js
+003 Bash sed -i '' 's/\[A-Za-z0-9._-\]+@/[A-Za-z0-9._+-]+@/' src/validate.js && cat >> test/validate.test.js <<'EOF'\n\ntest('accepts plus-addressed local part', () => {\n  assert.equal(isValidEmail('user@example.com'), true);\n});\n\ntest('rejects numeric-only local part even with plus', () =
+004 Skill dod-guard:verify
+005 Bash ls -a; cat .dod-guard.json; echo ROOT=$CLAUDE_PLUGIN_ROOT; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; ls "$CLAUDE_PLUGIN_ROOT/scripts" 2>&1 | head -20
+006 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json; echo "exit=$?"; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json; echo "exit=$?"; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet; echo "exit=$?"; sed -n 1,40p src/router.js
+007 Bash node -e "const {isValidEmail:v}=require('./src/validate');for(const e of ['user@example.com','user@example.com','user@example.com','no-at-sign','a+b@x'])console.log(e,v(e))"; echo "exit=$?"; mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed; git status --porcelain

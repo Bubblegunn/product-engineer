@@ -1,0 +1,5 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash date '+%Y-%m-%d %H:%M:%S %Z' && git status --short --branch && git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)' && git ls-files && cat CLAUDE.md 2>/dev/null
+003 Bash git log --date=iso-strict --pretty='%h %ad %s' && cat package.json README.md src/*.js test/*.js
+004 Edit <WORK>/runs/H3-gwc-invoked-2/repo/src/router.js
+005 Bash cat >> test/router.test.js <<'EOF'\n\ntest('POST /refund without the token is 401', () => {\n  const res = handle({ method: 'POST', path: '/refund', headers: {}, body: {} });\n  assert.equal(res.status, 401);\n});\n\ntest('POST /refund with x-token secret is 202', () => {\n  const res = han

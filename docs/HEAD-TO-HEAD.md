@@ -1327,3 +1327,11 @@ model (cannot ship in a dependency-free CLI); intent-class trigger hint (product
 
 Next measurement round (plan in the r8 report): development gate on seen sets with the corrected grader material, new held-out set where plain
 Claude is below the ceiling, Rule A + B + B′, F9, F6, cost estimate. Nothing was measured in r8.
+
+## Results, r9 final measurement (2026-10-23)
+
+Protocol `docs/FINAL-PROTOCOL-r9.md` (frozen `5b4dcf5`, amendments A1 and A2), evidence `bench/head-to-head/results/r9-final/` (SUMMARY.md first). Product `e0f3d72`, Sonnet, 8 arms, 3 runs, subscription path.
+- Public 13 tasks: ours 62.33 of 63, best other arm (iso-invoked) 48.33; I1 holds, interval [+0.79, +1.36] per cell; Rules A, B, B' pass. These tasks were available during development.
+- Held-out set d (5 tasks, sealed until now): ours 11.33 of 20, best other (dod-invoked) 13.67, ours lowest of the 8 arms; I1 does not hold, interval [-0.93, 0.00]; Rules A, B, B' fail.
+- F6-grader passes on both sets (100 percent criterion agreement on the sampled cells). F9 (Haiku, Opus; descriptive) shows the same pattern.
+- The launch claim "first in total in each set" is not supported. No claim of any lead is made from the public set alone. Set d is used up as a held-out set.

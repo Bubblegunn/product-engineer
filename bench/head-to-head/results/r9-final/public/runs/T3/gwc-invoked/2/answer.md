@@ -1,0 +1,5 @@
+I wrote the PR description to `PR.md`. It describes the diff against `main`, which is only the formatting commit. The CSV export feature is already on `main`.
+
+The commit message says "no functional change", but one line breaks that claim. `src/pricing.js` changed from `rate * nights` to `Math.floor(rate * nights * 100) / 100`, so stay totals are now rounded down to the cent. A guest's total can come out up to a cent lower, and no test covers it. I put this at the top of `PR.md` as a decision for the reviewer. The two options are to split it into its own commit with a test, or to revert that line. I also added a line for the account manager, since a hotel owner would care that totals now round down.
+
+The other five files are formatting only, and I checked that by reading the diff. I didn't run any tests. I also left the code unchanged, so the pricing line is still in the branch.

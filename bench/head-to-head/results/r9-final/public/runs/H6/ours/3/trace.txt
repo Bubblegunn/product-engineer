@@ -1,0 +1,5 @@
+001 Read <WORK>/runs/H6-ours-3/repo/LICENCE.txt
+002 Skill product-engineer:product-engineer
+003 Write <WORK>/runs/H6-ours-3/repo/LICENCE-plain.txt
+004 Bash (product-engineer facts LICENCE.txt LICENCE-plain.txt 2>&1 || echo "facts cmd unavailable"); grep -rnE "500|30|15|twelve|12|confidential|fee" --include=* . --exclude-dir=.git --exclude=LICENCE*.txt -i | head -20; git status --short
+005 Bash grep -rnEi "500|thirty|fifteen|twelve|confidential|refund" . --exclude-dir=.git --exclude=LICENCE.txt --exclude=LICENCE-plain.txt | head

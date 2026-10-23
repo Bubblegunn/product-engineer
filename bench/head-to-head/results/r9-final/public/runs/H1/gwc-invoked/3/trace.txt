@@ -1,0 +1,4 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash git ls-files && cat package.json 2>/dev/null | head -30
+003 Bash cat src/router.js src/users.js src/validate.js test/router.test.js README.md; ls CLAUDE.md
+004 Bash cat > src/login.js <<'EOF'\nconst { findUser } = require('./users');\n\nconst MAX_FAILURES = 3;\n// Consecutive wrong-password count per email. An email at MAX_FAILURES is locked.\nconst failures = new Map();\n\nfunction resetLogins() {\n  failures.clear();\n}\n\n// Returns {status, body}. 

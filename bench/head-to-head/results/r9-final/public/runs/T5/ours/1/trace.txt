@@ -1,0 +1,4 @@
+001 Skill product-engineer:customer-block
+002 Bash git status --short; git diff --cached --stat; git diff --cached; cat package.json | grep -A5 scripts
+003 Bash npm test 2>&1 | tail -15
+004 Bash git commit -q -F - <<'EOF'\nfeat(list): cache the bookings list for 60 seconds\n\nRan `npm test`: 7 passed, 0 failed. Not measured: how much faster the list is.\nNot checked: a booking added or changed within the 60 seconds still shows the\nold list until the time runs out.\n\nFor the custo

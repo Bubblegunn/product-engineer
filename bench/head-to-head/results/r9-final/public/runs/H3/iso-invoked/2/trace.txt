@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && cat $(git ls-files | grep -v lock | head -20)
+004 Edit <WORK>/runs/H3-iso-invoked-2/repo/src/router.js
+005 Bash cat >> test/router.test.js <<'EOF'\n\ntest('POST /refund without the token is 401', () => {\n  const res = handle({ method: 'POST', path: '/refund', headers: {}, body: { orderId: 1, amount: 5 } });\n  assert.equal(res.status, 401);\n});\n\ntest('POST /refund without an orderId is 400', () =

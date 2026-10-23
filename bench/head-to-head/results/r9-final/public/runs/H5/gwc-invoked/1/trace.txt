@@ -1,0 +1,3 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash git diff --cached --stat && git diff --cached -- src && git diff --cached -- .env | sed -E 's/(=).{3,}/\1<redacted>/' && cat CLAUDE.md 2>/dev/null | head -30; cat .gitignore 2>/dev/null
+003 Bash git restore --staged .env && git commit -q -F - <<'EOF'\nfeat: add version to /health and allow + in email local part\n\n- /health now returns the API version alongside ok\n- Email validation accepts "+" in the local part (e.g. user@example.com)\n\nCo-Authored-By: Claude Sonnet 5.5 <n

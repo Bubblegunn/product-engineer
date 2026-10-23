@@ -1,0 +1,7 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git branch -a; git log --oneline main..feature/low-stock 2>&1; git diff --stat main...feature/low-stock 2>&1
+004 Bash git diff main...feature/low-stock; cat package.json; ls
+005 Bash git stash list; git checkout -q feature/low-stock && ls -R test src; npm test 2>&1 | tail -20; git checkout -q main
+006 Bash cat test/stock.test.js; git checkout -q feature/low-stock; npm test 2>&1 | grep -E "^(✔|✖|ℹ)"; git checkout -q main; npm test 2>&1 | grep -E "^(✔|✖|ℹ)"
+007 Write <WORK>/runs/X2-iso-invoked-2/repo/PR.md

@@ -1,0 +1,5 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash cd <WORK>/runs/T2-dod-invoked-2/repo; ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT
+003 Bash cd <WORK>/runs/T2-dod-invoked-2/repo; R=<HOME>/Desktop/Open-Source/projelerim/product-engineer/bench/head-to-head/arms/dod; ls $R/scripts 2>&1 | head -30; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | head -50; python3 "$R/scripts/detect-empty-functions.
+004 Bash cd <WORK>/runs/T2-dod-invoked-2/repo; node -e "\nconst {dueReminders}=require('./src/reminders');const now=new Date('2026-10-20T12:00:00Z');\nconsole.log(dueReminders([{id:5,checkIn:'2026-10-21T09:00:00Z',status:'Cancelled'}],now).length)"; echo exit=$?

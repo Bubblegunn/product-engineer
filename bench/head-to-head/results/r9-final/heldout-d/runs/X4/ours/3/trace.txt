@@ -1,0 +1,7 @@
+001 Bash git ls-files && grep -rniE "page|ceil|// ?10|/ ?10" --include=* . --exclude-dir=.git | head -30
+002 Bash cat src/pager.js package.json; ls test; grep -rn pager src test
+003 Bash sed -i 's/Math.floor(total/Math.ceil(total/' src/pager.js && cat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\n\ntest('pageCount rounds up partial pages', () => {\n  assert.str
+004 Edit <WORK>/runs/X4-ours-3/repo/src/pager.js
+005 Write <WORK>/runs/X4-ours-3/repo/test/pager.test.js
+006 Bash npm test 2>&1 | grep -E "^(✔|✖|ℹ (tests|pass|fail))"; git stash -q -- src/pager.js && npm test 2>&1 | grep -E "^ℹ (pass|fail)"; git stash pop -q; git status --short
+007 Bash git add src/pager.js test/pager.test.js && git commit -q -F - <<'E'\nfix: show the last partial page of results\n\npageCount rounded down, so 25 items reported 2 pages and the final 5\nwere unreachable. Round up instead.\n\nTested: added test/pager.test.js (pageCount for 0, 10 and 25 items;

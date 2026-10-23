@@ -1,0 +1,5 @@
+001 Skill product-engineer:release-notes
+002 Bash git log v1.4.0..HEAD --stat --format='--- %h %s%n%b'; git tag
+003 Bash product-engineer range v1.4.0 2>&1 || npx product-engineer range v1.4.0 2>&1; git show d85083e 6f63e9a c8ef254 b751f09 -- src | cat
+004 Bash grep -rn "listBookings\|page" src README.md | grep -v "^src/list.js"
+005 Bash cat > RELEASE_NOTES.md <<'EOF'\nChanges since v1.4.0\n\nThe bookings list now shows 50 bookings at a time, so a long list is split into pages instead of arriving all at once.\nGuests whose booking was cancelled no longer get the day-before reminder; only bookings that are still on will.\nEx

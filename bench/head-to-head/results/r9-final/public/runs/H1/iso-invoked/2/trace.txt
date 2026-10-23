@@ -1,0 +1,5 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && cat package.json 2>/dev/null | head -30
+004 Bash cat src/router.js src/users.js src/validate.js test/router.test.js README.md
+005 Bash cat > src/login.js <<'EOF'\nconst crypto = require('node:crypto');\nconst { findUser } = require('./users');\n\nconst MAX_WRONG_PASSWORDS = 3;\n\n// Wrong passwords in a row, per email. An email at the limit is locked until the process restarts.\nconst wrongInARow = new Map();\n\n// Tokens 

@@ -1,0 +1,1632 @@
+grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory
+
+--- prompt (-p) ---
+You are grading several coding-assistant sessions against the same fixed criteria.
+The material on stdin holds one block per session, each starting with a line like === SESSION <label> ===.
+The sessions are in mixed order, and nothing about the order or the label tells you anything. Each block holds
+the task the user gave, the criteria, the assistant's final answer, the Bash commands it ran, the commits it made
+with their messages and diff statistics, and any file it wrote.
+Grade every session independently against the criteria listed under GRADE in its own block. A session passes a
+criterion only if its own material supports it. If a session's material does not show it, that session fails that
+criterion. Do not let one session's material count for another. Apply the same standard to every session.
+
+Reply with one JSON object and nothing else: {"<label>":{"<id>":{"why":"one short sentence of reasoning","pass":true or false}}}.
+It has one key per session label, and under each label one key per criterion id as a string. Reasoning comes first, the verdict after it.
+Example: {"g0a1b2c":{"1":{"why":"...","pass":true}}}
+
+--- material (stdin) ---
+=== SESSION g54c691 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I invoked the [tool] skill as you asked, but it only summarizes git history. It has nothing to do with rewriting a licence, so I didn't use its workflow or format.
+
+The rewrite keeps all four obligations and their numbers as in the original:
+1. You pay EUR 500 within 30 days of the Effective Date, and the fee is non-refundable.
+2. You can't assign or sublicense your rights without the Licensor's prior written consent.
+3. If you don't fix a material breach within 15 days of written notice, the Licensor can end the licence immediately.
+4. You keep the Licensor's customers' booking data confidential for 12 months after the licence ends.
+
+I made two additions of my own:
+- A short opening line says "you" means the Licensee. It says the original `LICENCE.txt` wording controls if the two differ.
+- I kept the term "Effective Date" without explaining it, because this excerpt doesn't define it.
+
+I assumed the hotel owner is the Licensee, since the excerpt never says. If they're actually the Licensor, the "you" wording needs flipping. This is a readability rewrite, not legal advice, so have a lawyer check it before anyone relies on it.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this text, "you" means the Licensee, and "the Licensor" means the party that licenses the software to you. This is a plain-language rewrite of LICENCE.txt. If the two ever differ, the original wording of LICENCE.txt is the one that counts.
+
+(1) Payment
+You must pay the Licensor EUR 500 (the "Fee"). The payment is due within 30 days of the Effective Date. Once paid, the Fee is non-refundable.
+
+(2) No passing on your rights
+You may not transfer your rights under this licence to anyone else. You may not let anyone else use them (sublicensing) either. The only exception is if the Licensor has agreed in writing beforehand.
+
+(3) Fixing serious problems
+Suppose you seriously break this licence (a "material breach"), and the Licensor gives you written notice. You then have 15 days from that notice to put things right. If you don't, the Licensor may end this licence immediately.
+
+(4) Confidentiality after the licence ends
+Even if the licence ends, you must keep the Licensor's customers' booking data confidential. This duty lasts for 12 months after the licence ends.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gb445e1 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. `[tool]verify` passed.
+
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: orders-api, runner: npm-test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          f555c4d
+  - dirty:         yes
+  - changed files: 0 tracked (2 untracked: LICENCE.txt, LICENCE-plain.txt)
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s)
+  (detect-stubs.sh and detect-empty-functions.py each scanned 5 files)
+
+[3/5] Tests
+  - runner: npm-test (node --test)
+  - 6 passed, 0 failed, 0 skipped (435 ms)
+  (The runner's summary fields say 0 passed. Its raw output shows
+  "pass 6, fail 0", so I used the raw numbers. Exit code was 0.)
+
+[4/5] E2E probe
+  - Not applicable to the API, since this change adds a text file and touches no code.
+    As a substitute I grepped the new file for the figures.
+  - exit_code: 0
+  - evidence:  EUR 500, 30 days, 15 days and 12 months all appear in LICENCE-plain.txt
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+Verify marker refreshed; you can now `git commit` within the TTL.
+
+**What the plain version says**
+- **Payment:** you pay EUR 500 within 30 days of the Effective Date, and it is not refunded.
+- **Passing on rights:** you may not transfer or sublicense your rights without our prior written consent.
+- **Serious breach:** if you don't fix a serious breach within 15 days of written notice, we may end the licence immediately.
+- **Confidentiality:** for 12 months after the licence ends, you keep our customers' booking data confidential.
+
+The new file defines "you" as the Licensee (the hotel) and "we" as the Licensor. I rewrote the wording but left every amount, deadline and duty as in the original.
+
+BASH COMMANDS
+$ cd <WORK>/runs/[path]/repo; ls -a; cat .[tool].json | head -20; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT
+$ cd <WORK>/runs/[path]/repo; R=$CLAUDE_PLUGIN_ROOT; [ -z "$R" ] && R=[path]/dod; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; echo "exit=$?"; cat package.json
+$ cd <WORK>/runs/[path]/repo; grep -c -E "EUR 500|30 days|15 days|12 months" LICENCE-plain.txt; echo "exit=$?"; mkdir -p .[tool] && date +%s > .[tool]/last-verify-passed
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this text, "you" means the Licensee (the party who receives the licence, for example the hotel). "We" means the Licensor (the party who grants it).
+
+1. Payment
+   You must pay us EUR 500 (the "Fee") within 30 days of the Effective Date (the date the licence starts). We do not refund the Fee.
+
+2. No passing on your rights
+   You may not transfer your rights under this licence to anyone else. You also may not let anyone else use them (sublicensing). The only exception is if we have agreed in writing beforehand.
+
+3. Ending the licence for a serious breach
+   If you seriously break the licence and we tell you in writing, you have 15 days from that notice to fix the problem. If you do not fix it in that time, we may end the licence immediately.
+
+4. Keeping booking data private after the licence ends
+   Ending the licence does not end this duty. For 12 months after the licence ends, you must keep our customers' booking data confidential.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gbe8f1e ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four duties, with the same amounts, time limits and consent requirement as `LICENCE.txt`.
+
+- **Wording:** "shall" and "forthwith" are replaced with "must" and "immediately". Each duty names who has to act, and I numbered the clauses 1–4 under subject headings.
+- **Short summary:** It sits at the top. It says that the numbered clauses govern if the two differ.
+- **Defined terms:** The Licensee, the Licensor and the Effective Date are explained once at the top. "Effective Date" is not defined in the excerpt, so I pointed to the full Licence for its meaning. I did not assume that the Licensee is the hotel owner.
+- **Added parentheticals:** "material (serious)", "remedy (fix)" and "assign (transfer)" are short explanations I added. They make the terms easier to follow without changing what they mean.
+
+I did not run the separate document-design check that the legal skill mentions. I kept the layout simple instead.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN LANGUAGE VERSION
+
+Words used in this document
+The Licensee is the party that receives the licence. The Licensor is the party that grants it. The Effective Date is the date the Licence starts, as set in the full Licence, which is not part of this excerpt.
+
+SUMMARY OF YOUR MAIN TERMS
+
+The operative text starts at clause 1 below, and it governs. If this summary and the clauses differ, the clauses apply.
+
+- Paying: The Licensee must pay EUR 500 within 30 days of the Effective Date. The Licensor does not refund this fee.
+- Passing on your rights: The Licensee must not transfer or sublicense any of its rights without the Licensor's written consent given beforehand.
+- Ending the Licence: If the Licensee has seriously broken the Licence and does not fix it within 15 days of written notice, the Licensor may end the Licence immediately.
+- After the Licence ends: The Licensee must still keep the Licensor's customers' booking data confidential for 12 months after the Licence ends.
+
+OPERATIVE TERMS
+
+Payment
+
+1. Fee
+   - Obligation: The Licensee must pay the Licensor EUR 500 (the "Fee").
+   - Deadline: The Licensee must pay within 30 days of the Effective Date.
+   - Consequence: The Fee is non-refundable.
+
+Transfer of rights
+
+2. Transfer and sublicensing
+   - Prohibition: The Licensee must not assign (transfer) or sublicense (let someone else use) any of its rights under this Licence.
+   - Exception: The Licensee may do so if the Licensor has given its written consent first.
+
+Termination
+
+3. Ending the Licence for breach
+   - Trigger: The Licensee commits a material (serious) breach of this Licence, the Licensor gives the Licensee written notice of it, and the Licensee does not remedy (fix) the breach within 15 days of that notice.
+   - Action: The Licensor may terminate (end) this Licence immediately.
+
+Confidentiality
+
+4. Booking data stays confidential after the Licence ends
+   - Obligation: The Licensee must keep the Licensor's customers' booking data confidential.
+   - Duration: This duty lasts for 12 months after the Licence ends.
+   - Termination does not remove it: The duty applies even though the Licence has ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION ge20ca4 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It has the same four clauses, and I didn't add any section or sentence.
+
+The text now reads:
+
+1. The licensee must pay the licensor EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+2. The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+3. If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+4. Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after it ends.
+
+- **Kept as written:** all four numbers (EUR 500, 30 days, 15 days, 12 months), both parties, every condition, and "prior written consent". I found no plainer phrase for that last one.
+- **Checker result:** `[tool] facts` reported "fail (numbers added: 30, 15, 12)". I read this as a checker quirk, not a real change. The source writes those as "thirty (30)", "fifteen (15)" and "twelve (12)", and the rewrite uses the same digits. It also reported no dropped numbers, no missing obligations and no added sentences. The rewrite has 6 sentences, averaging 14.5 words, the longest 22.
+- **Code check:** I searched the repo for these numbers, the licence terms and the spelled-out numbers, and found nothing. Nothing in the code can disagree with the text.
+- **Not checked:** I didn't have a lawyer confirm that "end this licence immediately" means the same as "terminate forthwith". I also left the parties as "licensee" and "licensor" because the excerpt doesn't say which one is the hotel owner.
+
+BASH COMMANDS
+$ ([tool] facts LICENCE.txt LICENCE-plain.txt 2>&1 || npx --no-install [tool] facts LICENCE.txt LICENCE-plain.txt 2>&1) | head -30; grep -rnEi "licen[cs]e|\b(500|thirty|fifteen|twelve)\b" --exclude-dir=.git --exclude-dir=node_modules --exclude=LICENCE*.txt . | head
+$ grep -rnEi "licen[cs]e|\b(500|30|15|12|thirty|fifteen|twelve)\b" --exclude-dir=.git --exclude-dir=node_modules . | grep -v "LICENCE" | head
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The licensee must pay the licensor EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+
+(3) If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+
+(4) Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after it ends.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g89365d ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I haven't had a lawyer check it, and `LICENCE.txt` is unchanged.
+
+**What stays the same:** The four obligations keep their amounts, deadlines and conditions.
+- **Fee:** EUR 500, due within 30 days of the Effective Date, and non-refundable.
+- **Consent:** No assigning or sublicensing without the Licensor's prior written consent.
+- **Termination:** The Licensor may end the Licence if a material breach isn't fixed within 15 days of written notice.
+- **Confidentiality:** The booking data stays confidential for 12 months after termination.
+
+**What changed:**
+- **Wording:** "Shall" became "must" or "must not", and "forthwith" became "immediately". "Notwithstanding termination" now reads "This duty continues after this Licence ends".
+- **Layout:** There is a summary near the top. It says the clauses below govern and starts at clause 1. A short list of defined words follows, and then four clauses with subject names and numbers.
+- **Splits:** I split the assign/sublicense rule into 2.1 and 2.2, and the confidentiality rule into 4.1 and 4.2. Each clause's meaning is the same.
+
+**Things to check:**
+- **Effective Date:** The excerpt doesn't define it. I flagged it in the file rather than guessing a meaning.
+- **"Material breach":** I glossed it as "a serious breach", which is my own wording. A lawyer should confirm that doesn't narrow or widen the term.
+- **Licensee:** I assumed the hotel owner is the Licensee, based on your request. The excerpt doesn't say who the Licensee is.
+- **Which text governs:** The summary says the clauses in `LICENCE-plain.txt` govern. If the signed `LICENCE.txt` should stay the binding text, change that line.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+# Software Licence (Excerpt) in Plain Language
+
+**Purpose:** This document explains what the Licensee and the Licensor must do under four clauses of the software licence.
+**Reader:** A hotel owner who needs to follow the licence.
+**Version:** Plain-language rewrite of LICENCE.txt, 23 October 2026.
+
+**Need the original wording?** Read LICENCE.txt in the same folder. Ask a lawyer if you are unsure which text applies to you.
+
+## Summary of your main terms
+
+The operative text starts at clause 1 below, and it governs. This summary does not replace it.
+
+- **What you must pay:** The Licensee must pay EUR 500 within 30 days of the Effective Date. The Fee is non-refundable.
+- **What you must not do:** The Licensee must not assign or sublicense its rights without the Licensor's prior written consent.
+- **How the Licence can end:** If the Licensee does not remedy a material breach within 15 days of written notice, the Licensor may terminate this Licence immediately. Clause 3 gives the details.
+- **What continues after the Licence ends:** The Licensee must keep the booking data confidential for 12 months after termination. Clause 4 gives the details.
+
+## Words used in this document
+
+- **Licensee:** The party that holds the Licence under the full text.
+- **Licensor:** The party that grants the Licence under the full text.
+- **Fee:** The EUR 500 that clause 1 requires the Licensee to pay.
+- **Effective Date:** The date used to count the payment deadline in clause 1. This excerpt does not define it. Check the full licence for the date.
+- **Material breach:** A serious breach of this Licence. This excerpt does not define it further.
+
+## Terms
+
+### Payment
+
+1.1 The Licensee must pay the Licensor EUR 500 (the Fee) within 30 days of the Effective Date.
+
+1.2 The Fee is non-refundable.
+
+### Transfer of rights
+
+2.1 The Licensee must not assign any of its rights under this Licence without the Licensor's prior written consent.
+
+2.2 The Licensee must not sublicense any of its rights under this Licence without the Licensor's prior written consent.
+
+### Ending the Licence for a breach
+
+3.1 This clause applies in these steps:
+
+- **Trigger:** The Licensor gives the Licensee written notice of a material breach, and the Licensee does not remedy it within 15 days of that notice.
+- **Permission:** The Licensor may terminate this Licence immediately.
+
+### Confidentiality after the Licence ends
+
+4.1 The Licensee must keep the booking data of the Licensor's customers confidential.
+
+4.2 This duty continues after this Licence ends. It lasts for 12 months after termination.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g74f996 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`.
+
+I invoked the [tool] skill as you asked, but it only summarizes git history into a changelog, so it didn't apply to rewriting a licence. I did the rewrite directly and didn't generate a changelog.
+
+The four clauses keep the same figures and conditions as the original:
+- **Payment:** EUR 500, due within 30 days of the Effective Date, non-refundable.
+- **No passing on rights:** no assigning or sublicensing without the Licensor's prior written consent.
+- **Serious breach:** 15 days after written notice to fix it, otherwise the Licensor can end the Licence immediately.
+- **Confidentiality:** customers' booking data stays confidential for 12 months after termination.
+
+I added one line at the top saying "you" is the hotel (Licensee) and "we" is the software provider (Licensor). I haven't changed `LICENCE.txt`.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this text, "you" means the Licensee (the hotel using the software) and "we" means the Licensor (the company providing it).
+
+(1) Payment
+You must pay us EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) No passing on your rights
+You may not transfer your rights under this Licence to anyone else, or let anyone else use them under a sub-licence, unless we have first agreed in writing.
+
+(3) Fixing serious problems
+If you seriously break this Licence and we notify you in writing, you have 15 days to put it right. If you do not, we may end this Licence immediately.
+
+(4) Confidentiality continues after the Licence ends
+Even after this Licence ends, you must keep our customers' booking data confidential for 12 months after termination.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION geca798 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four clauses and every number, party and condition from `LICENCE.txt`.
+
+```
+(1) The licensee must pay EUR 500 (the "Fee") to the licensor within 30 days of the Effective Date. The Fee is non-refundable.
+(2) The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+(3) If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+(4) Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after it ends.
+```
+
+- **Kept as written:** "prior written consent", "material breach", "assign or sublicense" and "Effective Date". I found no plainer words for them, and changing them could change the meaning.
+- **Fact check:** I ran `[tool] facts LICENCE.txt LICENCE-plain.txt`. It reported no dropped numbers, no lost obligations, no leftover legalese and no sentences that don't trace to the source. The rewrite has 6 sentences, averaging 14.7 words, with the longest at 22.
+- **Why it printed "fail":** it flagged 30, 15 and 12 as "added". The source gives those as "thirty (30)", "fifteen (15)" and "twelve (12)", so they are the same values. This is a quirk of the checker, not a change to the terms.
+- **Code check:** I searched the repo for the figure 500, the spelled-out numbers, "confidential" and "refund". Nothing outside the two licence files mentions them, so there is nothing to disagree with.
+- **Not checked:** I haven't had a lawyer confirm the plain wording means the same as the original. I didn't commit anything, and `LICENCE.txt` is still untracked.
+
+BASH COMMANDS
+$ ([tool] facts LICENCE.txt LICENCE-plain.txt 2>&1 || echo "facts cmd unavailable"); grep -rnE "500|30|15|twelve|12|confidential|fee" --include=* . --exclude-dir=.git --exclude=LICENCE*.txt -i | head -20; git status --short
+$ grep -rnEi "500|thirty|fifteen|twelve|confidential|refund" . --exclude-dir=.git --exclude=LICENCE.txt --exclude=LICENCE-plain.txt | head
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The licensee must pay EUR 500 (the "Fee") to the licensor within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+
+(3) If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+
+(4) Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after it ends.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g9298f4 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps the four clauses in the same order, with the same figures: EUR 500, 30 days, 15 days and 12 months.
+
+I made a few wording choices you may want to check:
+- **"Licensee" and "you":** I used "you (the Licensee)" for the hotel owner, assuming that is who the Licensee is. I kept "Licensor" as is.
+- **Clause 3, "material breach":** I wrote this as "seriously break this licence". That is the usual meaning, but a lawyer might read it more narrowly.
+- **Clause 4:** I dropped "notwithstanding termination" and said "even after the licence ends" instead. The 12 months run from the end date, as in the original.
+
+This is a plain rewording, not legal advice. If the plain version will be relied on, have the licensor or a lawyer confirm it matches the original.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+(1) Payment. You (the Licensee) must pay the Licensor EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) No passing it on. You may not transfer your rights under this licence to anyone else, or let anyone else use them (sublicense), unless the Licensor has agreed in writing beforehand.
+
+(3) Fixing serious problems. If you seriously break this licence and do not fix the problem within 15 days of receiving written notice, the Licensor may end the licence immediately.
+
+(4) Confidentiality. Even after the licence ends, you must keep the Licensor's customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g434a86 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I haven't reviewed it with anyone who could confirm it keeps the legal meaning.
+
+- **Duties kept:** The four duties are unchanged. They are the EUR 500 non-refundable fee due within 30 days, the ban on assigning or sublicensing without prior written consent, termination after 15 days without a fix to a material breach, and 12 months of confidentiality for booking data after the Licence ends.
+- **Wording:** "Shall" is now "must" or "must not". "Forthwith" is now "immediately". Each clause names who has to act. Clause 3 is split into trigger, obligation and consequence.
+- **Summary:** I added a short summary at the top. It says the numbered clauses below it govern, so no one mistakes the summary for the agreement.
+- **Effective Date:** The excerpt never defines "Effective Date", so I left the term as it was. The full Licence should define it.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN LANGUAGE VERSION
+
+SUMMARY OF YOUR MAIN TERMS
+
+The operative text starts at clause 1 below, and it governs. This summary
+does not replace it.
+
+- Payment: The Licensee must pay EUR 500 within 30 days of the Effective
+  Date. The Licensee cannot get this money back.
+- Passing on your rights: The Licensee must not transfer or sublicense
+  any of its rights under this Licence without the Licensor's prior
+  written consent.
+- Ending the Licence: If the Licensee has seriously broken the Licence
+  and does not fix it within 15 days of written notice, the Licensor may
+  end the Licence immediately.
+- After the Licence ends: The Licensee must still keep the Licensor's
+  customers' booking data confidential for 12 months after the Licence
+  ends.
+
+OPERATIVE TEXT
+
+Payment
+
+1. The Licensee must pay the Licensor EUR 500 (the "Fee") within 30 days
+   of the Effective Date. The Licensor does not have to refund the Fee.
+
+Transfer and sublicensing
+
+2. The Licensee must not assign or sublicense any of its rights under
+   this Licence unless the Licensor has first given written consent.
+
+Ending the Licence for breach
+
+3. This clause applies if the Licensee commits a material breach of this
+   Licence.
+   - Trigger: The Licensor gives the Licensee written notice of the
+     material breach.
+   - Obligation: The Licensee must remedy the material breach within 15
+     days of that notice.
+   - Consequence: If the Licensee does not remedy the material breach
+     within those 15 days, the Licensor may terminate this Licence
+     immediately.
+
+Confidentiality after the Licence ends
+
+4. The Licensee must keep the Licensor's customers' booking data
+   confidential for 12 months after this Licence ends. This duty
+   continues even though the Licence has ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gd29f19 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four clauses, with the same amount, deadlines and duties:
+
+1. **Payment:** EUR 500 is due within 30 days of the Effective Date and is non-refundable.
+2. **No transfer or sub-licensing:** this needs the Licensor's prior written consent.
+3. **Termination:** the Licensee has 15 days after written notice to fix a material breach. If it doesn't, the Licensor can end the licence immediately.
+4. **Confidentiality:** the Licensee must keep the Licensor's customers' booking data confidential for 12 months after the licence ends.
+
+I added a short opening line saying "you" means the hotel (the Licensee) and "we" means the software provider (the Licensor). I also explained "Effective Date" as "the date the licence starts". The original excerpt doesn't define that term, so check that this matches the full contract.
+
+I haven't committed anything.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN LANGUAGE VERSION
+
+In this text, "you" means the Licensee (the hotel using the software) and "we" means the Licensor (the company providing it).
+
+(1) Payment. You must pay us EUR 500 within 30 days of the Effective Date (the date the licence starts). We do not give this money back.
+
+(2) No passing it on. You may not transfer your rights under this licence to someone else, or let someone else use them under a sub-licence, unless we have first agreed in writing.
+
+(3) Ending the licence for a serious breach. If you seriously break this licence and we tell you in writing, you have 15 days from that notice to fix the problem. If you have not fixed it by then, we may end the licence immediately.
+
+(4) Keeping booking data confidential after the licence ends. Even after the licence has ended, you must keep our customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g58bfe5 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It has the same four clauses as the original, each in everyday wording:
+
+1. **Payment:** You pay EUR 500 within 30 days of the Effective Date, and it isn't refundable.
+2. **No passing it on:** You can't transfer or sublicense your rights unless the Licensor agrees first, in writing.
+3. **Fixing problems:** After written notice of a serious breach, you have 15 days to fix it. If you don't, the Licensor can end the licence immediately.
+4. **Confidentiality:** You keep the Licensor's customers' booking data confidential for 12 months after the licence ends.
+
+I kept the numbers, deadlines, and who must do what exactly as in the original. I added a short gloss of "Effective Date" ("the date the licence starts"). That is my reading, because the excerpt doesn't define the term. I didn't run any DoD checks, since this was a text rewrite with no code changes.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+(1) Payment. You (the Licensee) must pay the Licensor EUR 500 within 30 days of the Effective Date (the date the licence starts). This fee is non-refundable: once paid, you do not get it back.
+
+(2) No passing it on. You may not transfer your rights under this licence to someone else, or let someone else use them (sublicense), unless the Licensor agrees first, in writing.
+
+(3) Fixing problems. If you seriously break the terms of this licence and the Licensor tells you so in writing, you have 15 days from that notice to put it right. If you do not, the Licensor may end the licence immediately.
+
+(4) Confidentiality. Even after the licence has ended, you must keep the Licensor's customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gf6f5b9 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I wrote `LICENCE-plain.txt` (new file, nothing else changed), and `[tool]verify` passes.
+
+The plain version says "you" for the hotel and "we" for the licensor. It keeps all four obligations as they were:
+1. The hotel pays EUR 500 within 30 days of the Effective Date, and the fee is non-refundable.
+2. The hotel can't transfer or sub-license its rights without the licensor's prior written consent.
+3. If the hotel doesn't fix a serious breach within 15 days of written notice, the licensor may end the licence immediately.
+4. The hotel keeps the licensor's customers' booking data confidential for 12 months after the licence ends.
+
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: orders-api, runner: npm-test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          f555c4d
+  - dirty:         yes (untracked only)
+  - changed files: 0 tracked diffs; 2 untracked (LICENCE.txt, LICENCE-plain.txt)
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s)
+  - detect-stubs.sh: 0 issues in 5 files
+  - detect-empty-functions.py: 0 issues in 5 files
+
+[3/5] Tests
+  - runner: npm-test
+  - 6 passed, 0 failed, 0 skipped (278 ms)
+  - Note: the runner's summary fields said 0 passed. Its raw output shows 6 tests passing, 0 failing, and it exited 0.
+
+[4/5] E2E probe
+  - no probe applicable in this environment (the change is a text document, not code)
+  - exit_code: n/a
+  - evidence:  the existing suite, including the HTTP tests for /health and POST /orders, passes unchanged
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+The verify marker is refreshed, so you can `git commit` within the TTL.
+
+`[tool]` still has its placeholder project-specific criterion. That is a template item, not something this task changes.
+
+BASH COMMANDS
+$ cd <WORK>/runs/[path]/repo; ls -a; cat .[tool].json | head -20; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT
+$ cd <WORK>/runs/[path]/repo; R=$CLAUDE_PLUGIN_ROOT; [ -n "$R" ] || R=[path]/dod; ls $R/scripts 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; echo "exit=$?"
+$ cd <WORK>/runs/[path]/repo; mkdir -p .[tool]; date +%s > .[tool]/last-verify-passed; cat .[tool]/last-verify-passed
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this text, "you" means the Licensee (the hotel using the software) and "we" means the Licensor (the company providing it).
+
+1. Payment
+   You must pay us EUR 500 within 30 days of the Effective Date (the date the licence starts). This payment (the "Fee") is non-refundable.
+
+2. No passing on your rights
+   You may not transfer your rights under this licence to anyone else, or let anyone else use them under a sub-licence, unless we have first agreed in writing.
+
+3. Fixing problems
+   If you seriously break this licence, we will tell you in writing. You then have 15 days from that notice to fix it. If you do not, we may end the licence immediately.
+
+4. Keeping booking data private
+   Even after the licence ends, you must keep our customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g5d4dd2 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four clauses, with the same amount, deadlines, consent requirement and confidentiality period as the original.
+
+- **Payment:** EUR 500 within 30 days of the Effective Date, non-refundable.
+- **No passing it on:** no transferring or sublicensing without the Licensor's prior written consent.
+- **Fixing problems:** after written notice of a material breach, 15 days to fix it, or the Licensor can end the licence immediately.
+- **Confidentiality:** the Licensor's customers' booking data stays confidential for 12 months after the licence ends.
+
+I only rewrote the wording. I didn't run any DoD checks, since this was a text edit with no code or tests involved. I also left `LICENCE.txt` untouched.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+(1) Payment. You (the Licensee) must pay the Licensor EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) No passing it on. You may not transfer your rights under this licence to anyone else, or let anyone else use them under a sublicence, unless the Licensor agrees to it first in writing.
+
+(3) Fixing problems. If you seriously break this licence and the Licensor tells you so in writing, you have 15 days to put it right. If you don't, the Licensor may end the licence immediately.
+
+(4) Confidentiality after the licence ends. Even after the licence has ended, you must keep the Licensor's customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g42c661 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I haven't committed it.
+
+I kept all four obligations as they were:
+- **Payment:** The Licensee pays EUR 500 within 30 days of the Effective Date, and the fee is non-refundable.
+- **Transfer:** The Licensee can't assign or sublicense its rights unless the Licensor has first given written consent.
+- **Termination:** If a material breach isn't fixed within 15 days of written notice, the Licensor may end the Licence immediately.
+- **Confidentiality:** The Licensee keeps the Licensor's customers' booking data confidential for 12 months after the Licence ends, even though it has ended.
+
+I changed the wording and layout:
+- **Legal wording:** I swapped "shall", "hereinafter" and "forthwith" for "must", "in this licence, this amount is called" and "immediately".
+- **Layout:** I added a short summary at the top and gave each clause a subject heading (Payment, Transfer and Sublicensing, Termination, Confidentiality After Termination). The summary says the numbered clauses govern, and the clause numbers stay 1–4.
+- **Termination clause:** I split it into the trigger and the consequence.
+
+The original doesn't define "Effective Date", so I used the term as it stands. The summary also notes that this excerpt doesn't say how the Licensee can end the Licence.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN LANGUAGE VERSION
+
+SUMMARY OF YOUR MAIN TERMS
+
+The operative text starts at clause 1 below, and it governs. This summary
+is only a guide.
+
+- Paying: You (the Licensee) must pay EUR 500 to the Licensor within 30
+  days of the Effective Date. You cannot get this money back. See clause 1.
+- Passing on your rights: You must not transfer or sublicense your rights
+  unless the Licensor agrees first, in writing. See clause 2.
+- How the Licensor can end the Licence: If you commit a material breach
+  and do not fix it within 15 days of written notice, the Licensor may end
+  the Licence immediately. See clause 3.
+- After the Licence ends: You must keep the Licensor's customers' booking
+  data confidential for 12 months after the Licence ends. See clause 4.
+
+This excerpt does not say how the Licensee may end the Licence.
+
+OPERATIVE TEXT
+
+Payment
+
+1. The Licensee must pay EUR 500 to the Licensor within 30 days of the
+   Effective Date. In this licence, this amount is called the "Fee". The
+   Fee is non-refundable.
+
+Transfer and Sublicensing
+
+2. The Licensee must not assign or sublicense any of its rights under this
+   Licence unless the Licensor has first given written consent.
+
+Termination
+
+3. Termination for material breach:
+   - Trigger: The Licensee commits a material breach, the Licensor gives
+     the Licensee written notice of it, and the Licensee does not remedy
+     the breach within 15 days of that notice.
+   - Consequence: The Licensor may terminate this Licence immediately.
+
+Confidentiality After Termination
+
+4. The Licensee must keep the Licensor's customers' booking data
+   confidential for 12 months after this Licence ends. This applies even
+   though the Licence has ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gdd396f ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four obligations, and the amounts and time limits are unchanged:
+
+1. **Payment:** You pay EUR 500 within 30 days of the Effective Date, and you can't get it back.
+2. **No passing it on:** You can't transfer your rights or sub-license them without the provider's written consent first.
+3. **Serious breach:** If you don't fix a serious breach within 15 days of written notice, the provider can end the licence immediately.
+4. **Confidentiality:** After the licence ends, you keep the provider's customers' booking data confidential for 12 months.
+
+I added a short gloss on "Effective Date" ("the date the licence starts"). The original doesn't define it, so check that gloss against the full contract.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+(1) Payment. You (the licensee) must pay the software provider (the licensor) EUR 500 within 30 days of the Effective Date (the date the licence starts). This fee is non-refundable: you will not get it back.
+
+(2) No passing it on. You may not transfer your rights under this licence to someone else, or let someone else use them under a sub-licence, unless the provider has agreed in writing first.
+
+(3) Fixing serious problems. If you seriously break the terms of this licence, the provider can send you a written notice. If you have not put the problem right within 15 days of that notice, the provider may end the licence immediately.
+
+(4) Keeping booking data private. Even after the licence ends, you must keep the provider's customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gbe741f ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I haven't had anyone check it against the original, so a lawyer should confirm nothing changed in meaning.
+
+It starts with a short block giving its purpose, its reader, the date and a pointer to `LICENCE.txt`. That pointer says the original governs if the two differ. A summary of your main terms follows, then a list of defined terms, then the four clauses under the headings Payment, Transfer of rights, Termination and Confidentiality. Clauses 1 to 4 keep the original numbers.
+
+**What each side must do**
+- **Payment:** The Licensee must pay EUR 500 within 30 days of the Effective Date. The Fee is non-refundable.
+- **Transfer of rights:** The Licensee must not assign or sublicense any rights without the Licensor's prior written consent.
+- **Termination:** If the Licensee does not fix a material breach within 15 days of written notice, the Licensor may end the Licence immediately.
+- **Confidentiality:** The Licensee must keep the Licensor's customers' booking data confidential for 12 months after termination.
+
+**Wording changes**
+- I replaced "shall" with "must" or "must not".
+- I replaced "forthwith" with "immediately".
+- I kept the legal terms "assign", "sublicense" and "material breach", each with a short explanation.
+- I split clause 3 into trigger, obligation and consequence.
+
+**Assumptions to check**
+- **Who "you" is:** I assumed the hotel owner is the Licensee.
+- **Effective Date:** The excerpt never defines it, so the file says so and doesn't invent a date.
+- **Right to leave:** The summary says the excerpt gives you no right to end the Licence. That is true of these four clauses, but the full Licence may say otherwise.
+- **Clause 4:** I took the original to mean the duty runs for 12 months after termination. The original could also be read as covering the period before termination.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+Purpose: Explains what each side must do under four clauses of the software licence.
+Reader: A hotel owner who is the Licensee. This version assumes you are the Licensee.
+Date: 2026-10-23
+Wrong document? The original wording is in LICENCE.txt. If the two differ, LICENCE.txt governs.
+
+
+SUMMARY OF YOUR MAIN TERMS
+
+The operative text starts at clause 1 below, and it governs. This summary does not replace it.
+
+- What you must pay: You must pay EUR 500 within 30 days of the Effective Date. The Licensor does not refund it.
+- What you must do: You must not pass your rights to anyone else without the Licensor's written consent. You must keep the Licensor's customers' booking data confidential for 12 months after termination.
+- How the Licence ends: The Licensor may end it if you do not fix a material breach within 15 days of written notice. The Licensor may end it immediately after those 15 days.
+- How to leave it: This excerpt gives you no right to end the Licence. Clause 3 only covers termination by the Licensor.
+
+
+DEFINED TERMS
+
+This section defines each capitalised term once. The clauses use each term unchanged.
+
+- Licensee: the party that receives the software licence. This is you.
+- Licensor: the party that grants the software licence.
+- Licence: this software licence.
+- Fee: the EUR 500 described in clause 1.
+- Effective Date: the start date of the Licence. This excerpt does not define it. The full Licence must define it.
+
+
+OPERATIVE TERMS
+
+Payment
+
+1. Payment of the Fee
+   1.1 The Licensee must pay the Licensor EUR 500 (the Fee) within 30 days of the Effective Date.
+   1.2 The Fee is non-refundable.
+
+Transfer of rights
+
+2. Transfer and sublicensing of rights
+   2.1 The Licensee must not assign any of its rights under this Licence without the Licensor's prior written consent. To assign a right means to transfer it to someone else.
+   2.2 The Licensee must not sublicense any of its rights under this Licence without the Licensor's prior written consent. To sublicense a right means to let someone else use it under your Licence.
+
+Termination
+
+3. Termination for material breach
+   3.1 Trigger: The Licensee commits a material breach, and the Licensor gives the Licensee written notice of it.
+   3.2 Obligation: The Licensee must remedy the material breach within 15 days of that written notice.
+   3.3 Consequence: If the Licensee does not remedy the material breach within those 15 days, the Licensor may terminate this Licence immediately.
+
+Confidentiality
+
+4. Confidentiality of booking data after termination
+   4.1 The Licensee must keep the Licensor's customers' booking data confidential for 12 months after termination.
+   4.2 This duty applies even though the Licence has ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gb0e323 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It is four clauses, in the same order as the original:
+
+1. The licensee must pay the licensor EUR 500 within 30 days of the Effective Date. The fee is non-refundable.
+2. The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+3. If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+4. Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after termination.
+
+- **Terms kept as written:** I kept "licensor" and "licensee", "Effective Date" and "prior written consent". I found no plainer word for them that wouldn't change the meaning. I added no definitions or explanations.
+- **Checker result:** `[tool] facts` reported "fail (numbers added: 30, 15, 12)". I checked those by hand, and I think the failure is a false alarm. The original writes them as "thirty (30)", "fifteen (15)" and "twelve (12)", and the checker only picked up the 500 from the source. The checker's other findings were clean. Dropped numbers: none. Sentences with no counterpart in the source: none. Average sentence length is 14.0 words, and the longest is 22.
+- **Code check:** I searched the repository, excluding the two licence files, for the fee, the day and month counts, and the words "licence", "confidential" and "refund". Nothing matched, so there is nothing in the code to disagree with the text.
+- **Not checked:** I haven't had a lawyer confirm that the plain wording means the same as the original. Treat `LICENCE.txt` as the binding text.
+
+BASH COMMANDS
+$ ([tool] facts LICENCE.txt LICENCE-plain.txt 2>&1 || npx [tool] facts LICENCE.txt LICENCE-plain.txt 2>&1) | head -30; echo ---; grep -rnE "\b(500|30|15|12|thirty|fifteen)\b|confidential|licen[cs]e" --exclude=LICENCE*.txt --exclude-dir=.git --exclude-dir=node_modules . | head -20
+$ ls; grep -rnEi "\b(500|30|15|12|thirty|fifteen|twelve)\b|confidential|licen[cs]e|refund" --exclude='LICENCE*' --exclude-dir=.git --exclude-dir=node_modules . | head -20; echo "exit $?"
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The licensee must pay the licensor EUR 500 within 30 days of the Effective Date. The fee is non-refundable.
+
+(2) The licensee must not assign or sublicense any of its rights under this licence without the licensor's prior written consent.
+
+(3) If the licensee does not fix a material breach within 15 days of written notice, the licensor may end this licence immediately.
+
+(4) Even after the licence ends, the licensee must keep the licensor's customers' booking data confidential for 12 months after termination.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g312814 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It has the same four clauses, with the same amounts, deadlines and obligations as the original.
+
+- **Payment:** EUR 500 within 30 days of the Effective Date, non-refundable.
+- **No passing it on:** no assigning or sublicensing without the Licensor's prior written consent.
+- **Serious breach:** 15 days after written notice to fix it, or the Licensor may end the licence immediately.
+- **Booking data:** the Licensee must keep the Licensor's customers' booking data confidential for 12 months after the licence ends.
+
+I added a line at the top saying "you" means the Licensee and "we" means the Licensor. I also explained "sublicense" in brackets, since a hotel owner may not know the word.
+
+This is a plain-language aid, not a replacement for the original wording. If a dispute ever arises, `LICENCE.txt` is the text that counts.
+
+I did not run `[tool]verify`. This was a text rewrite with no code or tests involved.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE - PLAIN-LANGUAGE VERSION (EXCERPT)
+
+In this text, "you" means the Licensee (the party that receives the software licence) and "we" means the Licensor (the party that grants it).
+
+(1) Payment. You must pay us EUR 500 (the "Fee") within 30 days of the Effective Date. Once paid, the Fee cannot be refunded.
+
+(2) No passing it on. You may not transfer your rights under this Licence to anyone else, and you may not sublicense them (let someone else use them under their own arrangement), unless we have first agreed in writing.
+
+(3) Fixing serious problems. If you seriously break this Licence and we notify you in writing, you have 15 days from that notice to fix it. If you have not fixed it by then, we may end this Licence immediately.
+
+(4) Keeping booking data private. Even after this Licence ends, you must keep our customers' booking data confidential for 12 months after it ends.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION gba1624 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four obligations with the same amounts and deadlines: EUR 500 within 30 days, non-refundable; 15 days to fix a serious breach after written notice; and 12 months of confidentiality after termination.
+
+I made three small interpretive choices:
+- I wrote it as "you (the hotel)" and "we", which assumes the hotel is the Licensee and the software provider is the Licensor.
+- In clause 4, "the Licensor's customers' booking data" became "the booking data of our customers". This follows the original wording, so it means the provider's customers, not the hotel's guests.
+- I turned "sublicense" into "let anyone else use them", which is a looser phrase than the legal term.
+
+The plain version is only a reading aid. The original `LICENCE.txt` is still the binding text.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+(1) Payment. You (the hotel) must pay us EUR 500 within 30 days of the Effective Date. Once paid, this fee is not refundable.
+
+(2) No passing it on. You may not transfer your rights under this licence to anyone else, or let anyone else use them, unless we have agreed in writing beforehand.
+
+(3) Fixing problems. If you seriously break the terms of this licence, we will tell you in writing. If you have not fixed the problem within 15 days of that notice, we may end the licence immediately.
+
+(4) Confidentiality after the licence ends. Even after the licence has ended, you must keep the booking data of our customers confidential for 12 months after it ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g5d6634 ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four clauses and their numbers.
+
+- **Payment:** You pay EUR 500 within 30 days of the Effective Date, and the fee is non-refundable.
+- **No passing on rights:** You can't assign or sublicense your rights without the Licensor's prior written consent.
+- **Fixing a serious problem:** If you seriously break the licence, you get written notice and 15 days to fix it. If you don't, the Licensor can end the licence immediately.
+- **Confidentiality:** You keep the Licensor's customers' booking data confidential for 12 months after the licence ends.
+
+I added a line at the top saying "you" means the Licensee and "we" means the Licensor. I also explained "Effective Date" in brackets as the date the licence starts. That is my reading of the term, because the excerpt doesn't define it.
+
+The plain version is a convenience copy, so the original `LICENCE.txt` is still the text that counts. Have a lawyer check the plain version before you rely on it.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this text, "you" means the Licensee (the party using the software) and "we" means the Licensor (the party giving you the licence).
+
+(1) Payment
+You must pay us EUR 500 (the "Fee") within 30 days of the Effective Date (the date the licence starts). Once paid, the Fee is non-refundable.
+
+(2) No passing on your rights
+You may not transfer your rights under this licence to anyone else, and you may not sublicense them (let someone else use them), unless we have first agreed in writing.
+
+(3) Fixing a serious problem
+If you seriously break this licence, we will tell you in writing. You then have 15 days to fix the problem. If you don't fix it in that time, we may end the licence immediately.
+
+(4) Keeping booking data confidential
+Even after the licence ends, you must keep our customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION ga733cf ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I rewrote the licence in plain language and saved it as `LICENCE-plain.txt`. `[tool]verify` passed.
+
+Each side's duties are unchanged:
+- **Payment:** the Licensee pays EUR 500 within 30 days of the Effective Date, and the Fee is non-refundable.
+- **No transfer:** the Licensee can't assign or sublicense its rights without the Licensor's prior written consent.
+- **Breach:** if a material breach isn't fixed within 15 days of written notice, the Licensor may end the licence immediately.
+- **Confidentiality:** the Licensee keeps the Licensor's customers' booking data confidential for 12 months after termination, even though the licence has ended.
+
+To make it readable, I called the two parties "you" (the Licensee, for example the hotel) and "we" (the Licensor). I also added a short heading and a line saying who "you" and "we" are. The original `LICENCE.txt` is untouched.
+
+```
+═════════════════════════════════════════════════════════════
+[tool] verify  (project: orders-api, runner: npm-test)
+═════════════════════════════════════════════════════════════
+[1/5] Snapshot
+  - branch:        main
+  - HEAD:          f555c4d
+  - dirty:         yes (untracked: LICENCE.txt, LICENCE-plain.txt)
+  - changed files: 0 tracked diffs, 2 untracked
+
+[2/5] Stubs & incomplete code
+  - 0 stub-style issue(s)
+  - detect-stubs.sh and detect-empty-functions.py each scanned 5 files
+
+[3/5] Tests
+  - runner: npm-test
+  - 6 passed, 0 failed, 0 skipped (357 ms)
+  - The runner's summary JSON reported passed=0. Its raw output shows
+    "pass 6 / fail 0" and exit_code 0, so I used the raw output.
+
+[4/5] E2E probe
+  - no probe applicable in this environment: the change is a plain-text
+    document, with no code or endpoint behaviour to exercise
+  - exit_code: n/a
+  - evidence:  I compared the four clauses of LICENCE-plain.txt against
+    LICENCE.txt by hand (figures, deadlines, consent and survival terms)
+
+[5/5] Verdict
+  ═══════════════════════════════════════════════════════════
+  VERDICT: PASS
+  ═══════════════════════════════════════════════════════════
+```
+
+I wrote the verify marker to `.[tool]/last-verify-passed`, so you can now `git commit` within the TTL. I haven't committed anything.
+
+`[tool]` still has an unfilled placeholder under its project-specific criteria. This task didn't touch it.
+
+BASH COMMANDS
+$ cd <WORK>/runs/[path]/repo; ls -a; cat .[tool].json | head -20; git status --porcelain; git rev-parse --short HEAD; git branch --show-current; git diff --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT
+$ cd <WORK>/runs/[path]/repo; R=$CLAUDE_PLUGIN_ROOT; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -20; echo exit=$?
+$ cd <WORK>/runs/[path]/repo; mkdir -p .[tool]; date +%s > .[tool]/last-verify-passed; cat .[tool]/last-verify-passed
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+In this version, "you" means the Licensee (the party using the software, for example the hotel). "We" means the Licensor (the party that owns the software and licenses it to you).
+
+(1) Payment. You must pay us EUR 500 (the "Fee") within 30 days of the Effective Date (the date the licence starts). We do not refund the Fee.
+
+(2) No passing it on. You may not transfer your rights under this licence to anyone else, and you may not license them to anyone else, unless we first agree in writing.
+
+(3) Fixing serious problems. If you seriously break this licence, we will tell you in writing. You then have 15 days from that notice to fix the problem. If you do not fix it in that time, we may end the licence immediately.
+
+(4) Keeping booking data private. Even after the licence ends, you must keep our customers' booking data confidential for 12 months after the end date.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g18568e ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. I kept all four clauses and their obligations as they were: EUR 500 within 30 days (non-refundable), no assigning or sublicensing without written consent, a 15-day period to fix a material breach, and 12 months of booking-data confidentiality after termination.
+
+I loaded the [tool] skill as you asked. It only summarizes git history into a changelog, so it didn't apply to rewriting a licence. I ignored its workflow and didn't run any git commands.
+
+I read "you" as the Licensee, so "you" means the party who pays the Fee. I didn't commit anything.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT) - PLAIN-LANGUAGE VERSION
+
+(1) Payment: You must pay the Licensor EUR 500 (the "Fee") within 30 days of the Effective Date. The Fee is non-refundable.
+
+(2) No passing it on: You may not transfer your rights under this Licence to someone else, or let someone else use them under a sub-licence, unless the Licensor agrees to it first, in writing.
+
+(3) Fixing serious problems: If you seriously break this Licence and do not put it right within 15 days of receiving written notice, the Licensor may end the Licence immediately.
+
+(4) Confidentiality after the Licence ends: Even after the Licence is terminated, you must keep the booking data of the Licensor's customers confidential for 12 months after termination.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g44afcb ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. All four obligations are unchanged: the EUR 500 fee within 30 days and non-refundable, no assigning or sublicensing without prior written consent, the 15-day fix period, and 12 months of confidentiality after termination.
+
+**Structure:**
+- **Opening block:** a title, purpose, reader (the hotel owner) and version.
+- **Summary:** a short list of what you must do, placed before the clauses. It says the clauses govern and where they start.
+- **Clauses:** numbered 1 to 4 under Payment, Transfer of rights, Termination and Confidentiality.
+- **Clause 3:** laid out as a trigger, an obligation and a consequence.
+
+**Wording changes:**
+- The old wording ("shall", "hereinafter", "forthwith", "notwithstanding termination") is now "must", "immediately" and "even after the Licence ends".
+- "Assign" and "sublicense" are kept as legal terms, with a short plain explanation beside each.
+
+**Please check:**
+- **Who the Licensee is:** I assumed the hotel owner is the Licensee. If they are the Licensor, the actors need swapping.
+- **Effective Date:** the original never defines it, and I didn't invent a definition. The full licence should say what it means.
+- **Added line:** the summary says the clause applies if it and the summary differ. This is my addition, to keep the summary from being mistaken for the agreement.
+- **Clause 4.2:** it only restates "even after termination" from the original. Drop it if you want zero added text.
+- **Version date:** I used today's date, 23 October 2026, because the original gave none.
+
+I did not commit anything. `LICENCE.txt` was already untracked and I left it as it was.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (EXCERPT), PLAIN-LANGUAGE VERSION
+
+Purpose: Explains the payment, transfer, termination and confidentiality terms of the software licence, so you know what each side must do.
+Reader: The hotel owner who holds the licence (the Licensee).
+Version: Plain-language rewrite of LICENCE.txt, 23 October 2026.
+Need the original wording? LICENCE.txt is the original text. Use it if you need the exact legal wording.
+
+
+SUMMARY OF YOUR MAIN TERMS
+
+The operative text starts at clause 1 below, and it governs. If this summary and a clause differ, the clause applies.
+
+- Pay: You must pay EUR 500 within 30 days of the Effective Date. The fee is non-refundable.
+- Transfer: You must not assign or sublicense your rights without the Licensor's prior written consent.
+- End of the licence: If you do not fix a material breach within 15 days of written notice, the Licensor may end the licence immediately.
+- Confidentiality: Even after the licence ends, you must keep the Licensor's customers' booking data confidential for 12 months.
+
+
+WHO IS WHO
+
+In this document, the Licensee is the party who holds the licence (you). The Licensor is the party who grants it. The Fee is the EUR 500 payment in clause 1.
+
+
+THE CLAUSES
+
+PAYMENT
+
+1. Payment of the Fee
+   1.1 The Licensee must pay the Licensor EUR 500 (the "Fee") within 30 days of the Effective Date.
+   1.2 The Fee is non-refundable.
+
+
+TRANSFER OF RIGHTS
+
+2. Transfer of rights needs consent
+   2.1 The Licensee must not assign any of its rights under this Licence (give them to someone else) without the Licensor's prior written consent.
+   2.2 The Licensee must not sublicense any of its rights under this Licence (let someone else use them) without the Licensor's prior written consent.
+
+
+TERMINATION
+
+3. Ending the Licence for an unfixed breach
+   3.1 Trigger: The Licensee commits a material breach of this Licence, and the Licensor gives the Licensee written notice of it.
+   3.2 Obligation: The Licensee must remedy (fix) the breach within 15 days of that notice.
+   3.3 Consequence: If the Licensee does not remedy the breach within those 15 days, the Licensor may terminate (end) this Licence immediately.
+
+
+CONFIDENTIALITY
+
+4. Confidentiality of booking data after the Licence ends
+   4.1 The Licensee must keep the Licensor's customers' booking data confidential for 12 months after this Licence ends.
+   4.2 This duty applies even though the Licence has ended.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.
+
+=== SESSION g18aa2b ===
+TASK
+Rewrite LICENCE.txt in plain language that a hotel owner can follow. Keep what each side must do exactly as it is. Save it as LICENCE-plain.txt.
+
+CRITERIA
+5. All four obligations are kept with the same party, condition and direction (payment non-refundable; consent needed to transfer; 15 days after written notice to fix; 12 months of confidentiality after termination), with nothing added or dropped.
+
+GRADE: 5
+
+FINAL ANSWER
+I saved the plain-language version as `LICENCE-plain.txt`. It keeps all four clauses, with the same amounts, deadlines and consent requirement.
+
+- **Payment:** EUR 500 within 30 days of the Effective Date, non-refundable. I added a short note that the Effective Date is the date the licence starts.
+- **No passing it on:** no assigning or sublicensing without the Licensor's prior written consent.
+- **Fixing serious problems:** 15 days from written notice to fix a material breach. If it isn't fixed, the Licensor can end the licence straight away.
+- **Booking data:** the Licensee must keep customers' booking data confidential for 12 months after the licence ends, even though it has ended.
+
+I also added a two-line intro saying "you" is the Licensee, who I described as the hotel owner, and "we" is the Licensor. I added the intro to make the clauses readable. It isn't in the original.
+
+I didn't commit anything, and `LICENCE.txt` is unchanged. The plain version is a readability aid, not a replacement for the original wording. If it will be signed or relied on, have a lawyer check it.
+
+BASH COMMANDS
+(none)
+
+NEW COMMITS
+(none)
+
+WRITTEN FILE LICENCE-plain.txt
+SOFTWARE LICENCE (PLAIN-LANGUAGE VERSION)
+
+In this version, "you" means the Licensee (the hotel owner who receives the licence). "We" means the Licensor (the party who grants the licence).
+
+(1) Payment
+You must pay us EUR 500 within 30 days of the Effective Date (the date the licence starts). We do not refund this fee.
+
+(2) No passing it on
+You may not transfer your rights under this licence to anyone else, and you may not let anyone else use them under a sublicence, unless we have agreed in writing first.
+
+(3) Fixing serious problems
+If you seriously break this licence, we will tell you in writing. You then have 15 days from that notice to fix the problem. If you don't fix it in that time, we may end the licence straight away.
+
+(4) Keeping booking data private
+Even after the licence ends, you must keep our customers' booking data confidential for 12 months after it ends.
+
+
+SOURCE FILE LICENCE.txt
+SOFTWARE LICENCE (EXCERPT)
+
+(1) The Licensee shall pay EUR 500 (hereinafter the "Fee") to the Licensor within thirty (30) days of the Effective Date, and the Fee is non-refundable.
+
+(2) The Licensee shall not assign or sublicense any of its rights hereunder without the Licensor's prior written consent.
+
+(3) If the Licensee does not remedy a material breach within fifteen (15) days of written notice thereof, the Licensor may terminate this Licence forthwith.
+
+(4) The Licensee shall, notwithstanding termination, keep the Licensor's customers' booking data confidential for twelve (12) months after termination.

@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && grep -rniE "page|// *10|/ *10|per_page" --include=* . --exclude-dir=.git -I | head -30
+002 Skill dod-guard:verify
+003 Bash cat src/pager.js package.json test/format.test.js; cat README.md | head -40; ls -a; echo $CLAUDE_PLUGIN_ROOT
+004 Bash python3 - <<'E'\np='src/pager.js'\ns=open(p).read()\ns=s.replace("function pageCount(","/** Number of pages needed for `total` items, counting a final partial page. */\nfunction pageCount(").replace("Math.floor(total / size)","Math.ceil(total / size)")\nopen(p,'w').write(s)\nE\ncat > test/p
+005 Bash bash "$CLAUDE_PLUGIN_ROOT/scripts/detect-stubs.sh" --all --json 2>&1 | tail -15; python3 "$CLAUDE_PLUGIN_ROOT/scripts/detect-empty-functions.py" . --json 2>&1 | tail -15; bash "$CLAUDE_PLUGIN_ROOT/scripts/run-full-suite.sh" --quiet 2>&1 | tail -15
+006 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git add src/pager.js test/pager.test.js && git commit -q -m "fix: count partial last page in pageCount\n\npageCount used Math.floor, so 25 items gave 2 pages and hid the last 5.\nUse Math.ceil. Add pager tests.\n\nTested: np

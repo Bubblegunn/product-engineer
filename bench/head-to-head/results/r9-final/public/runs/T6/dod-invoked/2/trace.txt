@@ -1,0 +1,6 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Skill dod-guard:verify
+002 Bash git diff --cached
+003 Bash ls -a; cat .dod-guard.json; git status --porcelain; git rev-parse --short HEAD; git diff --name-only; git diff --cached --name-only; echo ROOT=$CLAUDE_PLUGIN_ROOT; ls src test* 2>/dev/null; cat package.json
+004 Bash R="$CLAUDE_PLUGIN_ROOT"; ls "$R/scripts" 2>&1 | head; bash "$R/scripts/detect-stubs.sh" --all --json 2>&1 | tail -20; python3 "$R/scripts/detect-empty-functions.py" . --json 2>&1 | tail -20; bash "$R/scripts/run-full-suite.sh" --quiet 2>&1 | tail -30; echo ---; npm test 2>&1 | tail -20; cat
+005 Bash node -e "const m=require('./src/mail');const g={name:'Ana',hotel:'Casa Sol',checkInTime:'15:00'};console.log(m.reminderSubject(g));console.log(m.reminderBody(g))"; echo exit=$?; date +%s > .dod-guard/last-verify-passed 2>/dev/null || (mkdir -p .dod-guard && date +%s > .dod-guard/last-verify

@@ -1,0 +1,4 @@
+001 Bash git ls-files && grep -rniE "auth" --include=* -l . --exclude-dir=.git --exclude-dir=node_modules
+002 Bash grep -rniE "auth|middleware" . --exclude-dir=.git --exclude-dir=node_modules; cat src/router.js
+003 Bash cat src/validate.js | head -20; cat package.json; head -5 test/router.test.js
+004 Bash cat > src/auth.js <<'EOF'\n// The token check for routes that need a signed-in caller. The token is a fixed value in this sample.\nfunction requireAuth(req) {\n  return (req.headers || {})['x-token'] === 'secret';\n}\n\nmodule.exports = { requireAuth };\nEOF\npython3 - <<'EOF'\np='src/route

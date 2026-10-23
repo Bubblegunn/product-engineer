@@ -1,0 +1,39 @@
+{
+  "label": "gfadcd8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md says '10 or fewer' but never mentions the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says the commit adds only the fixture and no test calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says it fails on main, and both were run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

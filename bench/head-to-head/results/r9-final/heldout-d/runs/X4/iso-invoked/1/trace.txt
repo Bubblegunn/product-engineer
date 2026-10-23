@@ -1,0 +1,10 @@
+001 Skill iso-24495-plain-language:iso-24495-1
+002 Skill iso-24495-plain-language:iso-24495-3
+003 Bash git ls-files && grep -rniE "page|per_page|// *10|/ *10" --include=* . --exclude-dir=.git | head -30
+004 Bash cat -n src/pager.js package.json; cat test/format.test.js | head -30
+005 Bash sed -i 's/Math.floor(total \/ size)/Math.ceil(total \/ size)/' src/pager.js\ncat > test/pager.test.js <<'E'\nconst test = require('node:test');\nconst assert = require('node:assert');\nconst { pageCount, getPage } = require('../src/pager');\nconst items = n => Array.from({ length: n }, (_, 
+006 Bash git show --stat HEAD | tail -4; grep -n floor src/pager.js; npm test 2>&1 | tail -12
+007 Edit <WORK>/runs/X4-iso-invoked-1/repo/src/pager.js
+008 Bash npm test 2>&1 | grep -E "^# (tests|pass|fail)" && git add -A && git commit -q --amend --no-edit && git show --stat HEAD | tail -4
+009 Bash npm test 2>&1 | tail -12; git status --short
+010 Bash git add -A && git commit -q --amend --no-edit && git show --stat HEAD | tail -4

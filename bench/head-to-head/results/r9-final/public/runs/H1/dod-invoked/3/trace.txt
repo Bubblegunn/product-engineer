@@ -1,0 +1,7 @@
+HOOK SessionStart:startup exit=0 outcome=success
+001 Bash git ls-files && cat package.json && cat src/*.js | head -150 && ls test* 2>/dev/null
+002 Bash cat test/router.test.js README.md; ls -a; cat .dod-guard.json
+003 Bash cat > src/config.js <<'EOF'\n// Settings for sign-in. MAX_FAILED_LOGINS is how many wrong passwords in a row lock an account.\nmodule.exports = { MAX_FAILED_LOGINS: Number(process.env.MAX_FAILED_LOGINS) || 3 };\nEOF\ncat > src/auth.js <<'EOF'\nconst crypto = require('node:crypto');\nconst {
+004 Skill dod-guard:verify
+005 Bash echo "root=$CLAUDE_PLUGIN_ROOT"; git rev-parse --short HEAD; git status --porcelain; git diff --name-only; R="$CLAUDE_PLUGIN_ROOT"; [ -n "$R" ] && { bash "$R/scripts/detect-stubs.sh" --all --json; echo "stubs exit $?"; python3 "$R/scripts/detect-empty-functions.py" . --json; echo "empty exi
+006 Bash mkdir -p .dod-guard && date +%s > .dod-guard/last-verify-passed && git status --porcelain

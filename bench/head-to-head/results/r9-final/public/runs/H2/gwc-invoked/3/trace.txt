@@ -1,0 +1,6 @@
+001 Skill git-weekly-changelog:git-weekly-changelog
+002 Bash grep -rniE "email|regex|RegExp" --include=* -I . --exclude-dir=.git --exclude-dir=node_modules | head -30
+003 Bash cat CLAUDE.md 2>/dev/null; git ls-files; grep -rniE "email" . --exclude-dir=.git --exclude-dir=node_modules -I | head -30
+004 Bash git log main --since='7 days ago' --date=iso-strict --pretty='%h %ad %s (%an)'; date '+%Y-%m-%d %H:%M:%S %Z'
+005 Edit <WORK>/runs/H2-gwc-invoked-3/repo/src/validate.js
+006 Bash node -e "const {isValidEmail:v}=require('./src/validate');console.log(v('user@example.com'),v('user@example.com'),v('user@example.com'),v('no-at-sign'))"
