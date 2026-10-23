@@ -69,6 +69,31 @@ export const JOINT_GRADER_PROMPT = [
   'Example: {"g0a1b2c":{"1":{"pass":true,"why":"..."}}}',
 ].join("\n");
 
+// PE_BENCH_REASON_FIRST=1: the same standard, but each verdict comes after one sentence of reasoning.
+// The parser reads keys by name, so either key order parses.
+const GRADER_REASON_FIRST_REPLY = [
+  'Reply with one JSON object and nothing else. Its keys are the criterion ids as strings, and each value is',
+  '{"why": "one short sentence of reasoning", "pass": true or false}, reasoning first and the verdict after it. Example: {"1":{"why":"...","pass":true}}',
+];
+
+const JOINT_GRADER_REASON_FIRST_REPLY = [
+  'Reply with one JSON object and nothing else: {"<label>":{"<id>":{"why":"one short sentence of reasoning","pass":true or false}}}.',
+  'It has one key per session label, and under each label one key per criterion id as a string. Reasoning comes first, the verdict after it.',
+  'Example: {"g0a1b2c":{"1":{"why":"...","pass":true}}}',
+];
+
+const GRADER_PROMPT_REASON_FIRST = [...GRADER_PROMPT.split("\n").slice(0, -2), ...GRADER_REASON_FIRST_REPLY].join("\n");
+const JOINT_GRADER_PROMPT_REASON_FIRST = [...JOINT_GRADER_PROMPT.split("\n").slice(0, -3), ...JOINT_GRADER_REASON_FIRST_REPLY].join("\n");
+
+// The prompt the grader receives, read at call time so the env switch applies to every call and dry run.
+export function graderPrompt() {
+  return process.env.PE_BENCH_REASON_FIRST === "1" ? GRADER_PROMPT_REASON_FIRST : GRADER_PROMPT;
+}
+
+export function jointGraderPrompt() {
+  return process.env.PE_BENCH_REASON_FIRST === "1" ? JOINT_GRADER_PROMPT_REASON_FIRST : JOINT_GRADER_PROMPT;
+}
+
 export const JOINT_MAX_CHARS = 400000;
 
 export function defaultWorkDir() {
@@ -370,7 +395,7 @@ function guard(workDir, action) {
 export function gradeMaterial(material, ids, { claudeBin, baseDir, home, settings, description = "grade" }) {
   const emptyDir = mkdtempSync(join(tmpdir(), "h2h-grader-"));
   try {
-    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: GRADER_PROMPT, parse: (text) => parseGrades(text, ids), description });
+    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: graderPrompt(), parse: (text) => parseGrades(text, ids), description });
   } finally {
     rmSync(emptyDir, { recursive: true, force: true });
   }
@@ -425,7 +450,7 @@ function callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, pr
 export function gradeJoint(material, idsByLabel, { claudeBin, baseDir, home, settings, description }) {
   const emptyDir = mkdtempSync(join(tmpdir(), "h2h-grader-"));
   try {
-    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: JOINT_GRADER_PROMPT, parse: (text) => parseJointGrades(text, idsByLabel), description });
+    return callGrader(material, { claudeBin, baseDir, emptyDir, home, settings, prompt: jointGraderPrompt(), parse: (text) => parseJointGrades(text, idsByLabel), description });
   } finally {
     rmSync(emptyDir, { recursive: true, force: true });
   }
@@ -512,7 +537,7 @@ function main() {
 
   if (opts.dryRun) {
     const first = jobs[0];
-    process.stdout.write(`--- prompt ---\n${GRADER_PROMPT}\n--- material ---\n${first.material}`);
+    process.stdout.write(`--- prompt ---\n${graderPrompt()}\n--- material ---\n${first.material}`);
     return;
   }
 
@@ -567,7 +592,7 @@ function main() {
     writeFileSync(
       join(gradesDir, `${label}.prompt.txt`),
       redactOwnerEmail(
-        `grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory\n\n--- prompt (-p) ---\n${GRADER_PROMPT}\n\n--- material (stdin) ---\n${job.material}`,
+        `grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory\n\n--- prompt (-p) ---\n${graderPrompt()}\n\n--- material (stdin) ---\n${job.material}`,
         owner,
       ),
     );
@@ -640,7 +665,7 @@ function mainJoint({ opts, runsDir, gradesDir, armsDir, owner, claudeBin, tasks,
   }
   if (opts.dryRun) {
     const first = plans[0];
-    process.stdout.write(`--- prompt ---\n${JOINT_GRADER_PROMPT}\n--- material ---\n${first.sessions.map((x) => x.block).join("\n")}`);
+    process.stdout.write(`--- prompt ---\n${jointGraderPrompt()}\n--- material ---\n${first.sessions.map((x) => x.block).join("\n")}`);
     return;
   }
   mkdirSync(gradesDir, { recursive: true });
@@ -675,7 +700,7 @@ function mainJoint({ opts, runsDir, gradesDir, armsDir, owner, claudeBin, tasks,
       const suffix = chunks.length > 1 ? `-c${c + 1}` : "";
       writeFileSync(
         join(gradesDir, `joint-${taskId}${suffix}.prompt.txt`),
-        redactOwnerEmail(`grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory\n\n--- prompt (-p) ---\n${JOINT_GRADER_PROMPT}\n\n--- material (stdin) ---\n${material}`, owner),
+        redactOwnerEmail(`grader: claude -p, --model claude-sonnet-5-5, --tools "" (no tools), empty working directory\n\n--- prompt (-p) ---\n${jointGraderPrompt()}\n\n--- material (stdin) ---\n${material}`, owner),
       );
       if (!guard(workDir, "check")) {
         process.exitCode = 3;

@@ -45,7 +45,10 @@ export function groupOf(task) {
   throw new Error(`task ${task} is neither core (T) nor home-ground (H)`);
 }
 
-const isOutcome = (c) => (c.label ?? "outcome") === "outcome";
+export const isOutcome = (c) => (c.label ?? "outcome") === "outcome";
+
+// The outcome score of one run: its passed outcome criteria. The table and final-score.mjs both use it.
+export const outcomeScore = (run) => run.criteria.filter((c) => c.pass && isOutcome(c)).length;
 
 // ---------- competitor groups ----------
 
@@ -124,7 +127,7 @@ export function summarize(runs, expected = expectedFromFiles()) {
   for (const run of runs) {
     armSet.add(run.arm);
     taskSet.add(run.task);
-    push(scores, run.task, run.arm, run.criteria.filter((c) => c.pass && isOutcome(c)).length);
+    push(scores, run.task, run.arm, outcomeScore(run));
     push(fullScores, run.task, run.arm, run.criteria.filter((c) => c.pass).length);
     maxOutcome[run.task] = Math.max(maxOutcome[run.task] || 0, run.criteria.filter(isOutcome).length);
     for (const w of run.warnings || []) warnings.push(`${run.id}: ${w}`);
