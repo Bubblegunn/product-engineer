@@ -237,7 +237,7 @@ async function run() {
   const session = readSession(lines);
   // After a block the agent is already repairing: only the checks that are objective run again, and only a new finding blocks.
   const reasons = active ? [] : gate(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
-  const findings = verify({ cwd: input.cwd || process.cwd(), session, answer: String(input.last_assistant_message ?? session.last) });
+  const findings = verify({ cwd: input.cwd || process.cwd(), session, answer: String(input.last_assistant_message ?? session.last), sessionId: input.session_id });
   const texts = [...reasons, ...findings.map((f) => f.text)];
   // The second eye runs only when the other checks leave the answer nearly clean, and never on a repair round (one call per session at most).
   let eyeText = null;

@@ -22,6 +22,7 @@ import { parseRange, range as ledgerRange, tokensOf } from "./range.mjs";
 import { notes as checkNotes } from "./notes.mjs";
 import { FIX_REQUEST, TEST_RUN, findClaims } from "./claim-gate.mjs";
 import { scanAdded } from "./stubs.mjs";
+import { readBaseline } from "./brief.mjs";
 
 const BUDGET_MS = 3000;
 const SHOWN = 5;
@@ -114,7 +115,15 @@ export function parseChange(patch) {
  * The session's change: the working tree (staged and unstaged) against HEAD, else the last commit when the session
  * ran git commit. Null when there is neither, or when HEAD cannot be read.
  */
-function readChange(top, session) {
+function readChange(top, session, sessionId) {
+  // With a session baseline (recorded at SessionStart), the change is what the working tree holds beyond the baseline.
+  // An empty diff from the baseline means the session changed nothing here, unless it ran git commit.
+  const base = baselineRef(top, sessionId);
+  if (base) {
+    const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", "--src-prefix=a/", "--dst-prefix=b/", base], top);
+    if (patch.trim()) return { range: "HEAD", ...parseChange(patch) };
+    if (!session.events.some((e) => e.kind === "bash" && GIT_COMMIT.test(e.command))) return null;
+  }
   let range;
   try {
     if (git(["diff", "--name-only", "HEAD"], top).trim()) range = "HEAD";
@@ -128,6 +137,19 @@ function readChange(top, session) {
   const args = range === "HEAD" ? ["HEAD"] : ["HEAD~1", "HEAD"];
   const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", "--src-prefix=a/", "--dst-prefix=b/", ...args], top);
   return { range, ...parseChange(patch) };
+}
+
+/** The baseline commit or stash of a session when it is recorded and still in the repository, else null. */
+function baselineRef(top, sessionId) {
+  const b = readBaseline(sessionId);
+  const ref = b ? b.stash ?? b.head : null;
+  if (!ref) return null;
+  try {
+    git(["cat-file", "-e", `${ref}^{commit}`], top);
+    return ref;
+  } catch {
+    return null;
+  }
 }
 
 /** Identifier-like tokens of the removed lines of non-test, non-doc, non-lock files, comments left out. */
@@ -486,7 +508,7 @@ function unwiredFile(ctx) {
  * The findings for one session. `limits` may set budgetMs (default 3000) and now (default Date.now); the budget is
  * checked between checks. Any error returns the findings found so far, and no error at all returns no findings.
  */
-export function verify({ cwd = process.cwd(), session, limits = {}, answer } = {}) {
+export function verify({ cwd = process.cwd(), session, limits = {}, answer, sessionId } = {}) {
   try {
     if (!session || !Array.isArray(session.events) || !session.events.some((e) => e.kind === "write")) return [];
     const budget = limits.budgetMs ?? BUDGET_MS;
@@ -502,7 +524,7 @@ export function verify({ cwd = process.cwd(), session, limits = {}, answer } = {
       answer: typeof answer === "string" ? answer : String(session.last ?? ""),
       change: memo(() => {
         try {
-          return readChange(top, session);
+          return readChange(top, session, sessionId);
         } catch {
           return null;
         }

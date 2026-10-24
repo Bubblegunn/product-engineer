@@ -23,6 +23,7 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer twins [range] [--json]
        product-engineer range <from>..<to> [--json]
        product-engineer claims <file|-> [--repo DIR] [--json]
+       product-engineer brief [--hook]
 
 Reads a commit message or pull request description and reports whether it
 carries the "For the customer" block and whether the block reads the way the
@@ -102,6 +103,13 @@ claims reads a text (your final answer, a pull request description) and lists ea
 unit, version-like token and backticked name in it. For each it says "found <file>" when a tracked
 file or the last 50 commits contain it, or "not found". These are candidates, not verdicts. Exit
 codes: 0 ran, 1 empty input, 2 bad arguments, 3 repository unreadable. --repo picks the directory.
+
+brief prints a plain-text brief of the repository for the start of a session: the branch, the state of the
+tree, the last commits with their classes, the test command, unmerged branches, the latest tag, skipped
+tests, identifiers changed, hot files and the authors of the changed files. No model and no network.
+It is silent outside a git work tree. --hook reads the SessionStart JSON on standard input, prints it as
+one JSON line with the brief as additionalContext, and records the session baseline that verify reads.
+PRODUCT_ENGINEER_NO_BRIEF=1 prints no brief.
 
 doctor lists the agents on this machine that carry the skill, in this project and
 in your home directory, and whether each copy still matches the packaged rules.
@@ -450,6 +458,10 @@ async function main(argv) {
   if (command === "range") {
     const { runRange } = await import("./range.mjs");
     return runRange(argv.slice(1));
+  }
+  if (command === "brief") {
+    const { runBrief } = await import("./brief.mjs");
+    return runBrief(argv.slice(1));
   }
   if (command === "claims") {
     const { runClaims } = await import("./claims.mjs");
