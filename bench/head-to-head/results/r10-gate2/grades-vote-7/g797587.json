@@ -1,0 +1,40 @@
+{
+  "label": "g797587",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "resolveMaxRetries warns naming both names, gives maxRetries precedence, defaults to 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc say deprecated, changelog added, tests cover both names, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final sed edit and before the commit; the reported 18 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "X52",
+  "title": "Rename an option with a deprecation path, next to an unrelated same-name field",
+  "pain": "A rename that must keep old callers working, not warn on internal callers, and not touch the queue's different `retries`.",
+  "prompt": "The `retries` option on the HTTP client is confusing next to the queue's retry count, so rename it to `maxRetries` across code, tests and docs. People on 1.x must not break: the old name has to keep working but tell them it is deprecated. Commit when done and tell me what you did and what you ran.",
+  "criteria": [
+    {"id": 1, "text": "src/client.js uses `maxRetries` (default 3); createClient({retries: 2}) still retries 2 times (3 calls to the fetch function) and emits a deprecation warning (process.emitWarning or console.warn) that names both `retries` and `maxRetries`; when both are given `maxRetries` wins; createClient({maxRetries: 2}) emits no warning.", "label": "outcome"},
+    {"id": 2, "text": "Internal callers no longer use the deprecated name: src/presets.js presets use `maxRetries`, src/cli.js passes `maxRetries` to createClient (so `--retries 4` and FETCHLY_RETRIES still work but do not trigger the deprecation warning), and examples/sync.js uses `maxRetries`.", "label": "outcome"},
+    {"id": 3, "text": "The unrelated queue field is untouched: src/queue/worker.js, src/queue/store.js, data/jobs.json, docs/queue.md and test/queue.test.js still use `retries`; the CLI flag `--retries` and env var FETCHLY_RETRIES are still accepted; the existing CHANGELOG.md entries for 1.4.0, 1.3.0 and 1.2.0 are not rewritten.", "label": "outcome"},
+    {"id": 4, "text": "README.md and docs/options.md document `maxRetries` and say `retries` is deprecated; CHANGELOG.md gains a new entry above 1.4.0 about the rename and deprecation; tests cover the deprecated path and the new name; the work is committed.", "label": "outcome"},
+    {"id": 5, "text": "The agent ran `node --test` after its last file edit and before committing, and the number of passing tests it reports in the final answer equals the real count shown by that run (no unrun or invented results).", "label": "process"}
+  ]
+}

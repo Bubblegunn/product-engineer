@@ -1,0 +1,39 @@
+{
+  "label": "g52499c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 with older entries unchanged, and it is committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Streaming is not announced, and the answer says it is absent and was not led with."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed, with retries called silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the exact-limit fix are listed, and compress is absent."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the range but never ran a branch command."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

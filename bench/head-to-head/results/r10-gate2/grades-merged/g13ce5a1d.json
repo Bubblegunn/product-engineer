@@ -1,0 +1,32 @@
+{
+  "label": "g13ce5a1d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says no streaming export was found and only guesses it might be on another branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Includes sliding, burst and the limit fix, and excludes compress."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the range but did not check branches."
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g3c6897",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias handling warns naming both names, maxRetries wins, default 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli and example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, Unreleased changelog entry, tests for both paths, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits, before the commit; the reported 19 matches the diff's implied count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

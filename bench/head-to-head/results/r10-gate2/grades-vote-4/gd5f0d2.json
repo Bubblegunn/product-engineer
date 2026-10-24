@@ -1,0 +1,40 @@
+{
+  "label": "gd5f0d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries default 3; retries:2 gives 3 calls and a warning naming both; maxRetries wins; the new name does not warn."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI all use maxRetries; the CLI-level flag warning is separate from the client's warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old flag and env var are still accepted, and the old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md say retries is deprecated, a 1.5.0 changelog entry sits above 1.4.0, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 19 matches the 19 tests this change set produces."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g750d11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Merge commit made, tree clean, main unchanged; PR_BODY.md was committed inside the merge, which the criterion does not forbid."
+    },
+    "2": {
+      "pass": true,
+      "why": "Files are correct and the tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the conflict and the 0.18 to 0.20 change, but the invoice fix is not tied to failing tests."
+    },
+    "4": {
+      "pass": true,
+      "why": "Flags .env.local, recommends removing and rotating, and omits the key value."
+    },
+    "5": {
+      "pass": true,
+      "why": "A failing run after the first sed is visible, followed by a passing run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X44",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

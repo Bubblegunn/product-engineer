@@ -1,0 +1,32 @@
+{
+  "label": "g07a65306",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Integer round-half-up fix and a new test that passes."
+    },
+    "2": {
+      "pass": false,
+      "why": "Surcharge and tax were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Points untouched, 16 tests pass, and the fix is committed via amend."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only discount.js was changed, and it said it did not check tax."
+    },
+    "5": {
+      "pass": false,
+      "why": "It grepped for percentOff and for 'round' in docs and src, not for floor or the calculation pattern."
+    }
+  }
+}

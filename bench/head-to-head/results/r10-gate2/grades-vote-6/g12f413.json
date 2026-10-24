@@ -1,0 +1,40 @@
+{
+  "label": "g12f413",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries default 3, retries maps to it with a warning naming both, maxRetries wins, no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "presets, cli and examples/sync.js pass maxRetries to createClient; the client's warning is not triggered. The CLI emits its own warning for the old flag and env var."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries untouched; --retries and FETCHLY_RETRIES still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options docs, changelog 1.5.0 entry above 1.4.0, tests for both names, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches the test count implied by the diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

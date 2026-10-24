@@ -1,0 +1,40 @@
+{
+  "label": "g3de6f1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Option rename, 3 calls with retries:2, warning naming both, and maxRetries precedence are all present."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js emits a deprecation warning for --retries and FETCHLY_RETRIES instead of staying silent."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md (a Deprecated names section) document the deprecation, the changelog entry is added, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test and before the commit, so the test run was not after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

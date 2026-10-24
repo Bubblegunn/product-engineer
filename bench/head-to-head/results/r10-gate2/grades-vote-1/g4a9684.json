@@ -1,0 +1,40 @@
+{
+  "label": "g4a9684",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries default 3, retries is aliased with a warning naming both, maxRetries wins, no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI all pass maxRetries to createClient."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files untouched, old flag and env var still accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc state the deprecation, changelog entry added above 1.4.0, tests added, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches the expected count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

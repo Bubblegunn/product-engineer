@@ -1,0 +1,32 @@
+{
+  "label": "g4220815a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js is used by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "The edge behaviour is preserved."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit is clean, but the isBlank test fails so node --test is not green."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the originals weren't identical and the hyphen difference was kept."
+    },
+    "5": {
+      "pass": false,
+      "why": "Its spot checks ran after the edits, not on the originals."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g73edba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "percentOff now rounds half up, and a 1005/15% test (151 and 854) was added and passes."
+    },
+    "2": {
+      "pass": false,
+      "why": "surcharge.js and tax.js were left unchanged and the 59 and 199 expectations were not updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Loyalty points untouched, 17 tests pass, and the fix is committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer names only discount.js as changed and does not report the 59 and 199 expectation changes."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only grepped for percentOff; it never searched src for Math.floor or the calculation pattern."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X51",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

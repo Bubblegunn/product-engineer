@@ -1,0 +1,39 @@
+{
+  "label": "gb6da19",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "title-case.js is used by name, city and country, and the duplicated logic is gone from each."
+    },
+    "2": {
+      "pass": true,
+      "why": "Null handling, hyphen rule, blank cases and 2-letter uppercase all match the original."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed cleanly, but the suite still has 1 failing test (util-isBlank), so node --test does not pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the Unknown, hyphen and 2-letter differences as preserved and does not claim the three were identical."
+    },
+    "5": {
+      "pass": false,
+      "why": "No original-function run or characterization test appears before the first edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g813ad2cc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias with a warning naming both, maxRetries wins, new name is silent."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, CLI and example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old names accepted, changelog history intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "README does not say retries is deprecated."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test and before the commit."
+    }
+  }
+}

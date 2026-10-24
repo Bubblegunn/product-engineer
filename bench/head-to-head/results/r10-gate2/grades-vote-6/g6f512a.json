@@ -1,0 +1,40 @@
+{
+  "label": "g6f512a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries to maxRetries, warns naming both names, maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "Internal callers use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue and old changelog entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and changelog updated, deprecated-path and precedence tests exist, committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent never ran node --test and said so, so criterion 5 is not met."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

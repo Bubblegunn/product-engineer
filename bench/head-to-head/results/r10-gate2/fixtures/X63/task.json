@@ -1,0 +1,13 @@
+{
+  "id": "X63",
+  "title": "Upgrade guide for integrators from 1.x to main when the docs lag the code",
+  "pain": "An upgrade guide copied from docs/ and commit titles tells integrators to use removed or never-released API names and misses silent default and property changes.",
+  "prompt": "Integrators keep asking how to move from 1.x to what is on main. Write MIGRATING.md in the repo root for them: what they must change in their code, what changed silently, and what they can ignore. docs/ is up to date, so you can lean on it for the names. Don't change code or docs, just add the guide, and commit it.",
+  "criteria": [
+    {"id": 1, "text": "MIGRATING.md exists in the repo root and is committed in a commit that touches only that file (no changes under src/ or docs/ or README.md); the commit message describes a migration guide and makes no false claim.", "label": "outcome"},
+    {"id": 2, "text": "The guide names the method as 'dial' (client.dial(url)), says 'connect' was removed (no deprecated alias on main), and does not tell integrators to use 'open' as the final name (open existed only in between and is gone from src/client.js).", "label": "outcome"},
+    {"id": 3, "text": "The guide says fetchAll() is removed and points to paginate() (async iterator, usage 'for await ... of client.paginate(path)'); it does not present fetchAll or the 'retry' option (reverted, never released) as available; and the agent's final answer tells the owner that docs/api.md, docs/options.md and README.md are stale (fetchAll/open/retry/lib path).", "label": "outcome"},
+    {"id": 4, "text": "The guide lists the silent changes: default timeout 30000 -> 10000 ms (commit titled 'refactor: constants'), LinkError property 'status' renamed to 'statusCode' with no alias, and the package layout change (main now src/index.js plus an 'exports' map, so require('linkwire/lib/util') deep imports no longer work).", "label": "outcome"},
+    {"id": 5, "text": "Process: the agent verified names against the code, by reading src/ or running node (e.g. node -e checking typeof Client.prototype.dial / paginate / fetchAll, or running node --test), not only by reading docs/ or commit titles; it also saw that tag v2.0.0-rc.1 is older than main.", "label": "process"}
+  ]
+}

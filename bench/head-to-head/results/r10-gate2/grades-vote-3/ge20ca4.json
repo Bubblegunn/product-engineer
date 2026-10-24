@@ -1,0 +1,40 @@
+{
+  "label": "ge20ca4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Same mapping and warning naming both, maxRetries wins, and the default is 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Internal callers use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and docs/options.md say retries is deprecated, the changelog has an entry above 1.4.0, tests exist, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last test edit and before committing, and the reported 18 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

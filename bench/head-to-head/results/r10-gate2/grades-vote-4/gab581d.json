@@ -1,0 +1,39 @@
+{
+  "label": "gab581d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "shared.js is used by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "The before/after diff on 11 inputs was identical, and the logic matches the original."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed, but the suite still has 1 failure."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the three differences as kept and does not claim they were identical."
+    },
+    "5": {
+      "pass": false,
+      "why": "The old-code comparison ran after the edits via stash, not before the first edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

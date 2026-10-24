@@ -1,0 +1,39 @@
+{
+  "label": "gc7b73c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States what is on main and that a588d56 and 49e9c02 are not."
+    },
+    "2": {
+      "pass": true,
+      "why": "Ran npm test and reports the single failure 'tax uses half-even rounding' (3 == 2) caused by the missing tax code."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased on main; use Dana's line if the tax change lands, otherwise the narrower wording."
+    },
+    "4": {
+      "pass": true,
+      "why": "Nothing committed; only the notes file added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git diff main dana/rounding and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

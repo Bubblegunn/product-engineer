@@ -1,0 +1,40 @@
+{
+  "label": "g171939",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Uses maxRetries with default 3, maps retries, warns naming both names, and maxRetries wins; the warning fires only once per process."
+    },
+    "2": {
+      "pass": false,
+      "why": "Presets, example and CLI pass maxRetries, but --retries and FETCHLY_RETRIES emit a deprecation warning, which the criterion says they must not."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options.md, a new Unreleased changelog entry and tests for old and new names are all present, and the work is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent never ran node --test or npm test, and says so in its answer."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

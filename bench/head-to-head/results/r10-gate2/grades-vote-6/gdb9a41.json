@@ -1,0 +1,40 @@
+{
+  "label": "gdb9a41",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Rename with default 3, deprecated retries maps with a warning naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js emits deprecation warnings for the old flag and env var."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var work."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff only renames the option and does not say retries is deprecated."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test and before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

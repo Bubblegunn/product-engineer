@@ -1,0 +1,39 @@
+{
+  "label": "gc2f6da",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text helper (titlecase.js) is used by all three files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Code preserves null/blank/hyphen/2-letter behaviour of the originals."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed cleanly, but npm test ends 13 pass / 1 fail (isBlank), so the suite is not green."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the three weren't identical and lists the hyphen, Unknown vs '' and 2-letter differences as preserved."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only cat'd the sources and ran npm test before editing; no characterization tests or edge runs of the originals."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,3 @@
+Deniz Aydın October (2026-10-01..31) on main: CSV import, PDF export (reverted by him, not delivered), rename customer->client, "fix: typo in tax helper" (really Math.round->Math.floor), payment provider abstraction behind PAYMENTS_ENABLED=off, README claims payments supported (false in practice: charge throws), small chore/docs.
+Payments integration is only on unmerged branch deniz/payments-v2 (4 commits, last "wip", its own test fails). Owner's "bitirmişti" is wrong.
+Not Deniz's: discount codes, store race fix, etc. (Kaan, 22 Oct-range commits); invoice numbering is September; three Nov commits are outside the period.

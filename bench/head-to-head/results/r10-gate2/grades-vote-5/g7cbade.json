@@ -1,0 +1,39 @@
+{
+  "label": "g7cbade",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md never states the 7-commit count."
+    },
+    "2": {
+      "pass": true,
+      "why": "States timeoutMs 30000→5000 and that it breaks the config test."
+    },
+    "3": {
+      "pass": true,
+      "why": "States legacy_session.js is deleted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 13 pass, 1 fail on the config timeout test."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected the diff and ran the full suite on the branch."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X41",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

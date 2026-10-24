@@ -1,0 +1,39 @@
+{
+  "label": "g47f163",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "2.0.0 section sits above 1.4.0, older entries are untouched, and it is committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Streaming is not announced, and the answer says it is missing and was not led with."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed with migration, including the E_RATE to ERR_RATE_LIMIT code and the silent ignore of retries."
+    },
+    "4": {
+      "pass": true,
+      "why": "Burst, sliding and the limit fix are listed, and compress is not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0..HEAD but never ran git branch -a or log --all."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

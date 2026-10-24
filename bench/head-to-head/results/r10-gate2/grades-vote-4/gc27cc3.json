@@ -1,0 +1,39 @@
+{
+  "label": "gc27cc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is committed above 1.4.0 with the older entries unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is omitted, but the answer says it is not in this repo and never found the branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are listed, with compress left out."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read the diff but never checked branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

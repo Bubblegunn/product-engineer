@@ -1,0 +1,39 @@
+{
+  "label": "g702e93",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is added above 1.4.0 in the existing style and committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Streaming is omitted and the answer names the unmerged feature/streaming-export branch."
+    },
+    "3": {
+      "pass": false,
+      "why": "The retries rename is stated bare with no migration or silent-ignore note, even though the RateError change is covered."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists sliding, burst and the limit behaviour change, and omits compress."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran the v1.4.0..HEAD diff, git branch -a and a log of the feature branch."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g25d89d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Maps retries to maxRetries, emits a warning naming both, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "--retries and FETCHLY_RETRIES call the deprecation warning in the CLI, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README says retries is deprecated, options.md has a deprecated names section, the changelog is updated, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit, and 19 passing matches the reported count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

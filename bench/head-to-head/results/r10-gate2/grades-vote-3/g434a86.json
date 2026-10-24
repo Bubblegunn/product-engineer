@@ -1,0 +1,40 @@
+{
+  "label": "g434a86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions maps retries to maxRetries, warns naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "Internal callers use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and docs/options.md say retries is deprecated, the changelog has an entry, tests exist, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 17 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g371c11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single-file commit with an accurate message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Uses dial, says connect is gone, and says open is not available."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers fetchAll to paginate, and the final answer lists the stale docs, retry and the README lib path."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers the timeout change, statusCode, and main at src/index.js plus the exports map."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read src and ran npm test, but nothing shows it noticed the rc.1 tag is older than main; the guide says 'main (2.0.0-rc.1)'."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X63",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

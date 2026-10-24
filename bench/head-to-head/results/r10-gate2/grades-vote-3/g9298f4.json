@@ -1,0 +1,40 @@
+{
+  "label": "g9298f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries with a warning naming both, maxRetries wins, and the default is 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli.js and the example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old flag and env var are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, docs/options.md, the changelog and tests cover the rename and deprecation, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit, and the reported 19 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

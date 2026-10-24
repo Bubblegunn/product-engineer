@@ -1,0 +1,32 @@
+{
+  "label": "g793aa84d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Claims no streaming export in the history and does not identify an unmerged branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "All three shipped changes are listed, and compress is not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read the diff but did not check branches."
+    }
+  }
+}

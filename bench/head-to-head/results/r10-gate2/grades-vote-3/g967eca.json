@@ -1,0 +1,39 @@
+{
+  "label": "g967eca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "country.js still has its own trim/collapse and cap code, and cap is duplicated across files, so the logic is not fully shared."
+    },
+    "2": {
+      "pass": true,
+      "why": "Equivalent behaviour."
+    },
+    "3": {
+      "pass": false,
+      "why": "The suite fails on isBlank."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explains the differences and says each formatter keeps its own rule."
+    },
+    "5": {
+      "pass": false,
+      "why": "No pre-edit check."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

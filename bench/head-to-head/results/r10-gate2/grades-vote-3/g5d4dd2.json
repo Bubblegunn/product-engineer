@@ -1,0 +1,40 @@
+{
+  "label": "g5d4dd2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "client.js uses maxRetries (default 3), maps retries with a warning naming both, maxRetries wins, and the new option emits no warning."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and cli.js all pass maxRetries to the client."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old flag and env var still parse, and old CHANGELOG entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md document maxRetries and mark retries deprecated; CHANGELOG entry added; tests cover both paths; committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches the raw output."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

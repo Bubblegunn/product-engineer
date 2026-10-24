@@ -1,0 +1,40 @@
+{
+  "label": "g102b5f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour is correct, with a warning naming both options."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns on --retries and FETCHLY_RETRIES."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue and old changelog entries are untouched, and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options.md, changelog, tests and commit are all in place."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit; the reported 19 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

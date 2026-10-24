@@ -1,0 +1,40 @@
+{
+  "label": "g5315ba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "client.js uses maxRetries (default 3), maps retries with a warning naming both, maxRetries wins, and the new name is silent."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js maps to maxRetries but calls warnDeprecated on --retries and FETCHLY_RETRIES, so the old CLI inputs do trigger a deprecation warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old CHANGELOG entries are untouched, and the old flag and env var are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md document maxRetries and mark retries deprecated, the changelog entry sits above 1.4.0, tests cover both paths, and the work is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The final answer says no tests were run, so there was no node --test run before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

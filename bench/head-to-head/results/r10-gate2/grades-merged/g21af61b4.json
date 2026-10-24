@@ -1,0 +1,32 @@
+{
+  "label": "g21af61b4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js is used by all three formatters and replaces the duplicated logic."
+    },
+    "2": {
+      "pass": true,
+      "why": "The refactored code matches the original on every listed edge input."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit scope is clean, but the isBlank test fails so node --test is not green."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says the three differ slightly in hyphens, 'Unknown' and 2-letter countries, that those were kept, and that behaviour is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "Its only edge-input node -e run came after the edits, so nothing was checked on the originals first."
+    }
+  }
+}

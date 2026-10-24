@@ -1,0 +1,40 @@
+{
+  "label": "g89365d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries to maxRetries and the warning names both. The warning fires once per process, which still satisfies a fresh-process check."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli.js and the example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var work."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and docs/options.md document the deprecation, a 1.5.0 changelog entry sits above 1.4.0, tests exist, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran once after all edits and before the commit, and the reported 19 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

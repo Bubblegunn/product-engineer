@@ -1,0 +1,32 @@
+{
+  "label": "gcfef0dcb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single-file commit with an accurate message."
+    },
+    "2": {
+      "pass": true,
+      "why": "dial is the name, connect is removed, open should not be used."
+    },
+    "3": {
+      "pass": true,
+      "why": "fetchAll replaced by paginate, retry ignored, final answer says docs and README are stale."
+    },
+    "4": {
+      "pass": true,
+      "why": "Timeout, statusCode and exports are covered."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran node --test and read src, but the guide treats main as rc.1."
+    }
+  }
+}

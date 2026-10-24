@@ -1,0 +1,39 @@
+{
+  "label": "gce5c87",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js helper used by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "Logic is equivalent to the original on all listed edge inputs."
+    },
+    "3": {
+      "pass": false,
+      "why": "The isBlank test still fails, so node --test is not green."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names the differences (hyphens, Unknown, 2-letter) and says they were kept."
+    },
+    "5": {
+      "pass": false,
+      "why": "The node -e spot check ran after the edits, not on the originals."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

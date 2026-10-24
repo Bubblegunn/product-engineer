@@ -1,0 +1,40 @@
+{
+  "label": "g42c661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions maps retries to maxRetries with a warning naming both, maxRetries wins, and no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and cli.js use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files untouched, the old flag and env var accepted, and old changelog entries not rewritten."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests cover the rename and deprecation, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit; the 18 reported is consistent with the run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

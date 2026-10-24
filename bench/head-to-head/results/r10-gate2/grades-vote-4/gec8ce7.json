@@ -1,0 +1,39 @@
+{
+  "label": "gec8ce7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the lineTotal fix and tests are on main under new hashes, and tax.js and the changelog commits are not."
+    },
+    "2": {
+      "pass": false,
+      "why": "Explicitly did not run the tests and only says the test will probably fail."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Unreleased is empty and the entry is branch-only, tying the wording to whether the tax change ships."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits, and only the notes file was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Compared diffs by content but never ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

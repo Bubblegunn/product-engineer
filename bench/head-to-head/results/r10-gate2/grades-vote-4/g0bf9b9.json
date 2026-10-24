@@ -1,0 +1,39 @@
+{
+  "label": "g0bf9b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js is shared by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "Logic is the same as the original on all listed edge inputs."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed cleanly, but node --test still has 1 failure."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explicitly says the three weren't identical and gives the hyphen, Unknown and 2-letter differences as preserved."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only read the files and ran npm test before editing, with no edge-case run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

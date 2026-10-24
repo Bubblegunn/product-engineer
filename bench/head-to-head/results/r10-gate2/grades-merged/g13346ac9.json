@@ -1,0 +1,32 @@
+{
+  "label": "g13346ac9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries to maxRetries with a warning naming both; maxRetries wins; 3 calls with retries:2."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI emits deprecation warnings for --retries and FETCHLY_RETRIES, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests are present, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test was run after the last source edit; the reported 19 matches the count."
+    }
+  }
+}

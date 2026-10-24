@@ -1,0 +1,39 @@
+{
+  "label": "gc222f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "2.0.0 section sits above 1.4.0 with Added/Changed/Fixed, older entries untouched, committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is left out, but the answer says it isn't in the repo and never finds feature/streaming-export."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed with migration notes."
+    },
+    "4": {
+      "pass": true,
+      "why": "burst, sliding and the limit fix are listed, and compress is left out."
+    },
+    "5": {
+      "pass": false,
+      "why": "It diffed v1.4.0..HEAD but never looked at branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

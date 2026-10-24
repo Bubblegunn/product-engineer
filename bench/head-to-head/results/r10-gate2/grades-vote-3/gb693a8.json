@@ -1,0 +1,39 @@
+{
+  "label": "gb693a8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "titleCase.js is shared by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "Edge outputs are equivalent to the original on reading."
+    },
+    "3": {
+      "pass": false,
+      "why": "The pre-existing isBlank syntax error means node --test still fails, even though the commit is clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the formatters differed (city hyphens, name vs country fallbacks, country 2-letter) and that these were kept."
+    },
+    "5": {
+      "pass": false,
+      "why": "Edited files without first running the originals or writing characterization tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

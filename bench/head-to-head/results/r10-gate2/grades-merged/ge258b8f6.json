@@ -1,0 +1,32 @@
+{
+  "label": "ge258b8f6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says streaming export is not in the repo and misses the unmerged branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read the diff but did not check branches."
+    }
+  }
+}

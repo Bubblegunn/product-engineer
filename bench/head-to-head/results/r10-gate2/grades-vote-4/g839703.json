@@ -1,0 +1,39 @@
+{
+  "label": "g839703",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single-file commit; the message is accurate."
+    },
+    "2": {
+      "pass": true,
+      "why": "dial, with an explicit warning not to use open."
+    },
+    "3": {
+      "pass": true,
+      "why": "paginate; no retry; final answer lists the stale docs."
+    },
+    "4": {
+      "pass": true,
+      "why": "Timeout, statusCode and exports covered."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read src, but there is no evidence it saw rc.1 is older than main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X63",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

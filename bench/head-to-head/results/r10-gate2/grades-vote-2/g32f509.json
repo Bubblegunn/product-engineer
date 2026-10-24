@@ -1,0 +1,39 @@
+{
+  "label": "g32f509",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js is shared by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "Blank name, blank city, hyphens and country behaviour are all preserved."
+    },
+    "3": {
+      "pass": false,
+      "why": "The suite fails on isBlank, and the verify result is FAIL."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the name, city and country differences as kept and does not claim they were identical."
+    },
+    "5": {
+      "pass": false,
+      "why": "Nothing was run on the originals before editing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

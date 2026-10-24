@@ -1,0 +1,40 @@
+{
+  "label": "g81fc0c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions maps retries to maxRetries with a warning naming both, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still emits retries for the old flag and env var, so the client deprecation warning fires."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md document maxRetries and the deprecation, the changelog entry is added, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last (comment) edit and before the commit, and 19 matches the test count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

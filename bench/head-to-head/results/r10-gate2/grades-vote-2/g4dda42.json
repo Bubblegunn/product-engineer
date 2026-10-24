@@ -1,0 +1,39 @@
+{
+  "label": "g4dda42",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correctly identifies the partial landing with different hashes."
+    },
+    "2": {
+      "pass": false,
+      "why": "Explicitly did not run tests; only predicts a likely failure."
+    },
+    "3": {
+      "pass": true,
+      "why": "Unreleased is empty; add the entry once the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "Read-only; only the notes file added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Did content diffs but never ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

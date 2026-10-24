@@ -1,0 +1,40 @@
+{
+  "label": "g312814",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions warns naming both names, maps correctly, and maxRetries wins."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still outputs `retries` for the old flag and env var, which reaches createClient and triggers the warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests are in place and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit (the comment tweak) and before the commit; the 19 reported matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g803e60",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias, warning naming both, precedence and no warning for the new name are all implemented."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still sets opts.retries, so --retries and FETCHLY_RETRIES reach createClient under the deprecated name and trigger its warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, changelog history intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and changelog updated, tests added, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit; the reported 20 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

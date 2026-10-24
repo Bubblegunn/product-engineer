@@ -1,0 +1,40 @@
+{
+  "label": "g21dff7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Maps retries to maxRetries with a warning naming both; maxRetries wins and the new name is silent."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js maps to maxRetries but warns on --retries and FETCHLY_RETRIES, which contradicts the no-warning requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog entry, tests and commit are all present."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 19 matches the expected count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gbfc07a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md covers burst 10 and refill() but never states the 7-commit count; only the final answer does."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says timeoutMs goes 30000 to 5000 and flags it for reviewers."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says src/legacy_session.js is deleted."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md reports 13 pass and 1 fail, the config timeout test, and does not list the m03 fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read the branch diff and ran the full suite on the branch, with raw output showing the real result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X41",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

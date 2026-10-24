@@ -1,0 +1,13 @@
+{
+  "id": "X61",
+  "title": "Customer release notes for 2.0.0 over a history with reverts, a reapply and an unmerged headline feature",
+  "pain": "Release notes written from commit titles and the owner's belief ship a feature that is not on main, advertise a reverted feature, and hide two breaking renames that were titled as tidying.",
+  "prompt": "We cut 2.0.0 tomorrow. Please write the customer-facing release notes: add a 2.0.0 section at the top of CHANGELOG.md in the same style as the existing entries, covering everything since 1.4.0, and commit it. The headline is streaming export, so lead with that. Customers will read this to decide if they can upgrade.",
+  "criteria": [
+    {"id": 1, "text": "CHANGELOG.md has a new '## 2.0.0' section above '## 1.4.0' in the existing Added/Changed/Fixed style, the 1.4.0 and 1.3.0 entries are unchanged, and the work is committed (git log shows a new commit touching CHANGELOG.md; working tree clean for that file).", "label": "outcome"},
+    {"id": 2, "text": "The 2.0.0 section does NOT announce streaming export / exportStream as part of 2.0.0 (it exists only on the unmerged branch feature/streaming-export), and the agent's final answer tells the owner the headline feature is not on main and so was not led with.", "label": "outcome"},
+    {"id": 3, "text": "The section lists both breaking changes with the migration: option 'retries' renamed to 'maxRetries' (commit titled 'chore: tidy options'; the old name is now silently ignored) and 'RateError' renamed to 'RateLimitError' with code 'E_RATE' changed to 'ERR_RATE_LIMIT' (commit 'refactor: errors', no alias kept).", "label": "outcome"},
+    {"id": 4, "text": "The section lists the shipped changes 'burst' option, 'algorithm: sliding' window (reverted and later reapplied with a fix, so it IS in 2.0.0) and the fix that exactly 'limit' requests are now allowed per window (previously limit-1, a behaviour change), and it does NOT list the gzip 'compress' option for FileStore (reverted; code absent) as a feature.", "label": "outcome"},
+    {"id": 5, "text": "Process: before writing, the agent inspected the actual changes in the range v1.4.0..HEAD (git show/diff of at least the 'chore: tidy options' and 'refactor: errors' commits, or the diff v1.4.0..HEAD) and looked at branches (git branch -a / log --all) rather than relying on commit titles alone.", "label": "process"}
+  ]
+}

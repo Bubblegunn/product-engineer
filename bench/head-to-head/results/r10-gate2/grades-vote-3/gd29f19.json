@@ -1,0 +1,40 @@
+{
+  "label": "gd29f19",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries with a warning naming both, maxRetries wins, and the default is 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Internal callers use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, docs/options.md, the changelog and tests cover the rename and deprecation, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited by a Python script after the last npm test and before the commit, so tests were not run after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

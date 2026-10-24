@@ -1,0 +1,40 @@
+{
+  "label": "g1696fb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client uses maxRetries, warns naming both names, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI all use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old CLI inputs are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc say retries is deprecated, the changelog has a new entry, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran after the last file edit and before the commit, and the 19 passed it reports matches the run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

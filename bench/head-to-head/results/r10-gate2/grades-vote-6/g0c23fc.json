@@ -1,0 +1,40 @@
+{
+  "label": "g0c23fc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries default 3, retries maps with a warning naming both, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns on --retries and FETCHLY_RETRIES."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var work."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff only renames the option and does not mention deprecation."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and 19 matches the test count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ge22443",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config, healthcheck and both tests moved to 8080 in the diff."
+    },
+    "2": {
+      "pass": true,
+      "why": "All other port-bearing files were changed to 8080."
+    },
+    "3": {
+      "pass": false,
+      "why": "The sed rewrote the CHANGELOG 0.2.0 history line from 3000 to 8080."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says staging was not changed, names pingboard-infra and app_port, and leaves docs/deploy.md alone."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep for 3000 across all files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X53",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

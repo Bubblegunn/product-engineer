@@ -1,0 +1,40 @@
+{
+  "label": "gf68cf6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour is correct for all four cases."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue is untouched, the old CLI names are accepted, and the old changelog is untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The docs state the deprecation, the changelog entry is added, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "The full suite ran after the last edit and before the commit; the reported 20 matches the real count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

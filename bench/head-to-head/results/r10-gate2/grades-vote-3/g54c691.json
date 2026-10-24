@@ -1,0 +1,40 @@
+{
+  "label": "g54c691",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "client.js defaults maxRetries to 3, maps retries to it with a warning naming both, maxRetries wins, and maxRetries alone gives no warning."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli.js and examples/sync.js all use maxRetries, so createClient never sees the old name from the CLI."
+    },
+    "3": {
+      "pass": true,
+      "why": "No queue files were touched, --retries and FETCHLY_RETRIES are still accepted, and older changelog entries are intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff only renames the option and never says retries is deprecated; only docs/options.md does."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 18 matches the expected count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

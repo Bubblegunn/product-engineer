@@ -1,0 +1,39 @@
+{
+  "label": "g192934",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Turkish file of about 30 lines, untracked, no commits."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says payments are incomplete but never finds deniz/payments-v2, its wip commit or the failing test."
+    },
+    "3": {
+      "pass": true,
+      "why": "Credits CSV import and the client rename and leaves out Sept/Nov/discount work."
+    },
+    "4": {
+      "pass": false,
+      "why": "Calls the tax change a typo fix and never mentions Math.round to Math.floor."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never looked at other branches, and ran git show only with --stat on the tax commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X62",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gda5b77",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries with a warning naming both; maxRetries wins; the new name is silent."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns for the old flag and env var."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue and old changelog entries are untouched, and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog, tests and commit are complete."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and again after it; the reported 19 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

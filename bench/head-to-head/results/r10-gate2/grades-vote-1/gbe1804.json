@@ -1,0 +1,39 @@
+{
+  "label": "gbe1804",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed, using Added plus an action-required block."
+    },
+    "2": {
+      "pass": true,
+      "why": "Does not announce streaming export and tells the owner it is only on the unmerged branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes the old name is silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is explicitly marked as not in the release."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read the diff and inspected main..feature/streaming-export, so it was branch-aware."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

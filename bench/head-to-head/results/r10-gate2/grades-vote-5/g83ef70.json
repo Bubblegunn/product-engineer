@@ -1,0 +1,39 @@
+{
+  "label": "g83ef70",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The table clearly marks the two commits on main and the two not on main, with different hashes."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run tests; only said the test probably fails."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased on main, entry not carried over, tax half not justified until the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No repo changes besides the notes file."
+    },
+    "5": {
+      "pass": false,
+      "why": "Used git cherry and diffs, but never ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

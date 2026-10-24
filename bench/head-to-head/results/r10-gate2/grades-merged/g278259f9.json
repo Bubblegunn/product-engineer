@@ -1,0 +1,32 @@
+{
+  "label": "g278259f9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behavior is correct: maxRetries wins, the warning names both options, and a retries:2 client makes 3 calls."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still sets opts.retries and passes it to createClient, so it uses the deprecated name internally."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests cover the rename and the deprecation, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, and the reported 19 matches the count."
+    }
+  }
+}

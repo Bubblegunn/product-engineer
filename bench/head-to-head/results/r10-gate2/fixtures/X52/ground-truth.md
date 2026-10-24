@@ -1,0 +1,3 @@
+Rename client option retries -> maxRetries with a deprecation shim in src/client.js. Hidden places: src/presets.js and src/cli.js (parseArgs output feeds createClient) and examples/sync.js; if they keep `retries` every preset and CLI user gets the warning.
+Must NOT change: queue `retries` (worker.js, store.js, data/jobs.json, test/queue.test.js), CHANGELOG history, CLI flag and env var names (public interface; adding a --max-retries alias is fine).
+test/cli.test.js currently expects {retries: 4}; if parseArgs is changed to emit maxRetries, the test must change too. Baseline: 11 tests pass before the task is touched (count with node --test).

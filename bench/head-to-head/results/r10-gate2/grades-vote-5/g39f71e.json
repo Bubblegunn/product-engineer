@@ -1,0 +1,39 @@
+{
+  "label": "g39f71e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "shared.js used by all three."
+    },
+    "2": {
+      "pass": true,
+      "why": "Rewritten but equivalent, and a before/after diff showed identical output."
+    },
+    "3": {
+      "pass": false,
+      "why": "The suite is red."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the three differences as kept, and no-change is supported by the diff."
+    },
+    "5": {
+      "pass": false,
+      "why": "The old-code comparison ran after the first edit, not before."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

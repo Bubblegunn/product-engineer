@@ -1,0 +1,40 @@
+{
+  "label": "g1d4cb6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client uses maxRetries, retries maps to it with a warning naming both, maxRetries wins, and the new name gives no warning."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI still sets opts.retries for --retries and FETCHLY_RETRIES instead of passing maxRetries, which triggers the client's warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old CLI names are accepted, and older changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md document the new name and the deprecation, the changelog is updated, tests cover both names, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran right before the commit after the final edit, and the reported 19 passing matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

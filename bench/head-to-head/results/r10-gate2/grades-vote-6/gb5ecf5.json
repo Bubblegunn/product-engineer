@@ -1,0 +1,40 @@
+{
+  "label": "gb5ecf5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries is the option with default 3, retries maps to it and warns naming both (once per process), maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js passes retries to createClient for the old flag and env var, so they trigger the client deprecation warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var still work."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md mark retries deprecated, the changelog entry is added, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final edits and the reported 19 matches the test count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

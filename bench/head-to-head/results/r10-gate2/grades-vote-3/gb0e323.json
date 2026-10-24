@@ -1,0 +1,40 @@
+{
+  "label": "gb0e323",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "resolveOptions maps retries to maxRetries with a warning naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still passes the deprecated `retries` key to createClient for --retries and FETCHLY_RETRIES, so the warning is triggered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old flag and env var are accepted, and old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md are updated, the changelog entry is added, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with no later edits; the 20 reported matches the re-run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

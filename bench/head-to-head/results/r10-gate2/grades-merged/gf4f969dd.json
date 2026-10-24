@@ -1,0 +1,32 @@
+{
+  "label": "gf4f969dd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States only 2 of 4 commits are on main as copies with new hashes, and the tax refactor and changelog are not."
+    },
+    "2": {
+      "pass": true,
+      "why": "Ran npm test and reports the half-even test failing (3 vs 2) due to the missing tax.js change."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says main's Unreleased is empty, Dana's line is branch-only, and the wording is wrong without the tax half."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; only REVIEW_NOTES.md added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git diff, git grep and file reads, and ran npm test on main."
+    }
+  }
+}

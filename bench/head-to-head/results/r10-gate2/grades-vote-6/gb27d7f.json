@@ -1,0 +1,40 @@
+{
+  "label": "gb27d7f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions gives maxRetries precedence and warns naming both names."
+    },
+    "2": {
+      "pass": true,
+      "why": "Internal callers use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, old changelog intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog, tests and commit are present."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit; the reported 18 matches the diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

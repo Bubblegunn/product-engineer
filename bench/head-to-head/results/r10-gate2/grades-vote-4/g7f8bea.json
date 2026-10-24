@@ -1,0 +1,40 @@
+{
+  "label": "g7f8bea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour is correct; the warning names both retries and maxRetries."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue is untouched, the old CLI names are accepted, and the old changelog is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "README only renames the option and never says retries is deprecated, although options.md does."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 18 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

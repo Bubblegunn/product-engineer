@@ -1,0 +1,39 @@
+{
+  "label": "ge8f629",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is present with Breaking, Added and Changed headings, above 1.4.0, and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is left out, but it says it couldn't find the feature and never finds the branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed, noting that retries is silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "burst, sliding and the limit change are listed, and compress is excluded."
+    },
+    "5": {
+      "pass": false,
+      "why": "It diffed the range and showed commits but never looked at branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

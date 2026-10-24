@@ -1,0 +1,39 @@
+{
+  "label": "g0b785a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "percentOff fixed with +50 rounding and a 1005/15% test was added."
+    },
+    "2": {
+      "pass": false,
+      "why": "surcharge.js and tax.js were left unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Points untouched, tests passed, and the work was committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only discount.js was changed; surcharge and tax were not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped percentOff callers; no repo-wide search for Math.floor or the calculation."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X51",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

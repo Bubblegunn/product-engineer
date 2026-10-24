@@ -1,0 +1,39 @@
+{
+  "label": "ge1ffcd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config, healthcheck and both tests moved to 8080."
+    },
+    "2": {
+      "pass": true,
+      "why": "All listed files updated to 8080."
+    },
+    "3": {
+      "pass": true,
+      "why": "Unrelated 3000 values and the 0.2.0 line untouched; node --test run and committed."
+    },
+    "4": {
+      "pass": true,
+      "why": "States staging unchanged and that app_port in pingboard-infra needs changing; deploy.md untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep for 3000."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X53",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

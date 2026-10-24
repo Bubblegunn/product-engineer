@@ -1,0 +1,32 @@
+{
+  "label": "g5e14913d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js is used by all three formatters and the shared trim, collapse and title-case logic is gone from each."
+    },
+    "2": {
+      "pass": true,
+      "why": "The code paths reproduce the original edge outputs, including the hyphen, blank and two-letter-code cases."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit is clean and excludes TODO.md and notes-draft.md, but test/util-isBlank.test.js still fails so node --test does not pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "It lists the name/city/country differences as preserved and says behaviour is unchanged, which the code supports."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only cat'd the sources and ran npm test before overwriting the files; it never ran the originals on edge inputs."
+    }
+  }
+}

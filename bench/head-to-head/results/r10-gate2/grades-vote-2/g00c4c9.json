@@ -1,0 +1,40 @@
+{
+  "label": "g00c4c9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behaviour is correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns on --retries and FETCHLY_RETRIES."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue and old changelog entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options doc, changelog and tests are updated, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 18 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g8148bd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "shared.js is used by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "tidySpaces maps null to '' and each formatter keeps its own rule, so edge outputs match the original."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed cleanly, but the suite still has 1 failure."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names the Unknown, hyphen and 2-letter differences and says each keeps its own rule."
+    },
+    "5": {
+      "pass": false,
+      "why": "No pre-edit characterization or original-function run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "gaef5ce40",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries to maxRetries with a warning naming both; maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "cli maps old names to maxRetries; presets and example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, old changelog entries are intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff only renames the option and never says retries is deprecated."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 18 matches the count."
+    }
+  }
+}

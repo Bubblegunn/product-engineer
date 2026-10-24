@@ -1,0 +1,40 @@
+{
+  "label": "gff9d20",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "maxRetries default 3; retries:2 gives 3 calls and a DeprecationWarning naming both names; maxRetries wins; no warning for maxRetries alone."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI all pass maxRetries to createClient."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files untouched, --retries and FETCHLY_RETRIES still accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc say retries is deprecated, changelog entry added above 1.4.0, tests cover both names, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches the count implied by the diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

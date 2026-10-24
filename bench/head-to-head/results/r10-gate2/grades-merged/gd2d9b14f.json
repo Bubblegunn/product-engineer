@@ -1,0 +1,32 @@
+{
+  "label": "gd2d9b14f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct alias, warning naming both options, precedence and no warning for the new name."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI warns on the deprecated flag and env var, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, changelog history intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "README only renames to maxRetries and never says retries is deprecated."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit; the reported 19 matches."
+    }
+  }
+}

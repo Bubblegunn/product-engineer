@@ -1,0 +1,39 @@
+{
+  "label": "gf60d45",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "It uses 'Action required' and 'Not in this release' headings instead of Changed and Fixed, which departs from the existing style."
+    },
+    "2": {
+      "pass": true,
+      "why": "It found the unmerged branch, did not announce streaming as shipped, and told the owner."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed with migration."
+    },
+    "4": {
+      "pass": true,
+      "why": "burst, sliding and the limit change are listed, and compress is not presented as a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "It showed the commit diffs and ran git branch -a and main..feature/streaming-export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

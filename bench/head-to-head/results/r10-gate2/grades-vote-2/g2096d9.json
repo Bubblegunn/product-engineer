@@ -1,0 +1,40 @@
+{
+  "label": "g2096d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behaviour is correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns on the old flag and env var."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue and old changelog entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc say deprecated, there is a new changelog entry, tests cover both names, and the work is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The docs table was edited after the last npm test, so no test run followed the final edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g9cbe67be",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "normalizeOptions maps retries to maxRetries with a warning naming both; maxRetries wins."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js still sets opts.retries for the old flag and env var, so it passes the deprecated name to createClient."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests are present, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches the count."
+    }
+  }
+}

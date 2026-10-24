@@ -1,0 +1,40 @@
+{
+  "label": "g9e1ef5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client logic, warning and precedence are correct in the code."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI warns on the deprecated flag and env var, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old CLI inputs are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and changelog are updated and the work is committed, and tests cover the deprecated path (working) and the new name, though not the warning."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent never ran node --test before committing and says so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

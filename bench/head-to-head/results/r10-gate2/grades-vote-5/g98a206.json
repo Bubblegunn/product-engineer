@@ -1,0 +1,40 @@
+{
+  "label": "g98a206",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries to maxRetries with a warning naming both, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI still sets opts.retries for --retries and FETCHLY_RETRIES, so internal callers still use the deprecated name and trigger the warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md mention the deprecation, the changelog is updated, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 19 passing matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

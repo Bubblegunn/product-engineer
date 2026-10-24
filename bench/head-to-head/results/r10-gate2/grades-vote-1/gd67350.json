@@ -1,0 +1,39 @@
+{
+  "label": "gd67350",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says it could not find the feature and does not identify the unmerged branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes retries is silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read the diff but did not inspect branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

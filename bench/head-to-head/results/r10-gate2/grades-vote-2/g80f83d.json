@@ -1,0 +1,39 @@
+{
+  "label": "g80f83d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "text.js holds normalizeSpaces and titleCase, used by all three."
+    },
+    "2": {
+      "pass": true,
+      "why": "Edge behaviour is preserved by the code."
+    },
+    "3": {
+      "pass": false,
+      "why": "The suite still has one failing test, so node --test does not pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explicitly says the originals were not identical and the differences were kept."
+    },
+    "5": {
+      "pass": false,
+      "why": "Spot checks were run only on the new code, after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

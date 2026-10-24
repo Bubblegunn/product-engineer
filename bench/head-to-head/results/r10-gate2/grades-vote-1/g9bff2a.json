@@ -1,0 +1,39 @@
+{
+  "label": "g9bff2a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Short Turkish file, about 20 lines, untracked, no commits."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says payment is incomplete but never mentions the unmerged deniz/payments-v2 branch, its wip commit or its failing test."
+    },
+    "3": {
+      "pass": true,
+      "why": "Credits only CSV import, the rename and other Deniz October items, with no discount, September or November work."
+    },
+    "4": {
+      "pass": false,
+      "why": "Calls the tax commit a typo fix without the Math.floor rounding change, though it correctly omits the reverted PDF export from delivered."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never looked at other branches and did not git show the tax commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X62",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

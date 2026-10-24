@@ -1,0 +1,40 @@
+{
+  "label": "g29d980",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries to maxRetries with a warning naming both; maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "The cli maps the old flag and env var to maxRetries; presets and example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md say retries is deprecated, the changelog entry is added, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run last before the commit, and the reported 18 matches the count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

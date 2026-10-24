@@ -1,0 +1,39 @@
+{
+  "label": "g903506",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States main has re-created copies of two commits and lacks tax.js and the changelog entry."
+    },
+    "2": {
+      "pass": true,
+      "why": "Ran npm test and reports the half-even tax test failing (3 vs 2)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Unreleased is empty and not to add Dana's line until the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits, and only the notes file was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git diff main dana/rounding and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

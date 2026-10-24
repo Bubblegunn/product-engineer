@@ -1,0 +1,39 @@
+{
+  "label": "g491723",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section uses Added, Changed and Fixed headings, above 1.4.0, and is committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is left out, but it says the feature isn't in the repo and never finds the branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed with migration, noting silent ignore."
+    },
+    "4": {
+      "pass": true,
+      "why": "burst, sliding and the limit change are listed, and compress is excluded."
+    },
+    "5": {
+      "pass": false,
+      "why": "It diffed the range but never looked at branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

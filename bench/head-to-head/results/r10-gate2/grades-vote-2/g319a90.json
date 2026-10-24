@@ -1,0 +1,40 @@
+{
+  "label": "g319a90",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Warning names both options (once per process), maxRetries wins, retries:2 gives 3 calls, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI still passes retries to createClient for the old flag and env var, which triggers the client warning, and it does not pass maxRetries for them."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries untouched, and the old CLI inputs are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs mark retries as deprecated, a changelog entry is added, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and 19 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

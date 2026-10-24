@@ -1,0 +1,40 @@
+{
+  "label": "gfafee0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client implements maxRetries with a deprecation warning naming both names, and maxRetries wins."
+    },
+    "2": {
+      "pass": false,
+      "why": "CLI still sets opts.retries for --retries and FETCHLY_RETRIES, so createClient receives the deprecated name and triggers its warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files untouched and the old CLI flag and env var are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc mention the deprecation, changelog entry added, tests cover both names, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit; the reported 19 matches the diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

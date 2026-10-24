@@ -1,0 +1,32 @@
+{
+  "label": "g1ba61b36",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "shared.js is used by all three formatters."
+    },
+    "2": {
+      "pass": true,
+      "why": "A before/after comparison on 11 inputs came out identical, and the code confirms it."
+    },
+    "3": {
+      "pass": false,
+      "why": "The commit is clean, but the isBlank test fails so node --test is not green."
+    },
+    "4": {
+      "pass": true,
+      "why": "It lists the differences as kept and reports no behaviour change, backed by the before/after diff."
+    },
+    "5": {
+      "pass": false,
+      "why": "The 'before' run happened only after the edits, via stash, so nothing was characterized before the first edit."
+    }
+  }
+}

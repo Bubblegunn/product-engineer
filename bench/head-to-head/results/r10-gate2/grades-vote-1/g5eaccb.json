@@ -1,0 +1,39 @@
+{
+  "label": "g5eaccb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes say tax.js and changelog are not on main and the commits have different hashes."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run tests and only says the tax test will probably fail."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased; the line exists only on the branch and would overstate main if only the invoice fix ships."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; only the notes file added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Used git diff but explicitly did not run any tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

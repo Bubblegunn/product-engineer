@@ -1,0 +1,32 @@
+{
+  "label": "gbcf6adca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed with older entries unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says streaming export does not exist in the repo and never finds the unmerged branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with rename instructions."
+    },
+    "4": {
+      "pass": true,
+      "why": "Has sliding, burst and the limit fix, and no compress."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0..HEAD but never looked at branches."
+    }
+  }
+}

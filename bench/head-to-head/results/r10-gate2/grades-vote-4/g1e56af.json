@@ -1,0 +1,39 @@
+{
+  "label": "g1e56af",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States only the lineTotal fix and tests landed as re-created commits with new hashes, and tax.js and the changelog did not."
+    },
+    "2": {
+      "pass": true,
+      "why": "Ran npm test and reports the half-even tax test failing (3 vs 2) because tax.js is missing."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Unreleased is empty on main and that Dana's line only fits if the tax change lands too."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits, and REVIEW_NOTES.md is the only new file."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git diff main dana/rounding and ran npm test on main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g5d6634",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries to maxRetries with a warning naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "cli.js, presets and the example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md mention deprecation, the changelog entry is added, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test and before the commit, so the run is stale; the answer admits this."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

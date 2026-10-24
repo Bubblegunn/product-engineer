@@ -1,0 +1,39 @@
+{
+  "label": "g10586a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Table says test and fix are in main and refactor and changelog are not, as new commits."
+    },
+    "2": {
+      "pass": false,
+      "why": "Never ran the tests; only says the test probably fails."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased; the branch line is absent from main and its tax half is unjustified until the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; only the notes file added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Used git cherry and diffs but did not run node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

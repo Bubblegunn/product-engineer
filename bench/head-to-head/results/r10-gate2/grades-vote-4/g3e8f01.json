@@ -1,0 +1,40 @@
+{
+  "label": "g3e8f01",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behaves correctly: default 3, 3 calls, a warning naming both names, maxRetries wins, and no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI pass maxRetries; the CLI's own flag warning is distinct from the client warning."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue is untouched, the old flag and env var work, and the old changelog is unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options.md and the Unreleased changelog entry are all updated, tests cover both names, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the reported 19 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

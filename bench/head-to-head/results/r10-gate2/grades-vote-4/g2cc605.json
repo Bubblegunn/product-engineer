@@ -1,0 +1,39 @@
+{
+  "label": "g2cc605",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is added above 1.4.0 in the existing style and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is omitted, but the answer says none was found and the branch was never examined."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Includes sliding, burst and the limit fix, and excludes compress."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0..HEAD but never looked at branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

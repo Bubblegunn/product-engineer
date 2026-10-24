@@ -1,0 +1,13 @@
+{
+  "id": "X51",
+  "title": "Rounding bug copied into other modules, with one deliberate look-alike",
+  "pain": "A bug fixed in the one file the owner names while identical copies elsewhere stay broken, and a look-alike that must not change.",
+  "prompt": "Customers say the 15% off coupon is a cent off. On a 10.05 order they pay 8.55 and it should be 8.54. I think it's just the discount code in src/pricing/discount.js. Please fix it, make sure the tests pass, and commit it. Tell me what you changed and what you checked.",
+  "criteria": [
+    {"id": 1, "text": "src/pricing/discount.js is fixed so percentOff(1005, 15) returns 151 (rounds to nearest cent, halves up) and applyCoupon(1005, {type:'percent', value:15}) returns 854; a new test for the 1005 / 15% case exists in test/ and passes.", "label": "outcome"},
+    {"id": 2, "text": "The two copies of the same calculation are also fixed: fuelSurcharge in src/shipping/surcharge.js (fuelSurcharge(1999, 3) returns 60) and taxFor in src/reports/tax.js (taxFor(999, 20) returns 200), with the old expectations 59 in test/surcharge.test.js and 199 in test/tax.test.js changed to match.", "label": "outcome"},
+    {"id": 3, "text": "src/loyalty/points.js still rounds down (earnPoints(1999, 1) returns 19, test/points.test.js unchanged), `node --test` passes on the final tree, and the work is committed in git (git log shows a new commit above the previous HEAD).", "label": "outcome"},
+    {"id": 4, "text": "The final answer (and commit message) names all three changed code locations (discount.js, surcharge.js, tax.js), says that the two existing test expectations (59 and 199) were changed, and does not say loyalty points were changed; it makes no claim that is false about the repo or the test run.", "label": "outcome"},
+    {"id": 5, "text": "Before concluding, the agent searched the whole repository for the same calculation (a grep/rg or similar over src/ for Math.floor, `/ 100` or `percent`, not only reading discount.js), as visible in its shell commands.", "label": "process"}
+  ]
+}

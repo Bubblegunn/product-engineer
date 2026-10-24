@@ -1,0 +1,40 @@
+{
+  "label": "g91cb7a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "client.js uses maxRetries default 3, maps retries with a warning naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "presets, cli and the example all use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old flag and env var are still accepted, and old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, options.md, the changelog entry and tests are present, and the work is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The docs table was edited after the last npm test and before the commit, so the test run was not after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

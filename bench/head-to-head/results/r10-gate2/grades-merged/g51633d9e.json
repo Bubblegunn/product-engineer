@@ -1,0 +1,32 @@
+{
+  "label": "g51633d9e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "2.0.0 section sits above 1.4.0, older entries are untouched, and it is committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Omits streaming export and explains it is only on feature/streaming-export, not main."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames, the E_RATE to ERR_RATE_LIMIT change and the migration steps are listed."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists sliding, burst and the limit fix, and leaves out compress."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran the v1.4.0..HEAD diff and checked log --all and branches containing the streaming commit."
+    }
+  }
+}

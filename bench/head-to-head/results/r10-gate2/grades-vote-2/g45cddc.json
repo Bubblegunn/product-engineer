@@ -1,0 +1,39 @@
+{
+  "label": "g45cddc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "shared.js is used by all three formatters and the duplicated logic is removed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Null handling, the Unknown fallback, city hyphens and country 2-letter upper-casing are all preserved."
+    },
+    "3": {
+      "pass": false,
+      "why": "Committed cleanly, but node --test still fails on the pre-existing isBlank test."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the per-formatter differences as preserved and does not claim the three were identical."
+    },
+    "5": {
+      "pass": false,
+      "why": "No original-function run or characterization test before the first edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X54",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

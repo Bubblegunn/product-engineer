@@ -1,0 +1,32 @@
+{
+  "label": "g112f8572",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias with a warning naming both, maxRetries wins, new name is silent."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, CLI and example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old names accepted, changelog history intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and changelog updated, tests cover the deprecated path and the new name, committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent ran no tests at all, as its answer states."
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gf39904",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Warning names both, maxRetries wins, default 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli and example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI flag and env var still accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog entry, tests and commit are present."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit; the reported 17 matches the diff's implied count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

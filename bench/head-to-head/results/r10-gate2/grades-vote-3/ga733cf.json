@@ -1,0 +1,40 @@
+{
+  "label": "ga733cf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behaves correctly: deprecation warning naming both, maxRetries wins, 3 calls for retries:2."
+    },
+    "2": {
+      "pass": true,
+      "why": "cli.js maps to maxRetries; presets and the example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md say deprecated, the changelog entry is added, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran after the last edit and before the commit; the 19 reported matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g394712",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is added above 1.4.0, the old entries are untouched, and it is committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Streaming is not announced, but the answer says it is not in the repo and the branch was never found."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking renames are listed with migration, including that the old name is silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers sliding, burst and the limit fix, and omits compress."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0..HEAD but ran no branch inspection."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

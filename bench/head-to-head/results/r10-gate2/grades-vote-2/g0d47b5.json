@@ -1,0 +1,40 @@
+{
+  "label": "g0d47b5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client behaviour is correct, with one warning per process naming both options."
+    },
+    "2": {
+      "pass": false,
+      "why": "--retries in cli.js emits a deprecation warning, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue and old changelog entries are untouched, and the old CLI names still work."
+    },
+    "4": {
+      "pass": true,
+      "why": "The docs, changelog and tests are updated, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit, and the reported 19 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

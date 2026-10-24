@@ -1,0 +1,39 @@
+{
+  "label": "g10f421",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Clearly states two commits are re-created on main under different hashes and the tax and changelog commits are missing."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run the tests and only says the test is likely failing."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Unreleased is empty on main and the entry should be added when the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits, and only the notes file was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Compared diffs by content but never ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

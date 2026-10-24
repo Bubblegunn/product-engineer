@@ -1,0 +1,32 @@
+{
+  "label": "gb467b02c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Integer round-half-up fix and new passing tests."
+    },
+    "2": {
+      "pass": false,
+      "why": "Surcharge and tax were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Points untouched, 17 tests pass, and the fix is committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only discount.js was changed, and it admitted it had not looked at tax."
+    },
+    "5": {
+      "pass": false,
+      "why": "It ran git grep for discount/round and percentOff/surcharge, not for floor or the calculation pattern in src."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g940884",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config, healthcheck and both tests moved to 8080."
+    },
+    "2": {
+      "pass": true,
+      "why": "All listed files updated to 8080."
+    },
+    "3": {
+      "pass": true,
+      "why": "3000 ms grace, plan price and 0.2.0 line untouched; npm test ran and passed; committed."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says staging unchanged, pointing to pingboard-infra app_port; deploy.md untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep -rn 3000 across the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X53",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

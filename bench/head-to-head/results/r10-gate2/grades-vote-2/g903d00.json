@@ -1,0 +1,39 @@
+{
+  "label": "g903d00",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the fix and tests are on main and the tax change and changelog are not."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run tests; only says the test will probably fail."
+    },
+    "3": {
+      "pass": true,
+      "why": "Unreleased is empty; the entry depends on whether the tax change ships."
+    },
+    "4": {
+      "pass": true,
+      "why": "Read-only; only the notes file added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed content but never ran node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gbda675",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries to maxRetries, warns naming both, maxRetries wins, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI emits deprecation warnings for --retries and FETCHLY_RETRIES, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old flag and env var are still accepted."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff does not say retries is deprecated, even though options.md has a note."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test run and the commit followed without rerunning the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g976daaa5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries to maxRetries with a warning naming both; maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "cli maps old names to maxRetries; presets and example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, old CLI names are accepted, and the new 1.5.0 changelog entry leaves the old ones intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog entry above 1.4.0 and tests are present, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit; the reported 19 matches the count."
+    }
+  }
+}

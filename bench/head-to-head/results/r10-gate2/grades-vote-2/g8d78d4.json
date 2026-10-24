@@ -1,0 +1,40 @@
+{
+  "label": "g8d78d4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "resolveMaxRetries handles the alias, precedence and warning correctly, and the new name does not warn."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI warns on --retries and FETCHLY_RETRIES, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries untouched, and the old CLI inputs are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs say deprecated, the changelog is updated, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final sed edit and before the commit, and the reported 18 is consistent with the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

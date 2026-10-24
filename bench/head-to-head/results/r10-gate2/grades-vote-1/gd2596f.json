@@ -1,0 +1,39 @@
+{
+  "label": "gd2596f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says there is no streaming export in the repo and never finds the branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes retries is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is not."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the range but did not look at branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

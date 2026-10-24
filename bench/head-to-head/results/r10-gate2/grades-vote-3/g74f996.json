@@ -1,0 +1,40 @@
+{
+  "label": "g74f996",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client maps retries with a warning naming both, maxRetries wins, and the default is 3."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, cli.js and the example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": false,
+      "why": "The README diff only renames the option and does not say retries is deprecated; only docs/options.md does."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit, and the reported 19 matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

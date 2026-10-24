@@ -1,0 +1,39 @@
+{
+  "label": "g458f19",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says main has re-created copies of the lineTotal fix and tests, not the tax change or changelog."
+    },
+    "2": {
+      "pass": true,
+      "why": "Ran npm test; reports the failing half-even test (3 vs 2) and its dependence on the missing tax.js change."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased; Dana's line is wrong until the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; notes file only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git diff main dana/rounding and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

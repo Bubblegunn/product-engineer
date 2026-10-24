@@ -1,0 +1,39 @@
+{
+  "label": "g9c276c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "2.0.0 section sits above 1.4.0, older entries are unchanged, and the commit was made."
+    },
+    "2": {
+      "pass": true,
+      "why": "Streaming is kept out of the release and the answer says it is only on feature/streaming-export."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both renames are listed with migration and the E_RATE to ERR_RATE_LIMIT change, and the old retries name is noted as silently ignored."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the exact-limit fix are listed, and compress is only named as withdrawn."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v1.4.0..HEAD and compared main..feature/streaming-export before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X61",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

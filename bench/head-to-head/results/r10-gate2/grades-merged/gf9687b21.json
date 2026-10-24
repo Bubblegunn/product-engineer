@@ -1,0 +1,32 @@
+{
+  "label": "gf9687b21",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correctly says only part is on main, with different hashes, and tax.js and changelog missing."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run the tests and only says the test is likely failing."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased on main, entry branch-only, advises adding it once the tax change lands."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; only the notes file added."
+    },
+    "5": {
+      "pass": false,
+      "why": "Compared content via git diff but explicitly never ran node --test."
+    }
+  }
+}

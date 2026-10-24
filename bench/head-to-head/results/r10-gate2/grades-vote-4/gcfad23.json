@@ -1,0 +1,40 @@
+{
+  "label": "gcfad23",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour meets the requirements."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js warns on --retries and FETCHLY_RETRIES."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue and old changelog entries are untouched, and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog, tests and commit are present."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was rewritten after the last npm test, and the final answer admits tests were not re-run before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

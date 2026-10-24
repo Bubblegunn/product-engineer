@@ -1,0 +1,40 @@
+{
+  "label": "gb562d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour meets the requirements: maxRetries default 3, a warning naming both, maxRetries wins, new name silent."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js calls warnRetriesDeprecated for --retries and FETCHLY_RETRIES, so the old CLI inputs warn."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue is untouched, the old CLI names are still accepted, and old changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md mention deprecation, the changelog is updated, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final edits and before the commit; the reported 19 is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

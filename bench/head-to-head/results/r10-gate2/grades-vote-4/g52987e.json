@@ -1,0 +1,40 @@
+{
+  "label": "g52987e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct default, mapping, warning text naming both names, precedence, and no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "The queue is untouched, the old names are accepted, and the old changelog entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md say retries is deprecated, the changelog has a new entry, tests cover both paths, and it is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final edits and before the commit; the reported 18 matches the real count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

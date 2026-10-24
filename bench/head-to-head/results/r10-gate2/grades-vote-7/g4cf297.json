@@ -1,0 +1,40 @@
+{
+  "label": "g4cf297",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client uses maxRetries, maps retries with a warning naming both, and maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI all use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old CLI inputs are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options doc say retries is deprecated, the changelog has a new entry, tests cover both names, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test, and the answer itself says the tests ran before the docs tidy."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g1a10f2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correctly says the lineTotal fix and tests are on main and the tax change and changelog are not."
+    },
+    "2": {
+      "pass": false,
+      "why": "Did not run the tests and says the failure is only likely."
+    },
+    "3": {
+      "pass": true,
+      "why": "Empty Unreleased; the line is only on the branch and overstates main unless the tax change ships."
+    },
+    "4": {
+      "pass": true,
+      "why": "No commits; notes file only."
+    },
+    "5": {
+      "pass": false,
+      "why": "Compared content with diffs, but explicitly did not run node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X43",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

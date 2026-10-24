@@ -1,0 +1,32 @@
+{
+  "label": "gb15ae70e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Omits streaming export and says it is only on the unmerged feature branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed with migration, and it notes the old retries name is no longer read."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is not."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed the range, ran git branch -a and checked the branch with merge-base."
+    }
+  }
+}

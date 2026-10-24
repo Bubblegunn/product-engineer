@@ -1,0 +1,40 @@
+{
+  "label": "g6d1e65",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Maps retries to maxRetries with a warning naming both; maxRetries wins; no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, example and CLI use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, old changelog entries unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog, tests and commit are all present."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran after the last edit and before the commit; the reported 19 is consistent with the test count."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

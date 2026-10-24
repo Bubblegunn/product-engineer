@@ -1,0 +1,32 @@
+{
+  "label": "g51f16ad2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias and warning implemented correctly, with maxRetries taking precedence."
+    },
+    "2": {
+      "pass": true,
+      "why": "Presets, CLI and example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names still accepted, changelog history intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Both docs, the changelog and tests cover the rename, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "docs/options.md was edited after the last npm test and before the commit, and the answer admits the test ran before the table tidy."
+    }
+  }
+}

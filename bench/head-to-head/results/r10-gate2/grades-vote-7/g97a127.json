@@ -1,0 +1,40 @@
+{
+  "label": "g97a127",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client maps retries to maxRetries with a warning naming both; maxRetries wins; no warning for the new name."
+    },
+    "2": {
+      "pass": true,
+      "why": "CLI maps the old flag and env var onto maxRetries; presets and example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old CLI names accepted, old changelog entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests are updated and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the last edit and before the commit; the 19 reported matches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

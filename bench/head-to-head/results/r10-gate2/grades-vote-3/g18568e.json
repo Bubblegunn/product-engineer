@@ -1,0 +1,40 @@
+{
+  "label": "g18568e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The client warns naming both options, maps correctly, and maxRetries wins."
+    },
+    "2": {
+      "pass": true,
+      "why": "cli.js, presets and the example use maxRetries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched and the old CLI names are accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and options.md say deprecated, the changelog entry is added, tests cover the deprecated path, and it is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run, and the answer says so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

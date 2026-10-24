@@ -1,0 +1,32 @@
+{
+  "label": "g80237e53",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Alias with a warning naming both, maxRetries wins, new name is silent."
+    },
+    "2": {
+      "pass": false,
+      "why": "Presets and example use maxRetries, but the CLI emits a deprecation warning for --retries and FETCHLY_RETRIES, which the criterion says must not happen."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue untouched, old names still accepted, changelog history intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs mention the deprecation, changelog added, tests cover both paths, committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after all edits and before the commit; the reported 19 matches."
+    }
+  }
+}

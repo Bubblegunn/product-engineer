@@ -1,0 +1,39 @@
+{
+  "label": "g6dd1ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single-file commit with an accurate message."
+    },
+    "2": {
+      "pass": true,
+      "why": "connect removed, open must not be used, and dial is the method."
+    },
+    "3": {
+      "pass": true,
+      "why": "fetchAll replaced by paginate, retry not present, and the final answer lists the stale docs."
+    },
+    "4": {
+      "pass": true,
+      "why": "Timeout, statusCode, the exports map and deep imports are covered."
+    },
+    "5": {
+      "pass": false,
+      "why": "Read src, but never ran git tag and only used a bare log, so no evidence it saw rc.1 was older."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X63",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

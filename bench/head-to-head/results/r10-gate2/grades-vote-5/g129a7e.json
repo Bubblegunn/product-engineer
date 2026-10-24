@@ -1,0 +1,40 @@
+{
+  "label": "g129a7e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client uses maxRetries, retries maps to it with a warning naming both, maxRetries wins, and the new name gives no warning."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CLI emits deprecation warnings for --retries and FETCHLY_RETRIES."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files are untouched, the old CLI names are accepted, and older changelog entries are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests cover the rename and deprecation, and the work is committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the final edit and before the commit, and the reported 18 passing is consistent."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

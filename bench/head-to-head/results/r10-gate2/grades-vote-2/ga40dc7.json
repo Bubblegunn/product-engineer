@@ -1,0 +1,40 @@
+{
+  "label": "ga40dc7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Client behaviour is correct: the warning names both options, maxRetries wins, and the default is 3."
+    },
+    "2": {
+      "pass": false,
+      "why": "cli.js emits its own deprecation warnings for --retries and FETCHLY_RETRIES, contrary to the criterion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Queue files and old changelog entries are untouched, and the old CLI names are still accepted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, changelog and tests cover the rename and deprecation, and the work is committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The docs table was rewritten after the last npm test, and the answer admits it did not re-run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X52",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X52 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g4d5bfedc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Section is above 1.4.0 and committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Omits streaming export and says it lives only on the unmerged feature branch."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both breaking changes are listed, with a warning that the old name gets no notice."
+    },
+    "4": {
+      "pass": true,
+      "why": "Sliding, burst and the limit fix are present, and compress is excluded."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran the diff, git branch -a and main..feature/streaming-export."
+    }
+  }
+}
