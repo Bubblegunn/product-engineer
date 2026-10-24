@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -290,4 +290,108 @@ test("landed: negated and conditional sentences are not claims", () => {
   assert.deepEqual(findClaims("The change can be pushed after review."), []);
   assert.deepEqual(findClaims("It is not pushed yet."), []);
   assert.equal(findClaims("The page went live this morning.")[0].family, "landed");
+});
+
+const out = (command, output) => ({ kind: "bash", command, output });
+
+test("count: a number a command printed is supported without a counter run", () => {
+  const edited = [write("src/a.js")];
+  assert.deepEqual(reasonsFor([...edited, out("ls", "12 commits listed\n")], "The branch has 12 commits ahead of main."), []);
+  assert.match(reasonsFor([...edited, out("ls", "7 commits listed\n")], "The branch has 12 commits ahead of main.")[0], /counted it/);
+  // a longer number containing the claimed one is not the same number
+  assert.match(reasonsFor([...edited, out("ls", "120 commits listed\n")], "The branch has 12 commits ahead of main.")[0], /counted it/);
+  // a claim with no digits has nothing to match, so it still needs a counter
+  assert.match(reasonsFor([...edited, out("ls", "three")], "There are three files changed.")[0], /counted it/);
+});
+
+test("exhaustive: an empty search, or one that lists only changed files, supports the claim", () => {
+  const claim = "Nothing else uses this helper.";
+  const edited = [write("src/a.js")];
+  assert.deepEqual(reasonsFor([...edited, out("git grep -n helper", "")], claim), []);
+  assert.deepEqual(reasonsFor([...edited, out("rg -l helper src", "src/a.js\n")], claim), []);
+  assert.deepEqual(reasonsFor([write("/repo/src/a.js"), out("git grep -n helper", "src/a.js:4:helper()\n")], claim), []);
+  assert.match(reasonsFor([...edited, out("git grep -n helper", "src/a.js:4:helper()\nsrc/other.js:9:helper()\n")], claim)[0], /lists files you did not change: src\/other\.js/);
+  // a search before the last edit is not evidence about the edited tree
+  assert.match(reasonsFor([out("git grep -n helper", ""), write("src/a.js")], claim)[0], /git grep or rg/);
+});
+
+test("passing: a green run after the last write settles the claim, and a green run before it does not", () => {
+  const green = out("node --test test/", "ℹ tests 4\nℹ pass 4\nℹ fail 0\n");
+  assert.deepEqual(reasonsFor([write("src/a.js"), green], "All tests pass."), []);
+  assert.deepEqual(reasonsFor([write("src/a.js"), green], "The suite is green."), []);
+  assert.match(reasonsFor([green, write("src/a.js")], "All tests pass.")[0], /tests pass/);
+});
+
+function hookRun(lines, input, home, env = {}) {
+  const dir = mkdtempSync(join(tmpdir(), "pe-gate-run-"));
+  const transcript = join(dir, "t.jsonl");
+  writeFileSync(transcript, lines.map((l) => JSON.stringify(l)).join("\n"));
+  return spawnSync("node", [GATE], {
+    input: JSON.stringify({ transcript_path: transcript, cwd: home, ...input }),
+    encoding: "utf8",
+    env: { ...process.env, TMPDIR: home, PRODUCT_ENGINEER_SECOND_EYE: "0", ...env },
+  });
+}
+const newHome = () => mkdtempSync(join(tmpdir(), "pe-gate-home-"));
+const SID = "pe-test-session";
+
+test("noise: a read-only session never blocks on count, exhaustive, landed or second-eye", () => {
+  const answer = "There are 12 commits ahead of main, and nothing else uses the helper.";
+  const lines = [{ type: "user", message: { content: "Summarise the history." } }, line([tool("Bash", { command: "ls" }), { type: "text", text: answer }])];
+  assert.equal(hookRun(lines, { session_id: SID, last_assistant_message: answer }, newHome()).stdout, "");
+  // a second block of the same session is not a first block, so the advice rule does not cover it: the read-only rule must
+  const home = newHome();
+  writeFileSync(join(home, `product-engineer-gate-${SID}.json`), JSON.stringify({ blocks: 1, hash: null, ids: [] }));
+  assert.equal(hookRun(lines, { session_id: SID, last_assistant_message: answer }, home).stdout, "");
+});
+
+test("noise: a read-only session that also makes a non-noise claim blocks on that claim only", () => {
+  const answer = "All tests pass. Nothing else uses the helper.";
+  const lines = [{ type: "user", message: { content: "Summarise the history." } }, line([tool("Bash", { command: "ls" }), { type: "text", text: answer }])];
+  const reason = JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: answer }, newHome()).stdout).reason;
+  assert.match(reason, /tests pass/);
+  assert.doesNotMatch(reason, /nothing else uses/);
+});
+
+test("noise: a read-only session still blocks on a claim that is not noise", () => {
+  const lines = [{ type: "user", message: { content: "Run the suite." } }, line([tool("Bash", { command: "ls" }), { type: "text", text: "All tests pass." }])];
+  assert.match(JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: "All tests pass." }, newHome()).stdout).reason, /tests pass/);
+});
+
+test("noise: the first block of a writing session with only noise reasons is sent as advice", () => {
+  const answer = "There are 12 commits ahead of main.";
+  const lines = [{ type: "user", message: { content: "Tidy the reminder helper." } }, line([tool("Edit", { file_path: "src/a.js" }), { type: "text", text: answer }])];
+  const reason = JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: answer }, newHome()).stdout).reason;
+  assert.match(reason, /advice only/);
+  assert.match(reason, /There are 12 commits ahead of main/);
+});
+
+test("once: a tests-added or fixed reason already given in this session is not sent again", () => {
+  const cases = [
+    { prompt: "Add a weekly view.", edit: "src/a.js", answer: "I added tests for the weekly view.", id: "addedtests", why: /tests were added/ },
+    { prompt: "Fix the bug where a reminder is sent twice.", edit: "src/reminder.js", answer: "I fixed the duplicate reminder.", id: "fixed", why: /no test file was written/ },
+  ];
+  for (const c of cases) {
+    const lines = [{ type: "user", message: { content: c.prompt } }, line([tool("Edit", { file_path: c.edit }), { type: "text", text: c.answer }])];
+    // First block: the reason is sent and its id is recorded.
+    const home = newHome();
+    const first = hookRun(lines, { session_id: SID, last_assistant_message: c.answer }, home);
+    assert.match(JSON.parse(first.stdout).reason, c.why, c.id);
+    const state = JSON.parse(readFileSync(join(home, `product-engineer-gate-${SID}.json`), "utf8"));
+    assert.ok(state.ids.includes(c.id), `${c.id} recorded`);
+    // A later block whose hash differs (state.hash is null here, as a block with a new finding would leave it): the recorded reason is not sent again.
+    const seeded = newHome();
+    writeFileSync(join(seeded, `product-engineer-gate-${SID}.json`), JSON.stringify({ blocks: 1, hash: null, ids: [c.id] }));
+    assert.equal(hookRun(lines, { session_id: SID, last_assistant_message: c.answer }, seeded).stdout, "", `${c.id} not repeated`);
+    // Control: the same state without the id sends the reason.
+    const control = newHome();
+    writeFileSync(join(control, `product-engineer-gate-${SID}.json`), JSON.stringify({ blocks: 1, hash: null, ids: [] }));
+    assert.match(JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: c.answer }, control).stdout).reason, c.why, `${c.id} sent when not yet given`);
+  }
+});
+
+test("noise: a session that committed but wrote no file gets no first block on noise reasons", () => {
+  const answer = "There are 12 commits ahead of main.";
+  const lines = [{ type: "user", message: { content: "Record the state." } }, line([tool("Bash", { command: "git commit -m 'record'" }), { type: "text", text: answer }])];
+  assert.equal(hookRun(lines, { session_id: SID, last_assistant_message: answer }, newHome()).stdout, "");
 });

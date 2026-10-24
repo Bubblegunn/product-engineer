@@ -6,6 +6,7 @@
 // session persistence, run from the temp directory with PRODUCT_ENGINEER_NO_GATE=1 so the child's own Stop hook stays silent.
 // Every problem returns a reason in `skipped`; secondEye never throws and never blocks on its own.
 // The binary is PE_SECOND_EYE_CLAUDE when set, else `claude`. PRODUCT_ENGINEER_SECOND_EYE=0 disables the call.
+// `commands` takes strings or { command, output }; the output is the tail of what the command printed.
 import { spawn } from "node:child_process";
 import { appendFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -14,8 +15,9 @@ import { join } from "node:path";
 const MODEL = "claude-haiku-5-5";
 const MIN_ANSWER = 200;
 const MAX_ANSWER = 20000;
-const MAX_COMMANDS = 40;
-const MAX_COMMAND_CHARS = 200;
+const MAX_COMMANDS = 30;
+const MAX_COMMAND_CHARS = 160;
+const MAX_OUTPUT_CHARS = 300;
 const MAX_FILES = 40;
 const MAX_ITEMS = 5;
 const MAX_TEXT = 300;
@@ -27,6 +29,7 @@ const INSTRUCTIONS = [
   "You check the FINAL ANSWER of a coding agent against the evidence the agent produced: the shell commands it ran and the files it wrote.",
   "List each factual claim in the FINAL ANSWER that the commands or files do NOT support. Factual claims are counts, test results, what was checked, and what does or does not exist in the repository.",
   "Do not list opinions, plans or recommendations. Do not list a claim that the evidence supports.",
+  "A claim is SUPPORTED when it quotes or follows from the printed output of one of the commands. Each command is followed by its output (the last 300 characters, or (empty)).",
   'Reply with JSON only, no prose and no code fence, in exactly this shape: {"unchecked":[{"claim":"<the claim, quoted or closely paraphrased>","why":"<what evidence is missing>"}]}',
   `At most ${MAX_ITEMS} items. Reply {"unchecked":[]} when every factual claim is supported.`,
 ].join("\n");
@@ -36,11 +39,27 @@ const clip = (s, n) => {
   return t.length > n ? `${t.slice(0, n - 3)}...` : t;
 };
 
-/** The prompt sent to the child: fixed instructions, the answer, the last commands and the written files. */
+// The last characters of an output, where a runner prints its summary; trailing blank lines are left out.
+const tailOf = (s) => {
+  const t = String(s ?? "").trimEnd();
+  return t.length > MAX_OUTPUT_CHARS ? t.slice(-MAX_OUTPUT_CHARS) : t;
+};
+const asEntry = (c) => (typeof c === "string" ? { command: c, output: "" } : { command: String(c?.command ?? ""), output: String(c?.output ?? "") });
+
+/** One command with its printed output below it. */
+const commandBlock = ({ command, output }) => {
+  const tail = tailOf(output);
+  if (!tail) return `- ${clip(command, MAX_COMMAND_CHARS)}\n  output: (empty)`;
+  const body = tail.split("\n").map((l) => `    ${l}`).join("\n");
+  return `- ${clip(command, MAX_COMMAND_CHARS)}\n  output:\n${body}`;
+};
+
+/** The prompt sent to the child: fixed instructions, the answer, the last commands with their output, and the written files. */
 export function buildPrompt({ answer, commands, files }) {
-  const cmds = commands.slice(-MAX_COMMANDS);
+  const entries = commands.map(asEntry);
+  const cmds = entries.slice(-MAX_COMMANDS);
   const paths = [...new Set(files)].slice(0, MAX_FILES);
-  const cmdLines = cmds.map((c) => `- ${clip(c, MAX_COMMAND_CHARS)}`).join("\n") || "(none)";
+  const cmdLines = cmds.map(commandBlock).join("\n") || "(none)";
   const fileLines = paths.map((p) => `- ${p}`).join("\n") || "(none)";
   return [
     INSTRUCTIONS,
@@ -50,7 +69,7 @@ export function buildPrompt({ answer, commands, files }) {
     clip(answer, MAX_ANSWER),
     ">>>",
     "",
-    `SHELL COMMANDS RUN (last ${cmds.length} of ${commands.length}, in order):`,
+    `SHELL COMMANDS RUN (last ${cmds.length} of ${entries.length}, in order, each with its printed output):`,
     cmdLines,
     "",
     "FILES WRITTEN:",
@@ -163,7 +182,7 @@ export async function secondEye({ answer = "", commands = [], files = [], env = 
   };
   try {
     const text = String(answer ?? "");
-    const cmds = Array.isArray(commands) ? commands.map(String) : [];
+    const cmds = Array.isArray(commands) ? commands.map(asEntry) : [];
     const paths = Array.isArray(files) ? files.map(String) : [];
     if (env.PRODUCT_ENGINEER_SECOND_EYE === "0") return done("disabled");
     if (text.length < MIN_ANSWER) return done("short-answer");

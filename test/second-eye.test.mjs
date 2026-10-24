@@ -46,9 +46,9 @@ test("buildPrompt carries the answer, the last commands truncated, and the files
   const commands = Array.from({ length: 45 }, (_, i) => `cmd-${i}`).concat(long);
   const p = buildPrompt({ answer: "THE-ANSWER", commands, files: ["src/a.js", "src/a.js"] });
   assert.match(p, /THE-ANSWER/);
-  assert.match(p, /last 40 of 46/);
-  assert.ok(!p.includes("cmd-0\n"), "only the last 40 commands");
-  assert.ok(p.includes("- " + "x".repeat(197) + "..."), "a long command is cut to 200 characters");
+  assert.match(p, /last 30 of 46/);
+  assert.ok(!p.includes("cmd-0\n"), "only the last 30 commands");
+  assert.ok(p.includes("- " + "x".repeat(157) + "..."), "a long command is cut to 160 characters");
   assert.equal(p.split("src/a.js").length - 1, 1, "files are listed once");
 });
 
@@ -119,15 +119,18 @@ test("each call writes one line to the log", async () => {
   assert.match(log, /skipped=short-answer unchecked=0/);
 });
 
+// cwd is a directory that is not a git repository, so the repository checks stay quiet and the test does not depend on this clone.
 function runHook(transcriptLines, env, lastMessage) {
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, transcriptLines.map((l) => JSON.stringify(l)).join("\n"));
-  return spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, last_assistant_message: lastMessage }), encoding: "utf8", env: { ...process.env, ...env } });
+  const cwd = mkdtempSync(join(TMP, "nogit-"));
+  return spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd, last_assistant_message: lastMessage }), encoding: "utf8", env: { ...process.env, ...env } });
 }
+// A turn that wrote a notes file (a document, so no repository check applies) and ran one command.
 const turn = (prompt) => [
   { type: "user", message: { content: prompt } },
-  { type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: ANSWER }] } },
+  { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: ANSWER }] } },
 ];
 
 test("gate integration: an unsupported claim becomes one finding in the block reason", () => {
@@ -150,7 +153,7 @@ test("gate integration: with one other block the second eye adds its finding to 
   const bin = stub(ok("There are 12 commits ahead of main."));
   const lines = [
     { type: "user", message: { content: "Look at the reminder rule." } },
-    { type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
+    { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
   ];
   const reason = JSON.parse(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass.`).stdout).reason;
   assert.match(reason, /tests pass/);
@@ -162,7 +165,7 @@ test("gate integration: with two other blocks the second eye does not run", () =
   const bin = stub(`echo called > "${out}"\n${ok()}`);
   const lines = [
     { type: "user", message: { content: "Look at the reminder rule." } },
-    { type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
+    { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
   ];
   const reason = JSON.parse(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass. The change is pushed to origin.`).stdout).reason;
   assert.match(reason, /tests pass/);
@@ -233,7 +236,58 @@ test("gate integration: a repair round (stop_hook_active) makes no second-eye ca
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, turn("Look at the reminder rule.").map((l) => JSON.stringify(l)).join("\n"));
-  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, session_id: "pe-repair-round", stop_hook_active: true, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PE_SECOND_EYE_CLAUDE: bin } });
+  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: mkdtempSync(join(TMP, "nogit-")), session_id: "pe-repair-round", stop_hook_active: true, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.stdout, "");
+  assert.equal(existsSync(out), false);
+});
+
+test("second eye: each command's printed output goes on the prompt, the last 300 characters only", () => {
+  const big = `HEADMARK${"y".repeat(400)}TAILMARK\n`;
+  const p = buildPrompt({ answer: ANSWER, commands: [{ command: "git log -1", output: "4f2a9c1 newest commit\n" }, { command: "npm test", output: big }, { command: "git status", output: "" }], files: [] });
+  assert.ok(p.includes("4f2a9c1 newest commit"), "the printed output is on the prompt");
+  assert.ok(p.includes("TAILMARK"), "the end of a long output is kept");
+  assert.ok(!p.includes("HEADMARK"), "the start of a long output is cut");
+  assert.ok(p.includes("(empty)"), "an empty output is shown as empty");
+  assert.match(p, /printed output/);
+  assert.match(p, /SUPPORTED/);
+});
+
+test("second eye: the string form of commands still works", () => {
+  const p = buildPrompt({ answer: ANSWER, commands: ["git status --short"], files: [] });
+  assert.ok(p.includes("- git status --short"));
+  assert.ok(p.includes("(empty)"));
+});
+
+test("second eye: the stub receives the printed output of each command", async () => {
+  const out = outFile();
+  const bin = stub(`printf '%s' "$2" > "${out}"\n${ok()}`);
+  const r = await secondEye({ answer: ANSWER, commands: [{ command: "git rev-list --count main..HEAD", output: "12\n" }], env: { PE_SECOND_EYE_CLAUDE: bin } });
+  assert.equal(r.skipped, null);
+  assert.ok(readFileSync(out, "utf8").includes("git rev-list --count main..HEAD"));
+  assert.ok(readFileSync(out, "utf8").includes("12"));
+});
+
+test("gate integration: the gate passes each command's paired output to the second eye", () => {
+  const out = outFile();
+  const bin = stub(`printf '%s' "$2" > "${out}"\n${ok()}`);
+  const lines = [
+    { type: "user", message: { content: "Look at the reminder rule." } },
+    { type: "assistant", message: { content: [{ type: "tool_use", id: "t1", name: "Bash", input: { command: "git log --oneline -3" } }] } },
+    { type: "user", message: { content: [{ type: "tool_result", tool_use_id: "t1", content: "4f2a9c1 newest commit line\n" }] } },
+    { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "text", text: ANSWER }] } },
+  ];
+  const r = runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
+  assert.equal(r.status, 0);
+  assert.ok(readFileSync(out, "utf8").includes("4f2a9c1 newest commit line"), "the output is on the prompt");
+});
+
+test("noise: a read-only session makes no second-eye call and does not block", () => {
+  const out = outFile();
+  const bin = stub(`echo called > "${out}"\n${ok()}`);
+  const lines = [
+    { type: "user", message: { content: "Look at the reminder rule." } },
+    { type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: ANSWER }] } },
+  ];
+  assert.equal(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, ANSWER).stdout, "");
   assert.equal(existsSync(out), false);
 });

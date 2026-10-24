@@ -17,7 +17,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { isTestPath, isDocPath } from "./diff.mjs";
-import { verify } from "./verify.mjs";
+import { verify, failingCount } from "./verify.mjs";
 import { secondEye } from "./second-eye.mjs";
 
 const WRITE_TOOLS = new Set(["Write", "Edit", "MultiEdit", "NotebookEdit"]);
@@ -54,6 +54,11 @@ const COUNT_RUN = /\bproduct-engineer\s+(?:range|claims|facts)\b|\bcheck\.mjs\s+
 const SEARCH_RUN = /\bproduct-engineer\s+twins\b|\bcheck\.mjs\s+twins\b|\bgit\s+(?:-\S+\s+)*grep\b|\brg\b|\back\b|\bgrep\b[^|;&\n]*\s(?:-[a-zA-Z]*[rR][a-zA-Z]*|--recursive)\b|\bgit\s+(?:-\S+\s+)*ls-files\b[^\n]*\|\s*xargs\b[^\n]*\bgrep\b/;
 const REMOTE_RUN = /\bgit\s+(?:-\S+\s+)*ls-remote\b|\bgit\s+(?:-\S+\s+)*status\b[^|;&\n]*\s-[a-zA-Z]*b\b|\bgit\s+(?:-\S+\s+)*status\b[^|;&\n]*--branch\b|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*\borigin\/|\bgh\s+(?:run|pr|release)\b|\bcurl\b|\bnpm\s+view\b|\bvercel\b|\brailway\b/;
 export const FIX_REQUEST = /\b(?:bug|fix|broken|regression|crash(?:es|ing)?|fails?|failing|not working)\b/i;
+// Families that are counts, absences, remote states and the second reading. A read-only session never blocks on them, and the first block of a writing session sends them as advice.
+export const NOISE_FAMILIES = new Set(["count", "exhaustive", "landed", "second-eye"]);
+// Reasons the session gives once: a later block in the same session does not repeat them.
+export const ONCE_FAMILIES = new Set(["addedtests", "fixed"]);
+const COMMIT_RUN = /\bgit\s+(?:-\S+\s+)*commit\b/;
 const WRITTEN_CLAIM_FILE = /^(?:pr|pull[-_ ]?request|summary|notes?|report|description|answer|review)(?:\b|[-_.\d])/i;
 
 const sentencesOf = (text) =>
@@ -147,8 +152,27 @@ const indexOfFirst = (events, pred) => events.findIndex(pred);
 const isWrite = (e) => e.kind === "write";
 const runs = (re) => (e) => e.kind === "bash" && re.test(e.command);
 
-/** Reasons to ask for more evidence; an empty list means every claim has what it needs. */
-export function gate({ events, prompt, last }, claimTexts = [last]) {
+/** Helpers for the provenance rules: the numbers a count sentence states, and the paths a search printed that the session did not write. */
+// Every number of the sentence appears as a whole number in some printed output of the turn. A sentence without digits has no number to match.
+const numbersPrinted = (sentence, outputs) => {
+  const nums = sentence.match(/\d+/g);
+  return Boolean(nums) && nums.every((n) => new RegExp(`(?<!\\d)${n}(?!\\d)`).test(outputs));
+};
+// A search line is "path:line:text" or a bare path. The paths it names that no write of the session matches.
+const otherFiles = (output, written) =>
+  String(output)
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => (/^(.+?):\d+[:-]/.exec(l)?.[1] ?? l).replace(/^\.\//, ""))
+    .filter((p) => !written.some((w) => w === p || w.endsWith(`/${p}`)));
+
+/** Reasons to ask for more evidence, each with its family (also its id); an empty list means every claim has what it needs. */
+export function gate(session, claimTexts = [session.last]) {
+  return gateItems(session, claimTexts).map((r) => r.text);
+}
+
+export function gateItems({ events, prompt, last }, claimTexts = [last]) {
   if (!events.length) return [];
   const claims = claimTexts.flatMap((t) => findClaims(String(t ?? "")));
   const families = new Set(claims.map((c) => c.family));
@@ -158,46 +182,61 @@ export function gate({ events, prompt, last }, claimTexts = [last]) {
   const lastWrite = indexOfLast(events, isWrite);
   const firstWrite = indexOfFirst(events, isWrite);
   const after = (pred) => indexOfLast(events, pred) > lastWrite;
+  // A green run after the last write settles a passing claim, however the sentence is phrased.
+  const lastRun = indexOfLast(events, runs(TEST_RUN));
+  if (lastRun > lastWrite && failingCount(events[lastRun].output) === 0) families.delete("passing");
   const reasons = [];
+  const add = (family, text) => reasons.push({ id: family, family, text });
 
   if (families.has("nochange") && lastWrite >= 0 && !after(runs(GIT_STATE))) {
-    reasons.push(`You say nothing was changed ("${quote("nochange")}"), but this session wrote files. Run git status and git diff now, then state what the working tree shows.`);
+    add("nochange", `You say nothing was changed ("${quote("nochange")}"), but this session wrote files. Run git status and git diff now, then state what the working tree shows.`);
   }
   if (families.has("startstate") && firstWrite >= 0 && !(indexOfFirst(events, runs(GIT_STATE)) >= 0 && indexOfFirst(events, runs(GIT_STATE)) < firstWrite)) {
-    reasons.push(`You describe the starting state of the working tree or who wrote what ("${quote("startstate")}"), but no git status, git diff or git log ran before your first edit. Drop that statement, or say that you did not check it.`);
+    add("startstate", `You describe the starting state of the working tree or who wrote what ("${quote("startstate")}"), but no git status, git diff or git log ran before your first edit. Drop that statement, or say that you did not check it.`);
   }
   if (families.has("formatting") && !events.some(runs(WS_DIFF))) {
-    reasons.push(`You call a change formatting-only or free of functional change ("${quote("formatting")}"), but no whitespace-aware diff ran. Run git diff -w <range> --stat (or product-engineer scope <range>) and name each file that still changes; otherwise drop the claim.`);
+    add("formatting", `You call a change formatting-only or free of functional change ("${quote("formatting")}"), but no whitespace-aware diff ran. Run git diff -w <range> --stat (or product-engineer scope <range>) and name each file that still changes; otherwise drop the claim.`);
   }
   if (families.has("unchanged") && !after(runs(TEST_RUN)) && !events.some(runs(WS_DIFF))) {
-    reasons.push(`You say behaviour is unchanged ("${quote("unchanged")}"), but no test command ran after your last edit. Run the project's tests, name them, and say it rests on that run, or drop the claim.`);
+    add("unchanged", `You say behaviour is unchanged ("${quote("unchanged")}"), but no test command ran after your last edit. Run the project's tests, name them, and say it rests on that run, or drop the claim.`);
   }
   if (families.has("passing") && !after(runs(TEST_RUN))) {
-    reasons.push(`You say tests pass ("${quote("passing")}"), but no test command ran after your last edit. Run the tests again and quote the result as printed.`);
+    add("passing", `You say tests pass ("${quote("passing")}"), but no test command ran after your last edit. Run the tests again and quote the result as printed.`);
   }
   if (families.has("addedtests") && !events.some((e) => isWrite(e) && (isTestPath(e.path ?? "") || (e.touches ?? []).length))) {
-    reasons.push(`You say tests were added ("${quote("addedtests")}"), but no write to a test file happened in this turn. Write the test, run it, and name the file; otherwise drop the claim.`);
+    add("addedtests", `You say tests were added ("${quote("addedtests")}"), but no write to a test file happened in this turn. Write the test, run it, and name the file; otherwise drop the claim.`);
   }
   if (families.has("fixed") && FIX_REQUEST.test(prompt)) {
     const writes = events.filter(isWrite);
     const source = writes.some((e) => e.path && !isTestPath(e.path) && !isDocPath(e.path));
     const testWritten = writes.some((e) => e.path && isTestPath(e.path));
     if (source && !testWritten) {
-      reasons.push(`You report a fix ("${quote("fixed")}"), but no test file was written. Add a test that fails without the fix and passes with it, run it, and report both results.`);
+      add("fixed", `You report a fix ("${quote("fixed")}"), but no test file was written. Add a test that fails without the fix and passes with it, run it, and report both results.`);
     }
   }
   // Tool steering: a count, an exhaustive search and a remote state each need the command that settles it, run after the last edit.
-  if (families.has("count") && !after(runs(COUNT_RUN))) {
-    reasons.push(`You state a count ("${quote("count")}") without a command that counted it. Run product-engineer range <from>..<to> (commits) or git rev-list --count, then quote the printed number.`);
+  // A count is also settled when every number in it was printed by a command of the turn.
+  const outputs = events.filter((e) => e.kind === "bash" && e.output !== undefined).map((e) => e.output).join("\n");
+  const unproven = claims.filter((c) => c.family === "count" && !numbersPrinted(c.sentence, outputs));
+  if (unproven.length && !after(runs(COUNT_RUN))) {
+    add("count", `You state a count ("${unproven[0].sentence.slice(0, 140)}") without a command that counted it. Run product-engineer range <from>..<to> (commits) or git rev-list --count, then quote the printed number.`);
   }
-  if (families.has("exhaustive") && !after(runs(SEARCH_RUN))) {
-    reasons.push(`You claim nothing else uses it ("${quote("exhaustive")}") without a search after your last edit. Run git grep or rg for the name (or product-engineer twins), quote the hits, or drop the claim.`);
+  // A search after the last edit settles an exhaustive claim when its output is empty or names only files the session wrote. A search that names other files contradicts it.
+  if (families.has("exhaustive")) {
+    const written = events.filter(isWrite).map((e) => e.path).filter(Boolean);
+    const searches = events.map((e, i) => ({ e, i })).filter(({ e, i }) => i > lastWrite && runs(SEARCH_RUN)(e));
+    if (!searches.length) {
+      add("exhaustive", `You claim nothing else uses it ("${quote("exhaustive")}") without a search after your last edit. Run git grep or rg for the name (or product-engineer twins), quote the hits, or drop the claim.`);
+    } else if (!searches.some(({ e }) => e.output === undefined || otherFiles(e.output, written).length === 0)) {
+      const others = otherFiles(searches[searches.length - 1].e.output, written);
+      add("exhaustive", `You claim nothing else uses it ("${quote("exhaustive")}"), but the search after your last edit lists files you did not change: ${others.slice(0, 3).join(", ")}. Name each use, or drop the claim.`);
+    }
   }
   if (families.has("landed") && !after(runs(REMOTE_RUN))) {
-    reasons.push(`You say the work is pushed, deployed, published, released or live ("${quote("landed")}"), but no command read the remote after your last edit. Run git ls-remote or git status -sb (or gh, npm view, curl, vercel or railway for the target) and quote the result, or drop the claim.`);
+    add("landed", `You say the work is pushed, deployed, published, released or live ("${quote("landed")}"), but no command read the remote after your last edit. Run git ls-remote or git status -sb (or gh, npm view, curl, vercel or railway for the target) and quote the result, or drop the claim.`);
   }
   if (PLAIN_REQUEST.test(prompt) && lastWrite >= 0 && !after(runs(FACTS_RUN))) {
-    reasons.push("You were asked for a plain-language rewrite, but product-engineer facts <source> <rewrite> did not run after your last edit. Run it and fix every warning, in particular each sentence with no counterpart in the source.");
+    add("plain", "You were asked for a plain-language rewrite, but product-engineer facts <source> <rewrite> did not run after your last edit. Run it and fix every warning, in particular each sentence with no counterpart in the source.");
   }
   return reasons;
 }
@@ -215,9 +254,13 @@ const stateFile = (sid) => join(tmpdir(), `product-engineer-gate-${sid}.json`);
 const readState = (sid) => {
   try {
     const s = JSON.parse(readFileSync(stateFile(sid), "utf8"));
-    return { blocks: Number.isFinite(s.blocks) ? s.blocks : 0, hash: typeof s.hash === "string" ? s.hash : null };
+    return {
+      blocks: Number.isFinite(s.blocks) ? s.blocks : 0,
+      hash: typeof s.hash === "string" ? s.hash : null,
+      ids: Array.isArray(s.ids) ? s.ids.filter((x) => typeof x === "string") : [],
+    };
   } catch {
-    return { blocks: 0, hash: null };
+    return { blocks: 0, hash: null, ids: [] };
   }
 };
 const writeState = (sid, state) => { try { writeFileSync(stateFile(sid), JSON.stringify(state)); } catch { /* the state is a bound, not a result */ } };
@@ -232,27 +275,42 @@ async function run() {
   if (active && !sid) return;
   let lines;
   try { lines = readFileSync(input.transcript_path, "utf8").split("\n"); } catch { return; }
-  const state = sid ? readState(sid) : { blocks: 0, hash: null };
+  const state = sid ? readState(sid) : { blocks: 0, hash: null, ids: [] };
   if (state.blocks >= MAX_BLOCKS) return;
   const session = readSession(lines);
+  const wrote = session.events.some((e) => e.kind === "write");
+  const committed = session.events.some((e) => e.kind === "bash" && COMMIT_RUN.test(e.command));
+  // A read-only session (no write, no commit) reports history, so the noise families never block it.
+  const readOnly = !wrote && !committed;
   // After a block the agent is already repairing: only the checks that are objective run again, and only a new finding blocks.
-  const reasons = active ? [] : gate(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
+  const items = active ? [] : gateItems(session, [String(input.last_assistant_message ?? session.last), ...session.events.filter((e) => e.kind === "write" && e.text).map((e) => e.text)]);
+  const kept = items.filter((i) => !(readOnly && NOISE_FAMILIES.has(i.family)) && !(ONCE_FAMILIES.has(i.family) && state.ids.includes(i.id)));
   const findings = verify({ cwd: input.cwd || process.cwd(), session, answer: String(input.last_assistant_message ?? session.last), sessionId: input.session_id });
-  const texts = [...reasons, ...findings.map((f) => f.text)];
-  // The second eye runs only when the other checks leave the answer nearly clean, and never on a repair round (one call per session at most).
+  const parts = [...kept.map((i) => ({ family: i.family, text: i.text })), ...findings.map((f) => ({ family: "verify", text: f.text }))];
+  // The second eye runs only when the other checks leave the answer nearly clean, never on a repair round, and never in a read-only session.
   let eyeText = null;
-  if (!active && texts.length < 2 && findings.length < 3) {
-    const eye = await secondEye({ answer: String(input.last_assistant_message ?? session.last), commands: session.events.filter((e) => e.kind === "bash").map((e) => e.command), files: session.events.filter((e) => e.kind === "write" && e.path).map((e) => e.path) });
+  if (!active && !readOnly && parts.length < 2 && findings.length < 3) {
+    const eye = await secondEye({
+      answer: String(input.last_assistant_message ?? session.last),
+      commands: session.events.filter((e) => e.kind === "bash").map((e) => ({ command: e.command, output: e.output ?? "" })),
+      files: session.events.filter((e) => e.kind === "write" && e.path).map((e) => e.path),
+    });
     if (eye.unchecked.length) {
       eyeText = `A second reading of your answer found claims with no supporting command: ${eye.unchecked.map((u) => u.claim.replace(/[.!?]+$/, "")).join("; ")}. Check each (name the command) or remove it.`;
-      texts.push(eyeText);
+      parts.push({ family: "second-eye", text: eyeText });
     }
   }
-  if (!texts.length) return;
+  if (!parts.length) return;
+  // The first block of a session that has only noise reasons is advice, and only a session that wrote files gets it.
+  let head = "product-engineer claim check (one-time):";
+  if (state.blocks === 0 && parts.every((p) => NOISE_FAMILIES.has(p.family))) {
+    if (!wrote) return;
+    head = "product-engineer claim check (one-time, advice only):";
+  }
   const hash = hashOf([...findings.map((f) => f.text), ...(eyeText ? [eyeText] : [])].join("\n"));
   if (state.hash !== null && state.hash === hash) return;
-  if (sid) writeState(sid, { blocks: state.blocks + 1, hash });
-  process.stdout.write(JSON.stringify({ decision: "block", reason: `product-engineer claim check (one-time): ${texts.join(" ")} ${REPLY_WHOLE}` }) + "\n");
+  if (sid) writeState(sid, { blocks: state.blocks + 1, hash, ids: [...new Set([...state.ids, ...kept.map((i) => i.id)])] });
+  process.stdout.write(JSON.stringify({ decision: "block", reason: `${head} ${parts.map((p) => p.text).join(" ")} ${REPLY_WHOLE}` }) + "\n");
 }
 
 const isEntry = () => { try { return import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href; } catch { return false; } };
