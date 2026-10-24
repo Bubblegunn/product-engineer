@@ -274,6 +274,85 @@ function pyBody(lines, start) {
   return out.join("\n");
 }
 
+// The action verbs that name what a function does. A function whose first name token is one of these,
+// added in this change, and whose body returns only an empty value on every path, is reported at warn
+// level: the name promises an action and the body does nothing.
+const ACTION_VERBS = new Set(["create", "save", "update", "delete", "send", "fetch", "load", "submit", "process", "handle", "sync", "import", "export", "build", "generate", "publish", "notify", "charge", "refund", "validate"]);
+const DECL_JS = [
+  /\bfunction\s*\*?\s+([A-Za-z_$][\w$]*)\s*[(<]/,
+  /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*(?::[^=]+)?=\s*(?:async\s+)?(?:function\b|\(|[A-Za-z_$][\w$]*\s*=>)/,
+  /^\s*(?:(?:export|default|static|async|public|private|protected|override|readonly)\s+)*\*?([A-Za-z_$][\w$]*)\s*\([^)]*\)\s*(?::\s*[^{]+)?\{\s*$/,
+];
+const DECL_PY = /^\s*(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/;
+// The empty values a return may give: the ones the message names, and False, its Python spelling.
+const EMPTY_VALUE_JS = /^(?:\{\s*\}|\[\s*\]|''|""|0|false|null|undefined)$/;
+const EMPTY_VALUE_PY = /^(?:None|\{\}|\[\]|""|''|0|False)$/;
+// A body is read for at most this many lines; a longer one is not an empty return.
+const BODY_WINDOW = 400;
+
+/** The name a declaration on this line introduces, or null. */
+function declaredName(lang, text) {
+  if (lang === "py") return DECL_PY.exec(text)?.[1] ?? null;
+  for (const re of DECL_JS) {
+    const m = re.exec(text);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+/** The first camel or snake token of a name, lower-cased: createdAt gives created, save_draft gives save. */
+const verbOf = (name) => name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").split("_")[0].toLowerCase();
+
+/**
+ * The statements of the JavaScript function whose declaration starts at lines[start], with comments and
+ * string contents blanked. An arrow with an expression body gives that expression as a return. Returns
+ * null when the body cannot be found on the lines given.
+ */
+function jsBodyStatements(lines, start) {
+  const text = lines.slice(start, start + BODY_WINDOW).join("\n");
+  const m = maskCode(text);
+  const open = m.indexOf("(");
+  if (open < 0) return null;
+  const close = matchClose(m, open);
+  if (close < 0) return null;
+  let j = close + 1;
+  while (j < m.length && m[j] !== "{" && m[j] !== ";" && !(m[j] === "=" && m[j + 1] === ">")) j++;
+  if (j >= m.length || m[j] === ";") return null;
+  if (m[j] === "=") {
+    let k = j + 2;
+    while (k < m.length && /\s/.test(m[k])) k++;
+    if (m[k] !== "{") {
+      let e = k;
+      while (e < m.length && m[e] !== "\n" && m[e] !== ";") e++;
+      const expr = m.slice(k, e).trim().replace(/^\((.*)\)$/s, "$1").trim();
+      return [`return ${expr}`];
+    }
+    j = k;
+  }
+  const bc = matchClose(m, j);
+  if (bc < 0) return null;
+  return m
+    .slice(j + 1, bc)
+    .split(/[;\n]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+/** The statements of the Python function defined at lines[start], without comments. */
+function pyBodyStatements(lines, start) {
+  return pyBody(lines.slice(start, start + BODY_WINDOW), 0)
+    .split("\n")
+    .map((l) => l.replace(/\s+#.*$/, "").trim())
+    .filter((l) => l && !l.startsWith("#"));
+}
+
+/** True when a statement is a return of an empty value. */
+function isEmptyReturn(statement, lang) {
+  const m = /^return\s+(.+)$/.exec(statement);
+  if (!m) return false;
+  return (lang === "py" ? EMPTY_VALUE_PY : EMPTY_VALUE_JS).test(m[1].trim());
+}
+
 /**
  * Findings for the added lines of one change. `read(file)` returns the file's full lines as they
  * will be after the change (or null), so a test body can be read past the lines that were added.
@@ -357,6 +436,17 @@ export function scanAdded(added, { read = () => null } = {}) {
       if (test && JUNIT_DISABLED.test(maskLine(text, "js"))) {
         add(entry, "skipped-test", "newly disabled test; it no longer runs");
         continue;
+      }
+      // A function named for an action that returns only an empty value. Added lines of source files only.
+      if (!test && (lang === "js" || lang === "py")) {
+        const name = declaredName(lang, text);
+        if (name && ACTION_VERBS.has(verbOf(name))) {
+          const lines = contentLines();
+          const statements = lines ? (lang === "js" ? jsBodyStatements(lines, entry.line - 1) : pyBodyStatements(lines, entry.line - 1)) : null;
+          if (statements && statements.length && statements.every((st) => isEmptyReturn(st, lang))) {
+            findings.push({ file, line: entry.line, code: "suspicious-return", level: "warn", reason: `${name} returns only an empty value, so calling it does nothing; a function named for an action should do it` });
+          }
+        }
       }
       if (!test) continue;
 
@@ -505,7 +595,8 @@ export function runStubs(argv, { cwd = process.cwd() } = {}) {
       for (const f of findings) console.log(`  ${f.file}:${f.line}  ${f.code}  ${f.reason}`);
     }
   }
-  return findings.length > 0 && !warn ? 1 : 0;
+  // A finding at warn level is printed but does not fail the run.
+  return findings.some((f) => f.level !== "warn") && !warn ? 1 : 0;
 }
 
 function usageError(message) {

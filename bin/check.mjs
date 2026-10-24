@@ -173,6 +173,34 @@ const OBSERVED = /\b(watched|saw|observed|checked (it|the|that)|verified (by|in|
  * Analyse a message. Returns { skipped, findings: [{ level, message }] }.
  * level is "error", "warn", "ok" or "info".
  */
+// Commit-header rules, at warn level, after the commitlint conventions: the subject line is short enough
+// for git log, a body is separated from it by a blank line, a breaking change is marked both in the type
+// and in a footer, and a Co-authored-by trailer names an email address. A pull request description has
+// no header of this kind and is not read.
+const BANG_HEADER = /^[A-Za-z]+(?:\([^)]*\))?!:/;
+const BREAKING_FOOTER = /^BREAKING[ -]CHANGE:/m;
+const CO_AUTHORED = /^co-authored-by:/i;
+const TRAILER_EMAIL = /<[^<>\s@]+@[^<>\s]+>/;
+export function headerFindings(text) {
+  const lines = text.split("\n");
+  const header = lines[0] ?? "";
+  const out = [];
+  const warn = (message, code) => out.push({ level: "warn", message, code });
+  // Header length is deliberately not checked: product-engineer does not check the Conventional Commits shape (commitlint does, docs/COMPARISON.md).
+  if (lines.length > 1 && lines[1].trim() !== "") warn("the body starts on the line after the header; put a blank line between them", "header-body-blank");
+  const bang = BANG_HEADER.test(header);
+  const footer = BREAKING_FOOTER.test(text);
+  if (bang && !footer) warn("the type is marked with ! for a breaking change, but there is no BREAKING CHANGE: footer that says what breaks", "breaking-missing-footer");
+  if (footer && !bang) warn("a BREAKING CHANGE: footer is present, but the type has no ! (for example feat!:)", "breaking-no-bang");
+  for (const line of lines) {
+    if (CO_AUTHORED.test(line) && !TRAILER_EMAIL.test(line)) {
+      warn("a Co-authored-by trailer has no email address in angle brackets, so it does not name anyone", "trailer-malformed");
+      break;
+    }
+  }
+  return out;
+}
+
 export function analyse(text, opts = {}) {
   const findings = [];
   const add = (level, message, code) => findings.push({ level, message, code });
@@ -181,6 +209,7 @@ export function analyse(text, opts = {}) {
   if (/^(Merge|fixup!|squash!|Revert)/.test(first) || /\[no-customer\]/.test(text)) {
     return { skipped: true, findings: [{ level: "ok", message: "merge, fixup, squash, revert or [no-customer]: the block is not required", code: "block-not-required" }] };
   }
+  if (opts.kind !== "pr") for (const f of headerFindings(text)) findings.push(f);
 
   // The block may be written in the team's language: any row of references/headings.md is
   // accepted, and .product-engineer.json adds a language the table does not ship.

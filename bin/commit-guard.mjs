@@ -171,7 +171,7 @@ function gitCall(words) {
 
 /** Options and paths of `git commit`. -a and --all take every tracked change; a word after -- or a bare word is a path. */
 function parseCommitArgs(args) {
-  const out = { all: false, paths: [] };
+  const out = { all: false, noVerify: false, paths: [] };
   let pathsOnly = false;
   for (let k = 0; k < args.length; k++) {
     const t = args[k];
@@ -184,11 +184,13 @@ function parseCommitArgs(args) {
       pathsOnly = true;
     } else if (t.startsWith("--")) {
       if (t === "--all") out.all = true;
+      else if (t === "--no-verify") out.noVerify = true;
       else if (!t.includes("=") && COMMIT_VALUE_LONG.has(t)) k++;
     } else if (t.startsWith("-") && t.length > 1) {
       for (let c = 1; c < t.length; c++) {
         const ch = t[c];
         if (ch === "a") out.all = true;
+        else if (ch === "n") out.noVerify = true;
         else if (COMMIT_VALUE_SHORT.includes(ch)) {
           if (c === t.length - 1) k++;
           break;
@@ -383,6 +385,68 @@ export function commitHits(command, cwd) {
   return hits;
 }
 
+// Flags of `gh pr create` that supply the description, and the empty forms that do not.
+const PR_BODY_FLAGS = new Set(["--body", "-b", "--body-file", "-F", "--fill", "-f", "--fill-first", "--fill-verbose"]);
+
+/** True when the arguments of `gh pr create` give a body, a body file or --fill with a non-empty value. */
+function prBodyGiven(args) {
+  for (let k = 0; k < args.length; k++) {
+    const t = args[k];
+    const flag = t.includes("=") ? t.slice(0, t.indexOf("=")) : t;
+    if (!PR_BODY_FLAGS.has(flag)) continue;
+    if (flag === "--fill" || flag === "-f" || flag === "--fill-first" || flag === "--fill-verbose") return true;
+    const value = t.includes("=") ? t.slice(t.indexOf("=") + 1) : args[k + 1];
+    if (value !== undefined && value.trim() !== "") return true;
+  }
+  return false;
+}
+
+// A pathspec-less commit that takes every staged file, while files are modified but not staged.
+// The staged change must span this many top-level folders before the check fires.
+const MIXED_FOLDERS = 3;
+const MAX_LISTED_FOLDERS = 5;
+
+/** The mixed-change reason for a pathspec-less commit, or null. Reads git in the commit's own directory. */
+function mixedCommitReason(seg) {
+  const top = run(["rev-parse", "--show-toplevel"], seg.cwd).trim();
+  const staged = lines0(tryRun(["diff", "--cached", "--name-only", "-z"], top));
+  const folders = [...new Set(staged.filter((p) => p.includes("/")).map((p) => p.split("/")[0]))].sort();
+  if (folders.length < MIXED_FOLDERS) return null;
+  const unstaged = lines0(tryRun(["diff", "--name-only", "-z"], top));
+  if (!unstaged.length) return null;
+  const listed = folders.slice(0, MAX_LISTED_FOLDERS).join(", ");
+  const more = folders.length > MAX_LISTED_FOLDERS ? ` and ${folders.length - MAX_LISTED_FOLDERS} more` : "";
+  return `product-engineer publish guard blocked this commit: the staged files span ${folders.length} top-level folders (${listed}${more}), and ${unstaged.length} modified file${unstaged.length === 1 ? " is" : "s are"} not staged, so a commit with no paths would take the staged files of several changes at once. Commit one change at a time by naming its paths with \`git commit -- <paths>\`, or stage the rest of this change first. If the person asked for this commit as it is, run the same command again with PE_ALLOW_STAGED=1 in front of the git command.`;
+}
+
+const NO_VERIFY_REASON =
+  "product-engineer publish guard blocked this commit: --no-verify (or -n) skips the git hooks, including the commit-message check that reads the customer block. Run the commit without it. If the person explicitly asked to skip the hooks, run the same command again with PE_ALLOW_STAGED=1 in front of the git command.";
+const PR_BODY_REASON =
+  "product-engineer publish guard blocked gh pr create because it has no --body, --body-file or -F and no --fill, or its body is empty, so the pull request would open with an empty description. Write the description, customer block first, to a file and pass --body-file <file>; pass --fill only when the commit messages already carry it. If the person explicitly asked for an empty body, run the same command again with PE_ALLOW_STAGED=1 in front of the command.";
+
+/**
+ * The publish guards that apply to a command: a commit that skips the hooks, a pull request with no
+ * body, and a pathspec-less commit that would split a change. Returns the deny reasons (empty for allow).
+ * A call that carries PE_ALLOW_STAGED=1 in its own segment is not checked, as for the staged-file check.
+ */
+export function publishReasons(command, cwd) {
+  const reasons = [];
+  for (const words of parseCommand(command)) {
+    const { rest, assigns } = stripWrappers(words);
+    if (rest.length === 0 || assigns.includes("PE_ALLOW_STAGED=1")) continue;
+    if (rest[0] === "gh" && rest[1] === "pr" && rest[2] === "create" && !prBodyGiven(rest.slice(3))) reasons.push(PR_BODY_REASON);
+  }
+  for (const seg of planFor(command, cwd)) {
+    if (seg.sub !== "commit") continue;
+    if (seg.noVerify) reasons.push(NO_VERIFY_REASON);
+    if (!seg.all && seg.paths.length === 0) {
+      const reason = mixedCommitReason(seg);
+      if (reason) reasons.push(reason);
+    }
+  }
+  return [...new Set(reasons)];
+}
+
 /** The deny text. Plain English, one line per hit, no matched value, and the exact way out. */
 export function reasonFor(hits) {
   const shown = hits.slice(0, MAX_LISTED).map((h) => `${h.line ? `${h.path}:${h.line}` : h.path} (${h.kind}), ${h.situation}`);
@@ -423,9 +487,21 @@ function run_() {
   const command = input.tool_input?.command;
   if (typeof command !== "string" || !command.trim()) return;
   const cwd = typeof input.cwd === "string" && input.cwd ? input.cwd : process.cwd();
-  const hits = commitHits(command, cwd);
-  if (!hits.length) return;
-  process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: reasonFor(hits) } }) + "\n");
+  let hits = [];
+  try {
+    hits = commitHits(command, cwd);
+  } catch {
+    /* a read that fails loses only the content findings; the publish guards below still run */
+  }
+  let publish = [];
+  try {
+    publish = publishReasons(command, cwd);
+  } catch {
+    /* the publish guards are advisory to the hook: a failed read allows rather than blocks */
+  }
+  const reasons = [...(hits.length ? [reasonFor(hits)] : []), ...publish];
+  if (!reasons.length) return;
+  process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: reasons.join(" ") } }) + "\n");
 }
 
 const isEntry = () => {

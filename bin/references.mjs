@@ -75,6 +75,43 @@ export function resolveReferences(refs, opts = {}) {
   });
 }
 
+// A quoted snippet is a backticked span or a double-quoted span, straight or curly, of six or more characters.
+const SNIPPET = /`([^`\n]+)`|"([^"\n]+)"|\u201C([^\u201D\n]+)\u201D/g;
+const SNIPPET_MIN = 6;
+const QUOTE_WINDOW = 2;
+// Whitespace is not part of the comparison: a wrapped or re-indented line still carries the quote.
+const squash = (s) => s.replace(/\s+/g, "");
+
+/**
+ * Quote-the-line: a file reference with a line number, followed in the same sentence by a snippet of six or
+ * more characters, must have the snippet on that line or within two lines of it. A reference that does not
+ * resolve is left to resolveReferences, which already reports it.
+ */
+export function quoteFindings(text, opts = {}) {
+  const mode = opts.mode ?? "warn";
+  if (mode === "off") return [];
+  const cwd = opts.cwd ?? process.cwd();
+  const out = [];
+  for (const m of text.matchAll(FILE)) {
+    const raw = m[0];
+    if (m[2] === undefined || NOT_A_PATH.test(raw) || /^https?:\/\//.test(raw) || text.includes(`https://github.com/${raw}`)) continue;
+    const [ref] = resolveReferences([{ kind: "file", raw, path: m[1], line: Number(m[2]) }], { cwd });
+    if (!ref.resolved || ref.line === null) continue;
+    const after = text.slice(m.index + raw.length);
+    const end = after.search(/[.!?](?=\s|$)|\n/);
+    const sentence = end < 0 ? after : after.slice(0, end);
+    const snippets = [...sentence.matchAll(SNIPPET)].map((x) => (x[1] ?? x[2] ?? x[3]).trim()).filter((x) => x.length >= SNIPPET_MIN);
+    if (snippets.length === 0) continue;
+    const lines = readFileSync(join(cwd, m[1]), "utf8").split("\n");
+    const from = Math.max(1, ref.line - QUOTE_WINDOW);
+    const to = Math.min(lines.length, ref.line + QUOTE_WINDOW);
+    const window = lines.slice(from - 1, to).map(squash);
+    if (snippets.every((snip) => window.some((l) => l.includes(squash(snip))))) continue;
+    out.push({ level: mode === "error" ? "error" : "warn", message: `quoted text not found at ${m[1]}:${ref.line}`, code: "quoted-text-missing" });
+  }
+  return out;
+}
+
 /**
  * Findings for the CLI. `mode` is "warn" (default), "error" or "off".
  * A message with no references is never a failure, in any mode.
@@ -83,17 +120,21 @@ export function referenceFindings(text, opts = {}) {
   const mode = opts.mode ?? "warn";
   if (mode === "off") return [];
   const refs = resolveReferences(findReferences(text), opts);
+  const quotes = quoteFindings(text, { cwd: opts.cwd, mode });
   if (refs.length === 0) {
-    return [{ level: "info", message: "no file or run reference to resolve; the block is judged on what it says", code: "references-none" }];
+    return [{ level: "info", message: "no file or run reference to resolve; the block is judged on what it says", code: "references-none" }, ...quotes];
   }
   const broken = refs.filter((r) => !r.resolved);
   if (broken.length === 0) {
     const one = refs.length === 1;
-    return [{ level: "ok", message: `${refs.length} reference${one ? "" : "s"} resolve${one ? "s" : ""}`, code: "references-resolved" }];
+    return [{ level: "ok", message: `${refs.length} reference${one ? "" : "s"} resolve${one ? "s" : ""}`, code: "references-resolved" }, ...quotes];
   }
-  return broken.map((r) => ({
-    level: mode === "error" ? "error" : "warn",
-    message: `cites ${r.raw}, which does not resolve: ${r.why}`,
-    code: "references-broken",
-  }));
+  return [
+    ...broken.map((r) => ({
+      level: mode === "error" ? "error" : "warn",
+      message: `cites ${r.raw}, which does not resolve: ${r.why}`,
+      code: "references-broken",
+    })),
+    ...quotes,
+  ];
 }

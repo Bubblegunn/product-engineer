@@ -118,6 +118,76 @@ const TOKEN_RULES = [
 const DOCUMENTED_SAMPLES = new Set(["AKIAIOSFODNN7EXAMPLE", "ASIAIOSFODNN7EXAMPLE"]);
 const isDocumentedSample = (m) => m.includes("EXAMPLE") || (/example/i.test(m) && DOCUMENTED_SAMPLES.has(m.toUpperCase()));
 
+// The second set: about thirty further token shapes, the high-yield ones from the gitleaks rule set
+// (regular expressions adapted for token shapes; the attribution is in THIRD_PARTY_NOTICES.md). Each
+// row is { re, kind, keys, entropy }. `keys` is a list of lowercase substrings; a row is only run on a
+// line that contains one of them, so most lines never reach its regular expression. `entropy` marks a
+// generic shape, where the prefix does not identify the token: its secret part (group 1 when the
+// pattern has one, otherwise the whole match) must reach ENTROPY_FLOOR bits per character. The matched
+// text is only tested, never stored or printed.
+const ENTROPY_FLOOR = 3.0;
+const EXTRA_LINE_CAP = 4096;
+const EXTRA_RULES = [
+  { re: /\b[Aa]ccount[Kk]ey=([A-Za-z0-9+/]{60,100}={0,2})/g, kind: "an Azure storage account key", keys: ["accountkey="], entropy: true },
+  { re: /"private_key_id"\s*:\s*"([0-9a-f]{40})"/g, kind: "a Google service account key id", keys: ["private_key_id"], entropy: true },
+  { re: /\bSK[0-9a-f]{32}\b/g, kind: "a Twilio API key", keys: ["sk"] },
+  { re: /\bSG\.[\w-]{22}\.[\w-]{43}\b/g, kind: "a SendGrid API key", keys: ["sg."] },
+  { re: /\bkey-[0-9a-f]{32}\b/g, kind: "a Mailgun API key", keys: ["key-"] },
+  { re: /\bnpm_[A-Za-z0-9]{36}\b/g, kind: "an npm access token", keys: ["npm_"] },
+  { re: /\bpypi-AgEIcHlwaS5vcmc[\w-]{50,}/g, kind: "a PyPI upload token", keys: ["pypi-"] },
+  { re: /\bshp(?:at|ca|pa|ss)_[0-9a-f]{32}\b/g, kind: "a Shopify access token", keys: ["shp"] },
+  { re: /\bdckr_pat_[\w-]{27,}/g, kind: "a Docker Hub access token", keys: ["dckr_pat_"] },
+  { re: /\b[MN][A-Za-z\d]{23,25}\.[\w-]{6}\.([\w-]{27,38})\b/g, kind: "a Discord bot token", keys: [], entropy: true },
+  { re: /\b(\d{8,10}:[A-Za-z0-9_-]{35})/g, kind: "a Telegram bot token", keys: [":"], entropy: true },
+  { re: /\bNRAK-[A-Z0-9]{27}\b/g, kind: "a New Relic API key", keys: ["nrak-"] },
+  { re: /\bdop_v1_[0-9a-f]{64}\b/g, kind: "a DigitalOcean token", keys: ["dop_v1_"] },
+  { re: /\bhf_[A-Za-z0-9]{34}\b/g, kind: "a Hugging Face access token", keys: ["hf_"] },
+  { re: /\bglpat-[\w-]{20}\b/g, kind: "a GitLab personal access token", keys: ["glpat-"] },
+  { re: /\beyJ[\w-]{10,}\.eyJ[\w-]{10,}\.[\w-]{10,}/g, kind: "a JSON Web Token", keys: ["eyj"], entropy: true },
+  { re: /\bAuthorization:\s*Basic\s+([A-Za-z0-9+/]{20,}={0,2})/gi, kind: "a basic authorization header with credentials", keys: ["basic"], entropy: true },
+  { re: /^\s*-----BEGIN PGP PRIVATE KEY BLOCK-----\s*$/g, kind: "a PGP private key header", keys: ["pgp private key"] },
+  { re: /https:\/\/hooks\.slack\.com\/services\/T[A-Z0-9]{8,}\/B[A-Z0-9]{8,}\/[A-Za-z0-9]{20,}/g, kind: "a Slack webhook URL", keys: ["hooks.slack.com"] },
+  { re: /\bGOCSPX-[A-Za-z0-9_-]{28}\b/g, kind: "a Google OAuth client secret", keys: ["gocspx-"] },
+  { re: /\blin_api_[A-Za-z0-9]{40}\b/g, kind: "a Linear API key", keys: ["lin_api_"] },
+  { re: /\bsntryu_[0-9a-f]{64}\b/g, kind: "a Sentry user token", keys: ["sntryu_"] },
+  { re: /\bsecret_[A-Za-z0-9]{43}\b/g, kind: "a Notion integration secret", keys: ["secret_"], entropy: true },
+  { re: /\bPMAK-[0-9a-f]{24}-[0-9a-f]{34}\b/g, kind: "a Postman API key", keys: ["pmak-"] },
+  { re: /\bfo1_[A-Za-z0-9_-]{43}\b/g, kind: "a Fly.io access token", keys: ["fo1_"] },
+  { re: /\bdp\.pt\.[A-Za-z0-9]{43}\b/g, kind: "a Doppler service token", keys: ["dp.pt."] },
+  { re: /\br8_[A-Za-z0-9]{37}\b/g, kind: "a Replicate API token", keys: ["r8_"] },
+  { re: /\bgsk_[A-Za-z0-9]{52}\b/g, kind: "a Groq API key", keys: ["gsk_"] },
+];
+
+// Shannon entropy in bits per character.
+const entropyOf = (s) => {
+  const counts = new Map();
+  for (const c of s) counts.set(c, (counts.get(c) ?? 0) + 1);
+  let bits = 0;
+  for (const n of counts.values()) {
+    const p = n / s.length;
+    bits -= p * Math.log2(p);
+  }
+  return bits;
+};
+
+// A value a provider or a template uses to show the shape of a credential, not a credential.
+const isPlaceholderValue = (m) => /example|placeholder|dummy|sample|your[_-]|changeme|x{8,}|\$\{|<[^>\s]*>/i.test(m);
+
+/** The kind of the first EXTRA_RULES row a line matches, or undefined. */
+function extraKind(text) {
+  if (text.length > EXTRA_LINE_CAP) return undefined;
+  const lower = text.toLowerCase();
+  for (const rule of EXTRA_RULES) {
+    if (rule.keys.length && !rule.keys.some((k) => lower.includes(k))) continue;
+    for (const m of text.matchAll(rule.re)) {
+      if (isPlaceholderValue(m[0]) || isDocumentedSample(m[0])) continue;
+      if (rule.entropy && entropyOf(m[1] ?? m[0]) < ENTROPY_FLOOR) continue;
+      return rule.kind;
+    }
+  }
+  return undefined;
+}
+
 // Lines longer than this are not read for the URL and npm rules. Those rules are the ones whose
 // backtracking grows with line length; a minified bundle past this size is not reviewed line by line.
 const LONG_LINE = 20000;
@@ -146,6 +216,8 @@ function secretKind(text) {
   for (const [re, kind, real] of TOKEN_RULES) {
     if ([...text.matchAll(re)].some((m) => !isDocumentedSample(m[0]) && (!real || real(m[0])))) return kind;
   }
+  const extra = extraKind(text);
+  if (extra) return extra;
   const long = text.length > LONG_LINE;
   if (!long && text.includes("://") && urlPasswordIn(text)) return "a URL with an inline password";
   if (!long && text.includes("_authToken=") && NPM_AUTH_TOKEN.test(text)) return "an npm auth token";
