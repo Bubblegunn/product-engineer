@@ -1,0 +1,39 @@
+{
+  "label": "ge2f370",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The old default of 5 is not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no tests for lowStock are included, only the fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says 1 test fails and that it predates the branch, so it also fails on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "The full test suite, node --test via npm test, was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

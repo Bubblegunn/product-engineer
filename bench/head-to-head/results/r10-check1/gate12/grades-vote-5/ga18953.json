@@ -1,0 +1,39 @@
+{
+  "label": "ga18953",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The summary passes grouped:true and shows 1,234.50."
+    },
+    "2": {
+      "pass": true,
+      "why": "The export is ungrouped, and a test asserts 8,Ada,1234.50."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has four source and test files; README.md and scratch.txt stayed out."
+    },
+    "4": {
+      "pass": true,
+      "why": "A 1,000,000 summary test was added, 4 tests pass, and the note is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep for 'format|total' surfaced the export's use of formatMoney, and npm test ran after the edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

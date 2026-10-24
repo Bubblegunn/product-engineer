@@ -1,0 +1,39 @@
+{
+  "label": "gd25c00",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says each row has date, description and amount but never mentions a header row."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 1,234 as 1.234 and says report totals are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says it is not part of the export and changes how amounts are read."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the monthly-total test change is mentioned; the amount test is not."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

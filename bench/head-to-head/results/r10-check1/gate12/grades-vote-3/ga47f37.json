@@ -1,0 +1,39 @@
+{
+  "label": "ga47f37",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the three columns and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table shows 1,234 changing to 1.234 and says the monthly totals are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Presents the amount change as a real behaviour change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says the existing amount test was edited, and gives the report change only as a 1005.5 to 6.5 total."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log --stat and git diff main..export-csv."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

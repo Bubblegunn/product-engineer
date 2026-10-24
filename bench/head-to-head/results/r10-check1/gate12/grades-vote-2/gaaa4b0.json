@@ -1,0 +1,39 @@
+{
+  "label": "gaaa4b0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is removed and not exported, so calls throw TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "States parse still works, uses console.warn, and says to switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "States 2.5.0 trimmed unless trim: false, and 3.0 trims only with { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says it is not a drop-in upgrade and that quoted fields are unsupported, and the final answer flags the README."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0..HEAD on src and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

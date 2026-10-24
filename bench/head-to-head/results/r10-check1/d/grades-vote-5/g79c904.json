@@ -1,0 +1,39 @@
+{
+  "label": "g79c904",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md says 10 by default and does not mention 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and the function is still there."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says main fails it too, which was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on both branches before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

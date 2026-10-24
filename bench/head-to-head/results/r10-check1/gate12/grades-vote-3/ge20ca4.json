@@ -1,0 +1,39 @@
+{
+  "label": "ge20ca4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed and throws, with no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, uses console.warn, and should be renamed to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim default change is covered with trim: true."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says quoted fields are unsupported, and the final answer flags the README and says the expectation was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a git diff against v2.5.0 and executed the code."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

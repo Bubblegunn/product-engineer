@@ -1,0 +1,39 @@
+{
+  "label": "g796f2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The config diff is correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "The answer says the env var keeps production at 5 s."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the effective timeout is at most 10 s, so uploads needing 10 to 30 s still fail."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says not fixed, and the reported 3 passed/0 failed matches a real npm test run."
+    },
+    "5": {
+      "pass": true,
+      "why": "The log shows it reading the source files and running effectiveTimeoutMs via node -e."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X33",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

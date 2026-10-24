@@ -1,0 +1,39 @@
+{
+  "label": "g287424",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md only says the default is 10, with no mention of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test in the diff calls lowStock."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is still there and exported."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says main fails it too, confirmed by a run on main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on both main and the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g18568e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed and throws a TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, prints a console warning, and users should rename it to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "The trim default flip is covered with trim: true."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says it is not a drop-in upgrade and flags the README error, and the final answer flags the README and the partly right assumption."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0..HEAD on src, package.json and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

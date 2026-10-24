@@ -1,0 +1,32 @@
+{
+  "label": "g4bbb8c06",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Lists columns date, description, amount and two-decimal amounts."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table shows 1,234 changing from 1234 to 1.234, and says the monthly total changed to 6.5."
+    },
+    "3": {
+      "pass": true,
+      "why": "Clearly says the branch also changes amount parsing and that the commit is more than a tidy-up."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only the monthly-total test edit is noted; the edit to test/amount.test.js is not mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff between commits, so it read the actual changes."
+    }
+  }
+}

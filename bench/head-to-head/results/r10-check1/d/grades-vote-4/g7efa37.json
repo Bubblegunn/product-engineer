@@ -1,0 +1,39 @@
+{
+  "label": "g7efa37",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md never mentions the threshold changing from 5 to 10."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock despite the commit message."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a console.warn and stays in place."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md reports the failing test but does not say it fails on main, and the final answer says main was not checked."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

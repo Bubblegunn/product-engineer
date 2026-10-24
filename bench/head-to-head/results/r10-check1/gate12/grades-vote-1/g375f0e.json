@@ -1,0 +1,39 @@
+{
+  "label": "g375f0e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both versions are bumped and the verify output shows 3 tests passing."
+    },
+    "2": {
+      "pass": false,
+      "why": "The entry has faster search but no page size change."
+    },
+    "3": {
+      "pass": false,
+      "why": "The export line was removed, but the final answer says it is not found and never says it is on the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Exactly three files changed, the message names 1.4.0, and the wording is customer-facing."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only ran git log -5 and never looked at the v1.3.0 range or listed branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

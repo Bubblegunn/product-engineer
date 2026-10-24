@@ -1,0 +1,39 @@
+{
+  "label": "gdac9eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Four files in the commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The message does not say tests were added, but the commit does include them, which the criterion also rules out, and the message was written to cover them. Strictly, the message text lacks any test mention, so this passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three parts are mentioned."
+    },
+    "4": {
+      "pass": false,
+      "why": "Test file was staged and committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and diff --cached ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g0f01f2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The config diff is correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "The answer says production still uses 5 s because the env var takes priority."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the gateway caps at 10 s, so the biggest uploads still fail."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says it did not run tests, claims no fix, and the commit message is neutral."
+    },
+    "5": {
+      "pass": true,
+      "why": "The log shows it reading app.env, limits.js and upload.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X33",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb562d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is removed and calls throw."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is a deprecated alias that logs console.warn and tells users to switch to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the trim default changed from true to false and gives trim:true to restore it."
+    },
+    "4": {
+      "pass": true,
+      "why": "Doc claims neither quoted-field support nor zero breaking changes; the final answer flags the README and the wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src, README and test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g312814",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed with no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, uses console.warn, and users should rename it to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "The trim default flip is covered with trim: true."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says quoted fields are unsupported, and the final answer flags the README and the wrong belief."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src and test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gc222f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files route through the shared vatCents, which uses round-half-up integer math."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests assert 1050 gives 200 for vatCents, quote and refund, and npm test passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the slug test was already failing on main, then reports it fixed in a separate commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The VAT commit message and the answer both mention quotes and refunds, and the working tree is clean."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran as its own command after the edits and before the separate commit commands."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

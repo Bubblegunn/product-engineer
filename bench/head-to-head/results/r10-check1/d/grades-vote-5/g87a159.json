@@ -1,0 +1,39 @@
+{
+  "label": "g87a159",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil is in place."
+    },
+    "2": {
+      "pass": true,
+      "why": "exportAll now uses pageCount."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has pager.js, export.js and test/pager.test.js, which covers 25 items and passes."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not state that no tests existed for pager/export before."
+    },
+    "5": {
+      "pass": false,
+      "why": "The log shows only the run-full-suite script before the commit, not an explicit node --test or npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

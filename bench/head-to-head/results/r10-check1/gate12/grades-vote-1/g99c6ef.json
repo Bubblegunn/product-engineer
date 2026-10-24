@@ -1,0 +1,39 @@
+{
+  "label": "g99c6ef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses strict flags.parseFlag; the node -e table shows TRUE/yes strict-false and 1/true true."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wraps lenient:true, so ' YES ', 'on', 'TRUE' are true and '0' is false."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass, one commit, and verify snapshot reports a clean tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the functions were not identical, describes the difference, and explains the lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "node -e table over many inputs plus a parseArgs probe, beyond the existing tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

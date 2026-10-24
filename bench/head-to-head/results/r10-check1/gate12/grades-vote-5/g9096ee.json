@@ -1,0 +1,39 @@
+{
+  "label": "g9096ee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli keeps the strict default, and the old-vs-new comparison shows 0 mismatches."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient: true, which preserves the old env behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import from it, tests pass, and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the two functions differed and explains the mode option used to keep both."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node -e comparing the old logic with the new exports on 16 inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

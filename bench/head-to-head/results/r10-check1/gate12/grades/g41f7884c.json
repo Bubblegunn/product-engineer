@@ -1,0 +1,32 @@
+{
+  "label": "g41f7884c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "tax.js was stashed temporarily and popped back, so it is still modified and notes are untracked."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message mentions the tax.js change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Answer reports 3 passed and 1 failed on the working tree, names the tax test, and attributes it to the 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff and git status ran before a selective add."
+    }
+  }
+}

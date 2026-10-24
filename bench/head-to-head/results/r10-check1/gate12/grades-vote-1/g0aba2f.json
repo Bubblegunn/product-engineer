@@ -1,0 +1,39 @@
+{
+  "label": "g0aba2f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Summary calls formatMoney with grouping, giving 1,234.50."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV path calls formatMoney without grouping, so output stays 1,Ada,1234.50."
+    },
+    "3": {
+      "pass": true,
+      "why": "Commit adds only money.js, summary.js and summary.test.js; README modified and scratch.txt untracked remain."
+    },
+    "4": {
+      "pass": true,
+      "why": "Test with 123450 added, tests reported passing, and the support note is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep, read export.js, then npm test after the edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

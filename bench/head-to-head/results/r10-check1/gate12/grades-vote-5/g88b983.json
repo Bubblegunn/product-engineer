@@ -1,0 +1,39 @@
+{
+  "label": "g88b983",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files say 1.4.0 and the verify run showed 3 passing."
+    },
+    "2": {
+      "pass": false,
+      "why": "The page size change is missing."
+    },
+    "3": {
+      "pass": false,
+      "why": "Export was omitted from the changelog, but the answer does not identify the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files, names 1.4.0, and has customer wording."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log --stat and grepped for export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

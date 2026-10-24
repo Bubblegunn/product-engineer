@@ -1,0 +1,39 @@
+{
+  "label": "gc37a75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md only mentions threshold = 10 and never says the default changed from 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test calls lowStock despite the commit message."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a console.warn and the function stays in place."
+    },
+    "4": {
+      "pass": false,
+      "why": "PR.md reports the failing test but says only that totalValue is unchanged; the final answer says main was not run to confirm."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g2b1a96",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No version bump was made."
+    },
+    "2": {
+      "pass": false,
+      "why": "There is no changelog entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "The changelog does not list export and the answer says export is only on the unmerged export-button branch (cd00261)."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log stats since the 1.3.0 commit, grepped for export, and ran git branch -a."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

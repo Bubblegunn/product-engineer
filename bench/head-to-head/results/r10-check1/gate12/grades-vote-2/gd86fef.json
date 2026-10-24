@@ -1,0 +1,39 @@
+{
+  "label": "gd86fef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is no longer exported and there is no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "States parse still works, logs a deprecation warning, and says to rename to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "States trim was on by default in 2.5.0 and now needs { trim: true }."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer corrects the owner's belief but never mentions the false README line, and the README was not corrected."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src and ran the old version's code."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

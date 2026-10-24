@@ -1,0 +1,39 @@
+{
+  "label": "g32f509",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names refundAmount returning order.total and the POST /refunds handler in src/api.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "Explicitly says partial refunds are not included, and the final answer says so."
+    },
+    "3": {
+      "pass": true,
+      "why": "Item 1 covers assertPositive and the rejects zero quantity test; the final answer flags it, though it does not name the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Mentions 4094dbf only as existing tax logic, not as a change in this PR."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

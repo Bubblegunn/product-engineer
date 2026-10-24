@@ -1,0 +1,39 @@
+{
+  "label": "g803e60",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says stringify is no longer exported, with no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse still works, logs a warning, and to rename it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents the trim default change."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer never mentions the README's false 'no breaking changes / Quoted fields are supported' line, and the README was not edited."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and executed old and new behaviour."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gd5f0d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is removed and throws."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse still works, prints a deprecation warning, and the doc says to rename it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says parse used to trim and the new default is no trimming, with trim:true to keep the old result."
+    },
+    "4": {
+      "pass": true,
+      "why": "Doc says quoted fields are unsupported; the final answer flags the README and the partly wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and ran the old and new behaviour in node."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g781ac7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the columns, two-decimal amounts and the header-only test."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table shows 1,234 changing to 1.234 and says the report and CSV are affected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Warns that the branch also changes how amounts are read."
+    },
+    "4": {
+      "pass": false,
+      "why": "Mentions only the monthly total test change and never says test/amount.test.js was edited."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff for the branch and between its commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

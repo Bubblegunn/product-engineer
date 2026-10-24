@@ -1,0 +1,39 @@
+{
+  "label": "gfc0f3b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default, and the probe shows --x=yes is false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient:true, and the probe shows ' YES ' is true and 'off' is false."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js is shared by both files, 6 tests pass, and one commit was made on main with only the source and test files staged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Final answer says the functions differed and explains the strict default with a lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node -e with parseArgs('--x=yes') and readEnvFlags(' YES ') and added new tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g60dcee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct single commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Status confirmed that tax.js is modified and notes is untracked."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions the tax test and the tax rate edit."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports 3 passed and 1 failed, with the tax test failing because of the WIP change and HEAD clean."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff ran first, with explicit adds."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

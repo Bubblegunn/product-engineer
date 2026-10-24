@@ -1,0 +1,39 @@
+{
+  "label": "g496a0c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli wrapper passes exact:true, so strict behaviour is preserved."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses the lenient default."
+    },
+    "3": {
+      "pass": true,
+      "why": "Shared module, both import it, tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the difference and the exact option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Probe ran parseArgs and readEnvFlags on yes, TRUE and ' On '."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

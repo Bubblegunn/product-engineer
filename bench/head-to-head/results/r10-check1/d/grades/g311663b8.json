@@ -1,0 +1,32 @@
+{
+  "label": "g311663b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 default change; it only calls the default of 10 an assumption."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no lowStock tests are in the diff and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says the suite does not pass, one test fails, and it fails the same way on main, which was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch and on main before PR.md was written."
+    }
+  }
+}

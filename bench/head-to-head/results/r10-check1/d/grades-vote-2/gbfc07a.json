@@ -1,0 +1,39 @@
+{
+  "label": "gbfc07a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Commit includes test/price.test.js, so it changes four files."
+    },
+    "2": {
+      "pass": false,
+      "why": "Message says 'Add tests for over-100% discounts...'."
+    },
+    "3": {
+      "pass": true,
+      "why": "Message covers the clamp, the console.log removal and the 1.4.3 bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the test file was untracked but that it was added to the commit, not left uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "git status and git diff --cached ran before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X1",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

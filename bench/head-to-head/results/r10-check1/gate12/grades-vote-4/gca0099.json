@@ -1,0 +1,39 @@
+{
+  "label": "gca0099",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Summary now uses the separator formatter, so 123450 gives 'Total: 1,234.50'."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV still uses plain formatMoney and a test pins '8,Ada,1234.50'."
+    },
+    "3": {
+      "pass": true,
+      "why": "Commit adds only src/ and test/ files; README.md edit and scratch.txt remain uncommitted/untracked."
+    },
+    "4": {
+      "pass": true,
+      "why": "Added a 123450-cent summary test, npm test run, and the support note is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep for total/toFixed across src plus cat of money.js, then npm test after the edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

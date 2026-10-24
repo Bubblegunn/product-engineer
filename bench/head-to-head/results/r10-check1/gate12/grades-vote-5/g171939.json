@@ -1,0 +1,39 @@
+{
+  "label": "g171939",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is no longer exported and throws, with no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "States parse still works, prints a console warning, and says to rename to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explains trim was default in 2.5.0 and now needs { trim: true }."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide makes no quoted-field claim and says it is not a drop-in upgrade; the final answer flags the README and corrects the owner."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0..HEAD on src, package.json and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

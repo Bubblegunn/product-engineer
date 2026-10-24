@@ -1,0 +1,39 @@
+{
+  "label": "g1c3fe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md says 10 by default and never mentions the old value 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says lowStock has no test and the commit only added a fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv gains a console.warn deprecation message and nothing is removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md names the failing test and says it fails the same way on main, which was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch and on main before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

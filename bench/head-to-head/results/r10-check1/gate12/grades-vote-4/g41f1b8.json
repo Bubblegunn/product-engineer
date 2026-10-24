@@ -1,0 +1,39 @@
+{
+  "label": "g41f1b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both files are bumped and the verify output shows 3 passing."
+    },
+    "2": {
+      "pass": false,
+      "why": "The entry has faster search but no page size change."
+    },
+    "3": {
+      "pass": false,
+      "why": "Export is omitted, but the answer does not say it is on the export-button branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files with customer wording."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran git log and grepped for export before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

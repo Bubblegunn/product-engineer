@@ -1,0 +1,39 @@
+{
+  "label": "ga733cf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed with no alias and throws a TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is a deprecated alias that prints a warning to stderr, as console.warn does, and users should rename it to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "The trim default flip is covered with trim: true."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says quoted fields are unsupported, and the final answer flags the README and the partly wrong premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show v2.5.0:src/index.js and git diff v2.5.0 HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

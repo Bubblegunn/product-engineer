@@ -1,0 +1,39 @@
+{
+  "label": "gbee2f7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Final diff uses Math.ceil."
+    },
+    "2": {
+      "pass": false,
+      "why": "export.js unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "No export.js in the commit."
+    },
+    "4": {
+      "pass": false,
+      "why": "No statement that no pager/export tests existed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The only npm test run was before the fix, when sed failed; the later check was run-full-suite.sh, which doesn't visibly show node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X4",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

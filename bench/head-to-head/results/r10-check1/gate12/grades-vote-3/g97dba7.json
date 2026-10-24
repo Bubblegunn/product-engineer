@@ -1,0 +1,39 @@
+{
+  "label": "g97dba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "One commit containing only src/price.js and test/price.test.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "The temporary worktree was removed, and status still shows tax.js modified and notes.local.txt untracked."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message body mentions the tax test, the tax rate edit and src/tax.js."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 3 of 4 passing and the addTax failure caused by the uncommitted 0.18 rate."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff was run before the commit, and only specific files were added."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

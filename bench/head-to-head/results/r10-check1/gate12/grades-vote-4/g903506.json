@@ -1,0 +1,39 @@
+{
+  "label": "g903506",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was changed."
+    },
+    "2": {
+      "pass": false,
+      "why": "No changelog entry was written."
+    },
+    "3": {
+      "pass": true,
+      "why": "No changelog lists export and the answer says it is only on the export-button branch (cd00261)."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran git log, listed branches and diffed main against export-button."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

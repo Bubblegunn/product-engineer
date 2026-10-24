@@ -1,0 +1,39 @@
+{
+  "label": "g421157",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "formatMoneyWithSeparators in the summary gives 1,234.50."
+    },
+    "2": {
+      "pass": true,
+      "why": "The export still uses plain formatMoney, and a test asserts 8,Ada,1234.50."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has only source and test files; README.md and scratch.txt were left out."
+    },
+    "4": {
+      "pass": true,
+      "why": "A large-total summary test was added, 4 tests pass, and the note is accurate."
+    },
+    "5": {
+      "pass": false,
+      "why": "It grepped only 'toFixed|total', never searched formatMoney by name, and never read src/export.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

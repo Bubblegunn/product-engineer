@@ -1,0 +1,39 @@
+{
+  "label": "ged4e48",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli keeps the strict default, so yes/TRUE/on/' 1' are false and 1/true are true."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper calls the shared function with lenient true, preserving the original rules."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass, and one commit was made with clean status."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the two differed (env lenient, cli exact) and that a lenient option was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a before/after stash comparison on many inputs the tests don't use."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

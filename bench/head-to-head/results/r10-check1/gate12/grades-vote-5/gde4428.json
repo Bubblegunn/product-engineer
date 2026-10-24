@@ -1,0 +1,39 @@
+{
+  "label": "gde4428",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli wrapper passes exact: true, and the probe shows yes and TRUE false."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses the lenient default, and ' On ' is true in the probe."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, 6 tests pass, and there is one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the copies differed and explains the exact option."
+    },
+    "5": {
+      "pass": true,
+      "why": "node -e probe on parseArgs and readEnvFlags with inputs outside the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

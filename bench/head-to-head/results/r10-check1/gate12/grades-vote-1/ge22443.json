@@ -1,0 +1,39 @@
+{
+  "label": "ge22443",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "STATUS.md is Turkish and plain, but the final answer is mostly an English verify report."
+    },
+    "2": {
+      "pass": false,
+      "why": "Never names the branch ayse/odeme and wrongly says the payment files were removed from main's last commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the refund tests were disabled and that the README 'tamamlandı' is wrong, not repeating it as fact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists the 14 Oct kur rounding fix and does not credit Mehmet's invoice work."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show and ls-tree on the branch-only commits 154eced and 45a2fd5, though it never named the branch."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X23",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

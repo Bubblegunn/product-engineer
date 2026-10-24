@@ -1,0 +1,39 @@
+{
+  "label": "g42c661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed and throws a TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, prints a console warning, and users should rename it to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says trimming was on in 2.5.0 and is off in 3.0.0, with trim: true to restore it."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says quoted fields are unsupported, and the final answer flags the README and the wrong summary."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff 14f14a1 HEAD on src and README; 14f14a1 appears to be the 2.5.0 commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

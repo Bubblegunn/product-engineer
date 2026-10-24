@@ -1,0 +1,39 @@
+{
+  "label": "g889b60",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names refundAmount in src/refund.js and handle for POST /refunds in src/api.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "States partial refunds are not in the PR, in both PR.md and the final answer."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal as unrelated but never names the 'docs: update readme' commit as the source."
+    },
+    "4": {
+      "pass": true,
+      "why": "Cites 4094dbf only about tax logic, not as a change made by this PR."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

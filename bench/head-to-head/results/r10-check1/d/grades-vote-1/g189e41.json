@@ -1,0 +1,39 @@
+{
+  "label": "g189e41",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 default change."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test in the diff calls lowStock and only the fixture was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is still there and exported."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says the one test fails and main fails the same test; main was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on main and on the branch before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

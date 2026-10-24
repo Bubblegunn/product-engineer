@@ -1,0 +1,39 @@
+{
+  "label": "ge5a825",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files use the half-up vatCents in the working tree."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests assert 1050 gives 200 for invoice, quote and refund."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the suite was red before the change and that the slug failure remains."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made and the tree is dirty."
+    },
+    "5": {
+      "pass": false,
+      "why": "There was no commit, so no test run before one appears in the log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

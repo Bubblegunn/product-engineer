@@ -1,0 +1,32 @@
+{
+  "label": "g87ff285f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named correctly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says only full refunds work, in both outputs."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal but says none of the refund commits touched the file and blames the merge, missing the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "No tax change claimed."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf4a104",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "New formatMoneyWithSeparators regex yields 1,234.50 and the summary uses it."
+    },
+    "2": {
+      "pass": true,
+      "why": "CSV still uses plain formatMoney, and a new test pins 8,Ada,1234.50."
+    },
+    "3": {
+      "pass": true,
+      "why": "git add src test only; README and scratch.txt left out."
+    },
+    "4": {
+      "pass": true,
+      "why": "Large-total test added, 4 tests pass, and the note is true."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep for total/toFixed surfaced export.js usage before editing, and npm test ran after the edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X34",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "gf5168a3e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named correctly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says partial refunds are not included, in both outputs."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal as unrelated but never names the 'docs: update readme' commit as the source."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tax commit is mentioned only as logic not used by the refund."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  }
+}

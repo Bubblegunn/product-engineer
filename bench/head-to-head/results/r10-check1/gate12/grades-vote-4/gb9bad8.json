@@ -1,0 +1,39 @@
+{
+  "label": "gb9bad8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is unchanged, so CLI strictness is retained."
+    },
+    "2": {
+      "pass": true,
+      "why": "Code is unchanged, so env leniency is retained."
+    },
+    "3": {
+      "pass": false,
+      "why": "No flags.js and no commit were made."
+    },
+    "4": {
+      "pass": true,
+      "why": "Correctly states the functions differ and stops to ask the user how to handle it."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only read files and ran npm test, with no probe of other inputs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

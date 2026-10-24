@@ -1,0 +1,37 @@
+set r10b-gate12: 288 DONE runs on X11, X12, X13, X14, X21, X22, X23, X24, X31, X32, X33, X34
+task   ours   base   dod    dod-invoked  gwc    gwc-invoked  iso    iso-invoked  max
+X11    3.33   3.00   4.00   2.00         3.00   3.00         3.67   3.33         4  
+X12    4.00   3.67   4.00   3.67         3.67   3.00         3.67   3.67         4  
+X13    2.33   3.00   1.33   2.33         1.67   1.00         2.33   2.00         4  
+X14    4.00   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+X21    3.67   4.00   4.00   4.00         4.00   3.67         4.00   4.00         4  
+X22    3.67   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+X23    4.00   4.00   3.33   3.00         4.00   3.00         3.33   4.00         4  
+X24    4.00   4.00   3.67   3.67         3.67   3.67         3.67   3.67         4  
+X31    3.33   3.00   4.00   3.33         3.00   3.33         3.00   3.67         4  
+X32    2.00   3.00   3.00   4.00         3.00   4.00         3.00   3.00         4  
+X33    4.00   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+X34    4.00   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+total  42.33  43.67  43.33  42.00        42.00  40.67        42.67  43.33        48 
+lost   5.67   4.33   4.67   6.00         6.00   7.33         5.33   4.67            
+best other arm: base (total 43.67)
+best natural other arm (not -invoked): base (total 43.67) (same as the best other arm)
+Rule A: FAIL (ours lost 5.67 against 4.33 for base, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  X11: ours 3.33, best other dod 4.00, max 4, B FAIL
+  X12: ours 4.00, best other dod 4.00, max 4, B pass
+  X13: ours 2.33, best other base 3.00, max 4, B FAIL
+  X14: ours 4.00, best other base 4.00, max 4, B pass
+  X21: ours 3.67, best other base 4.00, max 4, B FAIL
+  X22: ours 3.67, best other base 4.00, max 4, B FAIL
+  X23: ours 4.00, best other base 4.00, max 4, B pass
+  X24: ours 4.00, best other base 4.00, max 4, B pass
+  X31: ours 3.33, best other dod 4.00, max 4, B FAIL
+  X32: ours 2.00, best other dod-invoked 4.00, max 4, B FAIL
+  X33: ours 4.00, best other base 4.00, max 4, B pass
+  X34: ours 4.00, best other base 4.00, max 4, B pass
+Rule B: FAIL: X11, X13, X21, X22, X31, X32
+Rule B-prime: FAIL
+bootstrap: 36 paired cells, ours minus base: mean -0.11, 95% interval [-0.39, 0.14] (10000 resamples, seed 12345)
+I1: does not hold (interval lower bound not above zero)
+runs with an error criterion: none

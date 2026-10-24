@@ -1,0 +1,39 @@
+{
+  "label": "g89f1b4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the old default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "States no lowStock tests are included, only the fixture."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failing test but never ran main; 'predates it' is only inferred."
+    },
+    "5": {
+      "pass": true,
+      "why": "The suite was run via run-full-suite.sh, which runs node --test, before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

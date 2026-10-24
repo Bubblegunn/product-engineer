@@ -1,0 +1,39 @@
+{
+  "label": "gd6d2db",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The commit has exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "The stash was popped and the dirty state preserved."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message body mentions the tax.js change and a 4-passed test claim."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 3 passed and 1 failed on addTax caused by the RATE 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff and status were run first, with explicit adds."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

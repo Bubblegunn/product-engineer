@@ -1,0 +1,39 @@
+{
+  "label": "g07a1eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are named correctly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both outputs say partial refunds are not implemented."
+    },
+    "3": {
+      "pass": false,
+      "why": "Flags the removal but calls it fallout from the revert or merge, never naming the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "No tax change claimed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed against main and ran the test suite via the wrapper, which reported 5 passing."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X24",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

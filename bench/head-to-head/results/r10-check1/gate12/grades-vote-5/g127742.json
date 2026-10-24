@@ -1,0 +1,39 @@
+{
+  "label": "g127742",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default and the comparison is byte-identical."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper uses lenient: true."
+    },
+    "3": {
+      "pass": true,
+      "why": "Shared flags.js, tests pass, one commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Clearly states the difference and the lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared old and new outputs on 17 inputs via git stash and node -e."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g39b996",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli gets the strict default, so its behaviour is preserved."
+    },
+    "2": {
+      "pass": true,
+      "why": "env wrapper passes lenient true, so its behaviour is preserved."
+    },
+    "3": {
+      "pass": true,
+      "why": "The shared file exists, both files import it, tests pass, and one commit was made."
+    },
+    "4": {
+      "pass": true,
+      "why": "Clearly states the differences and the option-based handling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran an old-versus-new comparison on 16 inputs through node -e."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

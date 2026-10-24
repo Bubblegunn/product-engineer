@@ -1,0 +1,23 @@
+set r10b-d: 120 DONE runs on X1, X2, X3, X4, X5
+task   ours   base   dod    dod-invoked  gwc    gwc-invoked  iso    iso-invoked  max
+X1     1.00   1.00   1.00   1.00         1.33   1.00         1.67   1.00         4  
+X2     3.00   2.00   3.00   2.67         1.67   1.67         1.67   2.67         4  
+X3     4.00   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+X4     2.67   1.00   1.00   2.33         1.00   1.00         1.00   1.00         4  
+X5     4.00   4.00   4.00   4.00         4.00   4.00         4.00   4.00         4  
+total  14.67  12.00  13.00  14.00        12.00  11.67        12.33  12.67        20 
+lost   5.33   8.00   7.00   6.00         8.00   8.33         7.67   7.33            
+best other arm: dod-invoked (total 14.00)
+best natural other arm (not -invoked): dod (total 13.00)
+Rule A: FAIL (ours lost 5.33 against 6.00 for dod-invoked, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  X1: ours 1.00, best other iso 1.67, max 4, B FAIL
+  X2: ours 3.00, best other dod 3.00, max 4, B FAIL
+  X3: ours 4.00, best other base 4.00, max 4, B pass
+  X4: ours 2.67, best other dod-invoked 2.33, max 4, B pass
+  X5: ours 4.00, best other base 4.00, max 4, B pass
+Rule B: FAIL: X1, X2
+Rule B-prime: FAIL
+bootstrap: 15 paired cells, ours minus dod-invoked: mean 0.13, 95% interval [-0.13, 0.47] (10000 resamples, seed 12345)
+I1: does not hold (interval lower bound not above zero)
+runs with an error criterion: none

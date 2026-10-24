@@ -1,0 +1,39 @@
+{
+  "label": "g2e8044",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Stash was popped and the working tree is intact."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message body mentions tax.js."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 3 passed, 1 failed on addTax adds 20 percent due to the 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff ran first and the add was explicit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

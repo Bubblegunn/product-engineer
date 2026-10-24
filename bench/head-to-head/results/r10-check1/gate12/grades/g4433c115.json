@@ -1,0 +1,32 @@
+{
+  "label": "g4433c115",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both additions are described with exact names."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the branch has full refunds only, in both outputs."
+    },
+    "3": {
+      "pass": false,
+      "why": "Blames the revert for the validation removal and never names the docs commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tax commit is mentioned only as not used by the refund logic."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main...HEAD and node --test."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gc855ea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says stringify is no longer exported and has no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse is deprecated, logs a warning, and to rename it to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents the trim default change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Neither the README nor the final answer addresses the false 'no breaking changes / quoted fields supported' line; the final answer never flags it."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and ran the old index.js via git show."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

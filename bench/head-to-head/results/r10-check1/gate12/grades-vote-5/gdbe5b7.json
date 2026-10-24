@@ -1,0 +1,39 @@
+{
+  "label": "gdbe5b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "One commit with only price.js and price.test.js."
+    },
+    "2": {
+      "pass": true,
+      "why": "tax.js modified and notes untracked after; worktree was removed."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message mentions the tax rate edit and tax.js."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports 3 of 4 pass, addTax failure caused by the 0.18 change, committed HEAD clean."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff run first; explicit file add."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

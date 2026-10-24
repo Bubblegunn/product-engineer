@@ -1,0 +1,39 @@
+{
+  "label": "g7201b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli wrapper passes exact true, so strict behaviour is preserved."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses the lenient default directly, so its behaviour is preserved."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both files import from flags.js; tests pass; one commit was made and status was checked."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the two copies differed and how an exact option preserves both."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node -e parseArgs with --a=yes and --d=TRUE, which the existing tests don't cover."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

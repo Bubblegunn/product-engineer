@@ -1,0 +1,39 @@
+{
+  "label": "gbfad41",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The old default of 5 is not mentioned."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test in the branch calls lowStock and the fixture is unused."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md says 1 test fails and is unchanged from main, so not caused by the branch."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run in the worktree before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

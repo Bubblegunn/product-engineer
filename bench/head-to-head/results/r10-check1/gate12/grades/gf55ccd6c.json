@@ -1,0 +1,32 @@
+{
+  "label": "gf55ccd6c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files route through the fixed vatCents."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only a vatCents test exists; there is no quote or refund assertion."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the suite was red before the change and the slug failure remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit and answer mention invoice, quote and refund, and status is clean."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test was chained with the commit in a single call."
+    }
+  }
+}

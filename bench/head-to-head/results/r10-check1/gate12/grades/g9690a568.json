@@ -1,0 +1,32 @@
+{
+  "label": "g9690a568",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files give 200 for 1050 via the shared vatCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Invoice, quote and refund tests assert 1050 gives VAT 200 and pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the suite was not green before and that the slug failure remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit message and answer cover invoices, quotes and refunds, and the tree is clean."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test ran in the same call as the commit, with no earlier separate test run."
+    }
+  }
+}

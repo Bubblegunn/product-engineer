@@ -1,0 +1,39 @@
+{
+  "label": "g78afa3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was bumped."
+    },
+    "2": {
+      "pass": false,
+      "why": "No changelog entry was written."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says export is only on the unmerged export-button branch as cd00261, and no changelog was written listing it."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran git log, grepped for export and listed branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

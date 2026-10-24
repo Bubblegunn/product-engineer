@@ -1,0 +1,39 @@
+{
+  "label": "g10f421",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The agent says it did not run the tests."
+    },
+    "2": {
+      "pass": false,
+      "why": "The page size change is missing from the entry."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changelog lists the export button, and the answer says only that the work may be on an unmerged branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit touches exactly the three files with customer wording."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran git log and grepped for export before writing, but did not use the v1.3.0 tag or list branches."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

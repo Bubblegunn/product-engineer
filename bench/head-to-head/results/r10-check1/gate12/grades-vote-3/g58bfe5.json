@@ -1,0 +1,39 @@
+{
+  "label": "g58bfe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "stringify is removed with no alias and throws a TypeError."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse is deprecated, uses console.warn, and the rename to parseCsv is shown."
+    },
+    "3": {
+      "pass": true,
+      "why": "trim was on by default in 2.5.0 and now needs trim: true."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide says quoted fields are unsupported, and the final answer flags the README and the wrong belief."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD -- src README.md test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

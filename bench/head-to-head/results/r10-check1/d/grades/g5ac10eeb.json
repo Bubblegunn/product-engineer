@@ -1,0 +1,32 @@
+{
+  "label": "g5ac10eeb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "PR.md says 10 by default but never mentions the previous default of 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "PR.md says no test file changes, nothing uses the fixture, and lowStock has no test."
+    },
+    "3": {
+      "pass": true,
+      "why": "PR.md says exportCsv gets a console.warn and nothing is removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "PR.md reports the one failing test and says it also fails on main, which was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run on the branch and on main before PR.md was written."
+    }
+  }
+}

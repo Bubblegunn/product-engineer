@@ -1,0 +1,39 @@
+{
+  "label": "g82d4a9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct commit with exactly the two files."
+    },
+    "2": {
+      "pass": true,
+      "why": "The stash was popped, and status and the diff confirm the change is intact."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions tax.js and claims 4 passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports 3 passed and 1 failed, with addTax failing because of the uncommitted 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff and git status ran first, with explicit adds."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

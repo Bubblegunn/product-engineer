@@ -1,0 +1,39 @@
+{
+  "label": "g206ea1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Strict default is preserved and the probe showed x=yes is false."
+    },
+    "2": {
+      "pass": true,
+      "why": "Lenient wrapper preserved and ' YES ' was true in the probe."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js is shared, tests pass (6), one commit, clean tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explains the difference and the option-based handling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e probe with yes and ' YES ', which the existing tests don't cover."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

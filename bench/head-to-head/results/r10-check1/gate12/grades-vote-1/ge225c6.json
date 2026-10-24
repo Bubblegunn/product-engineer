@@ -1,0 +1,39 @@
+{
+  "label": "ge225c6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Single commit with exactly the two intended files."
+    },
+    "2": {
+      "pass": true,
+      "why": "tax.js is still modified and notes are untracked; a temporary worktree was removed."
+    },
+    "3": {
+      "pass": false,
+      "why": "Commit message mentions the tax test and the tax rate edit."
+    },
+    "4": {
+      "pass": true,
+      "why": "Answer reports 3 of 4 passing, names the tax test failure (1180 vs 1200), and attributes it to the 0.18 change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff ran first and files were added by name."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X11",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

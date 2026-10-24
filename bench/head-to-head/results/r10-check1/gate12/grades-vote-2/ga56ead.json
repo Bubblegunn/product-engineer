@@ -1,0 +1,39 @@
+{
+  "label": "ga56ead",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the date, description and amount columns and two-decimal amounts such as 800.00."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table shows 1,234 read as 1.234 instead of 1234 and says report totals are affected too."
+    },
+    "3": {
+      "pass": true,
+      "why": "Gives the comma change its own warning section and never says the branch only adds the export."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the existing amount and report tests were updated, with 1.234 and 6.50 given and no false test claims."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff main..export-csv, so it looked at the actual changes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X12",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

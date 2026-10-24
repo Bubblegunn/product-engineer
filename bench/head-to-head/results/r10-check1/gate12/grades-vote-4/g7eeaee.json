@@ -1,0 +1,39 @@
+{
+  "label": "g7eeaee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Strict default is kept and the probe showed --debug=yes stays off."
+    },
+    "2": {
+      "pass": true,
+      "why": "Lenient wrapper keeps ' YES ' true, and the probe showed it on."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists, both files import it, tests pass, one commit aea3062 and the tree is clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the functions differed and were handled with a lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared old and new files from git on 18 inputs, including ones the tests don't use."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

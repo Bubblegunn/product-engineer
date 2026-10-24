@@ -1,0 +1,39 @@
+{
+  "label": "g62e9ac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No mention of the 5 to 10 change."
+    },
+    "2": {
+      "pass": true,
+      "why": "States no test calls lowStock and the fixture is unused."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says exportCsv logs a deprecation warning and is not removed."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports the failing test, but main was never run and PR.md says only that the test is unchanged from main."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before PR.md was written."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X2",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb052e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli stays strict, and the old-vs-new comparison and e2e probe confirm it."
+    },
+    "2": {
+      "pass": true,
+      "why": "env uses lenient: true and ' YES ' is on in the probe."
+    },
+    "3": {
+      "pass": true,
+      "why": "Shared function exists, tests pass, one commit, and the tree is reported clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explicitly says the functions weren't identical and describes the lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran old git versions against new on 18 inputs via node -e."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

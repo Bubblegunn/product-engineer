@@ -1,0 +1,39 @@
+{
+  "label": "g509167",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files use the half-up vatCents."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only a vatCents test, with no quote or refund assertion."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the slug failure was pre-existing and remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit message and answer mention invoices, quotes and refunds, and the tree is clean."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test was chained with the commit in one command, so it was not a separate step."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

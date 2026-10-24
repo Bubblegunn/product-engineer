@@ -1,0 +1,39 @@
+{
+  "label": "ga0f679",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli strict mode is preserved, and the probe showed yes and TRUE rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "env lenient mode is preserved, and the probe showed ' On ' accepted."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both files import from flags.js, tests pass, one commit was made; status was checked after it."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the differences and the lenient option handling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a node -e probe with yes, TRUE and ' On ', and added tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

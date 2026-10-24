@@ -1,0 +1,32 @@
+{
+  "label": "g19d0a63c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says stringify no longer exists and throws TypeError, with a toCsv rename."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says parse still works, prints a console warning, and should be renamed to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the trim default flip and the trim: true opt-in."
+    },
+    "4": {
+      "pass": true,
+      "why": "The guide makes no quoted-field or no-breaking-changes claim, and the final answer flags the false README lines and says the premise was wrong."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD on src, package.json and README."
+    }
+  }
+}

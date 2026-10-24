@@ -1,0 +1,39 @@
+{
+  "label": "g1434d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli uses the strict default, so its behaviour is unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "env passes lenient true, preserving the original behaviour."
+    },
+    "3": {
+      "pass": true,
+      "why": "flags.js exists and both files import it; tests passed, one commit was made and the tree is reported clean."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the functions were not identical and explains the lenient option."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared the old and new modules on 18 inputs and ran a node -e probe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X32",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

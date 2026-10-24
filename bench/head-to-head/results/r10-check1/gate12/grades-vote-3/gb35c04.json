@@ -1,0 +1,39 @@
+{
+  "label": "gb35c04",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files use the half-up vatCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests assert 1050 gives 200 for invoice, quote and refund."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the slug test failed before the change (checked on d33653b) and still fails."
+    },
+    "4": {
+      "pass": true,
+      "why": "Commit message and answer mention invoices, quotes and refunds."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test and git commit were in the same shell command, not separate."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X31",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

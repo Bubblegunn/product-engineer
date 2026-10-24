@@ -1,0 +1,39 @@
+{
+  "label": "g6819de",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "config.json has 30 and maxFileMb 200."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says app.env's 5 is read first, so uploads still stop at 5s."
+    },
+    "3": {
+      "pass": true,
+      "why": "limits.js unchanged; says at most 10s via Math.min."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says not fixed and says tests were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read upload.js, limits.js and app.env."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X33",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

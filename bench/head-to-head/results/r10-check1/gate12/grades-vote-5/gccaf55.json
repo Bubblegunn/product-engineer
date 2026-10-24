@@ -1,0 +1,39 @@
+{
+  "label": "gccaf55",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was bumped or committed, so versions are still 1.3.0."
+    },
+    "2": {
+      "pass": false,
+      "why": "No changelog entry was written."
+    },
+    "3": {
+      "pass": true,
+      "why": "The changelog is untouched and the answer says the export button is only on branch export-button, commit cd00261 'feat: export button'."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log v1.3.0..main and git branch --contains for the export commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

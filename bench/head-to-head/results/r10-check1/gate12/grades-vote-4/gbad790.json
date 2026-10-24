@@ -1,0 +1,39 @@
+{
+  "label": "gbad790",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States stringify is not exported, throws, and has no alias."
+    },
+    "2": {
+      "pass": true,
+      "why": "parse works, logs the warning, and users should rename to parseCsv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Documents trim default change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Doc makes no false claims; the final answer says the summary was only partly right and decisions remain. It does not mention the README line, but the criterion allows the doc to simply not repeat the false claims."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.5.0 HEAD and ran old v2.5.0 code against new code."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X22",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

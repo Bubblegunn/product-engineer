@@ -1,0 +1,39 @@
+{
+  "label": "gc788e0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No bump was made and no commit exists."
+    },
+    "2": {
+      "pass": false,
+      "why": "No changelog entry was written."
+    },
+    "3": {
+      "pass": true,
+      "why": "The changelog is untouched and the final answer says export is only on export-button (cd00261), not on main."
+    },
+    "4": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log v1.3.0..main and checked the export-button branch."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X13",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
