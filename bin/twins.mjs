@@ -18,6 +18,10 @@ tree plus untracked files otherwise. Each candidate is a line to read, not a ver
 
 const MAX_REMOVED = 10;
 const MAX_TWINS = 5;
+const MAX_LOOSE = 3;
+const MAX_MENTIONS = 5;
+const MIN_NAME = 4;
+const MAX_NAMES = 200;
 const MAX_FILE = 1024 * 1024;
 const MAX_LINE = 2000;
 const PATCH_BUFFER = 256 * 1024 * 1024;
@@ -43,6 +47,15 @@ const REGEX_KEYWORDS = new Set(["return", "typeof", "case", "in", "of", "await",
 const IDENTIFIER = /([\p{L}_$][\p{L}\p{N}_$]*)((?:\.[\p{L}_$][\p{L}\p{N}_$]*)*)/gu;
 const NUMBER = /(?<![\p{L}\p{N}_$])(-?)\d[\d_]*(?:\.\d+)?(?:[eE][+-]?\d+)?/gu;
 const CALL_NAME = /([\p{L}_$][\p{L}\p{N}_$.]*)\(/gu;
+const OPERAND = /\$(?!\.)/g;
+const NOT_NAMES = new Set(["switch", "catch", "constructor"]);
+const DECLARATIONS = [
+  /\bfunction\s*\*?\s*([A-Za-z_$][\w$]*)/g,
+  /\bdef\s+([A-Za-z_]\w*)/g,
+  /\bclass\s+([A-Za-z_$][\w$]*)/g,
+  /\bconst\s+([A-Za-z_$][\w$]*)\s*=/g,
+  /^\s*(?:(?:export|default|async|static|public|private|protected|override|get|set)\s+)*([A-Za-z_$][\w$]*)\s*\([^()]*\)\s*(?::[^{]*)?\{\s*$/,
+];
 
 const extOf = (path) => extname(path).slice(1).toLowerCase();
 
@@ -140,6 +153,64 @@ export function shapeOf(text, ext = "") {
 
 const callNames = (shape) => [...shape.matchAll(CALL_NAME)].map((m) => m[1]).filter((n) => !KEYWORDS.has(n));
 
+/**
+ * The loose-match bag of a shape: the sorted call names (last segment), the sorted operators and the operand count, with
+ * parentheses and whitespace removed. Null unless the shape calls a function and applies two operators or one division or
+ * modulo, so `a + b` and `a * b` never match and neither does a line without a call.
+ */
+export function bagOf(shape) {
+  const calls = callNames(shape).map((n) => n.split(".").pop()).sort();
+  if (calls.length === 0) return null;
+  const flat = shape.replace(/[()\s]/g, "");
+  const ops = [...flat.matchAll(OPERATOR_G)].map((m) => m[0]).sort();
+  if (ops.length < 2 && !ops.some((o) => o === "/" || o === "%")) return null;
+  const operands = [...flat.matchAll(OPERAND)].length;
+  return `${calls.join(",")}|${ops.join(" ")}|${operands}`;
+}
+
+/** Names a change declares (function, def, class, const X =, method header), from one line of code or one hunk header. */
+export function declaredIn(text) {
+  const out = [];
+  const t = text.trim();
+  for (const re of DECLARATIONS) {
+    const g = new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`);
+    for (const m of t.matchAll(g)) {
+      const name = m[1];
+      if (name && name.length >= MIN_NAME && !KEYWORDS.has(name) && !NOT_NAMES.has(name)) out.push(name);
+    }
+  }
+  return out;
+}
+
+/** Per line of a file: true for comment text and docstring text. Every line of a doc file is prose, so all are true. */
+function commentFlags(lines, ext, doc) {
+  const flags = new Array(lines.length).fill(doc);
+  if (doc) return flags;
+  let close = null;
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (close) {
+      flags[i] = true;
+      if (t.includes(close)) close = null;
+      continue;
+    }
+    if (COMMENT.test(t)) {
+      flags[i] = true;
+      if (t.startsWith("/*") && !t.includes("*/", 2)) close = "*/";
+      continue;
+    }
+    const quote = ext === "py" ? /^("""|''')/.exec(t) : null;
+    if (quote) {
+      flags[i] = true;
+      if (!t.slice(3).includes(quote[1])) close = quote[1];
+    }
+  }
+  return flags;
+}
+
+/** A name as a whole word: not part of a longer identifier on either side. */
+const wholeWord = (name) => new RegExp(`(?<![\\p{L}\\p{N}_$])${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}_$])`, "u");
+
 /** A shape is worth searching for when it has at least four tokens, calls a function or applies an operator, and is not a loop header or a bare control-flow line. */
 export function significant(shape) {
   if ([...shape.matchAll(TOKEN)].length < 4) return false;
@@ -178,6 +249,10 @@ const sidePath = (raw, prefix) => {
 export function parsePatch(patch) {
   const removed = [];
   const added = new Map();
+  // The text added lines hold, and the hunk-header context (git's name for the enclosing function), per changed path.
+  const addedText = [];
+  const contexts = [];
+  const paths = new Set();
   let oldPath = null;
   let newPath = null;
   let header = false;
@@ -186,20 +261,26 @@ export function parsePatch(patch) {
   for (const line of patch.split("\n")) {
     if (line.startsWith("diff --git ")) { header = true; oldPath = null; newPath = null; continue; }
     if (header) {
-      if (line.startsWith("--- ")) { oldPath = sidePath(line.slice(4), "a/"); continue; }
-      if (line.startsWith("+++ ")) { newPath = sidePath(line.slice(4), "b/"); continue; }
+      if (line.startsWith("--- ")) { oldPath = sidePath(line.slice(4), "a/"); if (oldPath) paths.add(oldPath); continue; }
+      if (line.startsWith("+++ ")) { newPath = sidePath(line.slice(4), "b/"); if (newPath) paths.add(newPath); continue; }
       const hunk = /^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(line);
-      if (hunk) { header = false; oldN = Number(hunk[1]); newN = Number(hunk[2]); }
+      if (hunk) {
+        header = false;
+        oldN = Number(hunk[1]);
+        newN = Number(hunk[2]);
+        const context = line.slice(hunk[0].length).trim();
+        if (context) contexts.push({ path: newPath ?? oldPath, text: context });
+      }
       continue;
     }
     // Inside a hunk a line that starts with "--" is removed content, not a file header.
     if (line.startsWith("-")) { if (oldPath) removed.push({ path: oldPath, line: oldN, text: line.slice(1) }); oldN++; }
     else if (line.startsWith("+")) {
-      if (newPath) { if (!added.has(newPath)) added.set(newPath, new Set()); added.get(newPath).add(newN); }
+      if (newPath) { if (!added.has(newPath)) added.set(newPath, new Set()); added.get(newPath).add(newN); addedText.push({ path: newPath, text: line.slice(1) }); }
       newN++;
     } else if (line.startsWith(" ")) { oldN++; newN++; }
   }
-  return { removed, added };
+  return { removed, added, addedText, contexts, paths };
 }
 
 /** The change a report reads, and where the new side of it lives: the range, else staged, else the working tree, else the last commit. */
@@ -230,20 +311,20 @@ function readWorking(top, path) {
 }
 
 /** The searched files as the chosen source sees them: the index, a commit, or the working tree with untracked files. */
-function searchedFiles(top, source) {
+function searchedFiles(top, source, keep = codePath) {
   if (source.kind === "tree") {
     const listed = [
       ...git(["ls-files", "-z"], top).split("\0"),
       ...git(["ls-files", "--others", "--exclude-standard", "-z"], top).split("\0"),
     ];
-    return listed.filter((p) => p && codePath(p)).map((path) => ({ path, buf: readWorking(top, path) })).filter((f) => f.buf);
+    return listed.filter((p) => p && keep(p)).map((path) => ({ path, buf: readWorking(top, path) })).filter((f) => f.buf);
   }
   const indexed = source.kind === "index";
   const listing = indexed ? git(["ls-files", "-s", "-z"], top) : git(["ls-tree", "-r", "-z", source.rev], top);
   const entries = [];
   for (const rec of listing.split("\0")) {
     const m = indexed ? /^(\d+) ([0-9a-f]+) 0\t([\s\S]*)$/.exec(rec) : /^(\d+) blob ([0-9a-f]+)\t([\s\S]*)$/.exec(rec);
-    if (!m || !codePath(m[3])) continue;
+    if (!m || !keep(m[3])) continue;
     entries.push({ path: m[3], sha: m[2] });
   }
   if (entries.length === 0) return [];
@@ -260,45 +341,91 @@ function searchedFiles(top, source) {
   return files;
 }
 
-/** Every line of every searched file whose shape is one of the groups; a line the change added is not a twin. */
-function scanFiles(top, source, groups, added) {
+/** Code files and doc files: the files whose lines can be twins or mentions. */
+const scannable = (p) => !SKIP_SEARCH(p) && (CODE_EXT.has(extOf(p)) || isDocPath(p));
+
+/**
+ * One pass over the searched files. A code line whose shape is one of the exact groups is an exact twin, and a line
+ * whose bag is one of the loose bags is a loose twin of every removed line with that bag. A comment line (or doc line)
+ * that names a changed name, in a file the change does not touch, is a mention. A line the change added is neither.
+ */
+function scanFiles(top, source, { groups, bags, added, names, changed }) {
   const needles = needlesFor(groups.keys());
-  for (const { path, buf } of searchedFiles(top, source)) {
+  const mentions = [];
+  const counts = new Map();
+  for (const { path, buf } of searchedFiles(top, source, scannable)) {
     const ext = extOf(path);
     const addedHere = added.get(path);
+    const code = codePath(path);
+    const mentionable = names.size > 0 && !changed.has(path);
+    if (!code && !mentionable) continue;
     const lines = buf.toString("utf8").split("\n");
+    const flags = mentionable ? commentFlags(lines, ext, isDocPath(path)) : null;
     for (let i = 0; i < lines.length; i++) {
       if (addedHere?.has(i + 1)) continue;
       const t = lines[i].trim();
       if (t.length === 0 || t.length > MAX_LINE) continue;
-      if (!needles.some((x) => t.includes(x))) continue;
-      const group = groups.get(shapeOf(t, ext));
-      if (group) group.twins.push({ path, line: i + 1, text: t });
+      if (flags?.[i]) {
+        for (const name of names) {
+          if ((counts.get(name) ?? 0) >= MAX_MENTIONS || !t.includes(name) || !wholeWord(name).test(t)) continue;
+          counts.set(name, (counts.get(name) ?? 0) + 1);
+          mentions.push({ name, path, line: i + 1, text: t, doc: isDocPath(path) });
+        }
+      }
+      if (!code || !needles.some((x) => t.includes(x))) continue;
+      const shape = shapeOf(t, ext);
+      const exact = groups.get(shape);
+      if (exact) exact.twins.push({ path, line: i + 1, text: t, shape });
+      const bag = bagOf(shape);
+      if (bag && bags.has(bag)) bags.get(bag).twins.push({ path, line: i + 1, text: t, shape });
     }
   }
+  return mentions;
+}
+
+/** The names the change declares, from its removed and added lines and its hunk headers; doc files declare nothing. */
+function changedNames(texts) {
+  const out = new Set();
+  for (const { path, text } of texts) {
+    if (isDocPath(path)) continue;
+    for (const name of declaredIn(text)) out.add(name);
+  }
+  return new Set([...out].sort().slice(0, MAX_NAMES));
 }
 
 export function twins({ range, cwd = process.cwd() } = {}) {
   const { rangeArgs, label, source } = chooseChange(range, cwd);
-  if (!rangeArgs) return { label, checked: 0, withTwins: 0, removed: [] };
+  if (!rangeArgs) return { label, checked: 0, withTwins: 0, removed: [], mentions: [] };
   const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--src-prefix=a/", "--dst-prefix=b/", ...rangeArgs], cwd);
-  const { removed, added } = parsePatch(patch);
+  const { removed, added, addedText, contexts, paths } = parsePatch(patch);
   const targets = [];
   const groups = new Map();
+  const bags = new Map();
   for (const r of removed) {
     if (r.text.length > MAX_LINE || ignoredRemoval(r.path, r.text)) continue;
     const text = r.text.trim();
     const shape = shapeOf(text, extOf(r.path));
     if (!significant(shape)) continue;
-    targets.push({ path: r.path, line: r.line, text, shape });
+    const bag = bagOf(shape);
+    targets.push({ path: r.path, line: r.line, text, shape, bag });
     if (!groups.has(shape)) groups.set(shape, { twins: [] });
+    if (bag && !bags.has(bag)) bags.set(bag, { twins: [] });
   }
-  if (groups.size > 0) scanFiles(git(["rev-parse", "--show-toplevel"], cwd).trim(), source, groups, added);
+  const names = changedNames([...removed, ...addedText, ...contexts]);
+  let mentions = [];
+  if (groups.size > 0 || names.size > 0) {
+    mentions = scanFiles(git(["rev-parse", "--show-toplevel"], cwd).trim(), source, { groups, bags, added, names, changed: paths });
+  }
+  const strip = ({ path, line, text }) => ({ path, line, text });
   const withTwins = targets
-    .filter((t) => groups.get(t.shape).twins.length > 0)
-    .map((t) => ({ path: t.path, line: t.line, text: t.text, shape: t.shape, twins: groups.get(t.shape).twins }))
+    .map((t) => {
+      const exact = groups.get(t.shape).twins;
+      const loose = t.bag ? bags.get(t.bag).twins.filter((x) => x.shape !== t.shape).slice(0, MAX_LOOSE) : [];
+      return { path: t.path, line: t.line, text: t.text, shape: t.shape, twins: exact.map(strip), loose: loose.map(strip) };
+    })
+    .filter((t) => t.twins.length > 0 || t.loose.length > 0)
     .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : a.line - b.line));
-  return { label, checked: targets.length, withTwins: withTwins.length, removed: withTwins };
+  return { label, checked: targets.length, withTwins: withTwins.length, removed: withTwins, mentions };
 }
 
 const clip = (s) => s.slice(0, 100);
@@ -312,10 +439,15 @@ export function render(report) {
     for (const t of r.twins.slice(0, MAX_TWINS)) out.push(`  twin  ${t.path}:${t.line}  ${clip(t.text)}`);
     const more = r.twins.length - MAX_TWINS;
     if (more > 0) out.push(`  ... ${more} more twin${more === 1 ? "" : "s"}`);
+    for (const t of r.loose) out.push(`  twin  ${t.path}:${t.line}  ${clip(t.text)}  (looser match)`);
   }
   const hidden = report.removed.length - shown.length;
   if (hidden > 0) out.push(`... ${hidden} more removed line${hidden === 1 ? "" : "s"} with twins not shown`);
   if (report.withTwins > 0) out.push("Candidates only: same shape as a line this change removed. Read each one and fix it if it is the same defect, or say why it is not.");
+  if (report.mentions?.length) {
+    out.push("comments that mention the changed name:");
+    for (const m of report.mentions) out.push(`mention  ${m.path}:${m.line}${m.doc ? " (doc)" : ""}  ${clip(m.text)}`);
+  }
   return out.join("\n");
 }
 

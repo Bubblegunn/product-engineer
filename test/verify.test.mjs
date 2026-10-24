@@ -117,9 +117,77 @@ test("twins-open: a removed line with a copy elsewhere is a finding until twins 
   assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/a.js"), B("rg -n priceOf")]) })).includes("twins-open"));
 });
 
+test("twins-open: a comment in another file that names the changed function is listed in the finding", () => {
+  const dir = repo({ ...TWIN, "src/c.js": "// total is shown on the invoice\nexport const shown = 1;\n" });
+  editTwin(dir);
+  const f = verify({ cwd: dir, session: S([W(dir, "src/a.js")]) });
+  assert.ok(ids(f).includes("twins-open"));
+  assert.match(text(f, "twins-open"), /Comments that name the changed code: src\/c\.js:1 "\/\/ total is shown/);
+});
+
+test("twins-open: a loose twin (same calls and operators, other parentheses) is listed and tagged", () => {
+  const dir = repo({
+    "src/rates.js": "export function charge(line) {\n  return Math.floor(line.cents * (line.rate / 100));\n}\n",
+    "src/fees.js": "export function fee(order) {\n  return Math.floor(order.cents * order.pct / 100);\n}\n",
+  });
+  put(dir, { "src/fees.js": "export function fee(order) {\n  return 0;\n}\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "src/fees.js")]) });
+  assert.ok(ids(f).includes("twins-open"));
+  assert.match(text(f, "twins-open"), /twin src\/rates\.js:2 \(resembles removed src\/fees\.js:2 .*\) \(looser match\)/);
+});
+
 test("twins-open: no change, no finding", () => {
   const dir = repo(TWIN);
   assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/a.js")]) })).includes("twins-open"));
+});
+
+const REFACTOR_PROMPT = "Refactor the two price helpers into one module, no behaviour change.";
+
+test("refactor-unchecked: a refactor that edits source with no run of the old or new code is a finding", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const f = verify({ cwd: dir, session: SP([W(dir, "src/a.js")], REFACTOR_PROMPT) });
+  assert.ok(ids(f).includes("refactor-unchecked"));
+  assert.match(text(f, "refactor-unchecked"), /git show HEAD:<path>/);
+});
+
+test("refactor-unchecked: a bug fix with no refactor words, a run before the edit, a side-by-side compare, or no source edit settles it", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n", "README.md": "x\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const has = (events, prompt) => ids(verify({ cwd: dir, session: SP(events, prompt) })).includes("refactor-unchecked");
+  assert.equal(has([W(dir, "src/a.js")], "Fix the bug in the total."), false);
+  assert.equal(has([B("node -e 'console.log(1)'"), W(dir, "src/a.js")], REFACTOR_PROMPT), false);
+  assert.equal(has([B("node scripts/run.mjs"), W(dir, "src/a.js")], REFACTOR_PROMPT), false);
+  assert.equal(has([B("npm test"), W(dir, "src/a.js")], REFACTOR_PROMPT), false);
+  assert.equal(has([W(dir, "src/a.js"), B("git show HEAD:src/a.js > old.js && node -e 'require(\"./old.js\")'")], REFACTOR_PROMPT), false);
+  assert.equal(has([W(dir, "README.md")], REFACTOR_PROMPT), false);
+});
+
+test("refactor-unchecked: bug-fix wording that shares words with refactor (extract, clean up, merge, pull) is not a refactor", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  const has = (prompt) => ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js")], prompt) })).includes("refactor-unchecked");
+  for (const prompt of [
+    "Fix the bug where we extract the wrong date from the header.",
+    "Clean up the error message in the login form.",
+    "Fix the crash when the cleanup job runs.",
+    "Fix the broken merge of the cart items.",
+    "Extracted fee is wrong for EU users; fix it.",
+    "Fix the broken pull request sync.",
+  ]) assert.equal(has(prompt), false, prompt);
+});
+
+test("refactor-unchecked: each refactor phrasing is a refactor", () => {
+  const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  put(dir, { "src/a.js": "export const a = 2;\n" });
+  for (const prompt of [
+    "Refactor the two price helpers into one module, no behaviour change.",
+    "Extract the fee calc into a function.",
+    "Clean up duplicate helpers in the cart.",
+    "Merge the two price helpers.",
+    "Pull the two parsers into one.",
+    "Dedupe the price logic.",
+  ]) assert.ok(ids(verify({ cwd: dir, session: SP([W(dir, "src/a.js")], prompt) })).includes("refactor-unchecked"), prompt);
 });
 
 test("names-dangling: a removed name still used in an untouched tracked file is a finding", () => {
@@ -237,26 +305,28 @@ const promptLine = { type: "user", message: { content: "Add the fee rule." } };
 
 test("state: a block, then the same findings do not block again, a new finding blocks once more, then never", () => {
   const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });
+  // A private temp directory: the state file cannot be shared with another test or an earlier run.
+  const home = mkdtempSync(join(tmpdir(), "pe-verify-state-"));
+  const env = { TMPDIR: home };
   const sid = `verify-state-${process.pid}-${Date.now()}`;
-  const state = join(tmpdir(), `product-engineer-gate-${sid}.json`);
   try {
     const one = [promptLine, editOf(dir, "src/a.js")];
-    const first = hook(dir, one, { session_id: sid });
+    const first = hook(dir, one, { session_id: sid }, env);
     assert.equal(JSON.parse(first.stdout).decision, "block");
     assert.match(JSON.parse(first.stdout).reason, /Source files changed after the last test run/);
     assert.ok(JSON.parse(first.stdout).reason.endsWith(REPLY_WHOLE));
-    assert.equal(hook(dir, one, { session_id: sid, stop_hook_active: true }).stdout, "");
+    assert.equal(hook(dir, one, { session_id: sid, stop_hook_active: true }, env).stdout, "");
 
     const two = [...one, editOf(dir, "src/b.js")];
-    const second = hook(dir, two, { session_id: sid, stop_hook_active: true });
+    const second = hook(dir, two, { session_id: sid, stop_hook_active: true }, env);
     assert.equal(JSON.parse(second.stdout).decision, "block");
     assert.match(JSON.parse(second.stdout).reason, /src\/b\.js/);
 
     const three = [...two, editOf(dir, "src/c.js")];
-    assert.equal(hook(dir, three, { session_id: sid, stop_hook_active: true }).stdout, "");
-    assert.equal(hook(dir, three, { session_id: sid }).stdout, "");
+    assert.equal(hook(dir, three, { session_id: sid, stop_hook_active: true }, env).stdout, "");
+    assert.equal(hook(dir, three, { session_id: sid }, env).stdout, "");
   } finally {
-    rmSync(state, { force: true });
+    rmSync(home, { recursive: true, force: true });
   }
 });
 

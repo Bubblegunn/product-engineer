@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { twins, render, shapeOf, significant } from "../bin/twins.mjs";
+import { twins, render, shapeOf, significant, bagOf, declaredIn } from "../bin/twins.mjs";
 
 const CLI = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
 const run = (cwd, ...args) => execFileSync("git", ["-c", "user.name=Dev", "-c", "user.email=dev@example.com", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null", ...args], { cwd, encoding: "utf8" });
@@ -340,6 +340,116 @@ test("vendored, minified, lock, binary and oversized files are not searched", ()
   assert.equal(report.checked, 1);
   assert.equal(report.withTwins, 1);
   assert.deepEqual(report.removed[0].twins.map((t) => t.path), ["src/statement.js"]);
+});
+
+const LOOSE_BASE = {
+  "src/rates.js": "export function charge(line) {\n  return Math.floor(line.cents * (line.rate / 100));\n}\n",
+  "src/fees.js": "export function fee(order) {\n  return Math.floor(order.cents * order.pct / 100);\n}\n",
+};
+const dropFeeReturn = (dir) => edit(dir, "src/fees.js", "export function fee(order) {\n  return 0;\n}\n");
+
+test("a copy that differs only in parentheses or operand order is a loose twin, tagged in the output", () => {
+  const dir = repo(LOOSE_BASE);
+  dropFeeReturn(dir);
+  const report = twins({ cwd: dir });
+  assert.equal(report.withTwins, 1);
+  assert.deepEqual(report.removed[0].twins, []);
+  assert.deepEqual(report.removed[0].loose.map((t) => [t.path, t.line]), [["src/rates.js", 2]]);
+  const text = render(report);
+  assert.match(text, /^  twin  src\/rates\.js:2  return Math\.floor\(line\.cents \* \(line\.rate \/ 100\)\);  \(looser match\)$/m);
+  const json = spawnSync("node", [CLI, "twins", "--json"], { cwd: dir, encoding: "utf8" });
+  assert.deepEqual(JSON.parse(json.stdout).removed[0].loose.map((t) => t.path), ["src/rates.js"]);
+});
+
+test("an exact twin is not repeated as a loose one, and exact twins print before loose ones", () => {
+  const dir = repo({
+    ...LOOSE_BASE,
+    "src/copy.js": "  return Math.floor(order.cents * order.pct / 100);\n",
+  });
+  dropFeeReturn(dir);
+  const report = twins({ cwd: dir });
+  assert.deepEqual(report.removed[0].twins.map((t) => t.path), ["src/copy.js"]);
+  assert.deepEqual(report.removed[0].loose.map((t) => t.path), ["src/rates.js"]);
+  const lines = render(report).split("\n");
+  assert.ok(lines.findIndex((l) => l.includes("src/copy.js")) < lines.findIndex((l) => l.includes("(looser match)")));
+});
+
+test("a loose match is capped at three per removed line", () => {
+  const copies = Array.from({ length: 5 }, (_, i) => `  return Math.floor(q${i}.c * (q${i}.r / 100));`).join("\n") + "\n";
+  const dir = repo({ "src/fees.js": LOOSE_BASE["src/fees.js"], "src/many.js": copies });
+  dropFeeReturn(dir);
+  const report = twins({ cwd: dir });
+  assert.equal(report.removed[0].loose.length, 3);
+  assert.equal(render(report).match(/\(looser match\)$/gm).length, 3);
+});
+
+test("the same call with a different operator, and a line with no call, are not loose twins", () => {
+  const dir = repo({
+    "src/pick.js": "export function pick(p) {\n  return Math.max(p.a + p.b, p.c);\n}\n",
+    "src/other.js": "export function other(p) {\n  return Math.max(p.a * p.b, p.c);\n}\n",
+    "src/mul.js": "export function mul(x) {\n  return x.a * x.b / x.c;\n}\n",
+    "src/par.js": "export function par(x) {\n  return x.a * (x.b / x.c);\n}\n",
+  });
+  edit(dir, "src/pick.js", "export function pick(p) {\n}\n");
+  edit(dir, "src/mul.js", "export function mul(x) {\n}\n");
+  const report = twins({ cwd: dir });
+  assert.equal(report.checked, 2);
+  assert.equal(report.withTwins, 0);
+  assert.doesNotMatch(render(report), /looser match/);
+});
+
+test("bagOf needs a call and two operators or a division or modulo; parentheses and operand order do not change it", () => {
+  assert.equal(bagOf("return $.floor($*$/$)"), bagOf("return $.floor($*($/$))"));
+  assert.equal(bagOf("return $*$/$"), null);
+  assert.equal(bagOf("return f($+$)"), null);
+  assert.notEqual(bagOf("return f($+$+$)"), bagOf("return f($*$+$)"));
+  assert.notEqual(bagOf("return f($+$+$)"), bagOf("return f($+$)"));
+});
+
+test("declaredIn reads function, def, class, const and method names, and skips keywords and short names", () => {
+  assert.deepEqual(declaredIn("export function grossTotal(invoice) {"), ["grossTotal"]);
+  assert.deepEqual(declaredIn("def tally_rows(rows):"), ["tally_rows"]);
+  assert.deepEqual(declaredIn("class LedgerView {"), ["LedgerView"]);
+  assert.deepEqual(declaredIn("const rateTable = build();"), ["rateTable"]);
+  assert.deepEqual(declaredIn("  computeTax(items) {"), ["computeTax"]);
+  assert.deepEqual(declaredIn("if (ready) {"), []);
+  assert.deepEqual(declaredIn("const fee = 2;"), []);
+});
+
+const MENTION_BASE = {
+  "src/invoice.js": "// grossTotal is the figure before refunds\nexport function grossTotal(invoice) {\n  return invoice.gross - invoice.refunds;\n}\n",
+};
+const editMention = (dir) => edit(dir, "src/invoice.js", "// grossTotal is the figure before refunds\nexport function grossTotal(invoice) {\n  return invoice.gross - invoice.refunds - invoice.fees;\n}\n");
+
+test("a comment or doc line in another file that names the changed function is a mention; the doc one is marked", () => {
+  const dir = repo({
+    ...MENTION_BASE,
+    "src/report.js": "// grossTotal is shown on the statement\nexport const shown = 1;\n",
+    "docs/guide.md": "The grossTotal figure is rounded.\n",
+  });
+  editMention(dir);
+  const report = twins({ cwd: dir });
+  assert.deepEqual(report.mentions.map((m) => [m.path, m.line, m.doc]), [["docs/guide.md", 1, true], ["src/report.js", 1, false]]);
+  assert.match(render(report), /^comments that mention the changed name:$/m);
+  assert.match(render(report), /^mention  docs\/guide\.md:1 \(doc\)  The grossTotal figure is rounded\.$/m);
+});
+
+test("a name inside a longer word, a code line that is not a comment, and the changed file itself are not mentions", () => {
+  const dir = repo({
+    ...MENTION_BASE,
+    "src/calc.js": "const grossTotalCents = 1;\n// grossTotalCents differs\n",
+    "src/code.js": "export const y = grossTotal(1);\n",
+  });
+  editMention(dir);
+  assert.deepEqual(twins({ cwd: dir }).mentions, []);
+});
+
+test("a name is mentioned at most five times", () => {
+  const files = {};
+  for (let i = 0; i < 7; i++) files[`src/n${i}.js`] = `// grossTotal copy ${i}\nexport const v${i} = ${i};\n`;
+  const dir = repo({ ...MENTION_BASE, ...files });
+  editMention(dir);
+  assert.equal(twins({ cwd: dir }).mentions.length, 5);
 });
 
 test("a removed line in a doc is not searched for", () => {

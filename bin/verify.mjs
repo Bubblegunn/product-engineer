@@ -5,7 +5,8 @@
 //
 // Checks, each only when the session wrote a file in a git work tree:
 //   tests-not-run     a source file was written after the last test command
-//   twins-open        the change left near-copies of removed lines and nothing searched for them
+//   twins-open        the change left near-copies of removed lines (same shape, or same calls and operators) and nothing searched for them
+//   refactor-unchecked a refactor changed source with no run of the old and new behaviour before the edit or after it
 //   names-dangling    an identifier the change removed is still used in a tracked file
 //   notes-check       a release-notes file names a range and announces cancelled work, omits gone names, or leaves a doc describing cancelled work
 //   stale-docs        a release-notes, changelog or upgrade-guide file (range from its first line, else the latest tag) with a doc that still describes cancelled work
@@ -27,6 +28,7 @@ import { readBaseline } from "./brief.mjs";
 
 const BUDGET_MS = 3000;
 const SHOWN = 5;
+const MENTIONS_SHOWN = 3;
 const TOKEN_CAP = 100;
 const TOKEN_MIN = 4;
 const COMMENT_LINE = /^\s*(?:\/\/|#|\/\*|\*|<!--|--|;)/;
@@ -269,10 +271,37 @@ function twinsOpen(ctx) {
   if (events.some((e) => e.kind === "bash" && GREP_RUN.test(e.command) && tokens.some((t) => e.command.includes(t)))) return [];
   const report = twinsOf({ range: change.range, cwd: ctx.top });
   const items = [];
-  for (const r of report.removed) for (const t of r.twins) if (items.length < SHOWN) items.push({ t, r });
+  for (const r of report.removed) {
+    for (const t of r.twins) if (items.length < SHOWN) items.push({ t, r, loose: false });
+    for (const t of r.loose) if (items.length < SHOWN) items.push({ t, r, loose: true });
+  }
   if (!items.length) return [];
-  const list = items.map(({ t, r }) => `twin ${t.path}:${t.line} (resembles removed ${r.path}:${r.line} "${clip(r.text, 60)}")`).join("; ");
-  return [{ id: "twins-open", text: `Lines with the same shape as lines this change removed: ${list}. Run product-engineer twins and fix each copy that has the same defect, or say why it does not.` }];
+  const list = items.map(({ t, r, loose }) => `twin ${t.path}:${t.line} (resembles removed ${r.path}:${r.line} "${clip(r.text, 60)}")${loose ? " (looser match)" : ""}`).join("; ");
+  // Comments that name a changed function often point at the copy (`Same calculation as ...`).
+  const named = (report.mentions ?? []).slice(0, MENTIONS_SHOWN).map((m) => `${m.path}:${m.line} "${clip(m.text, 60)}"`);
+  const comments = named.length ? ` Comments that name the changed code: ${named.join("; ")}.` : "";
+  return [{ id: "twins-open", text: `Lines that match lines this change removed: ${list}.${comments} Run product-engineer twins and fix each copy that has the same defect, or say why it does not.` }];
+}
+
+// A prompt that asks for a refactor, cleanup or merge. A bug fix with none of these words is not checked here.
+const REFACTOR = /\brefactor(?:s|ed|ing)?\b|\bpull (?:\w+ ){0,4}into one\b|\bextract\b[^.\n]{0,40}\b(?:into|to) (?:a |an |its own |one |new )?(?:function|helper|module|method|class|component|constant|file)s?\b|\bdedupe\b|\bdeduplicate\b|\bmerge (?:\w+ ){0,3}(?:functions|helpers|modules)\b|\bno behaviou?r change\b|\bclean ?up (?:the |this |these |those )?(?:duplicates?|helpers?|modules?|dead code|duplicated code)\b/i;
+const CODE_RUN = /\bnode\s+(?:-[ep]\b|[^-\s])|\bpython3?\s+-c\b/;
+const COMPARE_RUN = /\bgit\s+(?:-\S+\s+)*(?:show|stash|worktree)\b/;
+const NODE_EVAL = /\bnode\s+-e\b/;
+
+/**
+ * A refactor that changed source with no baseline: no command before the first source edit ran code or tests, and no
+ * command ran the old and new versions side by side (git show or stash or worktree, with node -e).
+ */
+function refactorUnchecked(ctx) {
+  const { events, prompt } = ctx.session;
+  if (!REFACTOR.test(prompt)) return [];
+  const edits = sourceEdits(ctx);
+  if (!edits.length) return [];
+  const firstEdit = edits[0].i;
+  if (events.slice(0, firstEdit).some((e) => e.kind === "bash" && (CODE_RUN.test(e.command) || TEST_RUN.test(e.command)))) return [];
+  if (events.some((e) => e.kind === "bash" && COMPARE_RUN.test(e.command) && NODE_EVAL.test(e.command))) return [];
+  return [{ id: "refactor-unchecked", text: "Before changing code that must keep its behaviour, run the old version on the inputs where the copies differ (git show HEAD:<path> > /tmp/old.js; node -e ...) and compare it with the new one; say what differed." }];
 }
 
 /** A range named on the first line of a notes file: "since <ref>" or "<a>..<b>". Null when neither is there. */
@@ -606,7 +635,7 @@ export function verify({ cwd = process.cwd(), session, limits = {}, answer, sess
         }
       }),
     };
-    const checks = [testsNotRun, namesDangling, notesCheck, staleDocs, twinsOpen, testsRed, fixNotRedGreen, stubsInChange, unwiredFile];
+    const checks = [testsNotRun, namesDangling, notesCheck, staleDocs, twinsOpen, refactorUnchecked, testsRed, fixNotRedGreen, stubsInChange, unwiredFile];
     const findings = [];
     for (const check of checks) {
       if (over()) break;
