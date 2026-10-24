@@ -21,7 +21,8 @@ const HELP = `usage: product-engineer check [file|-|--stdin] [--pr <number>] [--
        product-engineer notes <file> --range <from>..<to>|<tag> [--audience customers|developers] [--json]
        product-engineer scope [range] [--json]
        product-engineer twins [range] [--json]
-       product-engineer range <from>..<to> [--json]
+       product-engineer range <from>..<to> [--first-parent] [--json]
+       product-engineer range [<ref>] --since <date> [--until <date>] [--first-parent] [--json]
        product-engineer claims <file|-> [--repo DIR] [--json]
        product-engineer brief [--hook]
 
@@ -77,7 +78,10 @@ extension), a line about docs, a README, a changelog or a version bump, an effec
 number after the first line, a commit hash (the first line may hold the range), and merge-commit
 boilerplate. Warning: the first line names no range (a tag, a commit hash, "since", "the last N
 commits"). With --range, a line outside "Not in this release" that names the words of a commit the
-range cancelled is an error.
+range cancelled is an error. Warnings: a heading with nothing under it, a notes file with no change
+listed (one line such as "No change visible to users since <ref>." is the honest quiet-period form),
+and, with --range, a line longer than 30 characters that shares no word of five or more letters with
+the commits, changed paths or changed lines of the range (skipped above 2000 commits).
 --audience customers (the default) is for owners, guests and support: the code-identifier and
 file-name rules apply. --audience developers is for people who integrate the product: backticked
 names, camelCase, file names and calls are allowed, so the exact option, flag or function name can be
@@ -98,6 +102,10 @@ duplicate, security or performance wording, a breaking marker, a type the files 
 line is a candidate to check against the diff. After the ledger, "names gone at <to>" lists up to
 eight names that a removed line carried and the tree at <to> no longer holds (an option, a flag,
 a setting or a function that users may call; a local variable too). It reads git only.
+--first-parent lists only the first-parent chain. --since and --until pick the commits of <ref> (default
+HEAD) by committer date, print the first and last commit date and the resolved from..to, and fail with
+exit 2 when no commit is in the window. "candidate themes" names the top three directories (two levels)
+by changed files, when the range touches at least two.
 
 claims reads a text (your final answer, a pull request description) and lists each number with a
 unit, version-like token and backticked name in it. For each it says "found <file>" when a tracked

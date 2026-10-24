@@ -16,10 +16,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { classOf } from "./scope.mjs";
 
-const USAGE = `usage: product-engineer range <from>..<to> [--json]
+const USAGE = `usage: product-engineer range <from>..<to> [--first-parent] [--json]
        product-engineer range <ref>            (the same as <ref>..HEAD)
+       product-engineer range [<ref>] --since <date> [--until <date>] [--first-parent] [--json]
 Lists each commit of the range, oldest first, with its class and candidate flags. A change that a
 later commit reverts is shown as "net: cancelled"; a revert of a revert shows "net: present" again.
+--first-parent lists only the first-parent chain (a merge is one line; the commits it brought in are not).
+--since and --until pick the commits by committer date on <ref> (default HEAD) and print the resolved
+range: from is the parent of the oldest commit in the window, to is the newest.
 Every line is a candidate to check against the diff. Exit 0 for a ledger, 2 for usage or a bad range.`;
 
 const FOOTER = "Candidates only. Read the diff before you write a line about any of these.";
@@ -127,6 +131,73 @@ export function parseRange(arg) {
   const to = arg.slice(i + 2) || "HEAD"; // `HEAD~1..` is `HEAD~1..HEAD`
   if (!from || from.startsWith("-") || to.startsWith("-")) return null;
   return { from, to };
+}
+
+// Notes traceability reads the vocabulary of a range only up to this many commits, and keeps at most this many words.
+export const VOCAB_COMMIT_LIMIT = 2000;
+export const VOCAB_CAP = 20000;
+const WORD = /\p{L}{5,}/gu;
+const wordsOf = (text) => text.toLowerCase().match(WORD) ?? [];
+
+/**
+ * The words of a range that release notes may match: the words of each commit subject and body, of each changed
+ * path, and of each added or removed diff line (lowercased, five letters or more). `words` is null when the range has
+ * more than VOCAB_COMMIT_LIMIT commits (the check is skipped); `capped` is true when VOCAB_CAP words were reached.
+ */
+export function vocabularyOf({ from, to, cwd = process.cwd(), firstParent = false }) {
+  const span = `${resolve(from, cwd)}..${resolve(to, cwd)}`;
+  const fp = firstParent ? ["--first-parent"] : [];
+  const total = Number(git(["rev-list", "--count", ...fp, span], cwd).trim());
+  if (total > VOCAB_COMMIT_LIMIT) return { commits: total, words: null, capped: false };
+  const log = git(["log", "--no-color", "--no-ext-diff", "--no-renames", "-p", "--format=%x1e%s%x1f%b%x1f", ...fp, span], cwd);
+  const words = new Set();
+  let capped = false;
+  const add = (text) => {
+    for (const w of wordsOf(text)) {
+      if (words.size >= VOCAB_CAP) { capped = true; return; }
+      words.add(w);
+    }
+  };
+  for (const record of log.split("\x1e").slice(1)) {
+    const a = record.indexOf("\x1f");
+    const b = record.indexOf("\x1f", a + 1);
+    add(record.slice(0, a));
+    add(record.slice(a + 1, b));
+    for (const line of record.slice(b + 1).split("\n")) {
+      if (line.startsWith("diff --git ")) add(line);
+      else if ((line[0] === "+" || line[0] === "-") && !/^(\+\+\+|---) /.test(line)) add(line.slice(1));
+      if (capped) break;
+    }
+    if (capped) break;
+  }
+  return { commits: total, words, capped };
+}
+
+/**
+ * The commits of `tip` (default HEAD) whose committer date is in [since, until], resolved to a range: from is the
+ * parent of the oldest such commit, to is the newest. Throws when no commit is in the window or the oldest commit
+ * has no parent (the window starts at the first commit of the history).
+ */
+export function windowOf({ since, until, tip = "HEAD", firstParent = false, cwd = process.cwd() }) {
+  const tipSha = resolve(tip, cwd);
+  const dated = [...(since === undefined ? [] : [`--since=${since}`]), ...(until === undefined ? [] : [`--until=${until}`])];
+  const list = git(["rev-list", ...(firstParent ? ["--first-parent"] : []), ...dated, tipSha], cwd).split("\n").filter(Boolean);
+  const window = `${since ?? "the beginning"} to ${until ?? "now"}`;
+  if (list.length === 0) throw new Error(`no commit between ${window} on ${tip}`);
+  const newest = list[0];
+  const oldest = list[list.length - 1];
+  const parent = git(["rev-list", "--parents", "-n", "1", oldest], cwd).trim().split(/\s+/)[1];
+  if (!parent) throw new Error(`the window ${window} starts at the first commit of the history (${oldest.slice(0, 7)}); name the range with from..to`);
+  const dateOf = (sha) => git(["log", "-1", "--format=%ci", sha], cwd).trim();
+  return {
+    since: since ?? null,
+    until: until ?? null,
+    commits: list.length,
+    first: { sha: oldest, date: dateOf(oldest) },
+    last: { sha: newest, date: dateOf(newest) },
+    from: parent,
+    to: newest,
+  };
 }
 
 /** The sha of a ref. Throws `unknown revision: <ref>` when the ref does not name a commit. */
@@ -260,22 +331,23 @@ export function goneNames(names, fromSha, toSha, cwd, notes = []) {
  * The ledger of a range. `from` and `to` are refs as the user wrote them; `from` is excluded, `to` included.
  * Throws `unknown revision: <ref>` when either ref does not name a commit.
  */
-export function range({ from, to, cwd = process.cwd() } = {}) {
+export function range({ from, to, cwd = process.cwd(), firstParent = false } = {}) {
   const fromRef = resolve(from, cwd);
   const toSha = resolve(to, cwd);
   const notes = [];
   // A long range is read for its last RANGE_WINDOW commits: the window starts after the commit RANGE_WINDOW back.
-  const total = Number(git(["rev-list", "--count", `${fromRef}..${toSha}`], cwd).trim());
+  const fp = firstParent ? ["--first-parent"] : [];
+  const total = Number(git(["rev-list", "--count", ...fp, `${fromRef}..${toSha}`], cwd).trim());
   const limited = total > RANGE_LIMIT;
-  const fromSha = limited ? git(["rev-list", "--topo-order", `--skip=${RANGE_WINDOW}`, "-n", "1", `${fromRef}..${toSha}`], cwd).trim() : fromRef;
+  const fromSha = limited ? git(["rev-list", "--topo-order", ...fp, `--skip=${RANGE_WINDOW}`, "-n", "1", `${fromRef}..${toSha}`], cwd).trim() : fromRef;
   if (limited) notes.push(`range too large (${total} commits); showing the last ${RANGE_WINDOW}`);
   const cap = limited ? [`--max-count=${RANGE_WINDOW}`] : [];
   // Three batched reads for the whole range, not three processes per commit: one log for the subjects, bodies
   // and file lists (NUL-separated), one log of the patches, and one `git patch-id --stable` over that patch
   // log. The same patch id means the same change (a cherry-pick gives the same id).
   const span = `${fromSha}..${toSha}`;
-  const names = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--name-only", "-z", "--format=%x1e%H%x1f%P%x1f%s%x1f%b%x1f", ...cap, span], cwd);
-  const patchLog = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--no-color", "--no-ext-diff", "-p", "--format=commit %H", ...cap, span], cwd);
+  const names = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--name-only", "-z", "--format=%x1e%H%x1f%P%x1f%s%x1f%b%x1f", ...fp, ...cap, span], cwd);
+  const patchLog = git(["log", "--topo-order", "--reverse", "--root", "--no-renames", "--no-color", "--no-ext-diff", "-p", "--format=commit %H", ...fp, ...cap, span], cwd);
   const patchIdOf = new Map(git(["patch-id", "--stable"], cwd, patchLog).split("\n").filter(Boolean).map((l) => {
     const [id, commit] = l.split(/\s+/);
     return [commit, id];
@@ -420,10 +492,25 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
   const cancelled = originals.filter((c) => c.net.state === "cancelled").length;
   const present = originals.length - cancelled;
   const label = `${from}..${to}`;
+  // Candidate themes: the files of the range grouped by their first two directory levels. Shown only when the range
+  // touches at least two directories; the top three by file count.
+  const filesByDir = new Map();
+  for (const f of new Set(commits.flatMap((c) => c.files))) {
+    const dirs = f.split("/").slice(0, -1);
+    if (dirs.length === 0) continue;
+    const key = dirs.slice(0, 2).join("/");
+    filesByDir.set(key, (filesByDir.get(key) ?? 0) + 1);
+  }
+  const themes = filesByDir.size < 2 ? [] : [...filesByDir]
+    .map(([dir, files]) => ({ dir, files }))
+    .sort((a, b) => b.files - a.files || (a.dir < b.dir ? -1 : a.dir > b.dir ? 1 : 0))
+    .slice(0, 3);
   return {
     range: { from, to },
-    header: `range ${label}: ${commits.length} commit${commits.length === 1 ? "" : "s"}, ${present} net change${present === 1 ? "" : "s"} present, ${cancelled} cancelled`,
+    firstParent,
+    header: `range ${label}${firstParent ? " (first parent)" : ""}: ${commits.length} commit${commits.length === 1 ? "" : "s"}, ${present} net change${present === 1 ? "" : "s"} present, ${cancelled} cancelled`,
     summary: { commits: commits.length, present, cancelled },
+    themes,
     commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text, evidence, moreLines }) => ({ code, text, evidence, moreLines })) })),
     gonenames,
     notes,
@@ -432,7 +519,13 @@ export function range({ from, to, cwd = process.cwd() } = {}) {
 }
 
 export function render(report) {
-  const out = [report.header, ...(report.notes ?? []).map((note) => `note: ${note}`)];
+  const out = [];
+  if (report.window) {
+    const w = report.window;
+    out.push(`window ${w.since ?? "the beginning"} to ${w.until ?? "now"}: first commit ${w.first.date}, last commit ${w.last.date}`);
+    out.push(`resolved ${w.from}..${w.to}`);
+  }
+  out.push(report.header, ...(report.notes ?? []).map((note) => `note: ${note}`));
   for (const c of report.commits) {
     out.push(`${c.short} ${c.classes.join("+")}  ${c.subject}`);
     for (const f of c.flags) {
@@ -440,6 +533,9 @@ export function render(report) {
       for (const e of f.evidence) out.push(`    ${e.sign} ${e.text}`);
       if (f.moreLines > 0) out.push(`    (${f.moreLines} more changed lines; read the diff)`);
     }
+  }
+  if (report.themes?.length) {
+    out.push(`candidate themes: ${report.themes.map((t) => `${t.dir} (${t.files} file${t.files === 1 ? "" : "s"})`).join(", ")}`);
   }
   if (report.gonenames?.length) {
     out.push(`names gone at ${report.range.to}:`);
@@ -453,14 +549,65 @@ export function render(report) {
   return out.join("\n");
 }
 
+/** Removes `name value` or `name=value` from argv: { value (undefined when absent), present, rest }. */
+function takeValue(argv, name) {
+  const i = argv.findIndex((a) => a === name || a.startsWith(`${name}=`));
+  if (i === -1) return { value: undefined, present: false, rest: argv };
+  const inline = argv[i].startsWith(`${name}=`);
+  const value = inline ? argv[i].slice(name.length + 1) : argv[i + 1];
+  return { value: value === "" || value?.startsWith("-") ? undefined : value, present: true, rest: argv.filter((_, k) => k !== i && (inline || k !== i + 1)) };
+}
+
+// --since and --until take a calendar date, optionally with a time: git reads a future --since as "every commit" and
+// an impossible date (2026-13-45) as a real one, so the form is checked here before git sees it.
+const DATE_FORM = /^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2})?(?:Z|[+-]\d{2}:?\d{2})?)?$/;
+function dateProblem(name, value, isSince) {
+  if (!DATE_FORM.test(value)) return `${name} takes a date such as 2026-10-01 (got "${value}")`;
+  const [y, m, d] = value.slice(0, 10).split("-").map(Number);
+  if (m < 1 || m > 12 || d < 1 || d > new Date(Date.UTC(y, m, 0)).getUTCDate()) return `${name} is not a real date: "${value}"`;
+  const t = Date.parse(value.replace(" ", "T"));
+  if (Number.isNaN(t)) return `${name} is not a real date: "${value}"`;
+  if (isSince && t > Date.now()) return `${name} is in the future ("${value}"): a window cannot start after now`;
+  return null;
+}
+
 export function runRange(argv) {
   const json = argv.includes("--json");
-  const rest = argv.filter((a) => a !== "--json");
-  const parsed = rest.length === 1 ? parseRange(rest[0]) : null;
-  if (!parsed) { console.error(USAGE); return 2; }
+  const firstParent = argv.includes("--first-parent");
+  let rest = argv.filter((a) => a !== "--json" && a !== "--first-parent");
+  const since = takeValue(rest, "--since");
+  rest = since.rest;
+  const until = takeValue(rest, "--until");
+  rest = until.rest;
+  if ((since.present && since.value === undefined) || (until.present && until.value === undefined) || rest.some((a) => a.startsWith("-"))) {
+    console.error(USAGE);
+    return 2;
+  }
+  const windowMode = since.present || until.present;
+  const problem = (since.value !== undefined && dateProblem("--since", since.value, true)) || (until.value !== undefined && dateProblem("--until", until.value, false));
+  if (problem) {
+    console.error(`range: ${problem}`);
+    return 2;
+  }
+  let parsed;
+  if (windowMode) {
+    if (rest.length > 1 || rest.some((a) => a.includes(".."))) { console.error(USAGE); return 2; }
+  } else {
+    parsed = rest.length === 1 ? parseRange(rest[0]) : null;
+    if (!parsed) { console.error(USAGE); return 2; }
+  }
   let report;
-  try { report = range({ ...parsed, cwd: process.cwd() }); } catch (err) {
-    console.error(`range: cannot read the range ${parsed.from}..${parsed.to}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
+  try {
+    let window = null;
+    if (windowMode) {
+      window = windowOf({ since: since.value, until: until.value, tip: rest[0] ?? "HEAD", firstParent, cwd: process.cwd() });
+      parsed = { from: window.from, to: window.to };
+    }
+    report = range({ ...parsed, firstParent, cwd: process.cwd() });
+    if (window) report.window = window;
+  } catch (err) {
+    const what = windowMode ? "the window" : `the range ${parsed.from}..${parsed.to}`;
+    console.error(`range: cannot read ${what}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
     return 2;
   }
   console.log(json ? JSON.stringify(report, null, 2) : render(report));

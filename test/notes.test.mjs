@@ -413,3 +413,89 @@ test("the CLI takes --audience in both forms, refuses an unknown value with exit
   assert.equal(warn.status, 0);
   assert.match(warn.stdout, /^warn {2}line 2: names the change but not what to change/m);
 });
+
+// Traceability, empty sections and the empty body.
+const VOCAB = new Set(["calendar", "export", "month"]);
+const tracedFindings = (text, vocabulary = VOCAB) => notes(`Changes since v2.3.0\n${text}`, { vocabulary }).findings.filter((f) => f.code === "untraced");
+
+test("a note line sharing no content word with the range is an untraced warning; one that shares a word passes", () => {
+  const found = tracedFindings("You can now export a month as a file.\nThe weather panel arrives tomorrow morning.\n");
+  assert.deepEqual(found.map((f) => `${f.level}:${f.line}`), ["warn:3"]);
+  assert.equal(found[0].message, 'matches no commit, path or change in the range: "The weather panel arrives tomorrow morning."');
+  assert.equal(notes("Changes since v2.3.0\nThe weather panel arrives tomorrow morning.\n", { vocabulary: null }).findings.some((f) => f.code === "untraced"), false, "no vocabulary, no traceability");
+  assert.equal(notes("Changes since v2.3.0\nThe weather panel arrives tomorrow morning.\n", { vocabulary: VOCAB }).ok, true, "an untraced line is a warning, not an error");
+});
+
+test("the untraced check covers list items, skips lines of 30 characters or fewer, headings and the Not in this release section", () => {
+  assert.equal(tracedFindings("- The weather panel arrives tomorrow morning.\n").length, 1, "a list item is checked");
+  assert.equal(tracedFindings("Short line about weather.\n").length, 0, "25 characters: not checked");
+  assert.equal(tracedFindings("# The weather panel and forecast for tomorrow morning\n").length, 0, "a heading is not checked");
+  assert.equal(tracedFindings("Not in this release:\n- The weather panel arrives tomorrow morning.\n").length, 0, "inside the section");
+  assert.equal(tracedFindings("No change visible to users since the weather panel.\n").length, 0, "the quiet-period line is not checked");
+});
+
+test("a note line that uses only words under five letters is untraced, and a dash rule is never checked", () => {
+  assert.equal(tracedFindings("It is ok to go on and do it now.\n").length, 1);
+  assert.equal(tracedFindings("---------------------------------------------\n").length, 0);
+});
+
+test("a heading with nothing under it before the next heading or the end of the file is an empty-section warning", () => {
+  const codesOf = (text) => notes(text).findings.map((f) => `${f.level}:${f.code}:${f.line}`);
+  assert.deepEqual(codesOf("Changes since v2.3.0\nYou can export a month now.\n\nFixed:\n"), ["warn:empty-section:4"], "label heading at the end of the file");
+  assert.deepEqual(codesOf("Changes since v2.3.0\n# Fixed\n# Added\n- You can export a month now.\n"), ["warn:empty-section:2"], "a heading directly under a heading");
+  assert.deepEqual(codesOf("Changes since v2.3.0\nFixed\n-----\n"), ["warn:empty-section:2"], "a setext heading at the end");
+  assert.deepEqual(codesOf("Changes since v2.3.0\nFixed:\n- You can export a month now.\n"), [], "a heading with a line under it passes");
+});
+
+test("a notes file with no change listed warns with the quiet-period line; a line starting No change visible is accepted", () => {
+  assert.deepEqual(notes("Changes since v2.3.0\n").findings.map((f) => `${f.level}:${f.code}:${f.line}`), ["warn:empty-body:1"]);
+  assert.match(notes("Changes since v2.3.0\n\n  \n").findings[0].message, /for a quiet period write one honest line such as "No change visible to users since <ref>\."/);
+  for (const quiet of ["No change visible to users since v2.3.0.\n", "- No change visible to users since v2.3.0, 14 March.\n"]) {
+    const r = notes(`Changes since v2.3.0\n${quiet}`);
+    assert.deepEqual(r.findings, [], quiet);
+    assert.equal(r.ok, true);
+  }
+});
+
+test("the CLI shows the empty-body warning, exits 0 on the quiet-period line, and prints the traceability skip note", () => {
+  const empty = cliRun("Changes since v2.3.0\n");
+  assert.equal(empty.status, 0);
+  assert.match(empty.stdout, /^warn {2}line 1: no change is listed; for a quiet period write one honest line such as "No change visible to users since <ref>\."/m);
+  const quiet = cliRun("Changes since v2.3.0\nNo change visible to users since v2.3.0.\n");
+  assert.equal(quiet.status, 0, quiet.stdout);
+  assert.match(quiet.stdout, /notes: ok \(0 warnings\)/);
+});
+
+test("--range warns on a note line that shares no word with the range, and the passing lines stay silent", () => {
+  withRange({ restored: true }, (fx) => {
+    const text = `${HEAD_LINE}The weather panel arrives tomorrow morning.\nYou can now cancel many bookings at once.\n`;
+    const r = notesRun(fx, text, ["--range", fx.base]);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stdout, /^warn {2}line 3: matches no commit, path or change in the range: "The weather panel arrives tomorrow morning\."/m);
+    assert.ok(!/line 4: matches/.test(r.stdout), r.stdout);
+  });
+});
+
+test("--range skips the traceability check above 2000 commits and says so, and exit codes are unchanged", () => {
+  const dir = mkdtempSync(join(tmpdir(), "pe-notes-big-"));
+  try {
+    const n = 2002; // HEAD~2001 excludes one, so the range holds 2001 commits
+    const lines = [];
+    for (let i = 1; i <= n; i++) {
+      const msg = `feat(step): change ${i}`;
+      lines.push("commit refs/heads/master", `mark :${i}`, `committer Dev <dev@example.com> ${1761900000 + i} +0000`, `data ${Buffer.byteLength(msg)}`, msg);
+      if (i > 1) lines.push(`from :${i - 1}`);
+      lines.push(`M 100644 inline src/f${i % 17}.js`, `data ${Buffer.byteLength(`v${i}\n`)}`, `v${i}\n`, "");
+    }
+    execFileSync("git", ["init", "-q", "-b", "master"], { cwd: dir });
+    execFileSync("git", ["fast-import", "--quiet"], { cwd: dir, input: lines.join("\n") + "\n" });
+    const file = join(dir, "NOTES.md");
+    writeFileSync(file, `Changes since HEAD~${n - 1}\nThe weather panel arrives tomorrow morning.\n`);
+    const r = spawnSync("node", [cli, "notes", file, "--range", `HEAD~${n - 1}`], { cwd: dir, encoding: "utf8", env: { ...process.env, PRODUCT_ENGINEER_NO_STAR_HINT: "1" } });
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stdout, /^note: traceability skipped: the range has 2001 commits \(more than 2000\)$/m);
+    assert.ok(!/matches no commit/.test(r.stdout), r.stdout);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

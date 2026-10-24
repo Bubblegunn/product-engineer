@@ -7,9 +7,15 @@
 // looks like code (a brand with an inner capital that is not on the list) and can miss code it does not
 // recognise; the exit code is for a person to read, not a verdict.
 import { readFileSync } from "node:fs";
-import { parseRange, range as ledgerRange } from "./range.mjs";
+import { parseRange, range as ledgerRange, vocabularyOf, VOCAB_CAP, VOCAB_COMMIT_LIMIT } from "./range.mjs";
 
 const USAGE = "usage: product-engineer notes <file> [--audience customers|developers] [--json]\n       product-engineer notes <file> --range <from>..<to>|<tag> [--audience customers|developers] [--json]";
+// Traceability: a note line longer than this, outside "Not in this release", must share a content word with the range.
+const TRACE_MIN_LENGTH = 30;
+const TRACE_WORD = /\p{L}{5,}/gu;
+// The quiet-period line a range with no visible change may carry instead of a list.
+const QUIET = /^No change visible/;
+const QUIET_HINT = 'no change is listed; for a quiet period write one honest line such as "No change visible to users since <ref>."';
 const AUDIENCES = ["customers", "developers"];
 
 // Words of a commit subject that can name what a note announces. Short words and the stoplist are not
@@ -173,7 +179,7 @@ function announces(line, words, need) {
  * integrate the product: the code-identifier, backtick and file-name rules are relaxed, and a renamed or
  * removed name must be written in backticks).
  */
-export function notes(text, { cancelled = [], audience = "customers" } = {}) {
+export function notes(text, { cancelled = [], audience = "customers", vocabulary = null } = {}) {
   if (!AUDIENCES.includes(audience)) throw new Error(`unknown audience: ${audience}`);
   const developers = audience === "developers";
   const findings = [];
@@ -185,9 +191,22 @@ export function notes(text, { cancelled = [], audience = "customers" } = {}) {
   } else if (!RANGE.test(lines[first])) {
     report("warn", "no-range", first, "the first line names no range: give the tag, the commit hashes, \"since ...\" or \"the last N commits\"");
   }
+  // A heading that has nothing under it before the next heading or the end of the file.
+  if (first !== -1) {
+    lines.forEach((raw, i) => {
+      if (i === first || raw.trim() === "" || !closesSection(lines, i)) return;
+      let j = isSetextTitle(lines, i) ? i + 2 : i + 1;
+      while (j < lines.length && lines[j].trim() === "") j++;
+      if (j >= lines.length || closesSection(lines, j)) report("warn", "empty-section", i, `the heading "${bare(raw)}" has nothing under it: write what it covers, or remove it`);
+    });
+    if (lines.slice(first + 1).every((l) => l.trim() === "")) report("warn", "empty-body", first, QUIET_HINT);
+  }
+  const inside = notInReleaseLines(lines);
   lines.forEach((raw, i) => {
     if (raw.trim() === "") return;
     const line = bare(raw);
+    // A quiet-period line is the honest statement for a range with no visible change: it is not checked.
+    if (QUIET.test(line)) return;
     if (COMMIT_PREFIX.test(line)) report("error", "commit-prefix", i, "a conventional commit prefix: write what the reader can do now instead");
     if (!COMMIT_PREFIX.test(line) && COMMIT_WORD.test(line)) report("error", "commit-word", i, `a word from commit titles (${line.match(COMMIT_WORD)[0]}): say what the reader can do now, or leave the line out`);
     // A hash on the first line is the range ("commit 3a9f2c1 to 8d0b7e4"); anywhere else it is rejected.
@@ -206,9 +225,20 @@ export function notes(text, { cancelled = [], audience = "customers" } = {}) {
     if (!measured && PERCENT.test(line) && !PRICE_TERM.test(line)) report("error", "unmeasured-percent", i, "a percentage with no measurement: give how it was measured or leave it out");
     if (i !== first && VERSION.test(line)) report("error", "version-number", i, "a version number after the first line: the version is not a change, name it only in the range line");
   });
+  // Traceability: a note line that shares no content word with the range is a warning. Headings, underlines, short
+  // lines and the "Not in this release" section are not checked. Skipped when no vocabulary is given.
+  if (vocabulary) {
+    lines.forEach((raw, i) => {
+      if (i === first || raw.trim() === "" || inside.has(i)) return;
+      const line = bare(raw);
+      if (line.length <= TRACE_MIN_LENGTH || !/\p{L}/u.test(line) || QUIET.test(line) || closesSection(lines, i)) return;
+      const words = (line.toLowerCase().match(TRACE_WORD) ?? []).filter((w) => !STOPWORDS.has(w));
+      if (words.some((w) => vocabulary.has(w))) return;
+      report("warn", "untraced", i, `matches no commit, path or change in the range: "${line.slice(0, 60)}"`);
+    });
+  }
   // Lines that announce a commit the range cancelled, outside "Not in this release". Two content words
   // must appear on the line (one, when the subject has only one).
-  const inside = notInReleaseLines(lines);
   for (const c of cancelled) {
     const words = contentWords(c.subject);
     if (words.length === 0) continue;
@@ -262,19 +292,28 @@ export function runNotes(argv) {
     return 2;
   }
   let cancelled = [];
+  let vocabulary = null;
+  const info = [];
   if (rangeArg !== undefined) {
     let ledger;
+    let vocab;
     try {
       ledger = ledgerRange({ ...parseRange(rangeArg), cwd: process.cwd() });
+      vocab = vocabularyOf({ ...parseRange(rangeArg), cwd: process.cwd() });
     } catch (err) {
       console.error(`notes: cannot read the range ${rangeArg}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
       return 2;
     }
     cancelled = ledger.commits.filter((c) => c.net?.state === "cancelled").map((c) => ({ subject: c.subject, by: c.net.by }));
+    if (vocab.words === null) info.push(`traceability skipped: the range has ${vocab.commits} commits (more than ${VOCAB_COMMIT_LIMIT})`);
+    else {
+      vocabulary = vocab.words;
+      if (vocab.capped) info.push(`traceability read the first ${VOCAB_CAP} words of the range; a line may be reported that a later part of the range matches`);
+    }
   }
-  const r = notes(text, { cancelled, audience });
+  const r = notes(text, { cancelled, audience, vocabulary });
   if (argv.includes("--json")) {
-    console.log(JSON.stringify(r, null, 2));
+    console.log(JSON.stringify({ ...r, info }, null, 2));
     return r.ok ? 0 : 1;
   }
   for (const f of r.findings) {
@@ -282,6 +321,7 @@ export function runNotes(argv) {
     console.log(`${f.level === "error" ? "error" : "warn "} ${where}${f.message}`);
     if (f.text) console.log(`        ${f.text}`);
   }
+  for (const note of info) console.log(`note: ${note}`);
   console.log(r.ok ? `notes: ok (${r.warnings} warning${r.warnings === 1 ? "" : "s"})` : `notes: ${r.errors} error${r.errors === 1 ? "" : "s"}, ${r.warnings} warning${r.warnings === 1 ? "" : "s"}; fix them and run it again`);
   return r.ok ? 0 : 1;
 }

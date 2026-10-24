@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { range, render, parseRange } from "../bin/range.mjs";
+import { range, render, parseRange, vocabularyOf, VOCAB_CAP, VOCAB_COMMIT_LIMIT, windowOf } from "../bin/range.mjs";
 
 const CLI = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "check.mjs");
 let tick = 0;
@@ -574,4 +574,166 @@ test("a removed name that survives only inside a longer name is still listed as 
   const report = range({ from: base, to: "HEAD", cwd: dir });
   assert.ok(goneOf(report).includes("retryLimit"), "retryLimitMax is a different word");
   assert.ok(!goneOf(report).includes("shared"), "shared is still a whole word in limits.js");
+});
+
+// Commits with fixed committer dates, from one fast-import stream: [{ subject, files: { path: text }, date: "YYYY-MM-DD" }].
+function datedRepo(commits) {
+  const dir = newRepo();
+  const lines = [];
+  commits.forEach((c, i) => {
+    const msg = c.subject;
+    const unix = Math.floor(Date.parse(`${c.date}T00:00:00Z`) / 1000);
+    lines.push("commit refs/heads/master", `mark :${i + 1}`, `committer Dev <dev@example.com> ${unix} +0000`, `data ${Buffer.byteLength(msg)}`, msg);
+    if (i > 0) lines.push(`from :${i}`);
+    for (const [path, text] of Object.entries(c.files)) lines.push(`M 100644 inline ${path}`, `data ${Buffer.byteLength(text)}`, text, "");
+  });
+  execFileSync("git", ["fast-import", "--quiet"], { cwd: dir, input: lines.join("\n") + "\n" });
+  return dir;
+}
+
+test("--first-parent lists only the first-parent chain, and the header says so", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "src/a.js": "export const a = 1;\n" }, "chore: start the shop");
+  const onMain = commit(dir, { "src/main.js": "export const m = 1;\n" }, "feat(main): add the main thing");
+  run(dir, "checkout", "-q", "-b", "side", base);
+  const sideFeat = commit(dir, { "src/side.js": "export const s = 1;\n" }, "feat(side): add the side thing");
+  run(dir, "checkout", "-q", "master");
+  run(dir, "merge", "-q", "--no-ff", "-m", "merge side", "side");
+  const merge = head(dir);
+  const all = range({ from: base, to: "HEAD", cwd: dir });
+  assert.ok(all.commits.some((c) => c.sha === sideFeat), "without the flag the side commit is listed");
+  assert.equal(all.firstParent, false);
+  const fp = range({ from: base, to: "HEAD", cwd: dir, firstParent: true });
+  assert.deepEqual(fp.commits.map((c) => c.sha), [onMain, merge], "the side commit is not on the first-parent chain");
+  assert.equal(fp.firstParent, true);
+  assert.equal(fp.header, `range ${base}..HEAD (first parent): 2 commits, 1 net change present, 0 cancelled`);
+  const cli = spawnSync(process.execPath, [CLI, "range", `${base}..HEAD`, "--first-parent", "--json"], { cwd: dir, encoding: "utf8" });
+  assert.equal(cli.status, 0, cli.stderr);
+  assert.equal(JSON.parse(cli.stdout).firstParent, true);
+});
+
+test("--since and --until pick the window by committer date and print the resolved range with its first and last dates", () => {
+  const dir = datedRepo([
+    { subject: "chore: start the ledger", files: { "ledger/a.txt": "one\n" }, date: "2026-09-01" },
+    { subject: "feat(ledger): add the export", files: { "ledger/b.txt": "two\n" }, date: "2026-09-15" },
+    { subject: "fix(ledger): round the totals", files: { "ledger/c.txt": "three\n" }, date: "2026-09-30" },
+  ]);
+  const [c1, c2, c3] = ["HEAD~2", "HEAD~1", "HEAD"].map((r) => run(dir, "rev-parse", r).trim());
+  const report = windowOf({ since: "2026-09-10", until: "2026-09-20", cwd: dir });
+  assert.equal(report.commits, 1);
+  assert.equal(report.first.sha, c2);
+  assert.equal(report.last.sha, c2);
+  assert.equal(report.first.date, "2026-09-15 00:00:00 +0000", "the date carries its timezone");
+  assert.equal(report.from, c1, "from is the parent of the oldest commit in the window");
+  assert.equal(report.to, c2);
+  const cli = spawnSync(process.execPath, [CLI, "range", "--since", "2026-09-10", "--until", "2026-09-20"], { cwd: dir, encoding: "utf8" });
+  assert.equal(cli.status, 0, cli.stderr);
+  assert.ok(cli.stdout.startsWith("window 2026-09-10 to 2026-09-20: first commit 2026-09-15 00:00:00 +0000, last commit 2026-09-15 00:00:00 +0000\n"), cli.stdout);
+  assert.ok(cli.stdout.includes(`resolved ${c1}..${c2}\n`));
+  assert.ok(cli.stdout.includes("1 commit,") || cli.stdout.includes("1 commits,"), cli.stdout);
+  const json = spawnSync(process.execPath, [CLI, "range", "--since", "2026-09-10", "--json"], { cwd: dir, encoding: "utf8" });
+  assert.equal(json.status, 0, json.stderr);
+  const parsed = JSON.parse(json.stdout);
+  assert.equal(parsed.window.to, c3, "with no --until the window runs to the tip");
+  assert.equal(parsed.window.from, c1, "from is the parent of the oldest commit since 10 September (c2)");
+  assert.equal(parsed.summary.commits, 2);
+});
+
+test("a ref after --since is the tip the window is read from, not HEAD", () => {
+  const dir = datedRepo([
+    { subject: "chore: start the ledger", files: { "ledger/a.txt": "one\n" }, date: "2026-09-01" },
+    { subject: "feat(ledger): add the export", files: { "ledger/b.txt": "two\n" }, date: "2026-09-15" },
+    { subject: "fix(ledger): round the totals", files: { "ledger/c.txt": "three\n" }, date: "2026-09-30" },
+  ]);
+  const c2 = run(dir, "rev-parse", "HEAD~1").trim();
+  const report = windowOf({ since: "2026-09-10", tip: "HEAD~1", cwd: dir });
+  assert.equal(report.to, c2);
+  assert.equal(report.commits, 1);
+});
+
+test("a window with no commit exits 2 and names the window; a window that starts at the first commit exits 2", () => {
+  const dir = datedRepo([
+    { subject: "chore: start the ledger", files: { "ledger/a.txt": "one\n" }, date: "2026-09-01" },
+    { subject: "feat(ledger): add the export", files: { "ledger/b.txt": "two\n" }, date: "2026-09-15" },
+  ]);
+  const empty = spawnSync(process.execPath, [CLI, "range", "--since", "2026-09-02", "--until", "2026-09-05"], { cwd: dir, encoding: "utf8" });
+  assert.equal(empty.status, 2);
+  assert.match(empty.stderr, /range: cannot read the window: no commit between 2026-09-02 to 2026-09-05 on HEAD/);
+  const root = spawnSync(process.execPath, [CLI, "range", "--until", "2026-09-02"], { cwd: dir, encoding: "utf8" });
+  assert.equal(root.status, 2);
+  assert.match(root.stderr, /starts at the first commit of the history/);
+});
+
+test("a malformed or future --since, a malformed --until, and a window mixed with a range are usage errors", () => {
+  const dir = datedRepo([{ subject: "chore: start the ledger", files: { "ledger/a.txt": "one\n" }, date: "2026-09-01" }]);
+  for (const args of [["--since", "2026-02-31"], ["--since", "garbage"], ["--since", "2999-01-01"], ["--until", "2026-13-01"], ["--since"], ["--since", "2026-09-01", "HEAD~0..HEAD"]]) {
+    const r = spawnSync(process.execPath, [CLI, "range", ...args], { cwd: dir, encoding: "utf8" });
+    assert.equal(r.status, 2, `${args.join(" ")}: ${r.stdout}${r.stderr}`);
+  }
+  const future = spawnSync(process.execPath, [CLI, "range", "--since", "2999-01-01"], { cwd: dir, encoding: "utf8" });
+  assert.match(future.stderr, /--since is in the future/);
+  const malformed = spawnSync(process.execPath, [CLI, "range", "--since", "garbage"], { cwd: dir, encoding: "utf8" });
+  assert.match(malformed.stderr, /--since takes a date such as 2026-10-01/);
+});
+
+test("candidate themes name the top three directories by changed files, and are omitted for one directory", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "README.md": "# Shop\n" }, "chore: start");
+  commit(dir, { "src/billing/a.js": "export const a = 1;\n", "src/billing/b.js": "export const b = 1;\n", "src/billing/c.js": "export const c = 1;\n" }, "feat(billing): add the first part");
+  commit(dir, { "docs/guide.md": "one\n", "docs/api.md": "two\n", "tests/x.test.mjs": "x\n" }, "docs: add the guide");
+  commit(dir, { "scripts/build.sh": "echo\n", "src/billing/d.js": "export const d = 1;\n" }, "feat(build): add the build");
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.themes, [
+    { dir: "src/billing", files: 4 },
+    { dir: "docs", files: 2 },
+    { dir: "scripts", files: 1 },
+  ]);
+  assert.ok(render(report).includes("candidate themes: src/billing (4 files), docs (2 files), scripts (1 file)"));
+  const one = newRepo();
+  const b1 = commit(one, { "src/a.js": "a\n" }, "chore: start");
+  commit(one, { "src/b.js": "b\n", "src/c.js": "c\n" }, "feat: more");
+  const single = range({ from: b1, to: "HEAD", cwd: one });
+  assert.deepEqual(single.themes, []);
+  assert.ok(!render(single).includes("candidate themes"));
+});
+
+test("vocabularyOf holds the subject words, the path components and the changed-line words of a range", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "README.md": "# Shop\n" }, "chore: start");
+  commit(dir, { "ledgerpages/summary.txt": "tally = 1\n" }, "feat(reports): add the nightly rollup");
+  const v = vocabularyOf({ from: base, to: "HEAD", cwd: dir });
+  assert.equal(v.capped, false);
+  for (const w of ["nightly", "rollup", "ledgerpages", "summary", "tally"]) assert.ok(v.words.has(w), w);
+  assert.ok(!v.words.has("zebra"));
+  assert.ok(!v.words.has("start"), "a word of the base commit, outside the range, is not in the vocabulary");
+});
+
+test("vocabularyOf stops at the word cap and says so", () => {
+  const dir = newRepo();
+  const base = commit(dir, { "README.md": "# Shop\n" }, "chore: start");
+  const words = [];
+  for (let i = 0; words.length < VOCAB_CAP + 500; i++) words.push(`w${i.toString(36).padStart(4, "a")}x${(i * 7919).toString(36)}`.replace(/[^a-z]/g, "q") + "qqqqq");
+  commit(dir, { "src/many.txt": `${words.join("\n")}\n` }, "chore: many words");
+  const v = vocabularyOf({ from: base, to: "HEAD", cwd: dir });
+  assert.equal(v.capped, true);
+  assert.equal(v.words.size, VOCAB_CAP);
+});
+
+test("vocabularyOf skips a range of more than 2000 commits and returns no words", () => {
+  const dir = bigRepo(VOCAB_COMMIT_LIMIT + 2);
+  const v = vocabularyOf({ from: `HEAD~${VOCAB_COMMIT_LIMIT + 1}`, to: "HEAD", cwd: dir });
+  assert.equal(v.words, null);
+  assert.equal(v.commits, VOCAB_COMMIT_LIMIT + 1);
+});
+
+test("the vocabulary of a 500-commit range is built and matched against a note in under 3 seconds", async () => {
+  const { notes } = await import("../bin/notes.mjs");
+  const dir = bigRepo(501);
+  const text = "Changes since HEAD~500\nEach change is listed in the ledger view.\nThe weather panel arrives tomorrow morning.\n";
+  const t0 = Date.now();
+  const v = vocabularyOf({ from: "HEAD~500", to: "HEAD", cwd: dir });
+  const r = notes(text, { vocabulary: v.words });
+  const ms = Date.now() - t0;
+  assert.deepEqual(r.findings.map((f) => `${f.code}:${f.line}`), ["untraced:3"]);
+  assert.ok(ms < 3000, `took ${ms} ms`);
 });
