@@ -1,0 +1,40 @@
+{
+  "label": "g2dbfc1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has ttl: 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy and new options behave correctly and the tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md is untouched and still lists ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and 60 became 60000; the commit message mentions the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

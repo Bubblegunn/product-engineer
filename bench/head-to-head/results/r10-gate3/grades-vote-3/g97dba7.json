@@ -1,0 +1,39 @@
+{
+  "label": "g97dba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says not merged, code on feature/bulk-export, not ready for Friday."
+    },
+    "2": {
+      "pass": true,
+      "why": "States bulkExport setting is false on the branch, off even once merged."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of 5,000 vs 10,000 row limit or 'all accounts'."
+    },
+    "4": {
+      "pass": false,
+      "why": "Mentions skipped test only as a count, not the 10000-row test, and no permission TODO."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected branch via log/diff/worktree and ran npm test there; nothing committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X101",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

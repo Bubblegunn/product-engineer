@@ -1,0 +1,39 @@
+{
+  "label": "g1475e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The table says only 'Renamed createdAfter' and never says since is now silently ignored."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize deprecation, default 25, maximum 100, and the RangeError."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the header and algorithm change, and says old signatures will not verify."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only in the verify step after MIGRATION.md already existed, not before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

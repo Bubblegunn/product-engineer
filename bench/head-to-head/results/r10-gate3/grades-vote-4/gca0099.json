@@ -1,0 +1,39 @@
+{
+  "label": "gca0099",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Committed tree only has the two renames; index.js still requires './limiter' and legacy-retry files remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "Commit contains only the four rename paths; README and stats.js remain modified."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message mentions only the rename, not legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "Answer says index.js is uncommitted but does not report index.js and test/index.test.js as added, and says nothing about the commit including the deletions."
+    },
+    "5": {
+      "pass": false,
+      "why": "Inspected staged diff but ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

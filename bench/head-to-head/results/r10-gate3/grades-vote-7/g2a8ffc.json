@@ -1,0 +1,39 @@
+{
+  "label": "g2a8ffc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "since silently ignored, totalCents and amountCents covered."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers deprecation warning, default 25, max 100 with RangeError, clamping before."
+    },
+    "3": {
+      "pass": true,
+      "why": "Header and algorithm changes are stated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor not implemented and retries not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only after MIGRATION.md existed (untracked file in status and grep target), not before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

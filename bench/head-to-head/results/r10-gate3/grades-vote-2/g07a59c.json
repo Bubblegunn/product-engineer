@@ -1,0 +1,40 @@
+{
+  "label": "g07a59c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Session, config, example and default constants are all in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl and --ttl are converted to 5 seconds, ttl warns, and 18 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "ttlMs is documented in ms in all docs and the changelog names the deprecated seconds-based ttl."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and the converted values; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit and were re-run after it, with 18 passing and a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

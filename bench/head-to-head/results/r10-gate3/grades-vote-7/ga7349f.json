@@ -1,0 +1,40 @@
+{
+  "label": "ga7349f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has ttl in seconds (the answer says it was left alone), so the config requirement fails."
+    },
+    "2": {
+      "pass": true,
+      "why": "createShelf converts the config ttl, ttl is converted with a warning, ttlMs works, the CLI path still gives seconds, and 17 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl as seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and gives the 60 to 60000 conversion, and the commit message explains the multiply-by-1000 migration."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, 17 passes are reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

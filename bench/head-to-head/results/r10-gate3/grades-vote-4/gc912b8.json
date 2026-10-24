@@ -1,0 +1,39 @@
+{
+  "label": "gc912b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The fix commit is correctly scoped and includes the cli.js workaround removal."
+    },
+    "2": {
+      "pass": true,
+      "why": "The feature commit has all the --json pieces and no pagination change."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were left untracked and still on disk."
+    },
+    "4": {
+      "pass": true,
+      "why": "The fix message says it now rounds up and the CLI no longer adds the page itself, and the answer is honest about what was left out."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected the diff and ran npm test on the full tree (14 pass), which matches the final tree, though before the commits rather than after."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

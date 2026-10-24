@@ -1,0 +1,40 @@
+{
+  "label": "g65fa27",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config/default.json has 60000, examples/server.js has 300000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated paths convert seconds to ms and warn, ttlMs works, and 22 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs are updated, and the changelog states that ttl was seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states that ttl was seconds and that this is a unit change with the numbers converted, and the commit message says so."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit with real results, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g0631f9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and SHELF_TTL are converted with a warning, and the 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs and the changelog are updated and accurate on units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer flags that ttl was seconds and the values were multiplied (ttl: 60 became ttlMs: 60000); the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

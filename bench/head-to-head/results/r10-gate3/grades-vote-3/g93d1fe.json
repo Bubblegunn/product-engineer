@@ -1,0 +1,39 @@
+{
+  "label": "g93d1fe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Committed tree still has the old index.js and the legacy-retry files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Commit holds only the four rename paths."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message mentions the rename only."
+    },
+    "4": {
+      "pass": false,
+      "why": "Reports deletions left out, but not that index files were added to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "Inspected the staged state but ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

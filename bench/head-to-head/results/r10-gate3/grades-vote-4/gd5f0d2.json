@@ -1,0 +1,40 @@
+{
+  "label": "gd5f0d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js emits the header and quotes comma, quote and newline fields; the formats test asserts the exact sample rows."
+    },
+    "2": {
+      "pass": true,
+      "why": "csv was added to ALLOWED_FORMATS, a schema test covers it, the config run produced csv, and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage string, docs/formats.md row, docs/cli.md, README, CHANGELOG and registry test were all updated and new csv tests added; tests reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally had no yaml, only json and text, and no yaml was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran the CLI on the sample fixture from a config with format csv and committed only tally files, which is close enough to a direct --format csv run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g02e6fa",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer quotes correctly and rows come from buildRows in count-descending order."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, and a temp-dir config run printed csv."
+    },
+    "3": {
+      "pass": true,
+      "why": "Every doc, the usage string, CHANGELOG and tests are updated, and npm test passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the repo only has json and text, and no yaml was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran the real CLI on the sample fixture in the shell via a csv config (not --format csv literally), and the commit is clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

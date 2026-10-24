@@ -1,0 +1,40 @@
+{
+  "label": "g530234",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60 and was not converted to ttlMs: 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache ttl and ttlMs behave correctly and the CLI/load paths still give seconds because the config keeps ttl; tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not touched and still documents ttl in seconds with no ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the unit changed, and the commit message says it is a unit change as well as a rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

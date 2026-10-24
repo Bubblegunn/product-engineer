@@ -1,0 +1,3 @@
+Changes since v2.2.0 that customers notice: retryLimit renamed maxRetries (old name throws; commit "chore: tidy config"); FREE_PLAN_CHECKS 50->25, TRIAL_DAYS 14->7, PRO_PRICE_CENTS 1900->2200 (commit "refactor: move constants to plans.js", file renamed from limits.js); timeoutMs default 5000->10000 ("fix: timeout handling"); new digest email, default off ("feat: daily email digest").
+Slack alerts: feature commit reverted, but "docs: slack setup" (README line, docs/slack.md) and the "Unreleased" CHANGELOG still mention it. CHANGELOG Unreleased also wrongly says 50 checks, 14-day trial, retryLimit.
+Not customer-visible: CI reporter, test commits, format commit. Tests all pass.

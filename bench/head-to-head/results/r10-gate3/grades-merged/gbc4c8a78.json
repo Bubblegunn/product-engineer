@@ -1,0 +1,32 @@
+{
+  "label": "gbc4c8a78",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Every listed file was bumped to 20."
+    },
+    "2": {
+      "pass": true,
+      "why": "The tests were updated and 11 of 11 pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer flags the Dockerfile as being on 18 and says it was changed to 20; deploy.md matches."
+    },
+    "4": {
+      "pass": false,
+      "why": "The dependabot ignore rule at >=19 was left untouched and not mentioned as a follow-up, though @types/node was bumped."
+    },
+    "5": {
+      "pass": true,
+      "why": "A git grep for node and 18 ran across the tree before editing."
+    }
+  }
+}

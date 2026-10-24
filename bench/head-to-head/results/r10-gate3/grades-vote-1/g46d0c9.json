@@ -1,0 +1,40 @@
+{
+  "label": "g46d0c9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60, not \"ttlMs\": 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache converts ttl from seconds with a warning, createShelf converts config ttl, and the tests pass (17 pass)."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still documents ttl in seconds in the config table without documenting ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that values are multiplied (60000, 1800000, 300000); the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before the commit, 17 passed was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

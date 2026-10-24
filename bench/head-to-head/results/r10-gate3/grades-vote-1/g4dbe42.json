@@ -1,0 +1,39 @@
+{
+  "label": "g4dbe42",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Fix commit has paginate, its test and the workaround removal in cli.js, with no --json material."
+    },
+    "2": {
+      "pass": true,
+      "why": "Feature commit has format-json, its test, the README section and the --json hunk, with no pagination change."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist are in neither commit and stayed on disk (the stash was popped back)."
+    },
+    "4": {
+      "pass": true,
+      "why": "Both messages are accurate, and the answer lists each commit's files and says .vscode and dist were left out."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected the diff first, then ran npm test at the end and reported 14 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

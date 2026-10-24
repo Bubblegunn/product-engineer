@@ -1,0 +1,39 @@
+{
+  "label": "g6018cc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Fix commit has the correct split."
+    },
+    "2": {
+      "pass": true,
+      "why": "Feature commit is complete and the tree is clean."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were not committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "The fix message body never mentions the floor-to-ceil change or the removed workaround, and instead carries test counts and a 'For the customer' block."
+    },
+    "5": {
+      "pass": true,
+      "why": "Viewed the diff first, ran npm test on the full tree, and reported 14 passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

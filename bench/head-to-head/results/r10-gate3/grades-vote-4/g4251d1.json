@@ -1,0 +1,39 @@
+{
+  "label": "g4251d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/deploy.md still says node:18-alpine, so the listed docs file was not fully bumped."
+    },
+    "2": {
+      "pass": true,
+      "why": "Test updated and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Answer says the Dockerfile was on 18 and was left on 18 on purpose, and deploy.md matches it."
+    },
+    "4": {
+      "pass": false,
+      "why": "dependabot.yml was left at >=19 and the answer does not flag it."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep ran before any edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

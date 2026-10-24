@@ -1,0 +1,40 @@
+{
+  "label": "g14bb14",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60 and was not converted to ttlMs 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds with a warning, CLI and config still resolve to seconds, and 16 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still documents ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl: 60 becomes ttlMs: 60000; the commit message says ttlMs is in ms."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit, 16 passes were reported, and the commit left a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

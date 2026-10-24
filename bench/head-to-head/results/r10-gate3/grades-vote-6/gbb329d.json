@@ -1,0 +1,40 @@
+{
+  "label": "gbb329d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache ttl conversion and warning work, the unchanged config and CLI still give seconds, and 17 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md is untouched and still describes `ttl` in seconds without `ttlMs`."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and the values were converted; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g938ad6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own values were converted and the default constant is 60 * 1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated ttl, SHELF_TTL and --ttl are converted from seconds with a warning, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated and the changelog says ttlMs is ms with the old names in seconds deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that ttl: 60 becomes ttlMs: 60000, and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

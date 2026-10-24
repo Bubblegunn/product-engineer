@@ -1,0 +1,40 @@
+{
+  "label": "gf2ba0b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "ttlMs values 1800000, 60000 and 300000 are in place and the default constant is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and SHELF_TTL are converted from seconds with a warning, and 18 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs were updated and the changelog says the old names were seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and values were converted, citing 30*60*1000 and 60000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

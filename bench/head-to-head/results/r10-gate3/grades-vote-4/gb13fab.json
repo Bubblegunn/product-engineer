@@ -1,0 +1,39 @@
+{
+  "label": "gb13fab",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The fix commit is correctly scoped."
+    },
+    "2": {
+      "pass": true,
+      "why": "The feature commit is correct."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were not committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "The fix message never mentions rounding up, Math.ceil or the removed workaround; it only gives a customer-facing blurb."
+    },
+    "5": {
+      "pass": true,
+      "why": "It tested the fix commit alone (12 pass) and the full tree (14 pass) and reported the real counts."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

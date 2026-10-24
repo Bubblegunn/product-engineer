@@ -1,0 +1,40 @@
+{
+  "label": "gd7c52f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CRLF csv with proper quoting; the test asserts the exact sample output in count-descending order."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema and registry include csv, and a config test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is done, a CSV docs section was added, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally has no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "The shell probe used a config with only an 'a,b' row, with no quote or newline and no --format csv on the sample."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

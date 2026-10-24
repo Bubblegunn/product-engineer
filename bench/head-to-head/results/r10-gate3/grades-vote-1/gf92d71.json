@@ -1,0 +1,39 @@
+{
+  "label": "gf92d71",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed declaring files were bumped, including MIN_MAJOR."
+    },
+    "2": {
+      "pass": false,
+      "why": "test/check-node.test.js was not updated, so the v18.0.0-accepted assertion would now fail, and the answer says tests were not run."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer flags the Dockerfile as being on 18 and says it was bumped to 20."
+    },
+    "4": {
+      "pass": false,
+      "why": "The dependabot rule at >=19 was left untouched and not flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "A git grep across the tree ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g75574a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Committed files all say 1.5.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 heading sits above the three entries, with an empty Unreleased above it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Only the five release files were staged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the lockfile, version.js and changelog were not done and that it edited them, lists all five files, and the message is accurate."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never ran node --test or npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X82",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

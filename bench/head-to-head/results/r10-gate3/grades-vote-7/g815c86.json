@@ -1,0 +1,39 @@
+{
+  "label": "g815c86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only the rename was committed, so index.js and the legacy files are unchanged in the committed tree."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit contains only the four rename paths."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message does not mention legacy-retry."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is a verify report that does not describe what was committed or the extra staged changes."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only after the commit, not before it."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

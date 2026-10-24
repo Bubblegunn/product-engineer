@@ -1,0 +1,40 @@
+{
+  "label": "g85b35c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer is correct, and the test asserts the exact sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema includes csv, and a config-based test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present; the old --help regex still matches, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally only has json and text, not yaml."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only ran npm test and no direct CLI run was done in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

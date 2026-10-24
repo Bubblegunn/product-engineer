@@ -1,0 +1,40 @@
+{
+  "label": "gd5b490",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has the ttl key set to 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "createShelf converts config seconds, ttl warns, and 17 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not touched and still lists ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds, gives ttl: 60 becoming ttlMs: 60000, and cites session 1800000; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

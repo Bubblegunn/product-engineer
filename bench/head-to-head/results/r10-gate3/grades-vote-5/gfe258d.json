@@ -1,0 +1,40 @@
+{
+  "label": "gfe258d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted (30*60*1000, 5*60*1000, config 60000, default 60000)."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts and warns, the CLI and load paths give seconds, and 20 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and the changelog are correct, and the changelog says ttl is seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and every value was converted; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the commit was made."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gbc17a2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, default.json, examples/server.js and DEFAULT_TTL_MS all carry the ×1000 values (1800000, 60000, 300000, 60000)."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) are converted from seconds with a warning, ttlMs is used directly, and npm test shows 20 pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The three docs document ttlMs in ms and mark ttl as deprecated seconds; the changelog names ttlMs, the deprecation and the units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was in seconds and this is not a pure rename, with the default now 60000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before the commit, the real result was reported, and the work is committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

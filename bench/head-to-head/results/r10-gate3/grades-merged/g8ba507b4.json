@@ -1,0 +1,32 @@
+{
+  "label": "g8ba507b4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session, config, example and default constant all use ttlMs with the multiplied values."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and load({ttl}) are converted from seconds with a warning, ttlMs works, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs cover ttlMs in ms and deprecated ttl in seconds; the changelog says ttl was 60 seconds and ttlMs is in ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and gives the conversions (60 to 60000, sessions 1800000); the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the real result was reported (23 passed); the work is committed and the agent honestly noted one unchecked tool."
+    }
+  }
+}

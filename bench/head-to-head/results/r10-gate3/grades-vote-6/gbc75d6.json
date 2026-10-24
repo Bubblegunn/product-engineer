@@ -1,0 +1,40 @@
+{
+  "label": "gbc75d6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js quotes commas, quotes and newlines; the sample output in the docs and the unit test match the expected rows."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS now includes csv, a schema test was added, and xml is still rejected by the existing test."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage string, docs, README, CHANGELOG and tests are all updated, and the full suite passed with 18 tests."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the repo had no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was only exercised through node --test; no direct shell run of --format csv is shown."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

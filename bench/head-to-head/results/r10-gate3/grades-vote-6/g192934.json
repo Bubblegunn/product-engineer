@@ -1,0 +1,40 @@
+{
+  "label": "g192934",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js uses 1800*1000, config is 60000, example is 300000, and the default is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds and warns, --ttl and load({ttl}) give 5000 ms, and npm test passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage and config docs document ttlMs in ms, and the changelog says ttl stays in seconds while ttlMs is in ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that session.js, config and the example were converted; the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result was reported, and the verify snapshot shows a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

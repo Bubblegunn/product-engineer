@@ -1,0 +1,39 @@
+{
+  "label": "g37e0e1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers the since rename (silently ignored), totalCents with the 1260 to 126000 example, and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the pageSize deprecation warning, the 50 to 25 default, the 200 to 100 maximum, and the RangeError with limit_too_large."
+    },
+    "3": {
+      "pass": true,
+      "why": "Gives the new header and the SHA256 change, and says X-Ledger-Signature replaces X-Signature."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor/nextCursor is documented but not implemented, and that retries do not exist."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0 against HEAD, but no test run appears in its commands."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

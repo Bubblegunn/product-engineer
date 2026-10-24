@@ -1,0 +1,40 @@
+{
+  "label": "g171939",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js escapes per RFC 4180 and the formats test asserts the exact sample output with count-descending rows."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS now includes csv, a config test covers it, and the xml rejection test remains."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs, README, CHANGELOG and tests are all updated, a csv test is added, and 19 tests are reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states the repo has no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was only exercised through npm test and never run by hand with --format csv against the sample."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gcbd6e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All ms values are in place, including a rewritten config/default.json with ttlMs 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL convert from seconds with a once-only warning, and the tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs and the changelog document ttlMs in ms and ttl as seconds, deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and gives 60000 and 1800000, and the commit message describes the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits, 23 passing was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

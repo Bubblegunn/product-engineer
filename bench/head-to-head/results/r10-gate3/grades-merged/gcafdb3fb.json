@@ -1,0 +1,32 @@
+{
+  "label": "gcafdb3fb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Fix commit is correctly scoped and includes the workaround removal."
+    },
+    "2": {
+      "pass": true,
+      "why": "Feature commit has the right files and hunks, and no tracked files remain modified."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were not committed and stayed on disk."
+    },
+    "4": {
+      "pass": true,
+      "why": "Messages are accurate, and the answer lists files and says the two paths were left out."
+    },
+    "5": {
+      "pass": false,
+      "why": "The final test command printed no counts, so no real result was obtained."
+    }
+  }
+}

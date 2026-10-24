@@ -1,0 +1,40 @@
+{
+  "label": "g480dda",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "5*60*1000 equals 300000, 30*60*1000 equals 1800000, default.json is 60000 and the default constant is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted with a warning, CLI --ttl and load({ttl}) yield seconds, and 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs document ttlMs in milliseconds, and the changelog notes the unit change and the deprecation."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and 60 became 60000, and the commit message mentions milliseconds and the deprecation."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

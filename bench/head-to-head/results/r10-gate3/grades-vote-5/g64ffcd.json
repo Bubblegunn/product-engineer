@@ -1,0 +1,40 @@
+{
+  "label": "g64ffcd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60 and was not converted to ttlMs."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts to seconds and warns, the CLI and config path remain effectively seconds, and 16 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still describes ttl in seconds without ttlMs, and docs/usage.md still says --ttl takes seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and 60 became 60000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the commit was made."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

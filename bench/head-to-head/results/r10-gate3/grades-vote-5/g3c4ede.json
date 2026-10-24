@@ -1,0 +1,40 @@
+{
+  "label": "g3c4ede",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800000, config ttlMs 60000, example 300000 and DEFAULT_TTL_MS 60000 are all present."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and load({ttl}) convert seconds to ms with a one-time warning, and the suite passes (20 tests)."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage and config docs cover ttlMs in ms, and the changelog names ttlMs, the ttl deprecation and the seconds unit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and the rename changes the unit, with default 60000, and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran after the edits and before the commit, the result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

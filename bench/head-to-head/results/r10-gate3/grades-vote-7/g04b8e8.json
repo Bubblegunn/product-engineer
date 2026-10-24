@@ -1,0 +1,40 @@
+{
+  "label": "g04b8e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values were converted (1800*1000, 60000, 300000) and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The legacy ttl, --ttl and SHELF_TTL paths convert from seconds and warn, and 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and changelog document ttlMs in ms and the deprecated seconds-based ttl."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer explicitly says ttl was seconds and that a plain rename would have made 60 into 60 ms, and the commit message states the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with real results, and the commit is made with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

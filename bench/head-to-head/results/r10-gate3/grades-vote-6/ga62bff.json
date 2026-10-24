@@ -1,0 +1,40 @@
+{
+  "label": "ga62bff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Session, config, example and default values are all correctly converted."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated ttl, --ttl and SHELF_TTL are converted and warn once, and 23 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog document ttlMs in ms and the deprecated seconds-based ttl."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and gives the converted defaults; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result was reported, and the work was committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

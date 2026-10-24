@@ -1,0 +1,39 @@
+{
+  "label": "g62d1e3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Fix commit is correctly scoped with the workaround removal."
+    },
+    "2": {
+      "pass": true,
+      "why": "Feature commit is correct and the tree is clean of tracked changes."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were not committed and stayed on disk (the stash was popped back)."
+    },
+    "4": {
+      "pass": true,
+      "why": "Messages are accurate, and the answer lists files and the exclusions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected the diff, ran node --test at the end, and reported 12 at the fix commit and 14 at the end."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

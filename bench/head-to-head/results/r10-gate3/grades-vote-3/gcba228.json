@@ -1,0 +1,39 @@
+{
+  "label": "gcba228",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has exactly the two files."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only says .env.local is untracked, never that it was staged and left out of the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "WIP and untracked files intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer lists no files in the commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran node --test on the whole test dir before committing and reported 12/12."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X81",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

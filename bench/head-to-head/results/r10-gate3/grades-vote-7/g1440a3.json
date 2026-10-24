@@ -1,0 +1,40 @@
+{
+  "label": "g1440a3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Same correct RFC 4180 quoting, asserted by an exact-output test on the sample."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv, a config-file test exists, and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring and docs are present, and 19 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says only json and text existed and yaml was not added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The shell probe used input with only a comma, not a quote and newline, and did not use sample.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

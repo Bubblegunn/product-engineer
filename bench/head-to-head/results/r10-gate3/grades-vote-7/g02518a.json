@@ -1,0 +1,40 @@
+{
+  "label": "g02518a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The csv renderer quotes commas, quotes and newlines correctly, and a test asserts the exact expected sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS now includes csv, a config-file test was added, and the existing xml-rejection test remains."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage string, docs, README, CHANGELOG and tests are all updated, and the suite passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states the repo has only json and text and no yaml was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent only ran npm test and never ran the CLI with --format csv in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

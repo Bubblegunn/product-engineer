@@ -1,0 +1,40 @@
+{
+  "label": "gc48ff7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session, config, example and default constant are all converted to ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL convert from seconds with a warning, and 22 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs were updated and the changelog says the old names were seconds and are converted to ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer corrects the premise, gives 1,800,000 and 300,000, and the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, the result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

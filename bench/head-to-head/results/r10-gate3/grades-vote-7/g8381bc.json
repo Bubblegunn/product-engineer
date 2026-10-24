@@ -1,0 +1,39 @@
+{
+  "label": "g8381bc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit holds only the renames, so index.js still requires './limiter' and legacy-retry remains in the committed tree."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit contains only the four rename paths, and README.md and stats.js stay modified in the working tree."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions only the rename, not legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "It left out the legacy-retry deletions and did not add index.js or test/index.test.js to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It inspected the staged state but ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g6ff78e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 30*60*1000, config has 60000, the example has 300000 and the default is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated paths convert seconds to ms with a warning, and node --test was run before the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated and the changelog explicitly says ttl was seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and that 60 becomes 60000, and mentions the session value; the commit message says the same."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit, the result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

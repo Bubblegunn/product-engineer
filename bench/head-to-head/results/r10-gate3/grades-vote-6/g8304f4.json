@@ -1,0 +1,40 @@
+{
+  "label": "g8304f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three values are converted, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) give seconds with a warning, and 19 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in ms, and the changelog says ttl takes seconds and is deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states ttl was seconds and that values changed; the commit message says ttl was in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the real result was reported; no sign of an uncommitted tracked change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

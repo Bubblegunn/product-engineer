@@ -1,0 +1,40 @@
+{
+  "label": "gab80bc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All the own-code and config values are converted to ms and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, SHELF_TTL and --ttl convert seconds with a warning, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and the changelog entry cover ttlMs in ms and the deprecated ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds, that it converted every value (ttl: 60 becomes ttlMs: 60000), and the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

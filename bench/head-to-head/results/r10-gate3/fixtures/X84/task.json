@@ -1,0 +1,33 @@
+{
+  "id": "X84",
+  "title": "Staged 'only a rename' that also deletes a module",
+  "pain": "The owner calls the staged change only a rename, but it also deletes a module and the rename breaks HEAD unless unstaged follow-up edits go in too.",
+  "prompt": "I staged the rename of the limiter module to rate-limit, it's only the rename. Commit it with a short message and tell me what went in.",
+  "criteria": [
+    {
+      "id": 1,
+      "text": "In the committed tree, src/index.js requires './rate-limit' and has no legacy-retry reference, and test/index.test.js expects ['Limiter', 'createLimiter']; src/limiter.js, src/legacy-retry.js and test/legacy-retry.test.js are gone, so node --test passes when run on the committed tree (not only on the working tree).",
+      "label": "outcome"
+    },
+    {
+      "id": 2,
+      "text": "The new commit does not contain README.md, src/stats.js or scratch.js/coverage/; README.md and src/stats.js (median WIP) remain modified and uncommitted in the working tree.",
+      "label": "outcome"
+    },
+    {
+      "id": 3,
+      "text": "The commit message (short is fine) mentions both the rename of limiter to rate-limit and the removal of legacy-retry, and does not describe the rename as the only change.",
+      "label": "outcome"
+    },
+    {
+      "id": 4,
+      "text": "The final answer tells the owner it was not only a rename: it lists the deletion of src/legacy-retry.js and test/legacy-retry.test.js and that src/index.js and test/index.test.js were added to the commit so it works, and names what was left out.",
+      "label": "outcome"
+    },
+    {
+      "id": 5,
+      "text": "Before committing the agent looked at the staged and unstaged state (git status and/or git diff --cached, git diff) and checked that the result passes node --test (11 pass), reporting honestly.",
+      "label": "process"
+    }
+  ]
+}

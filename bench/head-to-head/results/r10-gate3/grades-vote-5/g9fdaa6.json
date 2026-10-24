@@ -1,0 +1,40 @@
+{
+  "label": "g9fdaa6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left as \"ttl\": 60 rather than \"ttlMs\": 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl still means seconds and warns, ttlMs works, and 17 tests pass; the CLI and load paths work because the config is unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still documents ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer flags seconds versus ms and says values were converted (ttl: 60 becomes ttlMs: 60000), and the commit message says the units differ."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the result was reported honestly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

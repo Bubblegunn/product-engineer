@@ -1,0 +1,39 @@
+{
+  "label": "gc4eeab",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit has only the renames, so the tree does not match."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the renames and the other files remain uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message omits the legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is a verify report and does not list the deletions or the index.js and test/index.test.js additions."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected staged state and ran the suite, reporting 11 passed honestly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

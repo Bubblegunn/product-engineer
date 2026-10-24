@@ -1,0 +1,40 @@
+{
+  "label": "gafb449",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Own code and config are converted (1800000, 60000, 300000) and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL are converted and warn, ttlMs works, and the suite passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated with the deprecation, and the changelog entry names ttlMs in ms and the old names in seconds with a deprecation warning."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states the seconds-to-ms unit change and that every value was converted, with ttl: 60 becoming ttlMs: 60000."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the result is reported, and the work is committed with git add -A and a status check."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

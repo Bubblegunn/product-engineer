@@ -1,0 +1,40 @@
+{
+  "label": "g8fee51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All four values are correct: 1800000, 60000, 300000, and a default of 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated ttl, --ttl and SHELF_TTL are converted from seconds and warn, and the suite passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and the changelog cover ttlMs in ms and the deprecated seconds-based ttl."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the default is now 60000; the commit message states the units; conversion is implied rather than spelled out."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result was reported, and the commit exists with the marker gitignored."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

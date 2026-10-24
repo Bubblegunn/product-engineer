@@ -1,0 +1,40 @@
+{
+  "label": "g0deb5b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js uses 30*60*1000 (=1800000), default.json has 60000, server.js has 300000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl is multiplied by 1000 and warns, ttlMs works, CLI --ttl and load({ttl}) convert to ms, and tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage and config docs document ttlMs in ms with ttl as deprecated seconds, and the changelog entry covers ttlMs, the ttl deprecation and the units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and that ttl:60 became ttlMs:60000, and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, the result was reported, and the commit's patch matches the working-tree diff."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

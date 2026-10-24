@@ -1,0 +1,39 @@
+{
+  "label": "gc37a75",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States retryLimit renamed to maxRetries, with the old name stopping with an error."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table shows 50→25, 14→7 days and $19→$22."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Slack is not in 2.3 and does not repeat stale changelog claims."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest is new and off by default (set digest to true); timeout 5→10 seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.2.0..HEAD on src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

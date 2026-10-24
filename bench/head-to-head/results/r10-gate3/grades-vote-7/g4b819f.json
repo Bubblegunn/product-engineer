@@ -1,0 +1,40 @@
+{
+  "label": "g4b819f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800000, default.json 60000, server.js 300000, DEFAULT_TTL_MS 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and load({ttl}) are converted from seconds with a once-only warning, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs are updated, and the changelog says ttlMs is now in ms and ttl, --ttl and SHELF_TTL still take seconds and are deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the default is 60000 and the session store 1800000; the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the passing result was reported, and the commit is the last step."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

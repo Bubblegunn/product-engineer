@@ -1,0 +1,40 @@
+{
+  "label": "g194adb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The implementation quotes correctly and uses the sorted rows."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv and the CLI picks up the config format."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring and tests are done and npm test was run."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only ran npm test, never the CLI with --format csv in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

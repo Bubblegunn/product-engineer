@@ -1,0 +1,40 @@
+{
+  "label": "g8d78d4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer and the exact-output test for the sample are correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, and bin/tally.js's existing config loading handles the rest."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is done, a csv test was added, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never ran the CLI in the shell, only node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

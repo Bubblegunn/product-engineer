@@ -1,0 +1,32 @@
+{
+  "label": "gcada3a8e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree leaves index.js on './limiter' and keeps legacy-retry."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the renames, and the other files stay uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions only the rename."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is the verify output and a stop-gate discussion; it does not say index.js and test/index.test.js were added to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only after the commit, so nothing was checked before committing."
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g44afcb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The csv code and the exact-output fixture test are correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema includes csv; the xml rejection is unchanged, and csv is accepted by the schema test."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, usage, CHANGELOG and the tests are updated, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states there is no yaml format."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was never run directly with --format csv in the shell; only node --test was run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

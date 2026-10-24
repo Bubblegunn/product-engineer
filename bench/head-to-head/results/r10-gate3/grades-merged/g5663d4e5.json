@@ -1,0 +1,32 @@
+{
+  "label": "g5663d4e5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own files use ttlMs with the multiplied values and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "All the deprecated paths are converted from seconds and warn, ttlMs works, and 22 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs and the changelog cover ttlMs in ms and deprecated ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and gives the converted values (1,800,000 and 300,000); the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the real result was reported; the work is committed, though the clean-tree check is not fully visible."
+    }
+  }
+}

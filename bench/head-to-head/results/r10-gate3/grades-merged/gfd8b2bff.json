@@ -1,0 +1,32 @@
+{
+  "label": "gfd8b2bff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, config/default.json and examples/server.js are all converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL are converted from seconds with a warning, ttlMs works, and 20 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms with the deprecation, and the changelog says ttlMs is ms and ttl (seconds) is deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states ttl was seconds, that every value was converted (ttl: 60 became ttlMs: 60000), and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, the result is reported, and everything was added and committed."
+    }
+  }
+}

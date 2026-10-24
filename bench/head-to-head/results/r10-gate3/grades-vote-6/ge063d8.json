@@ -1,0 +1,39 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Notes say only that the retry setting has a new name and never name retryLimit or maxRetries."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 50 to 25, 14 to 7, and 19.00 to 22.00 correctly, without a currency symbol."
+    },
+    "3": {
+      "pass": true,
+      "why": "Slack is listed as not in this release and no stale claims are repeated."
+    },
+    "4": {
+      "pass": false,
+      "why": "Digest is described as having nothing that sends it, not as a new feature customers turn on, though the timeout is correct."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show -p on src and git diff v2.2.0 HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

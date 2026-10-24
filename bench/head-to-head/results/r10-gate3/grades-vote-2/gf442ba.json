@@ -1,0 +1,39 @@
+{
+  "label": "gf442ba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit contains only the two fix files."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only says .env.local is unstaged and should be gitignored; it never says it was staged and left out of the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "WIP and untracked files were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The commit message is fine, but the final answer lists no files that went in."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran node --test test/ before committing, but the final answer does not report the result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X81",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

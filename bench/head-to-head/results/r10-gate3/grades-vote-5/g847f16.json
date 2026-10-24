@@ -1,0 +1,40 @@
+{
+  "label": "g847f16",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js is 1800000, config is 60000, the example is 300000, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts and warns, --ttl is converted to 5000 ms, load({ttl}) converts, and 18 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README, usage and config docs document ttlMs in ms, and the changelog names ttlMs, the ttl deprecation, and that ttl is seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and gives the converted values 60000, 1800000 and 300000; the commit message states the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran after the code edits and before the commit, and the agent re-ran them after the commit and reported 18 passing with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

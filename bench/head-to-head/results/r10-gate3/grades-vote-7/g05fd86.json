@@ -1,0 +1,40 @@
+{
+  "label": "g05fd86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800000, default.json 60000, server.js 300000, DEFAULT_TTL_MS 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated ttl, --ttl and load({ttl}) paths convert seconds to ms with a warning, and 16 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs are updated, and the changelog says ttlMs is in ms whereas ttl was in seconds and is deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that ttl: 60 became ttlMs: 60000; the commit message says ttlMs is in ms and ttl is seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the final commit, 16 passes were reported, and the commit is clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

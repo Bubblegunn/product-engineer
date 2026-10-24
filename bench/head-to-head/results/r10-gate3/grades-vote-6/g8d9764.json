@@ -1,0 +1,40 @@
+{
+  "label": "g8d9764",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All four values are correct: 1800000, 60000, 300000, and a default of 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL are converted with a warning, and node --test passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog document ttlMs in ms and the deprecated ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the unit changed, with a default of 60000; the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit and the work was committed; the answer wrongly says the CLI test edit failed, but the test result itself is real."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

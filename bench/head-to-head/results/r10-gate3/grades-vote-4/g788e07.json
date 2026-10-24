@@ -1,0 +1,39 @@
+{
+  "label": "g788e07",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Committed index.js still references legacy-retry and legacy files remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "Commit excludes README, stats.js, scratch.js and coverage."
+    },
+    "3": {
+      "pass": false,
+      "why": "Message does not mention legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the deletions were left out rather than included with index and test/index.test.js."
+    },
+    "5": {
+      "pass": false,
+      "why": "Test result reported as 12 passed, not 11."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

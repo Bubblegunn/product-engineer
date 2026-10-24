@@ -1,0 +1,40 @@
+{
+  "label": "gf94db6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted and the constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and load({ttl}) convert to seconds, ttl warns, and 19 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and the changelog entry are correct, and the changelog says ttl is seconds and the unit changes to ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that a plain rename would have made 60 mean 60 ms, so values moved to 60000; the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test and the verify suite ran before the commit, the real result was reported, and the work was committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

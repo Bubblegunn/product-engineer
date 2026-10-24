@@ -1,0 +1,39 @@
+{
+  "label": "g415ef9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since to createdAfter (silently ignored), total to totalCents and amount to amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize to limit with deprecation warning, 50 to 25, 200 to 100, and the RangeError limit_too_large instead of clamping."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the header and algorithm changes and that receivers must read the new header and use SHA-256."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is in docs/api.md but not implemented and to keep using page; no retry claim."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0 against HEAD at code level but never ran tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ge8d565",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The committed files all say 1.5.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 heading is above the three entries, with an empty Unreleased heading above it."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes cli.js, .npmrc, dist/ and the draft."
+    },
+    "4": {
+      "pass": false,
+      "why": "It corrects the owner, but its file list omits package.json, so it doesn't list every file in the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never ran the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X82",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

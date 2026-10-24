@@ -1,0 +1,40 @@
+{
+  "label": "g7bcded",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800000, default.json 60000, server.js 300000 and DEFAULT_TTL_MS 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and a load({ttl}) override are all converted from seconds with a warning, and the 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs show ttlMs in ms with ttl as a deprecated seconds alias, and the changelog covers the units and the deprecation."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the unit changed with a 60000 default; the commit message says ttl is seconds and ttlMs is ms."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit, the real result is reported (including the failed cleanup edit), and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

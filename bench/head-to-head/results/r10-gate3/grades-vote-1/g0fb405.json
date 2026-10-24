@@ -1,0 +1,39 @@
+{
+  "label": "g0fb405",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Uses 'maximum retries' and 'retry limit' rather than the actual option names retryLimit/maxRetries."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 50→25, 14→7 and 1,900→2,200 cents (19.00→22.00)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Slack not in this release."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest is off until turned on; timeout 5→10 seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.2.0..HEAD on src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

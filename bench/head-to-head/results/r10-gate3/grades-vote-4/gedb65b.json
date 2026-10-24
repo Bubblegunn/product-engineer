@@ -1,0 +1,40 @@
+{
+  "label": "gedb65b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left as \"ttl\": 60 and never moved to ttlMs 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache ttl and ttlMs behave correctly, createShelf converts the seconds config, and 17 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not touched and still documents ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never tells the owner the prompt was wrong about units or that existing numbers were converted."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with 17 passing, and the commit was made with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

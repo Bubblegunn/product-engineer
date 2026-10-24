@@ -1,0 +1,40 @@
+{
+  "label": "gddbb17",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was not changed to ttlMs 60000 and still has \"ttl\": 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache behaviour is preserved, createShelf converts the seconds config, and 17 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that 60 becomes 60000 with session 1800000, and the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the commit message records 17 passed, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

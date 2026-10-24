@@ -1,0 +1,40 @@
+{
+  "label": "g09b195",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CRLF output with correct quoting, and a test asserts the exact sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema includes csv and a schema test was added, with xml still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is done, new csv tests were added, and 18 tests passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent only ran npm test and never ran the CLI by hand in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

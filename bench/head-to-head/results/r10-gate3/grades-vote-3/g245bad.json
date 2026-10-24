@@ -1,0 +1,40 @@
+{
+  "label": "g245bad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Own code is converted (30*60*1000, 300000, 60000) and DEFAULT_TTL_MS is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) convert seconds to ms with a once-per-process warning, ttlMs works, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms and deprecated seconds, and the changelog says the old names (in seconds) still work while ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that ttl:60 becomes ttlMs:60000, and the commit message notes the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the result was reported, and the final status is clean."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gdbe5b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says not merged and the code is on feature/bulk-export."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says bulkExport is false on the branch, so it ships off even after merge."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the 5,000 vs 10,000 row limit."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only a generic '1 skipped'; the 10000-row test and the permission TODO are not named."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used a worktree and ran tests on the branch; nothing committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X101",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

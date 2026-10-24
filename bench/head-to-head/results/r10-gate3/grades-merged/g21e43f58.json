@@ -1,0 +1,32 @@
+{
+  "label": "g21e43f58",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three own files use the new name with converted values and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated paths convert seconds to ms with a warning, --ttl 5 prints ttlMs 5000, and 19 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs use ttlMs in ms with the deprecated seconds alias, and the changelog says ttlMs is ms and ttl is deprecated and takes seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and that ttl: 60 became ttlMs 60000, and the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and passed, the commit exists, and the tree is clean."
+    }
+  }
+}

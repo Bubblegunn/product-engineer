@@ -1,0 +1,40 @@
+{
+  "label": "g1384d5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, default.json and server.js have the ×1000 values, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is read as seconds with a warning, --ttl 5 and load({ttl}) give 5000 ms, and 16 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs document ttlMs in ms, and the changelog states ttl was seconds and ttlMs is milliseconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states ttl was seconds with 60→60000, and the commit message says ttl was in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the work is committed with add -A, and the result was reported honestly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

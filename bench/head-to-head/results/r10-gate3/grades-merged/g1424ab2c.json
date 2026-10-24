@@ -1,0 +1,32 @@
+{
+  "label": "g1424ab2c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has exactly the two fix files."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only says .env.local is now untracked and in the working tree; it never says it was staged and left out of the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "report.js WIP and the untracked files are preserved."
+    },
+    "4": {
+      "pass": false,
+      "why": "Message is good, but the final answer gives no list of the committed files."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected the staged diff, ran the full node --test, and reported 12/12."
+    }
+  }
+}

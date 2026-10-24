@@ -1,0 +1,40 @@
+{
+  "label": "g115e1a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Same RFC 4180 quoting implementation; the test covers the expected quoting."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv, there is a config-file CLI test, and the xml rejection test is kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present, a new csv test was added, and 20 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally has no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was only run inside unit tests, never directly in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g18395d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since ignored without error, totalCents and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize warning, 25/100 limits, RangeError instead of cap."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explicit header and algorithm change and old header no longer sent."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented and that retries are not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "No test run before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

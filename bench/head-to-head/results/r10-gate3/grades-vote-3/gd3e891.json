@@ -1,0 +1,40 @@
+{
+  "label": "gd3e891",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted, default.json is ttlMs 60000 and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted with a once-per-process warning, config and CLI ttl are handled, and 23 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in milliseconds, and the changelog mentions the 60-second default and that ttl is seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states seconds versus milliseconds and the converted values, and the commit message describes the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with a real reported result, and the work was committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

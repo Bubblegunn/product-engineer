@@ -1,0 +1,32 @@
+{
+  "label": "gd9d4dc99",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The quoting code is correct and the CLI test checks the header, so the required output follows."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present and 18 tests were reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never ran the CLI with --format csv in the shell, only npm test."
+    }
+  }
+}

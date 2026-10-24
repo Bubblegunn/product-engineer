@@ -1,0 +1,40 @@
+{
+  "label": "g83f822",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800000, default.json 60000, server.js 300000, DEFAULT_TTL_MS 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts with a warning, the --ttl CLI flag multiplies by 1000, load({ttl}) works, and 18 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs document ttlMs in ms, and the changelog names ttlMs, the ttl deprecation and the seconds-versus-ms difference."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and lists 60000, 1800000 and 300000; the commit message says ttl was in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran after the edits and again after the commit with real results, and the tree is clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

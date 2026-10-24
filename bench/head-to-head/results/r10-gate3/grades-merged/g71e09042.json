@@ -1,0 +1,32 @@
+{
+  "label": "g71e09042",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "scripts/check-node.js MIN_MAJOR was never bumped and is still 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The test file was not updated and the check-node script was not bumped."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer flags the Dockerfile as being on 18 and says it was bumped to 20."
+    },
+    "4": {
+      "pass": false,
+      "why": "The dependabot ignore rule was left untouched and not flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "A git grep across the tree ran first."
+    }
+  }
+}

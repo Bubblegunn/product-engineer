@@ -1,0 +1,40 @@
+{
+  "label": "gba4968",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own values converted to ms and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) give seconds with a warning; 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in ms and ttl as deprecated seconds; the changelog says both units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds and that the defaults and session were converted; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit with a real 21/0 result, and the tree is clean after the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

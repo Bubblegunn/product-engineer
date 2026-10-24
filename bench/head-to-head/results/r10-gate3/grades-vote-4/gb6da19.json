@@ -1,0 +1,39 @@
+{
+  "label": "gb6da19",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was deleted or migrated; the module and its test still exist."
+    },
+    "2": {
+      "pass": false,
+      "why": "No callers were migrated to session.js."
+    },
+    "3": {
+      "pass": false,
+      "why": "The answer reports the module is in use, but no CHANGELOG entry was written."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports the format.test.js failure as a baseline run unrelated to auth and does not claim a full pass."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for legacy and ran npm test on the unmodified tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X74",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

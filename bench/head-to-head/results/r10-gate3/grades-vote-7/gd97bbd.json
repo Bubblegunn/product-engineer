@@ -1,0 +1,40 @@
+{
+  "label": "gd97bbd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "1800*1000 equals 1800000, default.json is 60000, server.js is 300000, and the default constant is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and load({ttl}) are converted from seconds with a warning, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms, and the changelog says ttlMs is now in ms while ttl still takes seconds and is deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the premise was wrong and ttl was seconds, mentions 1800*1000, and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran before the commit, but the agent then wrote an untracked marker file and never showed a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

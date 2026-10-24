@@ -1,0 +1,40 @@
+{
+  "label": "g4ab83c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, default.json and examples/server.js are all converted and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted to ms and warns, and load() and --ttl produce 5000; 19 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs document ttlMs in milliseconds and the changelog states the unit change and the deprecation."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer explains seconds versus milliseconds and the conversion, and the commit message states the unit change."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent created an untracked .[tool]/last-verify-passed marker and did not commit it, so the tree is not clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

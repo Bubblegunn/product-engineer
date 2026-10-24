@@ -1,0 +1,40 @@
+{
+  "label": "gdbec11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "1800*1000, 60000 and 300000 are all present, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated ttl, --ttl and load({ttl}) are converted from seconds with a warning, and 20 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated, and the changelog says ttlMs is ms and the old names keep their seconds meaning."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds, not ms; the commit message says ttl was in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the commit was made with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

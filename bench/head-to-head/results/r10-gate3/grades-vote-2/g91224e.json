@@ -1,0 +1,39 @@
+{
+  "label": "g91224e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/deploy.md still says node:18-alpine."
+    },
+    "2": {
+      "pass": true,
+      "why": "Tests updated and pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "States Dockerfile was on 18, left it deliberately with a reason, and deploy.md agrees with it."
+    },
+    "4": {
+      "pass": false,
+      "why": "Dependabot rule not updated or flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tree-wide grep first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

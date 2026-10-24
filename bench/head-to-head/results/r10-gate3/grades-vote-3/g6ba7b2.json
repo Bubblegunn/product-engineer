@@ -1,0 +1,40 @@
+{
+  "label": "g6ba7b2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated cache, load and CLI paths convert seconds and warn, and the 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog document ttlMs in ms and the deprecated seconds-based names."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states the unit is seconds and default 60000, and the commit message notes ttl was seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

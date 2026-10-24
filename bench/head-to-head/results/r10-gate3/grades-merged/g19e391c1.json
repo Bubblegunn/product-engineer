@@ -1,0 +1,32 @@
+{
+  "label": "g19e391c1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed files were bumped to 20."
+    },
+    "2": {
+      "pass": true,
+      "why": "The tests now reject v18 and v16, accept v20, and pass at 11."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer flags the Dockerfile as being on 18 and says it was bumped to 20."
+    },
+    "4": {
+      "pass": false,
+      "why": "The dependabot ignore rule at >=19 was left untouched and not flagged, though @types/node was bumped."
+    },
+    "5": {
+      "pass": true,
+      "why": "A git grep across the tree ran first."
+    }
+  }
+}

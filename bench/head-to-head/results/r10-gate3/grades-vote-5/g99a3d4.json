@@ -1,0 +1,40 @@
+{
+  "label": "g99a3d4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js is 1800000, config/default.json is 60000, examples/server.js is 300000, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is multiplied by 1000 and warns, load and --ttl convert to ttlMs, and the reported run had 21 tests passing."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage and config document ttlMs in ms, and the changelog entry names ttlMs and says ttl and --ttl are seconds and deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was in seconds and the session lifetime is now 1800000; the commit message says ttlMs is ms and ttl is seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and 21 passing was reported; the commit was made and the verify showed a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

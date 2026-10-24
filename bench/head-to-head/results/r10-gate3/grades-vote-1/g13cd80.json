@@ -1,0 +1,39 @@
+{
+  "label": "g13cd80",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers silent since ignore, createdAfter, totalCents and amountCents in integer cents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize deprecation warning, 50→25, 200→100, and the limit_too_large RangeError."
+    },
+    "3": {
+      "pass": true,
+      "why": "Header and algorithm change are stated, and it says the old header is no longer sent."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented and retries are not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran a code-level git diff but never ran the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

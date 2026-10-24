@@ -1,0 +1,40 @@
+{
+  "label": "g72e580",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config/default.json has 60000, examples/server.js has 300000, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) are converted from seconds with a warning, ttlMs works, and the full suite passed (20 tests)."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage.md and config.md document ttlMs in ms with ttl as deprecated seconds, and the changelog covers the rename, the deprecation and the seconds unit."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer says ttl was in seconds and that the unit changed, but it never says the existing values in our own code were converted (for example 1800 to 1800000)."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran after the edits and before the commit, the result is reported as 20 passing, and the work is committed with git add -A."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

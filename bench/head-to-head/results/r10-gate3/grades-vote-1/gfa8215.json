@@ -1,0 +1,40 @@
+{
+  "label": "gfa8215",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left as ttl: 60, so the config requirement is not met."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache({ttl}) converts from seconds and warns, ttlMs works, the CLI and load still give 5 s because config is unchanged, and 16 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and the change is a unit change with default 60000; the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit, the real result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

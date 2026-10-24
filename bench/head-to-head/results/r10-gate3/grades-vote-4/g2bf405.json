@@ -1,0 +1,40 @@
+{
+  "label": "g2bf405",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session 1800000, config 60000, example 300000 and default 60000 all in the diff."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converted x1000 with a once-only warning, --ttl and load({ttl}) give 5000 ms, and 20 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "README and both docs show ttlMs in ms, and the Unreleased entry names ttlMs, the deprecation and seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that it is not a pure rename; the commit body says ttl stays in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit with 20 passing, and the work is committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

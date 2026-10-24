@@ -1,0 +1,39 @@
+{
+  "label": "g70ff29",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree is the rename only and index.js is broken at that commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit contains only the rename paths."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message does not mention legacy-retry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It lists the deletions as left out but did not add index.js and test/index.test.js to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It ran no tests, though it said so honestly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ge22443",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed files were edited from 18 to 20, with no 18 entries left in the tracked declarations."
+    },
+    "2": {
+      "pass": true,
+      "why": "The tests were updated to reject v18.19.0 and accept v20.0.0, and 11 passed in the raw output."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer says the root Dockerfile was on node:18-alpine, bumped it to 20, and docs/deploy.md matches."
+    },
+    "4": {
+      "pass": true,
+      "why": "Both the dependabot ignore rule and @types/node were updated; no lockfile was claimed and CI was not claimed as run."
+    },
+    "5": {
+      "pass": true,
+      "why": "The first command was a tree-wide grep for node, engines and nvmrc before any edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g26f969",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session, config and example carry the x1000 values and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and the load ttl override all convert from seconds with a warning, ttlMs works, and 19 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in ms with deprecated seconds, and the changelog names ttlMs, the ttl deprecation, ms and seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds so ttlMs is not a plain rename and 60 becomes 60000, and the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, 19 passes are reported, and git status was checked after the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

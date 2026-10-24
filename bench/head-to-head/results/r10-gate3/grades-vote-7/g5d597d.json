@@ -1,0 +1,40 @@
+{
+  "label": "g5d597d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The sample was run through the CLI and the exact-output test passes."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv, and a hand run from a temp dir with the csv config worked."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs, README, CHANGELOG and the csv test are present; the help test regex still matches."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran the CLI with --format csv on sample.json and committed only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

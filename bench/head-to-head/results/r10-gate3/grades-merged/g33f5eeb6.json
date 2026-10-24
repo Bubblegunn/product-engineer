@@ -1,0 +1,32 @@
+{
+  "label": "g33f5eeb6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The csv code and exact-output test match the required quoting, header and order, and the CLI run was shown."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS now includes csv and the existing xml rejection is untouched."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs, README, CHANGELOG and tests are all updated, and 17 tests were reported passing."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer never says the repo has no yaml format."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran the CLI with --format csv on the sample file and committed only tally files."
+    }
+  }
+}

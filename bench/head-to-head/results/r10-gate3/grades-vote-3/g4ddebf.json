@@ -1,0 +1,39 @@
+{
+  "label": "g4ddebf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit does not touch scripts/check-node.js, so MIN_MAJOR is still 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The test file was not updated, and the check script was not changed either."
+    },
+    "3": {
+      "pass": true,
+      "why": "Answer flags the Dockerfile on 18 and bumps it with deploy.md."
+    },
+    "4": {
+      "pass": false,
+      "why": "dependabot.yml was neither handled nor flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep across the tree ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g54c691",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer quotes commas, quotes and newlines per RFC 4180, and rows come from buildRows in count-descending order."
+    },
+    "2": {
+      "pass": true,
+      "why": "csv is added to ALLOWED_FORMATS and the registry, a config-file test was added, and the existing xml rejection is untouched."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs/formats.md, docs/cli.md, README, CHANGELOG, the registry test and new csv tests are all updated, and the suite passes."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states there is no yaml format, only json and text, and none was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was never run by hand in the shell with --format csv; only npm test was run before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

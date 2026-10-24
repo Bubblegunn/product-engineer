@@ -1,0 +1,32 @@
+{
+  "label": "gb2f932e5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The code and an exact-output test match the required output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present, including a new CLI test, and 18 tests were reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says the repo had no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only ran node --test and never ran the CLI with --format csv in the shell."
+    }
+  }
+}

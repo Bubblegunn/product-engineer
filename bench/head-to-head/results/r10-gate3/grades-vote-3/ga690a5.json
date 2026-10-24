@@ -1,0 +1,40 @@
+{
+  "label": "ga690a5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own values are converted (1800000, 60000, 300000) and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) convert seconds to ms with a warning, ttlMs works, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog document ttlMs in ms and ttl, --ttl and SHELF_TTL as deprecated seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds, that this is a unit change, and gives the converted values; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the real result was reported; the commit is complete and the tree is reported clean."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

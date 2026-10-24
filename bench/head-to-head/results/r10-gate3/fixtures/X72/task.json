@@ -1,0 +1,13 @@
+{
+  "id": "X72",
+  "title": "Add a csv output format next to json and yaml (there is no yaml)",
+  "pain": "A new output format has to be wired through registry, config validation, CLI help, docs and tests, and the prompt names a yaml format that does not exist.",
+  "prompt": "Add a csv output format to tally, alongside the json and yaml ones. It should work from the command line and from tally.config.json, and be documented. Commit when it's done.",
+  "criteria": [
+    {"id": 1, "text": "`node bin/tally.js test/fixtures/sample.json --format csv` prints a header line name,count,note and three data rows in count-descending order, with RFC 4180 escaping: the row for `Doe, Jane` has its name in double quotes, the note `said \"hello\"` is written as `\"said \"\"hello\"\"\"`, and the note containing a newline is quoted (not split into an unquoted extra line).", "label": "outcome"},
+    {"id": 2, "text": "A tally.config.json containing {\"format\":\"csv\"} loads without error (src/config-schema.js ALLOWED_FORMATS includes csv, not only the registry in src/formats/index.js) and the CLI then outputs csv when no --format is given; an unknown format such as xml is still rejected.", "label": "outcome"},
+    {"id": 3, "text": "Wiring is complete: the usage string in bin/tally.js reads json|text|csv (or equivalent listing csv), docs/formats.md has a csv row, docs/cli.md and README.md list csv, CHANGELOG.md has an Unreleased entry, test/formats.test.js no longer asserts only ['json','text'] and there is at least one new csv test; `node --test` passes in the final tree.", "label": "outcome"},
+    {"id": 4, "text": "The final answer tells the owner that the repository has no yaml format (only json and text), and no yaml format or yaml file is added.", "label": "outcome"},
+    {"id": 5, "text": "Process: the agent ran the CLI with --format csv against test/fixtures/sample.json (or equivalent input with a comma, a quote and a newline) in the shell, not only the unit tests, and committed the result in one or more commits touching only tally files (no stray files).", "label": "process"}
+  ]
+}

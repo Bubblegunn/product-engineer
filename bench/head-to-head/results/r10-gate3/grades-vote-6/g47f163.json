@@ -1,0 +1,39 @@
+{
+  "label": "g47f163",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since→createdAfter (silently ignored), total→totalCents and amount→amountCents in integer cents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers the pageSize deprecation, the 50→25 default, the 200→100 max and the RangeError limit_too_large."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the header and algorithm change and says to update verification."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is documented but not implemented, and does not claim retries exist."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran a code-level diff but never ran tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

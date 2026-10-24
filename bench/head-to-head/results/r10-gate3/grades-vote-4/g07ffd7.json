@@ -1,0 +1,40 @@
+{
+  "label": "g07ffd7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own-code and config values converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and a load({ttl}) override all give seconds semantics, and the 18 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "ttlMs in ms is documented in all three docs and the changelog names ttlMs, the deprecation and the units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and gives 60000/1800000/300000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit and again after, results are reported accurately, and the tree is clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

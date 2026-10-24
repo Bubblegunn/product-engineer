@@ -1,0 +1,40 @@
+{
+  "label": "g934661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct quoting with CRLF line endings, and the tests check the tricky rows."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema was updated, and a config-file run printed csv with no --format."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is done, a csv test is added, and the agent reported 18 tests passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally had no yaml format, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "The agent ran the CLI on the sample fixture in the shell, via config and the sample file, and committed only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

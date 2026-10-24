@@ -1,0 +1,39 @@
+{
+  "label": "ge95f3e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "scripts/check-node.js MIN_MAJOR was never changed and still says 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The test file was not updated, so test and script remain on 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "Dockerfile on 18 stated and bumped, deploy.md matches."
+    },
+    "4": {
+      "pass": false,
+      "why": "dependabot not handled or flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep across the tree first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

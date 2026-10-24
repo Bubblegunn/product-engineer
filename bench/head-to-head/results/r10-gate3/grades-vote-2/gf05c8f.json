@@ -1,0 +1,40 @@
+{
+  "label": "gf05c8f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The csv renderer and its test cover the full expected sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema was updated and a config-file test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present, a csv test was added, and 19 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format and none was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The shell run used a custom row 'a,b' with no quote or newline instead of the sample fixture, so it is not equivalent input."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

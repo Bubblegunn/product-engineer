@@ -1,0 +1,32 @@
+{
+  "label": "gd29025bc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Never names retryLimit or maxRetries, only 'the old name' and 'the setting'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 50→25, 14→7 and 19.00→22.00."
+    },
+    "3": {
+      "pass": true,
+      "why": "Slack not in this release."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest is off by default; timeout 5→10 seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.2.0..HEAD on src."
+    }
+  }
+}

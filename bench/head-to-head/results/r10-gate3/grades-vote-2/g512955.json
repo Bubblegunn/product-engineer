@@ -1,0 +1,40 @@
+{
+  "label": "g512955",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left with ttl: 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl still works as seconds and warns, the CLI and config paths are unchanged, and 17 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still documents ttl in seconds with no ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl:60 becomes ttlMs:60000; the commit message mentions the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and passed, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

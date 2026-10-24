@@ -1,0 +1,39 @@
+{
+  "label": "g354cac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The note is Turkish and the final answer's prose is Turkish, with an embedded verify report."
+    },
+    "2": {
+      "pass": true,
+      "why": "The note records the failing footer test, the font eksik skip, the stub, and not to merge from wip/invoice-pdf."
+    },
+    "3": {
+      "pass": false,
+      "why": "It has no stash and no KDV_RATE change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only HANDOFF.md was committed, src/pdf.js is still modified, and the note holds no secret text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It ran the tests and git status but not git stash list."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X103",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

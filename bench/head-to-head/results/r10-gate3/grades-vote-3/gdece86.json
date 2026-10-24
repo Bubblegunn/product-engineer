@@ -1,0 +1,40 @@
+{
+  "label": "gdece86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own values are converted (1800000, 60000, 300000) and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds with a warning, ttlMs works, CLI --ttl and load({ttl}) give 5 seconds, and the 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and changelog document ttlMs in ms and ttl as deprecated seconds, and the changelog says ttl keeps its seconds unit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and the rename changes the unit; the commit message mentions ms versus legacy seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit, the answer reports the 20 passing tests and the failed CLI test-cleanup edit honestly, and the tree is clean."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

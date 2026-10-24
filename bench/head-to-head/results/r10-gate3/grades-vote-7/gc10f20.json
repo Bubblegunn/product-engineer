@@ -1,0 +1,39 @@
+{
+  "label": "gc10f20",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The commit contains exactly src/discount.js and test/discount.test.js."
+    },
+    "2": {
+      "pass": false,
+      "why": "The answer only says .env.local is unstaged and belongs in .gitignore; it never says it was staged and left out of the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "src/report.js WIP remains and the untracked files are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The commit message is accurate, but the final answer lists no files that went in, so it cannot match the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "node --test ran before the commit, but the final answer never reports the test result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X81",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

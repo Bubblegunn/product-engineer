@@ -1,0 +1,39 @@
+{
+  "label": "g611fe9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Fix commit is correctly isolated."
+    },
+    "2": {
+      "pass": true,
+      "why": "Feature commit is complete and the tree is clean."
+    },
+    "3": {
+      "pass": true,
+      "why": ".vscode and dist were not committed and remain on disk."
+    },
+    "4": {
+      "pass": false,
+      "why": "The fix message never mentions the removed cli.js workaround or the floor-to-ceil change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Examined the diff, ran npm test at the end and reported 14 pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X83",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

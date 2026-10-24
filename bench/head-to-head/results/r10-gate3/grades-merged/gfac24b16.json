@@ -1,0 +1,32 @@
+{
+  "label": "gfac24b16",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left as ttl: 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds and warns, ttlMs works, the CLI and load are unchanged and still correct, and 16 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and the values changed (60 became 60000); the commit message does not call it a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit and the work is committed."
+    }
+  }
+}

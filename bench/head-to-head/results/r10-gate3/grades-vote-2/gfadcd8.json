@@ -1,0 +1,39 @@
+{
+  "label": "gfadcd8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says the retry setting was renamed but gives neither name, so customers cannot tell what to edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 50→25, 14→7 and 19.00→22.00."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Slack alerts were withdrawn and repeats no stale claims."
+    },
+    "4": {
+      "pass": false,
+      "why": "Digest is listed under 'Not in this release' as not working, not as a new opt-in feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show -p and git diff v2.2.0 HEAD on src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

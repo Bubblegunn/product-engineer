@@ -1,0 +1,40 @@
+{
+  "label": "gaa918c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer and exact-output test give the correct output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv and the CLI path is unchanged, though no config test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring was done, a csv test added, and 18 tests passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only ran npm test and never ran the CLI by hand in the shell."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

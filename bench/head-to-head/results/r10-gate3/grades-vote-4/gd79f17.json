@@ -1,0 +1,40 @@
+{
+  "label": "gd79f17",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has ttl: 60."
+    },
+    "2": {
+      "pass": true,
+      "why": "The cache option behaves correctly, the CLI/config path still yields seconds, and the tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md is untouched and still describes ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl: 60 becomes ttlMs: 60000; the commit message is acceptable."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

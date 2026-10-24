@@ -1,0 +1,39 @@
+{
+  "label": "gb9bad8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Committed package.json, the lockfile (both fields), src/version.js and README all at 1.5.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 heading was added and the entries sit under it, with the 1.4.0 section still below."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit has only the five release files, and the WIP and token were left out."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not list every file in the commit (package.json is never named) and has no explicit commit file list."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X82",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

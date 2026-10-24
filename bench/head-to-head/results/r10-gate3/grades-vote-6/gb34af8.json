@@ -1,0 +1,40 @@
+{
+  "label": "gb34af8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct quoting, and the sample CLI output was run in the shell."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema was updated and a schema test was added; xml is still rejected by the existing test."
+    },
+    "3": {
+      "pass": true,
+      "why": "The usage string, docs, README, CHANGELOG and tests are all done, and 17 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer never mentions that there is no yaml format."
+    },
+    "5": {
+      "pass": true,
+      "why": "node bin/tally.js sample.json --format csv was run directly, and the commit contains only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

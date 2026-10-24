@@ -1,0 +1,40 @@
+{
+  "label": "gb562d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Quoting is correct and the output was verified in the shell."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv and the schema test passes; xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage reads csv|json|text, which lists csv; docs, CHANGELOG and tests are updated and the suite passes."
+    },
+    "4": {
+      "pass": true,
+      "why": "Final answer says no yaml format exists, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran the CLI with --format csv on sample.json and committed only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

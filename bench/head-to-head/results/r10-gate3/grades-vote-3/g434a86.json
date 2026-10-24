@@ -1,0 +1,40 @@
+{
+  "label": "g434a86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer quotes correctly, so the sample output meets the RFC 4180 requirements."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All the wiring is present, csv tests were added, and 18 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format in the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was never run by hand in the shell; only npm test was run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

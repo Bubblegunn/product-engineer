@@ -1,0 +1,40 @@
+{
+  "label": "gb3f34e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json remains ttl: 60 and was not converted to ttlMs."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted with a warning, createShelf converts config seconds to ms, and 16 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was untouched and still presents ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and that values like 300 became 300000, and the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

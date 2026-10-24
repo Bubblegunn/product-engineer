@@ -1,0 +1,39 @@
+{
+  "label": "g285b18",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree is the rename only and index.js still points at ./limiter."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit contains only the rename paths."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message does not mention legacy-retry."
+    },
+    "4": {
+      "pass": false,
+      "why": "The index.js and test/index.test.js changes were not committed, and the deletions were left out."
+    },
+    "5": {
+      "pass": false,
+      "why": "It ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

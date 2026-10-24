@@ -1,0 +1,40 @@
+{
+  "label": "g51e18a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left at \"ttl\": 60 instead of \"ttlMs\": 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache converts ttl to seconds and warns, the CLI and load still give seconds, and 16 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still lists ttl in seconds without ttlMs, and docs/usage.md still documents --ttl 30."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl:60 becomes ttlMs:60000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit with 16 passing, and the work was committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

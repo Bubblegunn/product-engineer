@@ -1,0 +1,32 @@
+{
+  "label": "g8844ae10",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit's index.js still requires legacy-retry, and the legacy-retry files remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only index.js, the renames and the header comment, and README.md and stats.js stay uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message describes only the rename and has a stray test-run line."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says it was not only a rename and that index.js was added, but the legacy-retry deletions were left out and test/index.test.js was not added."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected state, ran npm test before committing, verified the committed snapshot in a clean worktree (12 pass), and reported honestly."
+    }
+  }
+}

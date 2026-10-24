@@ -1,0 +1,40 @@
+{
+  "label": "gf82017",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, default.json has 60000, server.js has 300000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds with a warning, ttlMs works, CLI --ttl and load({ttl}) give 5 seconds, and 18 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in ms with ttl as deprecated seconds, and the changelog covers ttlMs in ms and ttl (seconds) as deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and lists the converted values (60000, 1800000, 300000), and the commit message says ttl was seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit and again on the committed tree with the real result reported, and the tree is clean."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

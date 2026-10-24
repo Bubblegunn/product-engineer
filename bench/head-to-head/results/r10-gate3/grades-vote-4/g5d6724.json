@@ -1,0 +1,39 @@
+{
+  "label": "g5d6724",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names both settings and the error the old name triggers."
+    },
+    "2": {
+      "pass": false,
+      "why": "Gives only the 2.3 values for free checks and trial, with no before value for either; only the price has a before."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Slack is not part of 2.3.0; the stale changelog lines are quoted as out of date."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest is new and off by default; timeout 5s to 10s."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.2.0..HEAD on src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g45cddc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing deleted or removed; the session made no changes."
+    },
+    "2": {
+      "pass": false,
+      "why": "No migration was done."
+    },
+    "3": {
+      "pass": false,
+      "why": "The answer reports the usages, but CHANGELOG.md has no Unreleased entry."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports the format.test.js failure as pre-existing and unrelated, claims no full pass, and changes nothing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep for legacy and then npm test on the unmodified tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X74",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

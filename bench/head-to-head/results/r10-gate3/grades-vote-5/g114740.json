@@ -1,0 +1,39 @@
+{
+  "label": "g114740",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers the since rename (silently ignored), the 1260 to 126000 example, and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize deprecation, default 25, maximum 100, and the RangeError instead of clamping."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the header and algorithm change, and that old signatures fail verification."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented and tells partners to keep using page."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the code but never ran tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

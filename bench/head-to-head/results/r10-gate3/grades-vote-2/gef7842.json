@@ -1,0 +1,40 @@
+{
+  "label": "gef7842",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files and the 60000 default use ttlMs with values multiplied by 1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and load({ttl}) convert from seconds with a warning; 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and changelog document ttlMs in ms and the deprecated seconds-based ttl."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl:60 becomes ttlMs:60000, converting every value; the commit message mentions seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with 21 passing, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

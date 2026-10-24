@@ -1,0 +1,40 @@
+{
+  "label": "g8dcc39",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The code and an exact-output test on the sample match the required output."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present and 18 tests were reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never ran the CLI with --format csv in the shell, only npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

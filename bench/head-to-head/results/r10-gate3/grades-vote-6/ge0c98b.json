@@ -1,0 +1,40 @@
+{
+  "label": "ge0c98b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60, not \"ttlMs\": 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "createCache({ttl}) converts seconds with a warning, createShelf converts config ttl, and 17 tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still lists `ttl` in seconds without `ttlMs`."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and gives 60→60000; the commit message says values are multiplied by 1000."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

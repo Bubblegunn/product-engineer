@@ -1,0 +1,40 @@
+{
+  "label": "g89bed7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js 1800*1000, config ttlMs 60000, example 300000 and default 60*1000 are all correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and load({ttl}) convert seconds with a warning, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs are updated, and the changelog names ttlMs, the deprecation and the seconds unit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer explicitly says the premise was off and ttl was seconds, with the converted values listed, and the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, results are reported, and the work is committed with the tree clean apart from an ignored marker."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

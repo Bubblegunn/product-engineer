@@ -1,0 +1,32 @@
+{
+  "label": "gdd4f79df",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own files are converted to ttlMs with multiplied values and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated paths are converted and warn, the CLI --ttl 5 gives 5000, and the tests passed before the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs are updated, and the changelog says ttlMs is ms whereas ttl was seconds and is deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and that ttl: 60 became ttlMs: 60000, and the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests were run and filtered for pass/fail before the commit, the result is reported, and the work is committed."
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "ge194e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was left at \"ttl\": 60 and never moved to ttlMs: 60000, so the config requirement fails."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds with a warning, ttlMs works, the CLI and load paths still give 5 seconds, and 17 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl in seconds without documenting ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was in seconds and that 60 became 60000, and the commit message does not call it a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, the 17-pass result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

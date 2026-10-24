@@ -1,0 +1,40 @@
+{
+  "label": "gd603e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own code and config were converted to ms values and the default is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy paths convert from seconds with a util.deprecate warning, and 20 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and changelog are updated and state seconds versus milliseconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and a plain rename would make 60 into 60 ms, and the commit says ttl was in seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

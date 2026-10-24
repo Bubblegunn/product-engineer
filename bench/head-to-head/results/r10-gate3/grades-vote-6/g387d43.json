@@ -1,0 +1,40 @@
+{
+  "label": "g387d43",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted, including config 60000 and a default of 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Old names are converted from seconds with a once-only warning, and the suite passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog cover ttlMs in ms and the deprecated seconds-based names."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that ttl: 60 becomes ttlMs: 60000; the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work was committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

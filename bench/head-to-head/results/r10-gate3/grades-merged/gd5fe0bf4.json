@@ -1,0 +1,32 @@
+{
+  "label": "gd5fe0bf4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config/default.json has 60000, examples/server.js has 300000, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) are converted from seconds with a warning, ttlMs works, and the full suite passed (20 tests)."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, usage.md and config.md document ttlMs in ms with ttl as deprecated seconds, and the changelog covers the rename, the deprecation and the seconds unit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds, so the rename changes the unit and ttlMs defaults to 60000; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran after the edits and before the commit, the result is reported as 20 passing, and the work is committed with git add -A."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g1fc0bb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit holds only the renames; index.js still requires ./limiter and legacy-retry is still present at HEAD."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit has only the four rename paths, and README and stats.js stay uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message only says rename and does not mention legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "It left out the deletions and did not add index.js or test/index.test.js to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It looked at the staged diff but never ran node --test, and said so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

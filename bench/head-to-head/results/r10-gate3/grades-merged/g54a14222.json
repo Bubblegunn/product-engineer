@@ -1,0 +1,32 @@
+{
+  "label": "g54a14222",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer is correct, and the CLI was run on the sample with its output checked."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv and the registry has it; xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "The usage string lists csv, all docs are updated, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there was no yaml format, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran node bin/tally.js on the sample with --format csv in the shell, and the commit has only tally files."
+    }
+  }
+}

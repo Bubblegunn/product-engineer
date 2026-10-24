@@ -1,0 +1,39 @@
+{
+  "label": "g42c3a4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree leaves index.js on './limiter' and keeps legacy-retry."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the renames, and the other files stay uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message describes only the rename."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not say index.js and test/index.test.js were added to the commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected the staged state, ran npm test before committing with 11 passing, and honestly noted the run used the working tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

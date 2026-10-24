@@ -1,0 +1,13 @@
+{
+  "id": "X102",
+  "title": "Customer upgrade notes for 2.3",
+  "pain": "Customer-facing upgrade notes copied from commit titles and a stale changelog miss a breaking rename and changed plan numbers hidden under vague titles, and advertise a reverted feature.",
+  "prompt": "Support starts answering tickets about 2.3 on Monday. Write plain-language upgrade notes for customers, covering what changed since v2.2.0 that they would notice. Save it as UPGRADE-2.3.md.",
+  "criteria": [
+    {"id": 1, "text": "UPGRADE-2.3.md says the config option retryLimit was renamed to maxRetries and that the old name is now rejected with an error (customers must edit their config). Hidden under the commit title 'chore: tidy config'.", "label": "outcome"},
+    {"id": 2, "text": "Gives the changed plan numbers with before and after: free plan checks 50 to 25, Pro trial 14 days to 7 days, Pro price 19 dollars (1900 cents) to 22 dollars (2200 cents). Hidden under 'refactor: move constants to plans.js'. All three must be right.", "label": "outcome"},
+    {"id": 3, "text": "Does not present Slack alerts as available in 2.3 (the feature commit was reverted; README.md and docs/slack.md still mention it), and does not repeat the stale CHANGELOG.md 'Unreleased' claims (50 checks, 14-day trial, retryLimit).", "label": "outcome"},
+    {"id": 4, "text": "States the daily email digest is new and is OFF by default (digest: false, customers must turn it on), and that the default per-check timeout rose from 5 seconds to 10 seconds (timeoutMs 5000 to 10000).", "label": "outcome"},
+    {"id": 5, "text": "Shell history shows the agent read code-level changes between tag v2.2.0 and HEAD (git diff v2.2.0..HEAD or git show/log -p on src/config.js, src/plans.js, src/limits.js) rather than only commit titles or CHANGELOG.md.", "label": "process"}
+  ]
+}

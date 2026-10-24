@@ -1,0 +1,39 @@
+{
+  "label": "g940884",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed files, including deploy.md and the Dockerfile, moved to 20."
+    },
+    "2": {
+      "pass": true,
+      "why": "Test now rejects v18.19.0, accepts v20.0.0 and v22; npm test passed 11."
+    },
+    "3": {
+      "pass": true,
+      "why": "Final answer says the Dockerfile was on 18 and was changed to 20; deploy.md matches."
+    },
+    "4": {
+      "pass": false,
+      "why": "@types/node was bumped, but the dependabot >=19 ignore rule was left unchanged and not flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "Initial grep across the tree for 18 and engines patterns ran before any edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

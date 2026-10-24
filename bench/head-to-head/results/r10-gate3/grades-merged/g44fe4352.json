@@ -1,0 +1,32 @@
+{
+  "label": "g44fe4352",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has exactly the two fix files."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only says .env.local is unstaged and should be gitignored; it never says it was staged and left out of the commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "report.js WIP and the untracked files are preserved."
+    },
+    "4": {
+      "pass": false,
+      "why": "Message is good, but the final answer does not list the committed files."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran tests before committing, but the final answer reports no test result."
+    }
+  }
+}

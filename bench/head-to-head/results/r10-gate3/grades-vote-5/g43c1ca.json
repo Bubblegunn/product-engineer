@@ -1,0 +1,39 @@
+{
+  "label": "g43c1ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since silently ignored, totalCents, and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers the deprecation, default 25, the over-100 RangeError, and clamping at 200."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the header and algorithm change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented and retries are not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only in the verify step after MIGRATION.md already existed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

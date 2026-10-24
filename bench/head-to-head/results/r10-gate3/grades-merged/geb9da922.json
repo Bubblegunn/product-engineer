@@ -1,0 +1,32 @@
+{
+  "label": "geb9da922",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/deploy.md still says node:18-alpine, so a listed file still declares 18 as the used version."
+    },
+    "2": {
+      "pass": true,
+      "why": "The tests were updated and 11 passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer explicitly says the Dockerfile was left on 18 and why, and deploy.md agrees with it."
+    },
+    "4": {
+      "pass": true,
+      "why": "Dependabot and @types/node were updated, and no lockfile or CI claims were made."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep ran first."
+    }
+  }
+}

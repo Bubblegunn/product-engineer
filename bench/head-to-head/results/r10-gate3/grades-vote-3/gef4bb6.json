@@ -1,0 +1,40 @@
+{
+  "label": "gef4bb6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three values are converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The deprecated paths convert seconds to ms with a warning, and the 22 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated and the changelog says ttl was in seconds and ttlMs is in ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer explains the seconds-to-ms change and the converted values, and the commit message says ttl was seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

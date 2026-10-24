@@ -1,0 +1,40 @@
+{
+  "label": "g42c661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The quoting code is correct, and the test asserts the fixture output spans 5 lines because of the newline note."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, a config-file test was added, and the xml rejection is unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, the usage string, the format tests and CHANGELOG are updated, and the tests pass after the fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states there is no yaml format and none was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was never run in the shell against csv; only npm test was run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

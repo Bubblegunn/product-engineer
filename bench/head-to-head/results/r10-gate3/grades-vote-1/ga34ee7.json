@@ -1,0 +1,40 @@
+{
+  "label": "ga34ee7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Own code and config use ttlMs with converted values and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deprecated ttl, --ttl and SHELF_TTL are converted from seconds with a warning, and 18 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated and the changelog says ttlMs is ms and the deprecated ttl is in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says ttl was seconds and that values were converted (the session is now 30 * 60 * 1000, default 60000), and the commit message states the units."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

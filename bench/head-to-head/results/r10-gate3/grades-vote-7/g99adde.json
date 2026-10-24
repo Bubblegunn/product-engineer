@@ -1,0 +1,39 @@
+{
+  "label": "g99adde",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The table says since was renamed to createdAfter but never says it is silently ignored."
+    },
+    "2": {
+      "pass": true,
+      "why": "pageSize warning, 25/100 limits and RangeError instead of silent clamp are covered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Header and algorithm change, and v1.4.0 signatures will not verify."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented; no retry claim."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran only after MIGRATION.md already existed (dirty snapshot), so not before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

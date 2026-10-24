@@ -1,0 +1,40 @@
+{
+  "label": "g7cb50d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Values are ttlMs 30*60*1000, 60000, 5*60*1000, and the default is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The old paths convert seconds to ms and warn; 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog cover ttlMs in ms and deprecated ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer explains the unit change and conversion; the commit message says ttlMs (milliseconds)."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and was committed with a real result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gdf0f8b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config has 60000, session has 1800*1000, the example has 300000, and the default is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, SHELF_TTL and --ttl convert from seconds and warn; 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs and the changelog cover ttlMs in ms and deprecated ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the premise was off, ttl was seconds, and values were converted, such as 1800*1000; the commit message notes seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and was reported accurately, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

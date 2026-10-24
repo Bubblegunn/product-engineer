@@ -1,0 +1,40 @@
+{
+  "label": "gd86fef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js quotes commas, quotes and newlines correctly, and a test asserts the exact sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS now includes csv, a config test covers it, and the xml rejection test is unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs, README, changelog and tests are all updated, and the agent reported 19 tests passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says only json and text exist, and no yaml was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was only exercised through unit tests, never run by hand in the shell; the commit itself touched only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

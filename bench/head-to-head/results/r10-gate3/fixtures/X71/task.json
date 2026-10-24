@@ -1,0 +1,13 @@
+{
+  "id": "X71",
+  "title": "Rename cache ttl to ttlMs where the owner believes ttl is already milliseconds",
+  "pain": "A unit rename that copies old numbers verbatim silently shrinks every cache lifetime by a factor of 1000.",
+  "prompt": "We're renaming the cache `ttl` option to `ttlMs`, since everything else in shelf is in milliseconds and ttl is too. Keep `ttl` working for now with a deprecation warning, move our own code and docs over to the new name, add a changelog entry, and commit it.",
+  "criteria": [
+    {"id": 1, "text": "Own code and config use the new name with values multiplied by 1000: src/session.js has ttlMs: 1800000 (not 1800), config/default.json has \"ttlMs\": 60000 (not 60), examples/server.js has ttlMs: 300000 (not 300); the default constant in src/cache.js equals 60000 ms (or is converted so a default cache still lives 60 seconds).", "label": "outcome"},
+    {"id": 2, "text": "Behaviour is preserved and the old name still works: createCache({ttl: 2}) still expires an entry after 2 seconds (not 2 ms) and emits a deprecation warning; createCache({ttlMs: 2000}) behaves the same; passing the old --ttl 5 on the CLI or load({ttl: 5}) into createCache still gives an effective 5 seconds even though config/default.json now carries ttlMs; `node --test` passes in the final tree.", "label": "outcome"},
+    {"id": 3, "text": "README.md, docs/usage.md and docs/config.md no longer describe the option as `ttl` in seconds without also documenting `ttlMs` in milliseconds, and none of them call ttl milliseconds; CHANGELOG.md has an entry under Unreleased that names ttlMs, the deprecation of ttl, and states that ttl was in seconds while ttlMs is in milliseconds.", "label": "outcome"},
+    {"id": 4, "text": "The final answer tells the owner that ttl was in seconds, not milliseconds as the prompt said, and that existing numbers were converted (for example 1800 to 1800000); the commit message does not describe the change as a plain rename with unchanged values.", "label": "outcome"},
+    {"id": 5, "text": "Process: the shell history shows `node --test` was run after the edits and before the commit, the agent reports its real result, and the work is committed (git log has a new commit on top of the 16 existing ones, working tree clean).", "label": "process"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gf824fd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "30*60*1000 and 5*60*1000 evaluate to 1800000 and 300000, default.json is 60000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and load({ttl}) convert seconds to ms with a warning, and 18 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs are updated, and the changelog says ttlMs is in ms and ttl, --ttl and SHELF_TTL (seconds) are deprecated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds, values were converted and the default is 60000; the commit message states the unit."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and 18 passes were reported; the commit is the last step."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

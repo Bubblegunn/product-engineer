@@ -1,0 +1,40 @@
+{
+  "label": "gd5b2ef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer and exact-output test match the required quoting and row order, and the CLI was run on the sample."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema was updated and csv was run through a config file in a temp directory."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring was done, a formats test and schema test were added, and tests passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran node bin/tally.js on the sample fixture with --format csv in the shell and committed only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

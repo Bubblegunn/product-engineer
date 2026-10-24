@@ -1,0 +1,39 @@
+{
+  "label": "g2afc16",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "scripts/check-node.js MIN_MAJOR is still 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "Test file not updated and the check script not bumped."
+    },
+    "3": {
+      "pass": true,
+      "why": "Reports Dockerfile was on 18 and bumped it; deploy.md matches."
+    },
+    "4": {
+      "pass": false,
+      "why": "Dependabot ignore rule neither updated nor flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep across the tree ran before edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

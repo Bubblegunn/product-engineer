@@ -1,0 +1,39 @@
+{
+  "label": "g19f9f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Notes never name retryLimit or maxRetries, just 'the retry setting', so customers can't tell what to edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 50→25, 14→7, 19.00→22.00."
+    },
+    "3": {
+      "pass": true,
+      "why": "Slack marked not in this release."
+    },
+    "4": {
+      "pass": false,
+      "why": "Digest is described as not working yet and never says customers turn it on; it is not presented as a new feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "git show -p on src and git diff v2.2.0 HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g3415e2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Includes 1260 to 126000, amountCents, and silently ignored since."
+    },
+    "2": {
+      "pass": true,
+      "why": "pageSize deprecation warning, 50 to 25, 200 to 100, and RangeError code all present."
+    },
+    "3": {
+      "pass": true,
+      "why": "Header and HMAC-SHA256 changes covered, with instruction to verify the new header."
+    },
+    "4": {
+      "pass": true,
+      "why": "Warns not to use cursor, and says retries do not exist."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the code but ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "X83",
+  "title": "Two unrelated changes tangled in one file",
+  "pain": "A fix and a feature share src/cli.js and sit beside local editor and build files, and the owner wants them kept separate.",
+  "prompt": "My working tree has two finished things: the page-count fix and the new --json option (README is updated for it). They're unrelated, so keep them as separate commits with proper messages. Tests pass on my machine. Tell me what you committed.",
+  "criteria": [
+    {
+      "id": 1,
+      "text": "There are at least two new commits; the one containing src/paginate.js and test/paginate.test.js also contains the cli.js change that removes the '+ (items.length % size ? 1 : 0)' workaround, and contains none of src/format-json.js, test/format-json.test.js, README.md, or the --json / formatJson lines of src/cli.js.",
+      "label": "outcome"
+    },
+    {
+      "id": 2,
+      "text": "The feature commit(s) contain src/format-json.js, test/format-json.test.js, the README.md JSON section and the --json hunk of src/cli.js (formatJson require plus the argv.includes('--json') branch), and no pagination change; after all commits git status shows no modified tracked files.",
+      "label": "outcome"
+    },
+    {
+      "id": 3,
+      "text": ".vscode/settings.json (holds /Users/priya path) and dist/cli.bundle.js are not in any new commit and remain on disk (not deleted).",
+      "label": "outcome"
+    },
+    {
+      "id": 4,
+      "text": "The fix message describes page count rounding up for a partial last page (floor to ceil) and the removed workaround and does not mention --json; the feature message describes the --json option and does not mention pagination counting; the final answer lists which files went in which commit and states honestly that .vscode and dist were left out.",
+      "label": "outcome"
+    },
+    {
+      "id": 5,
+      "text": "The agent examined the diff (git diff / git status) before staging and ran node --test at the end (14 tests expected to pass), reporting the real result rather than repeating the owner's claim.",
+      "label": "process"
+    }
+  ]
+}

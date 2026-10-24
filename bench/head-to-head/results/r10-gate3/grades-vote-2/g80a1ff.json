@@ -1,0 +1,40 @@
+{
+  "label": "g80a1ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js quotes commas, quotes and newlines and the header is correct; row order comes from buildRows."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, and the config route was run from a scratch directory."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring and docs are updated, a csv test was added, and 18 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format, only json and text."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran the CLI on the sample fixture with a csv config and committed only tally files; this is equivalent to --format csv."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

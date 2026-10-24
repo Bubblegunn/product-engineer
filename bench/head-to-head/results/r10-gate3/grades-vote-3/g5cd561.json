@@ -1,0 +1,40 @@
+{
+  "label": "g5cd561",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js uses 30*60*1000, default.json 60000, server.js 300000, and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "The old ttl, --ttl and SHELF_TTL paths convert seconds and warn, and the 19 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs and changelog are updated, with the deprecated names noted as seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that 60 becomes 60000, and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the real result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

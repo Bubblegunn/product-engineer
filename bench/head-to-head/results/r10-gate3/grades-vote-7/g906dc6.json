@@ -1,0 +1,39 @@
+{
+  "label": "g906dc6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names retryLimit→maxRetries and says old config fails with an error."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table gives 50→25, 14→7 days, $19→$22."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says Slack is not in 2.3; stale changelog claims are flagged as wrong, not repeated as true."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest is new and off by default; timeout 5→10 seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.2.0..HEAD on src and other files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

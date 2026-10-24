@@ -1,0 +1,40 @@
+{
+  "label": "gec4b87",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts and warns, the CLI and load give seconds, and 16 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated, and the changelog explicitly says ttl was seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl:60 becomes ttlMs:60000; the commit message says the same."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit with a pass count reported, and the commit was made."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

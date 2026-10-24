@@ -1,0 +1,40 @@
+{
+  "label": "gf7d4d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl converts and warns, the CLI and load convert to seconds, and 21 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated, and the changelog names ttlMs, the deprecation, and that ttl is seconds while ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that every default and example value was multiplied by 1000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, 21 passing was reported, and the commit was made."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

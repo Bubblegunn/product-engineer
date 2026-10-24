@@ -1,0 +1,40 @@
+{
+  "label": "gdfdceb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has \"ttl\": 60 and was not converted."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds and warns, and the tests passed."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md was not updated and still describes ttl only in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and gives the new values 60000 and 1800000; the commit message notes the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit and the work was committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

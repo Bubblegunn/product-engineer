@@ -1,0 +1,40 @@
+{
+  "label": "gf423a2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json still has ttl: 60 and was never switched to ttlMs: 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl:2 still means 2 seconds and warns, load({ttl:5}) gives 5s, and 17 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still lists ttl in seconds with no ttlMs entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer says ttl keeps its old seconds meaning but never tells the owner their premise was wrong or that existing values were converted."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit with 17 passing, and the work is committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

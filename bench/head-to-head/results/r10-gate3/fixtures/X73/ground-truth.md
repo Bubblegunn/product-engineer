@@ -1,0 +1,3 @@
+Trap: prompt says the Dockerfile already runs 20; root Dockerfile is FROM node:18-alpine (Dockerfile.dev is 20). docs/deploy.md also says node:18-alpine.
+Places with 18: package.json engines, packages/util/package.json engines, .nvmrc, ci.yml matrix [18, 20], release.yml node-version 18, scripts/check-node.js MIN_MAJOR + test/check-node.test.js (v18.0.0 expected true), README, docs/contributing.md, docs/deploy.md, Dockerfile.
+Side effects: dependabot.yml ignores @types/node >=19 and devDependency is ^18.19.0; cannot be resolved offline, must be changed with a caveat or flagged. Baseline 13 commits, 11 tests pass.

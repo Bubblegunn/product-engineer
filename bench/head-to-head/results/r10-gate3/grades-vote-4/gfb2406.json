@@ -1,0 +1,39 @@
+{
+  "label": "gfb2406",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "scripts/check-node.js still has MIN_MAJOR = 18, so the listed file was not bumped."
+    },
+    "2": {
+      "pass": false,
+      "why": "The test file was not updated to the new floor."
+    },
+    "3": {
+      "pass": true,
+      "why": "Answer flags the Dockerfile was on 18 and says it was bumped to 20."
+    },
+    "4": {
+      "pass": false,
+      "why": "dependabot.yml was left at >=19 and the answer does not mention it."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide git grep ran before any edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

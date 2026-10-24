@@ -1,0 +1,39 @@
+{
+  "label": "g26f6b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Uses 'retry limit'/'maximum retries' instead of the config names retryLimit/maxRetries, so customers can't tell what to edit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 25 (was 50), 7 (was 14), 2,200 cents/22.00 (was 1,900/19.00)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Slack not available."
+    },
+    "4": {
+      "pass": true,
+      "why": "Digest new and off until turned on; timeout 10 vs 5."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v2.2.0..HEAD on src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X102",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

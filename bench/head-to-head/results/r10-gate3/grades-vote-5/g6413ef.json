@@ -1,0 +1,39 @@
+{
+  "label": "g6413ef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree still has the old index.js and legacy-retry."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit has only the rename paths."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message does not mention legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "It did not add index.js or test/index.test.js to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It ran no tests and said so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

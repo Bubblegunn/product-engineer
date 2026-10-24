@@ -1,0 +1,40 @@
+{
+  "label": "ge0d59c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values converted and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL are converted with a warning, and the 19 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs and the changelog are correct on units and the deprecation."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and a plain rename would have made 60 become 60 ms; the commit message states the unit change."
+    },
+    "5": {
+      "pass": false,
+      "why": "The agent created an untracked .[tool]/last-verify-passed marker that was never committed or removed, so the tree is not clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

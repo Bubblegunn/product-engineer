@@ -1,0 +1,40 @@
+{
+  "label": "g96731c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "30*60*1000 equals 1800000, default.json is 60000, the example is 300000 and the default constant is 60*1000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted to ms with a warning, load() and --ttl give 5 seconds, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in milliseconds, and the changelog states ttl was seconds and ttlMs is milliseconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states the unit change and the 60 to 60000 conversion, and the commit message says ttl: 60 becomes ttlMs: 60000."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test passed before the commit and the commit was made with the tree clean."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 1,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

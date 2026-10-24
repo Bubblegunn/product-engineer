@@ -1,0 +1,39 @@
+{
+  "label": "g0aba2f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The committed tree leaves index.js on './limiter' and keeps legacy-retry, so tests would fail at that commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the two renames, and README.md and src/stats.js stay modified in the working tree."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message mentions only the rename and nothing about legacy-retry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It reports that the legacy-retry deletions were left out, but never says index.js and test/index.test.js were added to the commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "It inspected the staged state but explicitly ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g568f52",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "The commit has only the renames, so index.js and the legacy-retry files are wrong."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the rename paths and the other files remain uncommitted."
+    },
+    "3": {
+      "pass": false,
+      "why": "The message omits the legacy-retry removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "It left out the deletions and the index.js and test/index.test.js changes, and describes the commit as the rename."
+    },
+    "5": {
+      "pass": false,
+      "why": "It looked at staged state but did not run the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X84",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g59050e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own-code and config values are converted, with a DEFAULT_TTL_MS of 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "All deprecated paths convert seconds to ms with a warning, and the tests pass (19 pass)."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs document ttlMs in ms and the deprecated ttl in seconds, and the changelog covers the rename and the deprecation."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer states ttl was seconds, that 60 becomes 60000, and mentions the session value; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test was run before the commit, its result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

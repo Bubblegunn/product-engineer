@@ -1,0 +1,40 @@
+{
+  "label": "g00eb43",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All own values were converted (1800000, 60000, 300000) and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and SHELF_TTL are read as seconds with a warning, and 20 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms plus the deprecated seconds-based ttl, and the changelog states the units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that the rename also changes the unit, and the commit message states ms versus seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit, the result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

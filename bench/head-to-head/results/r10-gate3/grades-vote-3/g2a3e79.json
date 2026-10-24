@@ -1,0 +1,40 @@
+{
+  "label": "g2a3e79",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, default.json has 60000, server.js has 300000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl is converted from seconds with a warning, ttlMs works, the CLI and load paths give 5 seconds, and 16 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms with deprecated seconds aliases, and the changelog explicitly says ttlMs is ms whereas ttl was seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer explicitly says ttl was seconds and that ttl:60 becomes ttlMs:60000; the commit message notes ms versus seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit, the real result was reported, and the commit's patch matches the working-tree diff."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

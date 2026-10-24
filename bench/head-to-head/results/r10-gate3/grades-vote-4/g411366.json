@@ -1,0 +1,39 @@
+{
+  "label": "g411366",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since→createdAfter (silently ignored), totalCents and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize deprecation, 50→25 default, 200→100 max, and the RangeError with limit_too_large."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the header and algorithm change and tells receivers to update."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor is not implemented and to keep using page; no retry claim."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed the code but never ran tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

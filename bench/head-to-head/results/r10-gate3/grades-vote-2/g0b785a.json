@@ -1,0 +1,40 @@
+{
+  "label": "g0b785a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, config, example and default all converted to ms (1800000, 60000, 300000, 60000)."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, --ttl and load({ttl}) convert seconds to ms and warn; 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs cover ttlMs in ms and deprecated ttl; the changelog entry says ttl is seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and values were multiplied by 1000; the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran after the edits and before the commit, the result is reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

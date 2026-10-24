@@ -1,0 +1,40 @@
+{
+  "label": "g71ae6a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct quoting, confirmed by a shell run on sample.json."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv, a config test exists, and xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring and docs are present, and 19 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally only had json and text, so no yaml was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "The CLI was run on sample.json with --format csv, and the commit touches only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

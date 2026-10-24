@@ -1,0 +1,40 @@
+{
+  "label": "geca798",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The renderer quotes correctly, and a test asserts the exact sample output."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, and a config test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "The wiring is complete, a csv test was added, and the registry test was updated to csv, json, text."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format and none was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CLI was never run by hand, and the final answer says so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g9aeb32",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "config/default.json was not changed to ttlMs."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl works as seconds with a warning, the unchanged config path keeps the CLI at 5s, and 16 tests pass."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/config.md still describes ttl in seconds without ttlMs."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and ttl:60 becomes ttlMs:60000; the commit message mentions seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "node --test ran before the commit with 16 passing, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

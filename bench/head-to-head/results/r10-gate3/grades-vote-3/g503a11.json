@@ -1,0 +1,39 @@
+{
+  "label": "g503a11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/deploy.md still says node:18-alpine, which is a listed file."
+    },
+    "2": {
+      "pass": true,
+      "why": "Test updated to the 20 floor and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Answer flags Dockerfile on 18, leaves it and deploy.md consistent at 18, and asks about bumping."
+    },
+    "4": {
+      "pass": false,
+      "why": "@types/node was bumped but dependabot.yml was neither changed nor mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep ran before any edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

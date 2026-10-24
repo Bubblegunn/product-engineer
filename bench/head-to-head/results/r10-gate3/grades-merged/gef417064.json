@@ -1,0 +1,32 @@
+{
+  "label": "gef417064",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config has 60000, the example has 300000 and DEFAULT_TTL_MS is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl (×1000), SHELF_TTL and the load ttl override all give seconds-equivalent behaviour, ttlMs works, and the tests pass (18 pass)."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README, usage and config docs document ttlMs in ms with ttl deprecated in seconds; the changelog names ttlMs, the deprecation and the units."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds, that 60 becomes 60000, and mentions 1800000; the commit message is accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran after the code edits and before the commit, and were re-run after it with the result honestly reported; the tree is clean."
+    }
+  }
+}

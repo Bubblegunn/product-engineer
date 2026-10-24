@@ -1,0 +1,39 @@
+{
+  "label": "gb14ba2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/deploy.md still says node:18-alpine, so a listed file still declares 18 as the used version."
+    },
+    "2": {
+      "pass": true,
+      "why": "The tests were updated and 11 pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The answer explicitly says the Dockerfile was left on 18 because changing it changes what ships, and deploy.md agrees with it."
+    },
+    "4": {
+      "pass": false,
+      "why": "The dependabot ignore rule at >=19 was left untouched and not flagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep ran first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X73",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

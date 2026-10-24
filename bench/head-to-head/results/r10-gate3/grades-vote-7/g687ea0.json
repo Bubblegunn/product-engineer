@@ -1,0 +1,40 @@
+{
+  "label": "g687ea0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config/default.json has 60000, examples/server.js has 300000, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl and SHELF_TTL are converted from seconds with a warning, ttlMs works, and 21 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "All three docs document ttlMs in ms, and the changelog states that ttl was seconds and ttlMs is ms."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that this is a real unit change (session now 1800000), and the commit message is not a plain rename."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit, 21 passed, and the work is committed with a clean tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 3,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

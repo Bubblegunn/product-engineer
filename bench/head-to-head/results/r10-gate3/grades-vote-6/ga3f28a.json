@@ -1,0 +1,40 @@
+{
+  "label": "ga3f28a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Values equal 1800000, 60000 and 300000 (session uses 30*60*1000), and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl is converted from seconds with a warning, CLI --ttl and load({ttl}) give 5 seconds, and 21 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated, and the changelog names ttlMs ms, the ttl deprecation and ttl in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer explains the seconds mismatch and the ×1000 conversion; the commit message notes ttl is seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, the result was reported, and the commit was made."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g3e8f01",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The exact-output formats test and the renderer cover the header, ordering and RFC 4180 quoting."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS includes csv, and a config-file CLI test and a schema test were added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, usage, changelog and tests were updated, and 19 tests passed."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer states tally only had json and text and that no yaml existed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The shell probe used a custom input with only a comma, no quote or newline, and never ran the sample fixture."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

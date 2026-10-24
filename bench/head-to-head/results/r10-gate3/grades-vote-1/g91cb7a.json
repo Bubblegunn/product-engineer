@@ -1,0 +1,40 @@
+{
+  "label": "g91cb7a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "csv.js gives the header and quotes commas, quotes and newlines; the test asserts the exact sample output in count-descending order."
+    },
+    "2": {
+      "pass": true,
+      "why": "ALLOWED_FORMATS and the registry both include csv, and a temp-dir config run printed csv; xml is still rejected."
+    },
+    "3": {
+      "pass": true,
+      "why": "Usage, docs/formats.md, docs/cli.md, README, CHANGELOG and the formats test are all updated, a csv test was added, and the suite was run."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says tally has no yaml format, only json and text, and none was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran the CLI with --format csv on the sample fixture in the shell, and the commit touches only tally files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

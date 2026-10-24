@@ -1,0 +1,40 @@
+{
+  "label": "gf5f3d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js, default.json and server.js have the correct ms values, and the default constant is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Legacy ttl, CLI --ttl and load({ttl}) convert to ms with a warning, and 18 tests passed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The three docs are updated, and the changelog says ttlMs is ms and the deprecated names are in seconds."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer explains the unit change with an example; the commit message says ttl is seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Tests ran before the commit, the result was reported, and the work is committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

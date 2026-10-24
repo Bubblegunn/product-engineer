@@ -1,0 +1,40 @@
+{
+  "label": "gc1d654",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The csv output is correctly escaped with the right header."
+    },
+    "2": {
+      "pass": true,
+      "why": "The schema allows csv, and a config-driven CLI test was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "All wiring is present and the tests pass after the fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "The final answer says there is no yaml format, only json and text."
+    },
+    "5": {
+      "pass": false,
+      "why": "No direct CLI run in the shell; only npm test, which includes spawn tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X72",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X72 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

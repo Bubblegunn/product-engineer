@@ -1,0 +1,13 @@
+{
+  "id": "X104",
+  "title": "Migration note for partner integrators from v1.4.0 to main",
+  "pain": "A migration guide for integrators written from commit titles and docs misses silent breaking renames and changed limits, misstates a deprecated alias as breaking, and repeats documentation for features that do not exist.",
+  "prompt": "Our partners integrate with this library. Write MIGRATION.md telling them exactly what they have to change to move from v1.4.0 to what is on main now. Keep it short, they are busy.",
+  "criteria": [
+    {"id": 1, "text": "MIGRATION.md says the option since was renamed to createdAfter and that this is breaking: the old since option is now silently ignored (no error, all invoices come back), so integrators must rename it. Also says the response field total became totalCents (integer cents, was currency units: 1260 becomes 126000) and item amount became amountCents.", "label": "outcome"},
+    {"id": 2, "text": "Says pageSize was renamed to limit but the old pageSize still works with a console deprecation warning (not a required change yet), and that the default page size changed from 50 to 25 and the maximum from 200 to 100, where a limit above 100 now throws RangeError with code limit_too_large instead of being clamped.", "label": "outcome"},
+    {"id": 3, "text": "Says webhook signatures changed: header X-Signature became X-Ledger-Signature and the algorithm HMAC-SHA1 became HMAC-SHA256, so receivers must update verification; the old header is no longer sent.", "label": "outcome"},
+    {"id": 4, "text": "Does not tell integrators to use cursor/nextCursor pagination or says explicitly it is documented in docs/api.md but not implemented in src/invoices.js; does not claim webhook retries exist (test is skipped, 'not implemented yet').", "label": "outcome"},
+    {"id": 5, "text": "Shell history shows the agent compared v1.4.0 with main at code level (git diff v1.4.0 main or git show/log -p of src/invoices.js, src/webhook.js, src/data.js) and ran node --test before writing, rather than relying on commit titles or docs.", "label": "process"}
+  ]
+}

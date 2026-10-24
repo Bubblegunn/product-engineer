@@ -1,0 +1,39 @@
+{
+  "label": "g1240fe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers since silently ignored, totalCents and amountCents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers pageSize warning, default 25, and the RangeError; the claim that limit did not exist is minor."
+    },
+    "3": {
+      "pass": true,
+      "why": "Header and algorithm covered, and says to update both."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says cursor and retries are not implemented."
+    },
+    "5": {
+      "pass": false,
+      "why": "Diffed v1.4.0 against main, but tests ran as part of verify after MIGRATION.md already existed, so not shown before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X104",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

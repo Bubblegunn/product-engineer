@@ -1,0 +1,40 @@
+{
+  "label": "g1d742d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "session.js has 1800000, config has 60000, the example has 300000, and the default is 60000."
+    },
+    "2": {
+      "pass": true,
+      "why": "ttl, --ttl, SHELF_TTL and the load ttl override all convert from seconds with a warning, ttlMs works, and 19 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs cover ttlMs in ms with deprecated seconds, and the changelog names ttlMs, deprecates ttl as seconds and states the ms unit."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says ttl was seconds and that a plain rename would have turned 60 into 60 ms, so the default became 60000 and ttl is converted; the commit message states the unit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "npm test ran before the commit, 19 passes are reported, and the commit was made, though it also wrote an extra marker file."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X71",
+    "sessions": 8,
+    "chunk": 2,
+    "chunks": 3
+  },
+  "note": "task X71 had 24 sessions, over 400000 characters of material, so it was split into 3 balanced chunks"
+}

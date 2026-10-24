@@ -1,0 +1,39 @@
+{
+  "label": "g79b173",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the code is not merged and only docs are on main."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the flag is missing from main but does not say it is false on the branch."
+    },
+    "3": {
+      "pass": false,
+      "why": "No row limit comparison."
+    },
+    "4": {
+      "pass": false,
+      "why": "No skipped test or TODO named."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git log main..branch and git diff --stat; nothing committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X101",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
