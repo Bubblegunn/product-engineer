@@ -175,13 +175,15 @@ function announces(line, words, need) {
  * Checks release notes. Returns { ok, errors, warnings, findings: [{ level, code, line, text, message }] },
  * where line is 1-based and ok means no error. options.cancelled is a list of { subject, by } for commits
  * the range cancelled; a line outside "Not in this release" that names their content words is an error.
+ * options.gone is a list of names the range removed or renamed; a customers note may write them.
  * options.audience is "customers" (the default: plain language, no code names) or "developers" (people who
  * integrate the product: the code-identifier, backtick and file-name rules are relaxed, and a renamed or
  * removed name must be written in backticks).
  */
-export function notes(text, { cancelled = [], audience = "customers", vocabulary = null } = {}) {
+export function notes(text, { cancelled = [], audience = "customers", vocabulary = null, gone = [] } = {}) {
   if (!AUDIENCES.includes(audience)) throw new Error(`unknown audience: ${audience}`);
   const developers = audience === "developers";
+  const goneSet = new Set(gone);
   const findings = [];
   const lines = text.split(/\r?\n/);
   const first = lines.findIndex((l) => l.trim() !== "");
@@ -214,7 +216,8 @@ export function notes(text, { cancelled = [], audience = "customers", vocabulary
     if (hash) report("error", "commit-hash", i, `a commit hash (${hash[0]}): a reader cannot use it; say what changed, or name the range on the first line only`);
     if (MERGE_BOILERPLATE.test(line)) report("error", "merge-boilerplate", i, "merge-commit boilerplate: write what the reader can do now, or leave the line out");
     if (!developers) {
-      const ids = identifiersIn(raw);
+      // A name the range removed or renamed is something the reader must act on, so a note may write it.
+      const ids = identifiersIn(raw).filter((id) => !goneSet.has(id.replace(/^`|`$/g, "")));
       if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words`);
     } else if (CHANGE_WORDS.test(raw) && !NAMED.test(raw)) {
       report("warn", "change-unnamed", i, "names the change but not what to change: write the exact old and new name in backticks, and the default with its unit");
@@ -293,6 +296,7 @@ export function runNotes(argv) {
   }
   let cancelled = [];
   let vocabulary = null;
+  let gone = [];
   const info = [];
   if (rangeArg !== undefined) {
     let ledger;
@@ -304,6 +308,7 @@ export function runNotes(argv) {
       console.error(`notes: cannot read the range ${rangeArg}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
       return 2;
     }
+    gone = (ledger.gonenames ?? []).map((g) => g.name);
     cancelled = ledger.commits.filter((c) => c.net?.state === "cancelled").map((c) => ({ subject: c.subject, by: c.net.by }));
     if (vocab.words === null) info.push(`traceability skipped: the range has ${vocab.commits} commits (more than ${VOCAB_COMMIT_LIMIT})`);
     else {
@@ -311,7 +316,7 @@ export function runNotes(argv) {
       if (vocab.capped) info.push(`traceability read the first ${VOCAB_CAP} words of the range; a line may be reported that a later part of the range matches`);
     }
   }
-  const r = notes(text, { cancelled, audience, vocabulary });
+  const r = notes(text, { cancelled, audience, vocabulary, gone });
   if (argv.includes("--json")) {
     console.log(JSON.stringify({ ...r, info }, null, 2));
     return r.ok ? 0 : 1;

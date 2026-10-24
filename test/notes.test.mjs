@@ -499,3 +499,12 @@ test("--range skips the traceability check above 2000 commits and says so, and e
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("customers: a name the range removed may be written; any other code name is still an error", () => {
+  const text = "Changes since v2.3.0\nThe `retryLimit` setting is gone: use the new attempts setting instead.\nThe parseQueue helper was tidied.\n";
+  const plain = notes(text, { audience: "customers" });
+  assert.equal(plain.findings.filter((f) => f.code === "code-identifier").length, 2);
+  const withGone = notes(text, { audience: "customers", gone: ["retryLimit"] });
+  const flagged = withGone.findings.filter((f) => f.code === "code-identifier");
+  assert.deepEqual(flagged.map((f) => f.line), [3]);
+});

@@ -526,3 +526,15 @@ test("stale-docs: without a README mention, or for a file that is not a notes fi
   put(dir, { "src/other.md": "Pass --ledger-flag here.\n" });
   assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/other.md")]) })).includes("stale-docs"));
 });
+
+test("twins-open: an old value still written beside the same words is a finding, also after a grep for the names", () => {
+  const dir = repo({
+    "src/limits.js": "export const MAX_UPLOAD_MB = 25;\n// Uploads larger than 25 MB are rejected.\n",
+    "docs/upload.md": "Uploads larger than 25 MB are rejected by the server.\n",
+  });
+  put(dir, { "src/limits.js": "export const MAX_UPLOAD_MB = 50;\n// Uploads larger than 50 MB are rejected.\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "src/limits.js"), B("git grep -n MAX_UPLOAD_MB")]) });
+  assert.ok(ids(f).includes("twins-open"));
+  assert.match(text(f, "twins-open"), /docs\/upload\.md:1 still says 25 \(changed to 50/);
+  assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/limits.js"), B("product-engineer twins")]) })).includes("twins-open"));
+});

@@ -393,9 +393,81 @@ function changedNames(texts) {
   return new Set([...out].sort().slice(0, MAX_NAMES));
 }
 
+const VALUE = /(?<![\p{L}\p{N}_$.])v?\d[\d_]*(?:\.\d+)*(?:[a-z]{1,3}\b)?(?![\p{L}\p{N}_$])/gu;
+const WORDS = /[\p{L}][\p{L}\p{N}_]{3,}/gu;
+const VALUE_EXT = new Set([...CODE_EXT, "json", "yml", "yaml", "toml", "ini", "cfg", "conf", "txt", "html", "env", "properties"]);
+const MAX_STALE = 8;
+const MIN_SHARED = 2;
+const valueFile = (p) => (VALUE_EXT.has(extOf(p)) || isDocPath(p)) && !SKIP_SEARCH(p) && !/(^|\/)(changelog|history|releases?|news)[^/]*$/i.test(p);
+
+const valuesOf = (text) => [...text.matchAll(VALUE)].map((m) => m[0]);
+const wordsOf = (text) => new Set([...text.replace(VALUE, " ").matchAll(WORDS)].map((m) => m[0].toLowerCase()));
+const trivialValue = (v) => !v.includes(".") && v.replace(/\D/g, "").length < 2;
+
+/**
+ * Pairs (old value, new value) from removed lines and the added line next to them that says the same thing with a
+ * different number: the same words, the same count of numbers, and at least one number that differs.
+ */
+export function valueChanges(removed, addedText) {
+  const byPath = new Map();
+  for (const a of addedText) {
+    if (!byPath.has(a.path)) byPath.set(a.path, []);
+    byPath.get(a.path).push(a.text);
+  }
+  const pairs = new Map();
+  for (const r of removed) {
+    if (isLockPath(r.path) || r.text.length > MAX_LINE) continue;
+    const oldValues = valuesOf(r.text);
+    if (oldValues.length === 0) continue;
+    const words = wordsOf(r.text);
+    let best = null;
+    for (const text of byPath.get(r.path) ?? []) {
+      const newValues = valuesOf(text);
+      if (newValues.length !== oldValues.length) continue;
+      const shared = [...wordsOf(text)].filter((w) => words.has(w)).length;
+      if (shared < MIN_SHARED && !(words.size > 0 && shared === words.size)) continue;
+      if (!best || shared > best.shared) best = { shared, newValues };
+    }
+    if (!best) continue;
+    oldValues.forEach((v, i) => {
+      const next = best.newValues[i];
+      if (v === next || trivialValue(v)) return;
+      const key = `${v}\0${next}`;
+      if (!pairs.has(key)) pairs.set(key, { from: v, to: next, source: { path: r.path, line: r.line, text: r.text.trim() }, words: new Set(words) });
+      else for (const w of words) pairs.get(key).words.add(w);
+    });
+  }
+  return [...pairs.values()];
+}
+
+/** Lines in other files that still hold an old value next to the words of the line that changed it. */
+function staleValues(top, source, pairs, added) {
+  const out = [];
+  if (pairs.length === 0) return out;
+  const re = pairs.map((p) => [p, new RegExp(`(?<![\\p{L}\\p{N}_$.])${p.from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}_$]|\\.\\d)`, "u")]);
+  for (const { path, buf } of searchedFiles(top, source, valueFile)) {
+    const addedHere = added.get(path);
+    const lines = buf.toString("utf8").split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (addedHere?.has(i + 1)) continue;
+      const t = lines[i].trim();
+      if (t.length === 0 || t.length > MAX_LINE) continue;
+      for (const [p, rx] of re) {
+        if (!rx.test(t) || t.includes(p.to)) continue;
+        const words = wordsOf(t);
+        const shared = [...p.words].filter((w) => words.has(w)).length;
+        if (shared < MIN_SHARED) continue;
+        if (path === p.source.path && i + 1 === p.source.line) continue;
+        if (out.filter((x) => x.from === p.from).length < MAX_STALE) out.push({ from: p.from, to: p.to, path, line: i + 1, text: t, changed: `${p.source.path}:${p.source.line}` });
+      }
+    }
+  }
+  return out;
+}
+
 export function twins({ range, cwd = process.cwd() } = {}) {
   const { rangeArgs, label, source } = chooseChange(range, cwd);
-  if (!rangeArgs) return { label, checked: 0, withTwins: 0, removed: [], mentions: [] };
+  if (!rangeArgs) return { label, checked: 0, withTwins: 0, removed: [], mentions: [], stale: [] };
   const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--src-prefix=a/", "--dst-prefix=b/", ...rangeArgs], cwd);
   const { removed, added, addedText, contexts, paths } = parsePatch(patch);
   const targets = [];
@@ -413,9 +485,11 @@ export function twins({ range, cwd = process.cwd() } = {}) {
   }
   const names = changedNames([...removed, ...addedText, ...contexts]);
   let mentions = [];
+  const top = git(["rev-parse", "--show-toplevel"], cwd).trim();
   if (groups.size > 0 || names.size > 0) {
-    mentions = scanFiles(git(["rev-parse", "--show-toplevel"], cwd).trim(), source, { groups, bags, added, names, changed: paths });
+    mentions = scanFiles(top, source, { groups, bags, added, names, changed: paths });
   }
+  const stale = staleValues(top, source, valueChanges(removed.filter((r) => !isTestPath(r.path)), addedText), added);
   const strip = ({ path, line, text }) => ({ path, line, text });
   const withTwins = targets
     .map((t) => {
@@ -425,7 +499,7 @@ export function twins({ range, cwd = process.cwd() } = {}) {
     })
     .filter((t) => t.twins.length > 0 || t.loose.length > 0)
     .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : a.line - b.line));
-  return { label, checked: targets.length, withTwins: withTwins.length, removed: withTwins, mentions };
+  return { label, checked: targets.length, withTwins: withTwins.length, removed: withTwins, mentions, stale };
 }
 
 const clip = (s) => s.slice(0, 100);
@@ -447,6 +521,11 @@ export function render(report) {
   if (report.mentions?.length) {
     out.push("comments that mention the changed name:");
     for (const m of report.mentions) out.push(`mention  ${m.path}:${m.line}${m.doc ? " (doc)" : ""}  ${clip(m.text)}`);
+  }
+  if (report.stale?.length) {
+    out.push("old values still written elsewhere (this change replaced them):");
+    for (const v of report.stale) out.push(`stale  ${v.path}:${v.line}  ${v.from} -> ${v.to}  ${clip(v.text)}  (changed at ${v.changed})`);
+    out.push("Candidates only: the same words and the old value, in a place the change did not touch. Update each one that states the same thing, or say why it stays.");
   }
   return out.join("\n");
 }

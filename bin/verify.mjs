@@ -268,19 +268,21 @@ function twinsOpen(ctx) {
   const { events } = ctx.session;
   if (events.some((e) => e.kind === "bash" && TWINS_RUN.test(e.command))) return [];
   const tokens = removedTokens(change);
-  if (events.some((e) => e.kind === "bash" && GREP_RUN.test(e.command) && tokens.some((t) => e.command.includes(t)))) return [];
+  const grepped = events.some((e) => e.kind === "bash" && GREP_RUN.test(e.command) && tokens.some((t) => e.command.includes(t)));
   const report = twinsOf({ range: change.range, cwd: ctx.top });
   const items = [];
-  for (const r of report.removed) {
+  for (const r of grepped ? [] : report.removed) {
     for (const t of r.twins) if (items.length < SHOWN) items.push({ t, r, loose: false });
     for (const t of r.loose) if (items.length < SHOWN) items.push({ t, r, loose: true });
   }
-  if (!items.length) return [];
+  const stale = (report.stale ?? []).slice(0, SHOWN).map((v) => `${v.path}:${v.line} still says ${v.from} (changed to ${v.to} at ${v.changed})`);
+  if (!items.length && !stale.length) return [];
+  if (!items.length) return [{ id: "twins-open", text: `Old values still written elsewhere: ${stale.join("; ")}. Run product-engineer twins and update each line that states the same thing, or say why it stays.` }];
   const list = items.map(({ t, r, loose }) => `twin ${t.path}:${t.line} (resembles removed ${r.path}:${r.line} "${clip(r.text, 60)}")${loose ? " (looser match)" : ""}`).join("; ");
   // Comments that name a changed function often point at the copy (`Same calculation as ...`).
   const named = (report.mentions ?? []).slice(0, MENTIONS_SHOWN).map((m) => `${m.path}:${m.line} "${clip(m.text, 60)}"`);
   const comments = named.length ? ` Comments that name the changed code: ${named.join("; ")}.` : "";
-  return [{ id: "twins-open", text: `Lines that match lines this change removed: ${list}.${comments} Run product-engineer twins and fix each copy that has the same defect, or say why it does not.` }];
+  return [{ id: "twins-open", text: `Lines that match lines this change removed: ${list}.${comments} ${stale.length ? ` Old values still written elsewhere: ${stale.join("; ")}.` : ""} Run product-engineer twins and fix each copy that has the same defect, or say why it does not.` }];
 }
 
 // A prompt that asks for a refactor, cleanup or merge. A bug fix with none of these words is not checked here.

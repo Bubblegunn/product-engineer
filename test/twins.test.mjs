@@ -459,3 +459,37 @@ test("a removed line in a doc is not searched for", () => {
   assert.equal(report.checked, 0);
   assert.equal(report.withTwins, 0);
 });
+
+// Stale values: a number the change replaced, still written next to the same words in another file.
+const limits = {
+  "src/limits.js": "export const MAX_UPLOAD_MB = 25;\n// Uploads larger than 25 MB are rejected.\n",
+  "docs/upload.md": "Uploads larger than 25 MB are rejected by the server.\n",
+  "docs/other.md": "The cache keeps 25 entries per user.\n",
+  "CHANGELOG.md": "- Uploads larger than 25 MB are rejected.\n",
+};
+
+test("an old value still written beside the same words in another file is reported", () => {
+  const dir = repo(limits);
+  edit(dir, "src/limits.js", "export const MAX_UPLOAD_MB = 50;\n// Uploads larger than 50 MB are rejected.\n");
+  const report = twins({ cwd: dir });
+  const where = report.stale.map((s) => `${s.path}:${s.line}`);
+  assert.deepEqual(where, ["docs/upload.md:1"]);
+  assert.equal(report.stale[0].from, "25");
+  assert.equal(report.stale[0].to, "50");
+  assert.match(render(report), /^stale  docs\/upload\.md:1  25 -> 50  /m);
+});
+
+test("a line with the old value but other words, a changelog line and a line that already has the new value are not reported", () => {
+  const dir = repo({ ...limits, "docs/both.md": "Uploads larger than 25 MB (now 50 MB) are rejected.\n" });
+  edit(dir, "src/limits.js", "export const MAX_UPLOAD_MB = 50;\n// Uploads larger than 50 MB are rejected.\n");
+  const paths = twins({ cwd: dir }).stale.map((s) => s.path);
+  assert.ok(!paths.includes("docs/other.md"));
+  assert.ok(!paths.includes("CHANGELOG.md"));
+  assert.ok(!paths.includes("docs/both.md"));
+});
+
+test("a number that did not change, or a change that adds no number, reports nothing", () => {
+  const dir = repo(limits);
+  edit(dir, "src/limits.js", "export const MAX_UPLOAD_MB = 25;\n// Uploads above 25 MB are refused.\n");
+  assert.deepEqual(twins({ cwd: dir }).stale, []);
+});
