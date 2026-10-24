@@ -55,7 +55,7 @@ test("buildPrompt carries the answer, the last commands truncated, and the files
 test("the stub receives the answer text, the commands and the fixed flags", async () => {
   const out = outFile();
   const bin = stub(`printf '%s\\n' "$@" > "${out}"\nprintf 'nogate=%s\\n' "$PRODUCT_ENGINEER_NO_GATE" >> "${out}"\n${ok()}`);
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, files: ["src/a.js"], env: { PE_SECOND_EYE_CLAUDE: bin } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, files: ["src/a.js"], env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.skipped, null);
   const got = readFileSync(out, "utf8");
   assert.ok(got.includes(ANSWER), "the answer is on the prompt");
@@ -66,32 +66,32 @@ test("the stub receives the answer text, the commands and the fixed flags", asyn
 });
 
 test("a valid reply is returned as unchecked items", async () => {
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: stub(ok()) } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: stub(ok()) } });
   assert.equal(r.skipped, null);
   assert.deepEqual(r.unchecked, [{ claim: "There are 12 commits ahead of main.", why: "no rev-list was run" }]);
   assert.equal(typeof r.ms, "number");
 });
 
 test("JSON wrapped in prose is accepted, an empty list is no finding", async () => {
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: stub("echo 'Result: {\"unchecked\":[]} done'") } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: stub("echo 'Result: {\"unchecked\":[]} done'") } });
   assert.deepEqual(r, { unchecked: [], skipped: null, ms: r.ms });
 });
 
 test("garbage output is skipped as unparseable", async () => {
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: stub("echo 'I cannot help with that'") } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: stub("echo 'I cannot help with that'") } });
   assert.equal(r.skipped, "unparseable");
   assert.deepEqual(r.unchecked, []);
 });
 
 test("a non-zero exit is skipped with the exit code", async () => {
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: stub("echo partial; exit 1") } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: stub("echo partial; exit 1") } });
   assert.equal(r.skipped, "exit-1");
 });
 
 test("a child that runs past the timeout is killed and skipped as timeout", async () => {
   const pidFile = join(TMP, `pid-${Date.now()}.txt`);
   const bin = stub(`echo $$ > "${pidFile}"\nsleep 30`);
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, timeoutMs: 800, env: { PE_SECOND_EYE_CLAUDE: bin } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, timeoutMs: 800, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.skipped, "timeout");
   assert.ok(r.ms < 20000, `returned in ${r.ms} ms`);
   const pid = Number(readFileSync(pidFile, "utf8").trim());
@@ -100,7 +100,7 @@ test("a child that runs past the timeout is killed and skipped as timeout", asyn
 });
 
 test("a missing binary is skipped and nothing throws", async () => {
-  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: join(TMP, "no-such-binary") } });
+  const r = await secondEye({ answer: ANSWER, commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: join(TMP, "no-such-binary") } });
   assert.equal(r.skipped, "missing-binary");
 });
 
@@ -108,13 +108,13 @@ test("the call is skipped when disabled, when the answer is short, and when ther
   const out = outFile();
   const bin = stub(`echo called > "${out}"\n${ok()}`);
   assert.equal((await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: bin, PRODUCT_ENGINEER_SECOND_EYE: "0" } })).skipped, "disabled");
-  assert.equal((await secondEye({ answer: "Too short.", commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: bin } })).skipped, "short-answer");
-  assert.equal((await secondEye({ answer: ANSWER, commands: [], files: [], env: { PE_SECOND_EYE_CLAUDE: bin } })).skipped, "no-evidence");
+  assert.equal((await secondEye({ answer: "Too short.", commands: CMDS, env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } })).skipped, "short-answer");
+  assert.equal((await secondEye({ answer: ANSWER, commands: [], files: [], env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } })).skipped, "no-evidence");
   assert.equal(existsSync(out), false, "the binary was never run");
 });
 
 test("each call writes one line to the log", async () => {
-  await secondEye({ answer: "short", env: {} });
+  await secondEye({ answer: "short", env: { PRODUCT_ENGINEER_SECOND_EYE: "1" } });
   const log = readFileSync(join(TMP, "product-engineer-second-eye.log"), "utf8");
   assert.match(log, /skipped=short-answer unchecked=0/);
 });
@@ -136,7 +136,7 @@ const turn = (prompt) => [
 test("gate integration: an unsupported claim becomes one finding in the block reason", () => {
   const out = outFile();
   const bin = stub(`printf 'called\\n' > "${out}"\n${ok("There are 12 commits ahead of main.")}`);
-  const r = runHook(turn("Look at the reminder rule."), { PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
+  const r = runHook(turn("Look at the reminder rule."), { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
   const reason = JSON.parse(r.stdout).reason;
   assert.equal(reason.split("A second reading of your answer found claims with no supporting command:").length - 1, 1);
   assert.match(reason, /command: There are 12 commits ahead of main\. Check each/);
@@ -145,7 +145,7 @@ test("gate integration: an unsupported claim becomes one finding in the block re
 });
 
 test("gate integration: an empty verdict adds nothing and the hook stays silent", () => {
-  const r = runHook(turn("Look at the reminder rule."), { PE_SECOND_EYE_CLAUDE: stub('echo \'{"unchecked":[]}\'') }, ANSWER);
+  const r = runHook(turn("Look at the reminder rule."), { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: stub('echo \'{"unchecked":[]}\'') }, ANSWER);
   assert.equal(r.stdout, "");
 });
 
@@ -155,7 +155,7 @@ test("gate integration: with one other block the second eye adds its finding to 
     { type: "user", message: { content: "Look at the reminder rule." } },
     { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
   ];
-  const reason = JSON.parse(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass.`).stdout).reason;
+  const reason = JSON.parse(runHook(lines, { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass.`).stdout).reason;
   assert.match(reason, /tests pass/);
   assert.equal(reason.split("A second reading").length - 1, 1);
 });
@@ -167,7 +167,7 @@ test("gate integration: with two other blocks the second eye does not run", () =
     { type: "user", message: { content: "Look at the reminder rule." } },
     { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: "All tests pass." }] } },
   ];
-  const reason = JSON.parse(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass. The change is pushed to origin.`).stdout).reason;
+  const reason = JSON.parse(runHook(lines, { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, `${ANSWER} All tests pass. The change is pushed to origin.`).stdout).reason;
   assert.match(reason, /tests pass/);
   assert.match(reason, /pushed|remote/);
   assert.equal(reason.includes("A second reading"), false);
@@ -177,6 +177,30 @@ test("gate integration: with two other blocks the second eye does not run", () =
 test("gate integration: the hook is silent with PRODUCT_ENGINEER_SECOND_EYE=0", () => {
   const out = outFile();
   const r = runHook(turn("Look at the reminder rule."), { PE_SECOND_EYE_CLAUDE: stub(`echo called > "${out}"\n${ok()}`), PRODUCT_ENGINEER_SECOND_EYE: "0" }, ANSWER);
+  assert.equal(r.stdout, "");
+  assert.equal(existsSync(out), false);
+});
+
+test("second eye is off unless PRODUCT_ENGINEER_SECOND_EYE is exactly 1", async () => {
+  const out = outFile();
+  const bin = stub(`echo called > "${out}"\n${ok()}`);
+  for (const value of [undefined, "0", "", "true", "yes", "01", " 1"]) {
+    const env = value === undefined ? { PE_SECOND_EYE_CLAUDE: bin } : { PE_SECOND_EYE_CLAUDE: bin, PRODUCT_ENGINEER_SECOND_EYE: value };
+    assert.equal((await secondEye({ answer: ANSWER, commands: CMDS, env })).skipped, "disabled", `value ${JSON.stringify(value)}`);
+  }
+  assert.equal(existsSync(out), false, "the binary was never run");
+  assert.equal((await secondEye({ answer: ANSWER, commands: CMDS, env: { PE_SECOND_EYE_CLAUDE: bin, PRODUCT_ENGINEER_SECOND_EYE: "1" } })).skipped, null);
+  assert.equal(existsSync(out), true, "the flag set to 1 runs the binary");
+});
+
+test("gate integration: with the flag unset the hook makes no second-eye call and stays silent", () => {
+  const out = outFile();
+  const env = { ...process.env, PE_SECOND_EYE_CLAUDE: stub(`echo called > "${out}"\n${ok()}`) };
+  delete env.PRODUCT_ENGINEER_SECOND_EYE;
+  const dir = mkdtempSync(join(TMP, "hook-"));
+  const transcript = join(dir, "t.jsonl");
+  writeFileSync(transcript, turn("Look at the reminder rule.").map((l) => JSON.stringify(l)).join("\n"));
+  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: mkdtempSync(join(TMP, "nogit-")), last_assistant_message: ANSWER }), encoding: "utf8", env });
   assert.equal(r.stdout, "");
   assert.equal(existsSync(out), false);
 });
@@ -210,7 +234,7 @@ test("gate integration: three findings from the other checks keep the second eye
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, writeTurn("Look at the reminder rule.", repo, ["alpha", "beta", "gamma"]).map((l) => JSON.stringify(l)).join("\n"));
-  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: repo, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PE_SECOND_EYE_CLAUDE: bin } });
+  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: repo, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.status, 0);
   assert.ok(JSON.parse(r.stdout).reason.includes("referenced nowhere"), "the three unwired-file findings block");
   assert.equal(existsSync(out), false, "the second eye did not run");
@@ -224,7 +248,7 @@ test("gate integration: one finding from the other checks still lets the second 
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, writeTurn("Look at the reminder rule.", repo, ["alpha"]).map((l) => JSON.stringify(l)).join("\n"));
-  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: repo, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PE_SECOND_EYE_CLAUDE: bin } });
+  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: repo, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   const reason = JSON.parse(r.stdout).reason;
   assert.ok(reason.includes("referenced nowhere"));
   assert.equal(reason.split("A second reading").length - 1, 1);
@@ -236,7 +260,7 @@ test("gate integration: a repair round (stop_hook_active) makes no second-eye ca
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, turn("Look at the reminder rule.").map((l) => JSON.stringify(l)).join("\n"));
-  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: mkdtempSync(join(TMP, "nogit-")), session_id: "pe-repair-round", stop_hook_active: true, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PE_SECOND_EYE_CLAUDE: bin } });
+  const r = spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd: mkdtempSync(join(TMP, "nogit-")), session_id: "pe-repair-round", stop_hook_active: true, last_assistant_message: ANSWER }), encoding: "utf8", env: { ...process.env, PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.stdout, "");
   assert.equal(existsSync(out), false);
 });
@@ -261,7 +285,7 @@ test("second eye: the string form of commands still works", () => {
 test("second eye: the stub receives the printed output of each command", async () => {
   const out = outFile();
   const bin = stub(`printf '%s' "$2" > "${out}"\n${ok()}`);
-  const r = await secondEye({ answer: ANSWER, commands: [{ command: "git rev-list --count main..HEAD", output: "12\n" }], env: { PE_SECOND_EYE_CLAUDE: bin } });
+  const r = await secondEye({ answer: ANSWER, commands: [{ command: "git rev-list --count main..HEAD", output: "12\n" }], env: { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin } });
   assert.equal(r.skipped, null);
   assert.ok(readFileSync(out, "utf8").includes("git rev-list --count main..HEAD"));
   assert.ok(readFileSync(out, "utf8").includes("12"));
@@ -276,7 +300,7 @@ test("gate integration: the gate passes each command's paired output to the seco
     { type: "user", message: { content: [{ type: "tool_result", tool_use_id: "t1", content: "4f2a9c1 newest commit line\n" }] } },
     { type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "NOTES.md" } }, { type: "text", text: ANSWER }] } },
   ];
-  const r = runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
+  const r = runHook(lines, { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
   assert.equal(r.status, 0);
   assert.ok(readFileSync(out, "utf8").includes("4f2a9c1 newest commit line"), "the output is on the prompt");
 });
@@ -288,6 +312,6 @@ test("noise: a read-only session makes no second-eye call and does not block", (
     { type: "user", message: { content: "Look at the reminder rule." } },
     { type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "ls" } }, { type: "text", text: ANSWER }] } },
   ];
-  assert.equal(runHook(lines, { PE_SECOND_EYE_CLAUDE: bin }, ANSWER).stdout, "");
+  assert.equal(runHook(lines, { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, ANSWER).stdout, "");
   assert.equal(existsSync(out), false);
 });

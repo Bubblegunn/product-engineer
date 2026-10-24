@@ -737,3 +737,75 @@ test("the vocabulary of a 500-commit range is built and matched against a note i
   assert.deepEqual(r.findings.map((f) => `${f.code}:${f.line}`), ["untraced:3"]);
   assert.ok(ms < 3000, `took ${ms} ms`);
 });
+
+// Stale docs: a doc at <to> that still names a token only a reverted commit added.
+function flagRepo({ readme = null, reapply = false } = {}) {
+  const dir = newRepo();
+  const base = commit(dir, { "src/cli.js": "export const run = (argv) => argv.length;\n", "README.md": "# Shop\n" }, "chore: start the shop");
+  const feat = commit(dir, { "src/cli.js": "export const run = (argv) => (argv.includes(\"--ledger-flag\") ? 1 : 0);\n" }, "feat(cli): add ledger flag");
+  run(dir, "revert", "--no-edit", feat);
+  if (reapply) run(dir, "revert", "--no-edit", head(dir));
+  if (readme) commit(dir, { "README.md": `# Shop\n\n${readme}\n` }, "docs: explain the ledger");
+  return { dir, base, feat };
+}
+
+test("stale docs: a doc line naming a flag that a reverted commit added is listed with its commit", () => {
+  const { dir, base, feat } = flagRepo({ readme: "Pass --ledger-flag to print the ledger." });
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.staledocs.map(({ path, line, token }) => ({ path, line, token })), [{ path: "README.md", line: 3, token: "--ledger-flag" }]);
+  assert.equal(report.staledocs[0].sha, feat.slice(0, 7));
+  assert.equal(report.staledocs[0].subject, "feat(cli): add ledger flag");
+  const text = render(report);
+  assert.match(text, /^docs that still describe cancelled work:$/m);
+  assert.ok(text.includes(`  README.md:3  mentions --ledger-flag (added in ${feat.slice(0, 7)} "feat(cli): add ledger flag", reverted in this range)`));
+});
+
+test("stale docs: no doc names the reverted flag, so the section is absent", () => {
+  const { dir, base } = flagRepo({ readme: "# Shop" });
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.staledocs, []);
+  assert.ok(!render(report).includes("docs that still describe cancelled work"));
+});
+
+test("stale docs: a reverted change that is reapplied is present, so a doc naming it is not stale", () => {
+  const { dir, base } = flagRepo({ readme: "Pass --ledger-flag to print the ledger.", reapply: true });
+  const report = range({ from: base, to: "HEAD", cwd: dir });
+  assert.deepEqual(report.staledocs, []);
+});
+
+test("stale docs: the CLI json carries the staledocs field", () => {
+  const { dir, base } = flagRepo({ readme: "Pass --ledger-flag to print the ledger." });
+  const json = spawnSync(process.execPath, [CLI, "range", `${base}..HEAD`, "--json"], { cwd: dir, encoding: "utf8" });
+  assert.equal(json.status, 0);
+  const parsed = JSON.parse(json.stdout);
+  assert.equal(parsed.staledocs.length, 1);
+  assert.equal(parsed.staledocs[0].token, "--ledger-flag");
+});
+
+test("stale docs: a 500-commit range with reverts is read under 3 seconds and still finds the doc mention", () => {
+  const dir = newRepo();
+  const lines = [];
+  const emit = (mark, subject, ops) => {
+    lines.push("commit refs/heads/master", `mark :${mark}`, `committer Dev <dev@example.com> ${1761900000 + mark} +0000`, `data ${Buffer.byteLength(subject)}`, subject);
+    if (mark > 1) lines.push(`from :${mark - 1}`);
+    for (const op of ops) {
+      if (op.del) lines.push(`D ${op.del}`);
+      else lines.push(`M 100644 inline ${op.path}`, `data ${Buffer.byteLength(op.content)}`, op.content);
+    }
+    lines.push("");
+  };
+  emit(1, "chore: start the shop", [{ path: "README.md", content: "# Shop\n" }]);
+  const N = 500;
+  for (let i = 1; i <= N; i++) {
+    if (i % 2 === 1) emit(i + 1, `feat(step): change ${i}`, [{ path: `src/s${i}.js`, content: `export const v${i} = "--step-${i}";\n` }]);
+    else emit(i + 1, `Revert "feat(step): change ${i - 1}"`, [{ del: `src/s${i - 1}.js` }]);
+  }
+  emit(N + 2, "docs: explain step seven", [{ path: "README.md", content: "# Shop\n\nSee --step-7 for details.\n" }]);
+  execFileSync("git", ["fast-import", "--quiet"], { cwd: dir, input: lines.join("\n") + "\n" });
+  const t0 = Date.now();
+  const report = range({ from: "HEAD~501", to: "HEAD", cwd: dir });
+  const ms = Date.now() - t0;
+  assert.equal(report.summary.commits, 501);
+  assert.ok(report.staledocs.some((d) => d.token === "--step-7" && d.path === "README.md"), "the doc mention is found");
+  assert.ok(ms < 3000, `took ${ms} ms`);
+});

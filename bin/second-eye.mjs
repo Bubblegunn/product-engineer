@@ -5,7 +5,7 @@
 // The call is a child process: `claude -p --model claude-haiku-5-5` with no settings sources, no slash commands and no
 // session persistence, run from the temp directory with PRODUCT_ENGINEER_NO_GATE=1 so the child's own Stop hook stays silent.
 // Every problem returns a reason in `skipped`; secondEye never throws and never blocks on its own.
-// The binary is PE_SECOND_EYE_CLAUDE when set, else `claude`. PRODUCT_ENGINEER_SECOND_EYE=0 disables the call.
+// The binary is PE_SECOND_EYE_CLAUDE when set, else `claude`. The call runs only when PRODUCT_ENGINEER_SECOND_EYE=1: off by default, and any other value or an unset variable is off.
 // `commands` takes strings or { command, output }; the output is the tail of what the command printed.
 import { spawn } from "node:child_process";
 import { appendFileSync } from "node:fs";
@@ -184,7 +184,7 @@ export async function secondEye({ answer = "", commands = [], files = [], env = 
     const text = String(answer ?? "");
     const cmds = Array.isArray(commands) ? commands.map(asEntry) : [];
     const paths = Array.isArray(files) ? files.map(String) : [];
-    if (env.PRODUCT_ENGINEER_SECOND_EYE === "0") return done("disabled");
+    if (env.PRODUCT_ENGINEER_SECOND_EYE !== "1") return done("disabled");
     if (text.length < MIN_ANSWER) return done("short-answer");
     if (!cmds.length && !paths.length) return done("no-evidence");
     const bin = env.PE_SECOND_EYE_CLAUDE || "claude";

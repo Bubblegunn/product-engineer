@@ -406,3 +406,53 @@ test("unwired-file: entry points, index files, tests and config are never candid
   const f = verify({ cwd: dir, session: SP([W(dir, "src/entry.js"), W(dir, "src/index.js"), W(dir, "test/x.test.js"), W(dir, "config/app.json")]) });
   assert.ok(!ids(f).includes("unwired-file"), JSON.stringify(f));
 });
+
+// A tagged release, then a flag added and reverted in the range; the README names the flag at line 3 when `readme` is set.
+function flagReleaseRepo(readme) {
+  const dir = repo({ ...TESTED, "src/cli.js": "export const run = (argv) => argv.length;\n", "README.md": "# Shop\n" });
+  sh(dir, ["tag", "v0"]);
+  put(dir, { "src/cli.js": "export const run = (argv) => (argv.includes(\"--ledger-flag\") ? 1 : 0);\n" });
+  commit(dir, "feat(cli): add ledger flag");
+  sh(dir, ["revert", "--no-edit", "HEAD"]);
+  if (readme) {
+    put(dir, { "README.md": `# Shop\n\n${readme}\n` });
+    commit(dir, "docs: explain the ledger");
+  }
+  return dir;
+}
+const STALE = /README\.md:3 still describes --ledger-flag, which was added and reverted in this range\. Fix the document or tell the owner it is stale\./;
+
+test("notes-check: a note with a range names a README line that still describes a reverted flag", () => {
+  const dir = flagReleaseRepo("Pass --ledger-flag to print the ledger.");
+  put(dir, { "RELEASE-NOTES.md": "Changes since v0\n\nFixed the page layout.\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "RELEASE-NOTES.md")]) });
+  assert.ok(ids(f).includes("notes-check"));
+  assert.match(text(f, "notes-check"), STALE);
+  assert.equal(ids(f).filter((i) => i === "stale-docs").length, 0, "no second finding for the same file");
+});
+
+test("notes-check: with no README mention of the reverted flag there is no stale finding", () => {
+  const dir = flagReleaseRepo(null);
+  put(dir, { "RELEASE-NOTES.md": "Changes since v0\n\nFixed the page layout.\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "RELEASE-NOTES.md")]) });
+  assert.ok(!text(f, "notes-check").includes("still describes"));
+  assert.ok(!ids(f).includes("stale-docs"));
+});
+
+test("stale-docs: a notes file with no range line uses the latest tag to HEAD and reports the stale README line", () => {
+  const dir = flagReleaseRepo("Pass --ledger-flag to print the ledger.");
+  put(dir, { "upgrade-guide.md": "Upgrading is a one-line change.\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "upgrade-guide.md")]) });
+  assert.ok(ids(f).includes("stale-docs"));
+  assert.match(text(f, "stale-docs"), STALE);
+  assert.ok(!ids(f).includes("notes-check"), "no range line, so notes-check does not read the file");
+});
+
+test("stale-docs: without a README mention, or for a file that is not a notes file, nothing is reported", () => {
+  const clean = flagReleaseRepo(null);
+  put(clean, { "upgrade-guide.md": "Upgrading is a one-line change.\n" });
+  assert.ok(!ids(verify({ cwd: clean, session: S([W(clean, "upgrade-guide.md")]) })).includes("stale-docs"));
+  const dir = flagReleaseRepo("Pass --ledger-flag to print the ledger.");
+  put(dir, { "src/other.md": "Pass --ledger-flag here.\n" });
+  assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/other.md")]) })).includes("stale-docs"));
+});

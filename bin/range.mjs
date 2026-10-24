@@ -5,7 +5,8 @@
 // range, a patch-identical duplicate (cherry-pick), security or performance wording in the subject, a
 // breaking-change marker, a conventional type that the changed files contradict, and a requirement change
 // (a runtime or engine line in a manifest). A flag on a changed-file contradiction or a requirement change
-// prints up to six of the changed lines under it. A revert names the
+// prints up to six of the changed lines under it. A doc at <to> that still names a token only a reverted commit
+// added is listed under "docs that still describe cancelled work". A revert names the
 // commit it undoes; a revert of a revert puts that change back, so the net state follows the chain in
 // order. Facts come from `git log`, `git diff-tree`, `git show` and `git patch-id --stable` (the same
 // patch id means the same change). No model and no network. Every line is a candidate to check against
@@ -64,6 +65,10 @@ const VERSION_ONLY_FILE = /(^|\/)(\.nvmrc|\.node-version|\.python-version|\.tool
 const EVIDENCE_FILES = 2;
 const EVIDENCE_LINES = 6;
 const EVIDENCE_WIDTH = 100;
+// Stale docs: the doc files searched at <to>, the lines shown in the section, and the width of a subject shown.
+const DOC_PATHSPECS = ["*.md", "*.mdx", "*.rst", "*.txt", "docs/*", "*/docs/*"];
+const STALE_SHOWN = 8;
+const SUBJECT_SHOWN = 50;
 
 const git = (args, cwd, input) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", input, stdio: ["pipe", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
 // The same, as bytes: blob contents can be binary or have very long lines.
@@ -120,6 +125,70 @@ function hasWord(text, token) {
     if (!WORD_CHAR.test(before) && !WORD_CHAR.test(after)) return true;
   }
   return false;
+}
+
+/** The added lines of one patch as { path, text }: the hunk lines that start with "+", with the new-side path of their file. */
+function addedLinesOf(patch) {
+  const out = [];
+  let path = null;
+  let inHunk = false;
+  for (const line of patch.split("\n")) {
+    if (line.startsWith("diff --git ")) { inHunk = false; path = null; continue; }
+    if (!inHunk) {
+      if (line.startsWith("+++ ")) {
+        const p = line.slice(4).replace(/\t$/, "");
+        path = p === "/dev/null" ? null : p.replace(/^b\//, "");
+      } else if (line.startsWith("@@")) inHunk = true;
+      continue;
+    }
+    if (line[0] === "+" && path !== null) out.push({ path, text: line.slice(1) });
+  }
+  return out;
+}
+
+/**
+ * The doc lines at <to> that name a token which only cancelled commits of the range added: no change that stays in the
+ * range adds it. Each entry: { path, line, token, sha, subject } where sha and subject are the first cancelled commit
+ * that added the token. Doc and test files are not read for the added tokens; only doc files at <to> are searched.
+ */
+function staleDocsOf(commits, patchOf, toSha, cwd, notes) {
+  const addedBy = new Map();
+  const kept = new Set();
+  for (const c of commits) {
+    if (c.kind || c.merge) continue;
+    for (const { path, text } of addedLinesOf(patchOf.get(c.sha) ?? "")) {
+      const kind = classOf(path);
+      if (kind === "test" || kind === "doc" || COMMENT_LINE.test(text)) continue;
+      for (const t of tokensOf(text)) {
+        if (c.net.state !== "cancelled") kept.add(t);
+        else if (!addedBy.has(t)) addedBy.set(t, c);
+      }
+    }
+  }
+  const tokens = [...addedBy.keys()].filter((t) => !kept.has(t));
+  if (tokens.length === 0) return [];
+  const checked = tokens.slice(0, GONE_CAP);
+  if (tokens.length > GONE_CAP) notes.push(`docs that still describe cancelled work: checked the first ${GONE_CAP} of ${tokens.length} tokens`);
+  const dir = mkdtempSync(join(tmpdir(), "pe-range-"));
+  try {
+    const patternFile = join(dir, "stale-tokens.txt");
+    writeFileSync(patternFile, `${checked.join("\n")}\n`);
+    const out = grep(["-l", "-z", "-w", "-F", "-f", patternFile, toSha, "--", ...DOC_PATHSPECS], cwd);
+    const paths = out.split("\0").filter(Boolean).map((l) => l.slice(toSha.length + 1));
+    const found = [];
+    for (const { path, text } of blobsOf(paths, toSha, cwd)) {
+      text.split("\n").forEach((line, i) => {
+        for (const token of checked) {
+          if (!hasWord(line, token)) continue;
+          const c = addedBy.get(token);
+          found.push({ path, line: i + 1, token, sha: c.short, subject: c.subject });
+        }
+      });
+    }
+    return found;
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 /** `<from>..<to>` or a bare ref (which means `<ref>..HEAD`). Null when the text is not a range this reads. */
@@ -424,6 +493,7 @@ export function range({ from, to, cwd = process.cwd(), firstParent = false } = {
 
   // Names gone at <to>, from the net diff (a name removed and re-added inside the range is still present).
   const gonenames = goneNames(removedNames(git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", fromSha, toSha], cwd)), fromSha, toSha, cwd, notes);
+  const staledocs = staleDocsOf(commits, patchOf, toSha, cwd, notes);
 
   const firstByPatch = new Map();
   const duplicateOf = new Map();
@@ -513,6 +583,7 @@ export function range({ from, to, cwd = process.cwd(), firstParent = false } = {
     themes,
     commits: commits.map((c) => ({ sha: c.sha, short: c.short, subject: c.subject, merge: c.merge, classes: c.classes, files: c.files, patchId: c.patchId, net: c.kind ? null : c.net, flags: c.flags.map(({ code, text, evidence, moreLines }) => ({ code, text, evidence, moreLines })) })),
     gonenames,
+    staledocs,
     notes,
     footer: FOOTER,
   };
@@ -544,6 +615,14 @@ export function render(report) {
       out.push(`  ${g.name}  (was in ${g.files} file${g.files === 1 ? "" : "s"}: ${shown})`);
     }
     out.push("Candidates: a name that disappeared may be a renamed or removed option, flag, setting or function that users call. Check before you write the release notes.");
+  }
+  if (report.staledocs?.length) {
+    out.push("docs that still describe cancelled work:");
+    for (const d of report.staledocs.slice(0, STALE_SHOWN)) {
+      const subject = d.subject.length > SUBJECT_SHOWN ? `${d.subject.slice(0, SUBJECT_SHOWN - 3)}...` : d.subject;
+      out.push(`  ${d.path}:${d.line}  mentions ${d.token} (added in ${d.sha} "${subject}", reverted in this range)`);
+    }
+    if (report.staledocs.length > STALE_SHOWN) out.push(`  ... and ${report.staledocs.length - STALE_SHOWN} more (--json lists all)`);
   }
   out.push(report.footer);
   return out.join("\n");

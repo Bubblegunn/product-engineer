@@ -7,7 +7,8 @@
 //   tests-not-run     a source file was written after the last test command
 //   twins-open        the change left near-copies of removed lines and nothing searched for them
 //   names-dangling    an identifier the change removed is still used in a tracked file
-//   notes-check       a release-notes file names a range and announces cancelled work or omits gone names
+//   notes-check       a release-notes file names a range and announces cancelled work, omits gone names, or leaves a doc describing cancelled work
+//   stale-docs        a release-notes, changelog or upgrade-guide file (range from its first line, else the latest tag) with a doc that still describes cancelled work
 //   tests-red         the last test run after the last source edit reports failures the answer does not mention
 //   fix-not-redgreen  a bug-fix request changed source with no red-then-green test run and no new test run after the edit
 //   stubs-in-change   the change adds stub markers or skipped tests (the stubs scan on the change's added lines)
@@ -34,6 +35,8 @@ const GREP_RUN = /\bgit\s+(?:-\S+\s+)*grep\b|\brg\b|\bgrep\b/;
 const TWINS_RUN = /\b(?:product-engineer|check\.mjs)\s+twins\b|\btwins\.mjs\b/;
 const NOTES_NAME = /release|changelog|changes|notes|whats[-_ ]?new/i;
 const NOTES_EXT = /\.(?:md|txt)$/i;
+const STALE_NAME = /release|changelog|upgrad|migrat|notes/i;
+const DOC_EXT = /\.(?:md|mdx|txt|rst)$/i;
 const ANSWER_MENTIONS_FAILURE = /\bfail\w*|\bred\b|not passing|\bhata\w*|başarısız/i;
 const UNWIRED_MAX = 3;
 const SKIP_BASENAMES = new Set(["index", "main", "cli", "__init__", "mod"]);
@@ -301,12 +304,8 @@ function notesCheck(ctx) {
     const rangeArg = rangeOf(first);
     const parsed = rangeArg && parseRange(rangeArg);
     if (!parsed) continue;
-    let ledger;
-    try {
-      ledger = ledgerRange({ ...parsed, cwd: ctx.top });
-    } catch {
-      continue;
-    }
+    const ledger = ledgerOf(ctx, rangeArg, parsed);
+    if (!ledger) continue;
     const cancelled = ledger.commits.filter((c) => c.net?.state === "cancelled").map((c) => ({ subject: c.subject, by: c.net.by }));
     const announced = checkNotes(text, { cancelled }).findings.filter((f) => f.code === "cancelled-announced");
     const lower = text.toLowerCase();
@@ -319,7 +318,75 @@ function notesCheck(ctx) {
     if (gone.length) {
       parts.push(`Names gone since ${parsed.from} that the notes never mention: ${gone.join(", ")}. Check each one before the notes ship.`);
     }
+    const stale = staleLines(ledger, rel);
+    if (stale.length) {
+      parts.push(...stale.map(staleText));
+      ctx.staleCovered.add(rel);
+    }
     if (parts.length) findings.push({ id: "notes-check", text: `${parts.join(" ")} Run product-engineer notes ${rel} --range ${rangeArg} to settle it.` });
+  }
+  return findings;
+}
+
+/** The ledger of a range, read once per range text in a verify run; null when git cannot read the range. */
+function ledgerOf(ctx, rangeArg, parsed) {
+  if (!ctx.ledgers.has(rangeArg)) {
+    let ledger = null;
+    try {
+      ledger = ledgerRange({ ...parsed, cwd: ctx.top });
+    } catch {
+      ledger = null;
+    }
+    ctx.ledgers.set(rangeArg, ledger);
+  }
+  return ctx.ledgers.get(rangeArg);
+}
+
+/** The doc lines a range's cancelled work leaves behind, at most SHOWN, without the notes file itself. */
+function staleLines(ledger, rel) {
+  return (ledger.staledocs ?? []).filter((d) => d.path !== rel).slice(0, SHOWN);
+}
+
+const staleText = (d) => `${d.path}:${d.line} still describes ${d.token}, which was added and reverted in this range. Fix the document or tell the owner it is stale.`;
+
+/** The latest tag as a range to HEAD (`<tag>..HEAD`), or null when the repository has no tag reachable from HEAD. */
+function latestTagRange(top) {
+  try {
+    const tag = git(["describe", "--tags", "--abbrev=0", "HEAD"], top).trim();
+    return tag ? `${tag}..HEAD` : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The notes-like files the session wrote with no finding from notes-check: a doc at HEAD that still describes work the
+ * range cancelled. The range is the one on the first line, else the latest tag to HEAD.
+ */
+function staleDocs(ctx) {
+  const findings = [];
+  const seen = new Set();
+  for (const e of ctx.session.events) {
+    if (e.kind !== "write" || !e.path || seen.has(e.path)) continue;
+    seen.add(e.path);
+    const base = basename(e.path);
+    if (!STALE_NAME.test(base) || !DOC_EXT.test(base)) continue;
+    const rel = repoPath(ctx, e.path);
+    if (!rel || ctx.staleCovered.has(rel)) continue;
+    let text;
+    try {
+      text = readFileSync(join(ctx.top, rel), "utf8");
+    } catch {
+      continue;
+    }
+    const first = text.split(/\r?\n/).find((l) => l.trim() !== "") ?? "";
+    const rangeArg = rangeOf(first) ?? latestTagRange(ctx.top);
+    const parsed = rangeArg && parseRange(rangeArg);
+    if (!parsed) continue;
+    const ledger = ledgerOf(ctx, rangeArg, parsed);
+    if (!ledger) continue;
+    const items = staleLines(ledger, rel);
+    if (items.length) findings.push({ id: "stale-docs", text: `${items.map(staleText).join(" ")} Run product-engineer range ${rangeArg} to see the cancelled commits.` });
   }
   return findings;
 }
@@ -529,6 +596,8 @@ export function verify({ cwd = process.cwd(), session, limits = {}, answer, sess
           return null;
         }
       }),
+      ledgers: new Map(),
+      staleCovered: new Set(),
       tracked: memo(() => {
         try {
           return git(["ls-files", "-z"], top).split("\0").filter(Boolean);
@@ -537,7 +606,7 @@ export function verify({ cwd = process.cwd(), session, limits = {}, answer, sess
         }
       }),
     };
-    const checks = [testsNotRun, namesDangling, notesCheck, twinsOpen, testsRed, fixNotRedGreen, stubsInChange, unwiredFile];
+    const checks = [testsNotRun, namesDangling, notesCheck, staleDocs, twinsOpen, testsRed, fixNotRedGreen, stubsInChange, unwiredFile];
     const findings = [];
     for (const check of checks) {
       if (over()) break;
