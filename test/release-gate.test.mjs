@@ -15,7 +15,7 @@ const pkgVersion = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).
 
 function copy() {
   const dir = mkdtempSync(join(tmpdir(), "release-gate-"));
-  const tracked = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).split("\0").filter(Boolean);
+  const tracked = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8", maxBuffer: 256 * 1024 * 1024 }).split("\0").filter(Boolean);
   for (const f of tracked) {
     mkdirSync(dirname(join(dir, f)), { recursive: true });
     try {

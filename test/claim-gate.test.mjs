@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -358,12 +358,48 @@ test("noise: a read-only session still blocks on a claim that is not noise", () 
   assert.match(JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: "All tests pass." }, newHome()).stdout).reason, /tests pass/);
 });
 
-test("noise: the first block of a writing session with only noise reasons is sent as advice", () => {
+test("noise: the first block of a writing session with only noise reasons is dropped, and does not count as a block", () => {
   const answer = "There are 12 commits ahead of main.";
   const lines = [{ type: "user", message: { content: "Tidy the reminder helper." } }, line([tool("Edit", { file_path: "src/a.js" }), { type: "text", text: answer }])];
+  const home = newHome();
+  assert.equal(hookRun(lines, { session_id: SID, last_assistant_message: answer }, home).stdout, "");
+  assert.equal(existsSync(join(home, `product-engineer-gate-${SID}.json`)), false);
+});
+
+test("noise: advice rides along with a non-advice reason in the same block", () => {
+  const answer = "All tests pass. There are 12 commits ahead of main.";
+  const lines = [{ type: "user", message: { content: "Tidy the reminder helper." } }, line([tool("Edit", { file_path: "src/a.js" }), { type: "text", text: answer }])];
   const reason = JSON.parse(hookRun(lines, { session_id: SID, last_assistant_message: answer }, newHome()).stdout).reason;
-  assert.match(reason, /advice only/);
+  assert.match(reason, /tests pass/);
   assert.match(reason, /There are 12 commits ahead of main/);
+});
+
+test("doc writes do not invalidate a test run, and a doc is not a test file", () => {
+  const green = out("npm test", "ℹ tests 4\nℹ pass 4\nℹ fail 0\n");
+  assert.deepEqual(reasonsFor([write("src/a.js"), green, write("PR.md")], "All tests pass."), []);
+  assert.deepEqual(reasonsFor([write("src/a.js"), green, write("docs/notes/plan.md")], "All tests pass."), []);
+  assert.deepEqual(reasonsFor([write("src/a.js"), bash("npm test"), write("CHANGELOG.md")], "Behaviour is unchanged."), []);
+  // a doc written with no test run after the last code write still needs one
+  assert.match(reasonsFor([write("src/a.js"), green, write("src/b.js")], "All tests pass.")[0], /tests pass/);
+  assert.match(reasonsFor([write("PR.md")], "All tests pass.")[0], /tests pass/);
+  assert.match(reasonsFor([write("docs/tests/PLAN.md")], "I added three unit tests for the reminder rule.")[0], /tests were added/);
+});
+
+test("a read-only comparison that ran the tests after its last code write is not blocked for passing by a later doc write", () => {
+  const green = out("node --test test/", "ℹ tests 4\nℹ pass 4\nℹ fail 0\n");
+  assert.deepEqual(reasonsFor([write("src/a.js"), green, write("NOTES.md")], "All tests pass."), []);
+});
+
+test("a shell command that writes a test file and runs the tests counts as a test-file write before its run", () => {
+  const cmd = "cat > test/widget.test.js <<'X'\ntest('w', () => {});\nX\nnode --test test/widget.test.js";
+  const s = readSession([JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: cmd } }] } })]);
+  const w = s.events.findIndex((e) => e.kind === "write");
+  assert.ok(w >= 0 && s.events[w].touches.includes("test/widget.test.js"));
+  assert.ok(w < s.events.findIndex((e) => e.kind === "bash"));
+  assert.deepEqual(reasonsFor(s.events, "I added a test for the widget."), []);
+  // the same command, with a source fix before it, settles a fix report too
+  const fix = readSession([JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Edit", input: { file_path: "src/reminder.js" } }, { type: "tool_use", name: "Bash", input: { command: cmd } }] } })]);
+  assert.deepEqual(reasonsFor(fix.events, "I fixed the duplicate reminder.", "Fix the bug where a reminder is sent twice."), []);
 });
 
 test("once: a tests-added or fixed reason already given in this session is not sent again", () => {

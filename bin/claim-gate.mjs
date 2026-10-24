@@ -135,7 +135,9 @@ export function readSession(lines) {
       } else if (b.name === "Bash") {
         const command = String(input.command ?? "");
         // The write comes first: a command that redirects its own output is not evidence about later edits.
-        if (BASH_WRITE.test(command) && !TEST_RUN.test(command) && !GIT_STATE.test(command)) events.push({ kind: "write", path: "", text: "", touches: command.split(/[\s"'<>|;&=()]+/).filter((t) => t && isTestPath(t.replace(/^\.\//, ""))) });
+        // A test run that also writes a test file is a write to that path; the run that follows it is after the write.
+        const touches = command.split(/[\s"'<>|;&=()]+/).filter((t) => t && isTestPath(t.replace(/^\.\//, "")));
+        if (BASH_WRITE.test(command) && !GIT_STATE.test(command) && (!TEST_RUN.test(command) || touches.length)) events.push({ kind: "write", path: "", text: "", touches });
         const ev = { kind: "bash", command };
         events.push(ev);
         if (b.id) bashById.set(b.id, ev);
@@ -150,6 +152,9 @@ export function readSession(lines) {
 const indexOfLast = (events, pred) => { for (let i = events.length - 1; i >= 0; i--) if (pred(events[i])) return i; return -1; };
 const indexOfFirst = (events, pred) => events.findIndex(pred);
 const isWrite = (e) => e.kind === "write";
+// A write to a document or generated-text file. Writing a document does not invalidate a test run, but it is still a write for claims about the document.
+const isDocWrite = (e) => isWrite(e) && isDocPath(e.path ?? "");
+const isCodeWrite = (e) => isWrite(e) && !isDocWrite(e);
 const runs = (re) => (e) => e.kind === "bash" && re.test(e.command);
 
 /** Helpers for the provenance rules: the numbers a count sentence states, and the paths a search printed that the session did not write. */
@@ -182,9 +187,12 @@ export function gateItems({ events, prompt, last }, claimTexts = [last]) {
   const lastWrite = indexOfLast(events, isWrite);
   const firstWrite = indexOfFirst(events, isWrite);
   const after = (pred) => indexOfLast(events, pred) > lastWrite;
+  // The test-run families count only code writes: a document written after a run does not make the run stale.
+  const lastCodeWrite = indexOfLast(events, isCodeWrite);
+  const afterCode = (pred) => indexOfLast(events, pred) > lastCodeWrite;
   // A green run after the last write settles a passing claim, however the sentence is phrased.
   const lastRun = indexOfLast(events, runs(TEST_RUN));
-  if (lastRun > lastWrite && failingCount(events[lastRun].output) === 0) families.delete("passing");
+  if (lastRun > lastCodeWrite && failingCount(events[lastRun].output) === 0) families.delete("passing");
   const reasons = [];
   const add = (family, text) => reasons.push({ id: family, family, text });
 
@@ -197,19 +205,19 @@ export function gateItems({ events, prompt, last }, claimTexts = [last]) {
   if (families.has("formatting") && !events.some(runs(WS_DIFF))) {
     add("formatting", `You call a change formatting-only or free of functional change ("${quote("formatting")}"), but no whitespace-aware diff ran. Run git diff -w <range> --stat (or product-engineer scope <range>) and name each file that still changes; otherwise drop the claim.`);
   }
-  if (families.has("unchanged") && !after(runs(TEST_RUN)) && !events.some(runs(WS_DIFF))) {
+  if (families.has("unchanged") && !afterCode(runs(TEST_RUN)) && !events.some(runs(WS_DIFF))) {
     add("unchanged", `You say behaviour is unchanged ("${quote("unchanged")}"), but no test command ran after your last edit. Run the project's tests, name them, and say it rests on that run, or drop the claim.`);
   }
-  if (families.has("passing") && !after(runs(TEST_RUN))) {
+  if (families.has("passing") && !afterCode(runs(TEST_RUN))) {
     add("passing", `You say tests pass ("${quote("passing")}"), but no test command ran after your last edit. Run the tests again and quote the result as printed.`);
   }
-  if (families.has("addedtests") && !events.some((e) => isWrite(e) && (isTestPath(e.path ?? "") || (e.touches ?? []).length))) {
+  if (families.has("addedtests") && !events.some((e) => isCodeWrite(e) && (isTestPath(e.path ?? "") || (e.touches ?? []).length))) {
     add("addedtests", `You say tests were added ("${quote("addedtests")}"), but no write to a test file happened in this turn. Write the test, run it, and name the file; otherwise drop the claim.`);
   }
   if (families.has("fixed") && FIX_REQUEST.test(prompt)) {
     const writes = events.filter(isWrite);
     const source = writes.some((e) => e.path && !isTestPath(e.path) && !isDocPath(e.path));
-    const testWritten = writes.some((e) => e.path && isTestPath(e.path));
+    const testWritten = writes.some((e) => (e.path && isTestPath(e.path)) || (e.touches ?? []).length > 0);
     if (source && !testWritten) {
       add("fixed", `You report a fix ("${quote("fixed")}"), but no test file was written. Add a test that fails without the fix and passes with it, run it, and report both results.`);
     }
@@ -301,12 +309,9 @@ async function run() {
     }
   }
   if (!parts.length) return;
-  // The first block of a session that has only noise reasons is advice, and only a session that wrote files gets it.
-  let head = "product-engineer claim check (one-time):";
-  if (state.blocks === 0 && parts.every((p) => NOISE_FAMILIES.has(p.family))) {
-    if (!wrote) return;
-    head = "product-engineer claim check (one-time, advice only):";
-  }
+  // The first block of a session that has only noise reasons is advice alone: it prints nothing and does not count as a block.
+  if (state.blocks === 0 && parts.every((p) => NOISE_FAMILIES.has(p.family))) return;
+  const head = "product-engineer claim check (one-time):";
   const hash = hashOf([...findings.map((f) => f.text), ...(eyeText ? [eyeText] : [])].join("\n"));
   if (state.hash !== null && state.hash === hash) return;
   if (sid) writeState(sid, { blocks: state.blocks + 1, hash, ids: [...new Set([...state.ids, ...kept.map((i) => i.id)])] });

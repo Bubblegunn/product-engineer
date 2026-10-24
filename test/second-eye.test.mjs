@@ -120,12 +120,12 @@ test("each call writes one line to the log", async () => {
 });
 
 // cwd is a directory that is not a git repository, so the repository checks stay quiet and the test does not depend on this clone.
-function runHook(transcriptLines, env, lastMessage) {
+function runHook(transcriptLines, env, lastMessage, extra = {}) {
   const dir = mkdtempSync(join(TMP, "hook-"));
   const transcript = join(dir, "t.jsonl");
   writeFileSync(transcript, transcriptLines.map((l) => JSON.stringify(l)).join("\n"));
   const cwd = mkdtempSync(join(TMP, "nogit-"));
-  return spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd, last_assistant_message: lastMessage }), encoding: "utf8", env: { ...process.env, ...env } });
+  return spawnSync("node", [GATE], { input: JSON.stringify({ transcript_path: transcript, cwd, last_assistant_message: lastMessage, ...extra }), encoding: "utf8", env: { ...process.env, ...env } });
 }
 // A turn that wrote a notes file (a document, so no repository check applies) and ran one command.
 const turn = (prompt) => [
@@ -136,7 +136,10 @@ const turn = (prompt) => [
 test("gate integration: an unsupported claim becomes one finding in the block reason", () => {
   const out = outFile();
   const bin = stub(`printf 'called\\n' > "${out}"\n${ok("There are 12 commits ahead of main.")}`);
-  const r = runHook(turn("Look at the reminder rule."), { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, ANSWER);
+  // A lone second-eye finding is advice, and a session's first block drops advice. This run is the second block, so it is sent.
+  const sid = `pe-eye-second-${process.pid}`;
+  writeFileSync(join(TMP, `product-engineer-gate-${sid}.json`), JSON.stringify({ blocks: 1, hash: null, ids: [] }));
+  const r = runHook(turn("Look at the reminder rule."), { PRODUCT_ENGINEER_SECOND_EYE: "1", PE_SECOND_EYE_CLAUDE: bin }, ANSWER, { session_id: sid });
   const reason = JSON.parse(r.stdout).reason;
   assert.equal(reason.split("A second reading of your answer found claims with no supporting command:").length - 1, 1);
   assert.match(reason, /command: There are 12 commits ahead of main\. Check each/);
