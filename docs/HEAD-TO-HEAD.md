@@ -1389,3 +1389,14 @@ Owner gave the go on 2026-10-24 (new subscription login). Pre-flight clean (no s
 3. Skill sentence added (one, in the twins rule); adapters regenerated. `npm test`: 1225 passed, 0 failed, adapters up to date.
 Not built: cost reduction (gap 3, 1.47 times base).
 No measurement was run. Reason: six independent writers (gates 1 to 3, pooled 24 tasks) show parity with the bare model (75.00 / 74.33 of 96) and the gaps built here address losses of single tasks; the writer-to-writer spread (about 5 of 48) exceeds the expected gain, so first place is not nearly certain and the owner's rule says do not measure. Gate 4 (three new writers, about 290 sessions) would be the next step if the owner wants one more test of gaps 1 and 2; the final sealed set still needs a writer who has not written for this project.
+
+## Gap 3 analysis: where the 1.47 times base cost comes from (2026-10-25, read-only on gate 3 session logs, no code change)
+
+Source: the 36 ours and 36 base sessions of gate 3 (`/private/tmp/pe-r10-gate3-work/runs/*/out.jsonl`), same model and CLI. Per session: ours 0.089 USD, 7.4 turns, 11.0 assistant messages, 118k cache-read tokens; base 0.061 USD, 4.5 turns, 7.3 messages, 72k. Rival means in the same gate: gwc about 0.067, iso about 0.084, dod about 0.109 (invoked and plain pooled), so ours sits inside the rival range.
+Decomposition (ours only):
+- Sessions that loaded the skill through the Skill tool (21 of 36): 0.095 USD, against 0.081 for the 15 that did not (+0.014; one extra turn plus the 13.5 KB skill text).
+- Sessions with a Stop-hook claim check (8 of 36, 22 percent): 0.123 USD, against 0.079 for the 28 without a block. Unblocked ours is 1.3 times base. The block reasons read are the designed ones (a test-pass claim with a failing run, tests said added with no test file written, a count with no command behind it, a plain-language rewrite without `facts`); none is a false block of the kind fixed in gate 2 to 3.
+- Behaviour: 0.47 npm calls per session against 0.14 for base (the verification the skill asks for), 0.31 `notes` and 0.19 `facts` calls where the task is a note or rewrite.
+Decision: no cost cut is made. The only large lever would be shortening the skill text or dropping a claim family, and neither can be justified without a gate (a cut that removes a rule changes behaviour, and tuning against read tasks is excluded). The cost is the price of the checks that fire; report it as 1.3 times base without blocks and 1.5 times base with them.
+Loss diagnosis from gates 1 to 3: the remaining named losses were the two gaps built on 2026-10-24 (leftover old values, names of removed settings in customer notes). Nothing else repeats across writers.
+First place is not nearly certain, so no gate is run. Nothing is running.
