@@ -69,6 +69,36 @@ test("code identifiers and file names are errors, and each one is named", () => 
   }
 });
 
+test("a setting or config file the reader must change stays, in backticks inside a sentence that explains it", () => {
+  const head = "Changes since v2.3.0\n";
+  const kept = [
+    "The retry setting `maxRetries` replaces the old name, so set it to the number of attempts you want.",
+    "Set `MAX_ROWS` to raise the export row limit from 5,000 to 10,000 rows if you need more of them.",
+    "Turn the new export off in `bulk-export` by default, and switch it on per account when you are ready.",
+    "Put the new limit in `export.maxItems` to change how many events one file may hold at most.",
+    "Edit `config.json` to choose how many days of events the month view should show at one time.",
+  ];
+  for (const line of kept) assert.deepEqual(codes(`${head}${line}\n`), [], line);
+});
+
+test("a name with no explanation, a bare name, and an internal name are still errors", () => {
+  const head = "Changes since v2.3.0\n";
+  for (const line of [
+    "Uses `maxRetries` now.", // backticks but nothing around it explains it
+    "The retry setting maxRetries replaces the old name, so set it to the number of attempts you want.", // bare, not marked as a name to type
+    "The export step moved into `EventStore`, which now keeps events for the whole month view in memory.", // a class name is internal
+    "The export step moved into `src/export/month.js`, which now keeps events for the whole month view.", // a path is internal
+    "The export step now calls `exportMonth()` once for the whole month view and keeps events in memory.", // a call is internal
+  ]) assert.ok(codes(`${head}${line}\n`).includes("error:code-identifier:2"), line);
+});
+
+test("a version the reader must check is not a change number; a version as a change is still an error", () => {
+  const head = "Changes since v2.3.0\n";
+  assert.deepEqual(codes(`${head}The server now needs Node 20.11.0 or newer, so upgrade it before you update.\n`), []);
+  assert.deepEqual(codes(`${head}Supported browsers start at Chrome 120.0.1 for the month view and the export.\n`), []);
+  assert.ok(codes(`${head}This is version 2.4.0 of the calendar and it is a good one.\n`).includes("error:version-number:2"));
+});
+
 test("prose that only looks like code passes: hyphenated words, and/or, plurals in parentheses, dates, links, Node.js", () => {
   for (const line of [
     "Day-to-day planning is easier to read, and the day-before reminder still goes out.",
@@ -406,7 +436,8 @@ test("the CLI takes --audience in both forms, refuses an unknown value with exit
   const text = `${DEV_HEAD}The option \`retryLimit\` was renamed to \`maxAttempts\`.\n`;
   assert.equal(cliRun(text, ["--audience", "developers"]).status, 0);
   assert.equal(cliRun(text, ["--audience=developers"]).status, 0);
-  assert.equal(cliRun(text).status, 1, "customers rejects the backticked name");
+  assert.equal(cliRun(text).status, 0, "customers keep a backticked setting name inside a sentence that explains it");
+  assert.equal(cliRun(`${DEV_HEAD}Uses \`retryLimit\` now.\n`).status, 1, "customers reject a name no sentence explains");
   assert.equal(cliRun(text, ["--audience", "owners"]).status, 2);
   assert.equal(cliRun(text, ["--audience"]).status, 2);
   const warn = cliRun("Changes since v3.0.0\nThe option retryLimit was renamed.\n", ["--audience", "developers"]);
@@ -501,7 +532,7 @@ test("--range skips the traceability check above 2000 commits and says so, and e
 });
 
 test("customers: a name the range removed may be written; any other code name is still an error", () => {
-  const text = "Changes since v2.3.0\nThe `retryLimit` setting is gone: use the new attempts setting instead.\nThe parseQueue helper was tidied.\n";
+  const text = "Changes since v2.3.0\nThe `retryLimit` setting is gone.\nThe parseQueue helper was tidied.\n";
   const plain = notes(text, { audience: "customers" });
   assert.equal(plain.findings.filter((f) => f.code === "code-identifier").length, 2);
   const withGone = notes(text, { audience: "customers", gone: ["retryLimit"] });

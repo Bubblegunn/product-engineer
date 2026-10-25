@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { assemble, baselinePath, brief, readBaseline, runBrief, testCommand, writeBaseline } from "../bin/brief.mjs";
+import { RULES, assemble, baselinePath, brief, readBaseline, runBrief, testCommand, writeBaseline } from "../bin/brief.mjs";
 import { verify } from "../bin/verify.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -102,7 +102,7 @@ test("last commits: says none is listed when the only commit is the root", () =>
 test("tests: names the command the repository uses, and none found when there is none", () => {
   withRepo((dir) => {
     commit(dir, { "src/a.txt": "a\n" }, "chore: nothing to test");
-    assert.ok(sections(dir).includes("tests: none found"));
+    assert.ok(sections(dir).some((l) => l.startsWith("tests: no test command found (looked at")));
   });
   withRepo((dir) => {
     commit(dir, { "package.json": JSON.stringify({ scripts: { test: "node --test" } }) + "\n" }, "chore: pkg");
@@ -144,14 +144,14 @@ test("unmerged branches: says none when every branch is merged", () => {
   withRepo((dir) => {
     commit(dir, { "a.txt": "a\n" }, "chore: base");
     git(dir, "branch", "already-merged");
-    assert.ok(sections(dir).includes("unmerged branches: none"));
+    assert.ok(sections(dir).includes("unmerged branches: none (searched local and remote-tracking branches)"));
   });
 });
 
 test("latest tag: names the tag and the commits since it, or none", () => {
   withRepo((dir) => {
     commit(dir, { "a.txt": "a\n" }, "chore: base");
-    assert.ok(sections(dir).includes("latest tag: none"));
+    assert.ok(sections(dir).includes("latest tag: none reachable from HEAD"));
     git(dir, "tag", "v1.0.0");
     commit(dir, { "a.txt": "b\n" }, "fix: later");
     commit(dir, { "a.txt": "c\n" }, "fix: later again");
@@ -164,7 +164,7 @@ test("skipped tests: counts skipped tests in tracked test files and names the fi
     commit(dir, { "test/a.test.mjs": "test('ok', () => {});\ntest.skip('later', () => {});\n", "src/b.mjs": "it.skip('not a test file', 1);\n" }, "test: add");
     commit(dir, { "test/c.test.mjs": "describe.todo('x');\nxit('y');\n" }, "test: more");
     const lines = sections(dir);
-    assert.ok(lines.includes("skipped or todo tests: 3 in tracked test files"));
+    assert.ok(lines.includes("skipped or todo tests: 3 in tracked test files on this branch"));
     assert.ok(lines.includes("  test/a.test.mjs:2"));
     assert.ok(lines.includes("  test/c.test.mjs:1"));
     assert.ok(lines.includes("  test/c.test.mjs:2"));
@@ -175,8 +175,64 @@ test("skipped tests: counts skipped tests in tracked test files and names the fi
 test("skipped tests: says none when no tracked test file skips a test", () => {
   withRepo((dir) => {
     commit(dir, { "test/a.test.mjs": "test('ok', () => {});\n" }, "test: add");
-    assert.ok(sections(dir).includes("skipped or todo tests: none in tracked test files"));
+    assert.ok(sections(dir).includes("skipped or todo tests: none in tracked test files on this branch or in the 0 unmerged branches searched; untracked files not searched"));
   });
+});
+
+test("skipped tests: a skipped test that exists only on an unmerged branch is named with its branch, and none never claims what was not searched", () => {
+  withRepo((dir) => {
+    commit(dir, { "test/a.test.mjs": "test('ok', () => {});\n" }, "test: add");
+    git(dir, "checkout", "-q", "-b", "feature/export");
+    commit(dir, { "test/export.test.mjs": "test('rows', () => {});\ntest.skip('flaky on CI', () => {});\n" }, "test: export");
+    git(dir, "checkout", "-q", "master");
+    const lines = sections(dir);
+    assert.ok(lines.includes("skipped or todo tests: none in tracked test files on this branch, but unmerged branches add some"));
+    assert.ok(lines.includes("  not merged, on feature/export: test/export.test.mjs:2"));
+    assert.ok(!lines.some((l) => l.startsWith("skipped or todo tests: none in tracked test files on this branch or")));
+  });
+});
+
+test("skipped tests: with no skip anywhere, none states the branches it searched and that untracked files are not searched", () => {
+  withRepo((dir) => {
+    commit(dir, { "test/a.test.mjs": "test('ok', () => {});\n" }, "test: add");
+    git(dir, "checkout", "-q", "-b", "feature/x");
+    commit(dir, { "test/x.test.mjs": "test('x', () => {});\n" }, "test: x");
+    git(dir, "checkout", "-q", "master");
+    assert.ok(sections(dir).includes("skipped or todo tests: none in tracked test files on this branch or in the 1 unmerged branch searched; untracked files not searched"));
+  });
+});
+
+test("skipped tests: branches beyond the first five are reported as not searched", () => {
+  withRepo((dir) => {
+    commit(dir, { "test/a.test.mjs": "test('ok', () => {});\n" }, "test: add");
+    for (let i = 0; i < 7; i++) {
+      git(dir, "checkout", "-q", "-b", `b${i}`, "master");
+      commit(dir, { [`f${i}.txt`]: "x\n" }, `chore: ${i}`);
+    }
+    git(dir, "checkout", "-q", "master");
+    const line = sections(dir).find((l) => l.startsWith("skipped or todo tests: none"));
+    assert.match(line, /; 2 more unmerged branches not searched/);
+  });
+});
+
+test("--hook prints the always-on rules after the brief, and they name no file, setting or value of any task", () => {
+  withRepo((dir) => {
+    commit(dir, { "a.txt": "a\n" }, "chore: a");
+    const sid = `hook-rules-${process.pid}-${Date.now()}`;
+    const r = spawnSync(process.execPath, [CLI, "--hook"], { cwd: dir, encoding: "utf8", input: JSON.stringify({ session_id: sid, cwd: dir }) });
+    try {
+      const ctx = JSON.parse(r.stdout.split("\n").filter(Boolean)[0]).hookSpecificOutput.additionalContext;
+      assert.ok(ctx.endsWith(RULES));
+      assert.ok(ctx.indexOf("repo brief:") < ctx.indexOf("product-engineer rules"));
+    } finally {
+      rmSync(baselinePath(sid), { force: true });
+    }
+  });
+  const lines = RULES.split("\n");
+  assert.ok(lines.length <= 10, "ten lines at most");
+  assert.ok(RULES.length <= 1300, `short enough to cost little: ${RULES.length}`);
+  // Each rule the owner listed is there: shape follows the request, search before editing, real test state, every branch, keep names, scoped none.
+  for (const re of [/request decides the shape/, /search the whole repository/, /real test state/, /every branch/, /Keep the names and numbers/, /true only for what was searched/]) assert.match(RULES, re);
 });
 
 test("identifiers changed: names a removed identifier that no added line carries", () => {
@@ -193,7 +249,7 @@ test("identifiers changed: says none when the change only adds or keeps names", 
   withRepo((dir) => {
     commit(dir, { "src/lib.mjs": "export const keep = 1;\n" }, "feat: lib");
     put(dir, { "src/lib.mjs": "export const keep = 2;\nexport const extra = 3;\n" });
-    assert.ok(sections(dir).includes("identifiers changed: none"));
+    assert.ok(sections(dir).includes("identifiers changed in the working tree against HEAD: none"));
   });
 });
 
@@ -226,7 +282,7 @@ test("authors of changed files: names the people whose commits touch the changed
 test("authors of changed files: says none when the tree has no change", () => {
   withRepo((dir) => {
     commit(dir, { "src/a.mjs": "1\n" }, "feat: a");
-    assert.ok(sections(dir).includes("authors of changed files: none"));
+    assert.ok(sections(dir).includes("authors of changed files: none (no tracked file differs from HEAD)"));
   });
 });
 

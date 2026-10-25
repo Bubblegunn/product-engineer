@@ -48,6 +48,10 @@ const CLAIMS = {
 const HEDGE_BEFORE = /\b(?:can|could|will|would|should|may|might|must|to|if|until|no|none|nothing|neither|nor|without)\b/i;
 const ABSENCE = /\b(?:no|without|zero|none|already)\b/i;
 const PLAIN_REQUEST = /\bplain[- ]language\b|\bplain english\b|\bin plain (?:words|terms|english)\b|\bsimpl(?:e|er|ify) (?:words|terms|language)\b/i;
+// The `plain` family checks a rewrite against its source, so it needs both: a request to rewrite (not to write something new), and a source text.
+const REWRITE_REQUEST = /\b(?:rewrit\w*|re-?phras\w*|simplif\w*|paraphras\w*|translat\w*|convert\w*|restat\w*|reword\w*)\b/i;
+const SOURCE_FILE = /[\w@.~/-]*[\w-]\.(?:md|mdx|txt|rst|adoc|html?|tex|docx?|pdf|rtf)\b|\b(?:README|LICEN[CS]E|TERMS|NOTICE|POLICY|CONTRIBUTING|SECURITY)\b/gi;
+const SHOW_FILE = /\b(?:cat|head|tail|less|more|bat|nl|sed|awk|grep|rg)\b/;
 const FACTS_RUN = /\bproduct-engineer\s+facts\b|\bcheck\.mjs\s+facts\b/;
 // Commands that settle a count (the repository's own counters), a search for every use, or a remote state.
 const COUNT_RUN = /\bproduct-engineer\s+(?:range|claims|facts)\b|\bcheck\.mjs\s+(?:range|claims|facts)\b|\bgit\s+(?:-\S+\s+)*rev-list\b[^|;&\n]*--count\b|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*\S\.\.\S|\bgit\s+(?:-\S+\s+)*log\b[^|;&\n]*--oneline[^\n]*\|\s*wc\b|\bgit\s+(?:-\S+\s+)*diff\b[^|;&\n]*--(?:stat|numstat|shortstat)\b|\bwc\s+-l\b|\b(?:grep|rg)\s+(?:[^|;&\n]*\s)?-[a-zA-Z]*c\b|\brg\b[^|;&\n]*--count\b|\bfind\b[^\n]*\|\s*wc\b/;
@@ -142,7 +146,7 @@ export function readSession(lines) {
         events.push(ev);
         if (b.id) bashById.set(b.id, ev);
       } else {
-        events.push({ kind: "other" });
+        events.push(b.name === "Read" ? { kind: "read", path: String(input.file_path ?? "") } : { kind: "other" });
       }
     }
   }
@@ -171,6 +175,19 @@ const otherFiles = (output, written) =>
     .filter(Boolean)
     .map((l) => (/^(.+?):\d+[:-]/.exec(l)?.[1] ?? l).replace(/^\.\//, ""))
     .filter((p) => !written.some((w) => w === p || w.endsWith(`/${p}`)));
+
+/**
+ * Whether the request gives the session a text to rewrite: a passage pasted into the prompt, or a file the prompt names that the
+ * session read (the Read tool or a command that shows it; an edit in place needs a read first). Without one there is nothing to compare the answer with.
+ */
+export function hasRewriteSource({ events, prompt }) {
+  const text = String(prompt ?? "");
+  if (/```/.test(text) || /^\s*>\s+\S/m.test(text) || /["“][^"”]{150,}["”]/.test(text) || text.split(/\n\s*\n/).slice(1).some((p) => p.trim().length >= 200)) return true;
+  const named = [...new Set((text.match(SOURCE_FILE) ?? []).map((t) => t.split("/").pop().toLowerCase()))];
+  const base = (p) => String(p ?? "").split("/").pop().toLowerCase();
+  const matches = (name, other) => other === name || (!name.includes(".") && other.startsWith(name));
+  return named.some((name) => events.some((e) => (e.kind === "read" && matches(name, base(e.path))) || (e.kind === "bash" && SHOW_FILE.test(e.command) && e.command.toLowerCase().includes(name))));
+}
 
 /** Reasons to ask for more evidence, each with its family (also its id); an empty list means every claim has what it needs. */
 export function gate(session, claimTexts = [session.last]) {
@@ -243,8 +260,8 @@ export function gateItems({ events, prompt, last }, claimTexts = [last]) {
   if (families.has("landed") && !after(runs(REMOTE_RUN))) {
     add("landed", `You say the work is pushed, deployed, published, released or live ("${quote("landed")}"), but no command read the remote after your last edit. Run git ls-remote or git status -sb (or gh, npm view, curl, vercel or railway for the target) and quote the result, or drop the claim.`);
   }
-  if (PLAIN_REQUEST.test(prompt) && lastWrite >= 0 && !after(runs(FACTS_RUN))) {
-    add("plain", "You were asked for a plain-language rewrite, but product-engineer facts <source> <rewrite> did not run after your last edit. Run it and fix every warning, in particular each sentence with no counterpart in the source.");
+  if (PLAIN_REQUEST.test(prompt) && REWRITE_REQUEST.test(prompt) && hasRewriteSource({ events, prompt }) && lastWrite >= 0 && !after(runs(FACTS_RUN))) {
+    add("plain", "You were asked to rewrite a text in plain language, but product-engineer facts <source> <rewrite> did not run after your last edit. Run it and fix every warning, in particular each sentence with no counterpart in the source.");
   }
   return reasons;
 }

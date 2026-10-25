@@ -30,13 +30,29 @@ const CONVENTIONAL = /^([a-z]+)(\([^)]*\))?!?:/i;
 // Skipped or disabled tests, as added or present text (no word boundaries: git grep -E must read the same on every platform).
 const SKIP_PATTERN = "\\.(skip|todo)\\(|(^|[^A-Za-z0-9_])x(it|describe|test)\\(|@pytest\\.mark\\.skip|t\\.Skip(Now)?\\(|#\\[ignore\\]|@Disabled|@unittest\\.skip";
 const FINAL = 'Settle counts with product-engineer range / claims, repeated code with twins, and "nothing else uses X" with git grep before you say it.';
+/**
+ * Rules that hold for every task, printed after the brief at every session start. The skill that carries the long form loads in
+ * only some sessions; these lines load in all of them. Each one is general: none names a file, a setting or a value.
+ */
+export const RULES = [
+  "product-engineer rules (they apply to every task in this repository):",
+  "1. The request decides the shape of the deliverable. Do what it says in the form it asks for: one commit for one change unless parts are clearly unrelated, and a test-run result goes in your answer, not in a commit message.",
+  "2. Before you edit a value, a limit, a version or a name, search the whole repository for it (git grep) and update every place that says the same thing; say which you left and why.",
+  "3. Read each file the change touches before you edit it.",
+  "4. Report the real test state: run the tests, name each failing, skipped or TODO test, and say what you did not check.",
+  "5. Look at every branch (git branch -a, git log --all) before you say what is done or missing.",
+  "6. Keep the names and numbers a reader must type, change or check (a setting, option, limit, version). Explain them in plain words next to the exact name; do not remove them.",
+  "7. A line that says none or nothing is true only for what was searched; say what that was.",
+  "8. State only what a command of this session shows. Leave unrelated work of the owner out of your commit.",
+].join("\n");
+
 const USAGE = `usage: product-engineer brief [--hook]
 Prints a plain-text brief of the repository: branch, state of the tree, the last commits with their
 classes, tests, unmerged branches, the latest tag, skipped tests, identifiers changed, hot files and
 the authors of the changed files. At most ${MAX_CHARS} characters; the least important lines go first.
 No model and no network. Silent with exit 0 outside a git work tree.
---hook reads the SessionStart JSON on standard input, prints one JSON line with the brief as
-additionalContext, and records the session baseline. PRODUCT_ENGINEER_NO_BRIEF=1 prints no brief.`;
+--hook reads the SessionStart JSON on standard input, prints one JSON line with the brief and the
+always-on rules as additionalContext, and records the session baseline. PRODUCT_ENGINEER_NO_BRIEF=1 prints no brief.`;
 
 const git = (args, cwd) => execFileSync("git", ["-c", "core.quotepath=false", ...args], { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 });
 // A failing git call (no commit yet, no match for git grep, an unknown ref) is an empty answer, not an error.
@@ -121,14 +137,14 @@ export function testCommand(top) {
   if (files.includes("Cargo.toml")) return "cargo test";
   return null;
 }
-const testsBlock = (top) => [`tests: ${testCommand(top) ?? "none found"}`];
+const testsBlock = (top) => [`tests: ${testCommand(top) ?? "no test command found (looked at the package.json test script and the names of tracked test files)"}`];
 
 /** unmerged branches: local and remote-tracking refs not reachable from HEAD, with commits ahead, last author and date. */
 function branchesBlock(top) {
   const out = gitOrNull(["for-each-ref", "--no-merged=HEAD", "--sort=-committerdate", "--format=%(refname:short)%09%(symref)%09%(committerdate:short)%09%(authorname)", "refs/heads", "refs/remotes"], top);
   if (out === null) return null;
   const rows = lines(out).map((l) => l.split("\t")).filter(([, symref]) => !symref);
-  if (!rows.length) return ["unmerged branches: none"];
+  if (!rows.length) return ["unmerged branches: none (searched local and remote-tracking branches)"];
   const items = rows.slice(0, BRANCHES_SHOWN).map(([name, , date, author]) => {
     const ahead = Number(git(["rev-list", "--count", `HEAD..${name}`], top).trim());
     return `  ${clip(name, BRANCH_WIDTH)}: ${ahead} ahead, last by ${author}, ${date}`;
@@ -140,26 +156,70 @@ function branchesBlock(top) {
 /** latest tag and the commits since it. */
 function tagBlock(top) {
   const tag = gitOrNull(["describe", "--tags", "--abbrev=0"], top)?.trim();
-  if (!tag) return ["latest tag: none"];
+  if (!tag) return ["latest tag: none reachable from HEAD"];
   const since = Number(git(["rev-list", "--count", `${tag}..HEAD`], top).trim());
   return [`latest tag: ${tag}, ${since} commit${since === 1 ? "" : "s"} since`];
 }
 
-/** skipped or disabled tests in tracked test files: the count and the first path:line. */
+const SKIP_RE = new RegExp(SKIP_PATTERN);
+const BRANCH_TESTS_SHOWN = 3;
+const BRANCH_LINES_SHOWN = 2;
+
+/** Skip markers a branch adds over its merge base with HEAD, in test files: { path, line } list. */
+function skipsAddedOn(ref, top) {
+  const patch = gitOrNull(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", `HEAD...${ref}`], top);
+  if (patch === null) return null;
+  const hits = [];
+  let path = null;
+  let n = 0;
+  for (const line of patch.split("\n")) {
+    if (line.startsWith("+++ ")) { path = line.startsWith("+++ b/") ? line.slice(6) : null; continue; }
+    const hunk = /^@@ -\d+(?:,\d+)? \+(\d+)/.exec(line);
+    if (hunk) { n = Number(hunk[1]); continue; }
+    if (line.startsWith("+") && !line.startsWith("+++")) {
+      if (path && isTestPath(path) && SKIP_RE.test(line.slice(1))) hits.push({ path, line: n });
+      n++;
+    }
+  }
+  return hits;
+}
+
+/**
+ * skipped or disabled tests: in the tracked test files of this branch (the count and the first path:line) and in what each
+ * unmerged branch adds. "none" is printed only with the scope it covers: untracked files and branches beyond the first five are not searched.
+ */
 function skippedBlock(top) {
   const out = gitOrNull(["grep", "-n", "-I", "-E", "-e", SKIP_PATTERN], top) ?? "";
   const hits = lines(out)
     .map((l) => /^([^:]+):(\d+):/.exec(l))
     .filter((m) => m && isTestPath(m[1]))
     .map((m) => `${m[1]}:${m[2]}`);
-  if (!hits.length) return ["skipped or todo tests: none in tracked test files"];
-  return [`skipped or todo tests: ${hits.length} in tracked test files`, ...hits.slice(0, SKIPPED_SHOWN).map((h) => `  ${h}`)];
+  const refs = lines(gitOrNull(["for-each-ref", "--no-merged=HEAD", "--sort=-committerdate", "--format=%(refname:short)%09%(symref)", "refs/heads", "refs/remotes"], top))
+    .map((l) => l.split("\t"))
+    .filter(([, symref]) => !symref)
+    .map(([name]) => name);
+  const searched = refs.slice(0, BRANCHES_SHOWN);
+  const onBranches = [];
+  for (const ref of searched) {
+    const added = skipsAddedOn(ref, top);
+    if (added?.length) onBranches.push({ ref, added });
+  }
+  const scope = refs.length > searched.length ? `; ${refs.length - searched.length} more unmerged branches not searched` : "";
+  const out2 = [];
+  if (hits.length) out2.push(`skipped or todo tests: ${hits.length} in tracked test files on this branch`, ...hits.slice(0, SKIPPED_SHOWN).map((h) => `  ${h}`));
+  for (const { ref, added } of onBranches.slice(0, BRANCH_TESTS_SHOWN)) {
+    out2.push(`  not merged, on ${clip(ref, BRANCH_WIDTH)}: ${added.slice(0, BRANCH_LINES_SHOWN).map((a) => `${a.path}:${a.line}`).join(", ")}${added.length > BRANCH_LINES_SHOWN ? `, +${added.length - BRANCH_LINES_SHOWN} more` : ""}`);
+  }
+  if (!out2.length) return [`skipped or todo tests: none in tracked test files on this branch or in the ${searched.length} unmerged branch${searched.length === 1 ? "" : "es"} searched${scope}; untracked files not searched`];
+  if (!hits.length) out2.unshift("skipped or todo tests: none in tracked test files on this branch, but unmerged branches add some");
+  if (scope) out2.push(`  (${scope.slice(2)})`);
+  return out2;
 }
 
 /** identifiers changed: tokens of removed lines that no added line carries, in the working tree against HEAD. */
 function identifiersBlock(top) {
   const patch = gitOrNull(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", "HEAD"], top);
-  if (patch === null) return ["identifiers changed: none"];
+  if (patch === null) return ["identifiers changed: not checked (the working tree could not be compared with HEAD)"];
   const removed = [];
   const added = new Set();
   let path = null;
@@ -191,7 +251,7 @@ function identifiersBlock(top) {
       if (!added.has(t)) names.push(t);
     }
   }
-  if (!names.length) return ["identifiers changed: none"];
+  if (!names.length) return ["identifiers changed in the working tree against HEAD: none"];
   return [`identifiers changed (removed, not added back): ${listOf(names, IDENTIFIERS_SHOWN)}`];
 }
 
@@ -209,7 +269,7 @@ function hotBlock(top) {
 /** authors of changed files: the people whose commits touch the changed tracked files most. */
 function authorsBlock(top) {
   const changed = lines(gitOrNull(["diff", "--name-only", "HEAD"], top)).slice(0, AUTHOR_FILES);
-  if (!changed.length) return ["authors of changed files: none"];
+  if (!changed.length) return ["authors of changed files: none (no tracked file differs from HEAD)"];
   const log = gitOrNull(["--literal-pathspecs", "log", "-n", String(AUTHOR_COMMITS), "--no-merges", "--format=%an", "--", ...changed], top);
   if (log === null) return null;
   const count = new Map();
@@ -334,7 +394,7 @@ export function runBrief(argv = []) {
   writeBaseline({ cwd, sessionId: input.session_id, source: input.source });
   if (process.env.PRODUCT_ENGINEER_NO_BRIEF === "1") return 0;
   const text = brief({ cwd });
-  if (text) process.stdout.write(`${JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text } })}\n`);
+  if (text) process.stdout.write(`${JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: `${text}\n\n${RULES}` } })}\n`);
   return 0;
 }
 

@@ -115,12 +115,30 @@ const PRICE_TERM = /\b(?:discount|off|fee|fees|tax|vat|rate|commission|deposit|s
 const MEASURED = /(?<!\b(?:not|never|un)\s?)\bmeasured\b/i;
 const NEGATED_MEASURED = /\b(?:not|never)\s+(?:been\s+)?measured\b|\bunmeasured\b/i;
 const VERSION = /\bv\d+(?:\.\d+)+\b|\b\d+\.\d+\.\d+\b/;
+// A version the reader must check on their own side ("requires Node 20.11.0") is something to act on, not a change number.
+const VERSION_NEEDED = /\b(?:requires?|required|minimum|at least|needs?|supports?|supported|compatible|upgrade to|drops? support)\b/i;
 const RANGE = /\bv?\d+\.\d+(?:\.\d+)?\b|\b[0-9a-f]{7,40}\b|\bsince\b|\blast \d+ commits\b/i;
 
 function kebabIsCode(word) {
   const parts = word.split("-");
   if (parts.some((p) => /\d/.test(p) && /[a-z]/.test(p))) return true;
   return parts.length >= 3 && !parts.some((p) => JOINERS.has(p));
+}
+
+// A backticked name the reader types or edits: a setting (camelCase, snake_case, UPPER_SNAKE, kebab-case, dotted.key) or a
+// config file. A class name (PascalCase), a path, a call and a source file are internal and never match.
+const SETTING_NAME = /^(?:[a-z]+[A-Z][A-Za-z0-9]*|[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+|[a-z][a-z0-9]*(?:-[a-z0-9]+)+|[a-z][a-z0-9]*(?:\.[a-z][A-Za-z0-9]*)+)$/;
+const CONFIG_FILE = /^(?:\.env[\w.-]*|\.?[\w-]+\.(?:json|ya?ml|toml|ini|cfg|conf|properties|env))$/;
+// A name stands in a sentence that explains it when five or more words surround it.
+const EXPLAINED_WORDS = 5;
+
+/** Whether a name found on a line is one the reader must act on and the line explains it. */
+function isKeptName(id, line) {
+  if (!/^`[^`]+`$/.test(id)) return false;
+  const inner = id.slice(1, -1);
+  if (!SETTING_NAME.test(inner) && !CONFIG_FILE.test(inner)) return false;
+  const words = line.replace(BACKTICK, " ").match(/\p{L}{2,}/gu) ?? [];
+  return words.length >= EXPLAINED_WORDS;
 }
 
 /** The code identifiers and file names on one line of release notes, in the order found. */
@@ -216,9 +234,10 @@ export function notes(text, { cancelled = [], audience = "customers", vocabulary
     if (hash) report("error", "commit-hash", i, `a commit hash (${hash[0]}): a reader cannot use it; say what changed, or name the range on the first line only`);
     if (MERGE_BOILERPLATE.test(line)) report("error", "merge-boilerplate", i, "merge-commit boilerplate: write what the reader can do now, or leave the line out");
     if (!developers) {
-      // A name the range removed or renamed is something the reader must act on, so a note may write it.
-      const ids = identifiersIn(raw).filter((id) => !goneSet.has(id.replace(/^`|`$/g, "")));
-      if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words`);
+      // A name the reader must type, change or check is kept and explained, not banned: a name the range removed or
+      // renamed, and a setting, option or config file in backticks inside a sentence that says what it does.
+      const ids = identifiersIn(raw).filter((id) => !goneSet.has(id.replace(/^`|`$/g, "")) && !isKeptName(id, raw));
+      if (ids.length) report("error", "code-identifier", i, `code a reader cannot follow: ${ids.join(", ")}; say what it does for them in plain words. A setting, option or file they must type or change stays: write its exact name in backticks inside a sentence that says what it does`);
     } else if (CHANGE_WORDS.test(raw) && !NAMED.test(raw)) {
       report("warn", "change-unnamed", i, "names the change but not what to change: write the exact old and new name in backticks, and the default with its unit");
     }
@@ -226,7 +245,7 @@ export function notes(text, { cancelled = [], audience = "customers", vocabulary
     const measured = MEASURED.test(line) && !NEGATED_MEASURED.test(line);
     if (!measured && EFFECT.test(line)) report("error", "unmeasured-effect", i, "an effect nobody measured: describe the cause (\"shows 20 at a time\") or give the measurement");
     if (!measured && PERCENT.test(line) && !PRICE_TERM.test(line)) report("error", "unmeasured-percent", i, "a percentage with no measurement: give how it was measured or leave it out");
-    if (i !== first && VERSION.test(line)) report("error", "version-number", i, "a version number after the first line: the version is not a change, name it only in the range line");
+    if (i !== first && VERSION.test(line) && !VERSION_NEEDED.test(line)) report("error", "version-number", i, "a version number after the first line: the version is not a change, name it only in the range line");
   });
   // Traceability: a note line that shares no content word with the range is a warning. Headings, underlines, short
   // lines and the "Not in this release" section are not checked. Skipped when no vocabulary is given.

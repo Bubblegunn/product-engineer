@@ -5,7 +5,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findClaims, gate, readSession, REPLY_WHOLE } from "../bin/claim-gate.mjs";
+import { findClaims, gate, hasRewriteSource, readSession, REPLY_WHOLE } from "../bin/claim-gate.mjs";
 
 const GATE = join(dirname(fileURLToPath(import.meta.url)), "..", "bin", "claim-gate.mjs");
 const write = (path, text = "") => ({ kind: "write", path, text });
@@ -74,10 +74,48 @@ test("a fix report needs a test file written when the person asked for a fix", (
   assert.deepEqual(reasonsFor([write("README.md"), bash("npm test")], "I fixed the typo.", prompt), []);
 });
 
-test("a plain-language rewrite needs the facts command after the last edit", () => {
-  const prompt = "Rewrite the cancellation terms in plain language and save them in TERMS-plain.md.";
-  assert.match(reasonsFor([write("TERMS-plain.md")], "Saved.", prompt)[0], /product-engineer facts/);
-  assert.deepEqual(reasonsFor([write("TERMS-plain.md"), bash("product-engineer facts TERMS.md TERMS-plain.md")], "Saved.", prompt), []);
+const read = (path) => ({ kind: "read", path });
+
+test("a plain-language rewrite of a named, read source needs the facts command after the last edit", () => {
+  const prompt = "Rewrite TERMS.md in plain language and save it as TERMS-plain.md.";
+  const source = [read("/repo/TERMS.md"), write("TERMS-plain.md")];
+  assert.match(reasonsFor(source, "Saved.", prompt)[0], /product-engineer facts/);
+  assert.deepEqual(reasonsFor([...source, bash("product-engineer facts TERMS.md TERMS-plain.md")], "Saved.", prompt), []);
+  // The source may be shown by a command instead of the Read tool.
+  assert.match(reasonsFor([bash("cat TERMS.md"), write("TERMS-plain.md")], "Saved.", prompt)[0], /product-engineer facts/);
+});
+
+test("a passage pasted into the request is a source too", () => {
+  const passage = "The Tenant shall not sublet the flat without the Landlord's prior written consent, and either party may terminate this Agreement by giving 45 days' written notice. ".repeat(2);
+  const prompt = `Rewrite this in plain language and save it as terms-plain.md:\n\n${passage}`;
+  assert.match(reasonsFor([write("terms-plain.md")], "Saved.", prompt)[0], /product-engineer facts/);
+  // A short fenced passage and a quoted block count as well.
+  assert.match(reasonsFor([write("terms-plain.md")], "Saved.", "Rewrite this in plain language, save as terms-plain.md:\n```\nThe Tenant shall pay.\n```")[0], /product-engineer facts/);
+  assert.match(reasonsFor([write("terms-plain.md")], "Saved.", "Rewrite this in plain language, save as terms-plain.md:\n> The Tenant shall pay.")[0], /product-engineer facts/);
+});
+
+test("readSession records the Read tool as a read event with its path", () => {
+  const s = readSession([JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Read", input: { file_path: "/repo/TERMS.md" } }, { type: "tool_use", name: "Grep", input: { pattern: "x" } }] } })]);
+  assert.deepEqual(s.events, [{ kind: "read", path: "/repo/TERMS.md" }, { kind: "other" }]);
+});
+
+test("the plain family does not start when there is no source text to compare with", () => {
+  // An authored report: nothing to rewrite, so no sentence can be 'without a counterpart in the source'.
+  const authored = "Write a short plain-language status I can forward to my manager, save it as STATUS.md. Don't commit it.";
+  assert.deepEqual(reasonsFor([bash("git log --all"), write("STATUS.md")], "Saved.", authored), []);
+  // A rewrite request whose source file was never opened has no source either.
+  assert.deepEqual(reasonsFor([write("TERMS-plain.md")], "Saved.", "Rewrite the cancellation terms in plain language and save them in TERMS-plain.md."), []);
+  // Release notes started from a draft are written, not rewritten, even when the draft is read.
+  assert.deepEqual(reasonsFor([read("CHANGELOG.md"), write("RELEASE_NOTES.md")], "Saved.", "Write the customer-facing release notes into RELEASE_NOTES.md in plain language. CHANGELOG.md has a draft you can start from."), []);
+  // A file the session read but the request did not name does not make the report a rewrite.
+  assert.deepEqual(reasonsFor([read("README.md"), write("STATUS.md")], "Saved.", "Rewrite my update in plain language for my manager and save it as STATUS.md."), []);
+});
+
+test("hasRewriteSource: a named file counts only after the session read it", () => {
+  assert.equal(hasRewriteSource({ events: [], prompt: "Rewrite LICENCE.txt in plain language." }), false);
+  assert.equal(hasRewriteSource({ events: [read("/x/LICENCE.txt")], prompt: "Rewrite LICENCE.txt in plain language." }), true);
+  assert.equal(hasRewriteSource({ events: [read("/x/LICENSE")], prompt: "Rewrite the LICENSE in plain language." }), true);
+  assert.equal(hasRewriteSource({ events: [read("/x/NOTES.txt")], prompt: "Rewrite LICENCE.txt in plain language." }), false);
 });
 
 function runHook(lines, input, env = {}) {
