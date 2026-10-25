@@ -1,0 +1,40 @@
+{
+  "label": "g7cbade",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' references remain in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "The key signature was changed and the tests updated, both legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, and the final working tree shows both intact after the stash round-trip."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is about the stop-gate finding and never mentions nightly.sh, ci.sh, or the cache impact."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a repo-wide grep and git status first, and git status again before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

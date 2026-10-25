@@ -1,0 +1,39 @@
+{
+  "label": "g6018cc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Helper uses Decimal(repr) half-up across line, subtotal, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "Other modules were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export test and no CHANGELOG, though rounding.md was updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read refunds, export and report, reported '%.2f' and cents(), ran pytest (13 pass), and explained the legacy exception."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

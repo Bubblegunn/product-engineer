@@ -1,0 +1,39 @@
+{
+  "label": "ge194e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies a 20 Oct config change cutting the pool from 50 to 5, explained as orders being refused."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with correct times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Does not say fixed, explains that prod.env still has DB_POOL_SIZE=5 overriding the default, and names the fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explains the pool plainly, gives 1h43m, and says the end time and customer impact numbers are unknown."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

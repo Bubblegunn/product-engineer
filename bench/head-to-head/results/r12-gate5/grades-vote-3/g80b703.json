@@ -1,0 +1,39 @@
+{
+  "label": "g80b703",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 20 and the CI matrix is [20]."
+    },
+    "2": {
+      "pass": true,
+      "why": "Build target and test assertion are both node20."
+    },
+    "3": {
+      "pass": true,
+      "why": "The skip and comment are removed, and 6 pass with 0 skipped."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs are updated, but the answer does not say the previous floor was Node 18."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo with grep and ran npm test after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X152",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

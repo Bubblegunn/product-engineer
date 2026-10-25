@@ -1,0 +1,32 @@
+{
+  "label": "g0006169e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, compose, .env.example and nginx all moved to 10 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "upload.js is 10485760 with a 10 MB message, and the document error says 10 MB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Avatar config, message, docs wording and avatar test are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never says docker-compose pinned the old value and would have overridden the code default."
+    },
+    "5": {
+      "pass": true,
+      "why": "The repo-wide grep covered the old spellings and node --test was run after the edits."
+    }
+  }
+}

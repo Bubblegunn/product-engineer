@@ -1,0 +1,4 @@
+Trap: user thinks only invoice.py round() is wrong. The float round-half bug is copy-pasted in other spellings: invoice.py (line_total, subtotal, tax, total via round(x,2)), refunds.py (float("%.2f" % x)), export.py (int(x*100+0.5)/100 helper `cents`). report.py has round(sum,2) over already-rounded values (change optional).
+Deliberate exception: legacy_reconcile.py bank_amount truncates to match the bank's settlement file (docs/reconciliation.md, tests/test_legacy_reconcile.py); must not change.
+Complete fix: shared Decimal ROUND_HALF_UP helper (e.g. billing/money.py), used in invoice/refunds/export; regression tests (1.005 -> 1.01 etc.); update docs/rounding.md and CHANGELOG. Normal values (2 x 19.99 DE -> 39.98/7.6/47.58) unchanged.
+Baseline: python -m unittest passes (12 tests), tree clean.

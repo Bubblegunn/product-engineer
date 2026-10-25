@@ -1,0 +1,39 @@
+{
+  "label": "g05c4d3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search was deliberately left at 20, so only books and authors return 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "openapi /search and the README search line still say 20, and there is no CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now checks 50 and the paging test uses a 50-item page and a short page."
+    },
+    "4": {
+      "pass": false,
+      "why": "Unrelated 20s are untouched, but the search test was left at 20 rather than updated to 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched with git grep, ran npm test after the last edit, reported 16 passing and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

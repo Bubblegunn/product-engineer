@@ -1,0 +1,39 @@
+{
+  "label": "g6594f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "UPGRADING.md states the rename and that the old name is not read."
+    },
+    "2": {
+      "pass": true,
+      "why": "Explains both defaults and how to restore 30000 and 3."
+    },
+    "3": {
+      "pass": false,
+      "why": "The note never states signatureHeader's default value X-Hook-Signature, only that it is the same as before."
+    },
+    "4": {
+      "pass": false,
+      "why": "The note file starts with an English line \"Changes since v1.2.0\"."
+    },
+    "5": {
+      "pass": true,
+      "why": "git diff v1.2.0..HEAD used."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

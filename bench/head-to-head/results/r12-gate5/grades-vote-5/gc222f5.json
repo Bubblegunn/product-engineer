@@ -1,0 +1,40 @@
+{
+  "label": "gc222f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Renamed consistently to timeout_ms / PINGBOX_TIMEOUT_MS / --timeout-ms, and every config file now carries ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the tests assert 30.0 and 5.0 reach urlopen and the socket plus the 130s worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds, retry.py and the worker backoff sleep are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, configuration.md, runbook (60000), CLI help and a Breaking CHANGELOG entry are all updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched all timeout spellings, ran unittest after the last edit, reported 12 passed and corrected the config.py-only assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

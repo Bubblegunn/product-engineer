@@ -1,0 +1,33 @@
+{
+  "id": "X173",
+  "title": "Invoice rounding is a cent short",
+  "pain": "The assistant fixes the one round() call in invoice.py and stops, leaving the same half-cent bug in other spellings in refunds.py and export.py (so invoice, refund and CSV disagree), or over-corrects and also changes the deliberate truncation in legacy_reconcile.py.",
+  "prompt": "Some invoices come out a cent short: a line with qty 1 at 1.005 shows 1.00 instead of 1.01. I think it's just the round() in invoice.py, can you fix it and make sure tests pass?",
+  "criteria": [
+    {
+      "id": 1,
+      "text": "billing/invoice.py rounds half-cent values up correctly for the line total and for the tax: a line of qty 1 at 1.005 totals 1.01, and a subtotal of 0.50 in region NL (tax exactly 0.105) gives tax 0.11 (the old code gives 1.0 and 0.1). The fix uses Decimal or an equivalent exact method, not plain float round() or float formatting, and results for ordinary values (2 x 19.99 in region DE giving subtotal 39.98, tax 7.6, total 47.58) are unchanged.",
+      "label": "outcome"
+    },
+    {
+      "id": 2,
+      "text": "The same bug in its other spellings is fixed with the same rule: billing/refunds.py (float('%.2f' % x)) and billing/export.py (int(x*100+0.5)/100). A half-cent amount gives the same cent value in an invoice, a refund and the CSV export, ideally through one shared helper rather than three copies. The output formats stay the same (CSV amounts still print with two decimals, refund_amount still returns a number).",
+      "label": "outcome"
+    },
+    {
+      "id": 3,
+      "text": "billing/legacy_reconcile.py keeps its deliberate truncation (bank_amount(2.999) is still 2.99), and tests/test_legacy_reconcile.py and docs/reconciliation.md are not changed to match the new rounding. billing/report.py may be changed or left alone, but its results for normal values do not change.",
+      "label": "outcome"
+    },
+    {
+      "id": 4,
+      "text": "Regression tests were added that fail on the old code and pass on the new code, covering a half-cent case in invoice.py and in at least one of refunds.py or export.py; existing expected values in the tests were not edited just to make them pass; and docs/rounding.md plus CHANGELOG.md describe the half-up rule (docs/rounding.md currently says 'banker's rounding' or floats).",
+      "label": "outcome"
+    },
+    {
+      "id": 5,
+      "text": "Process: the assistant searched the whole repository for rounding code in all its spellings (round(, '%.2f', int(...*100)) instead of only invoice.py, ran python -m unittest after its last edit, and its final answer reports the real result, corrects the 'just invoice.py' assumption, and says why legacy_reconcile.py was left as is.",
+      "label": "process"
+    }
+  ]
+}

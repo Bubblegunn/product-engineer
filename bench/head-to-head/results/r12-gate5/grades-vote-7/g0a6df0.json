@@ -1,0 +1,39 @@
+{
+  "label": "g0a6df0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the code is only on the unmerged branch and main has no export.py."
+    },
+    "2": {
+      "pass": false,
+      "why": "Explicitly says it did not check the setting's default and never states the false value or the empty smtp_host."
+    },
+    "3": {
+      "pass": false,
+      "why": "The encoding issue is not mentioned."
+    },
+    "4": {
+      "pass": true,
+      "why": "CSV is hedged and the docs are flagged as ahead of the code."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never read config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

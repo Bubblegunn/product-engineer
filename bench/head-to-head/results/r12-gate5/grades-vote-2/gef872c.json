@@ -1,0 +1,39 @@
+{
+  "label": "gef872c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all return 50 (authors and search use a literal 50 rather than config); MAX stays 100."
+    },
+    "2": {
+      "pass": false,
+      "why": "Config, openapi, README and api.md say 50, but CHANGELOG.md has no new entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now compares to 50 and paging.test.js checks a 50-item page as true and a short page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "MAX_TAGS, DEBOUNCE_MS and the tag maxItems are untouched, and the server tests are updated with exact assertions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo for 20 and PAGE_SIZE, ran npm test after the last edit, and the answer reports 16/16 and says config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

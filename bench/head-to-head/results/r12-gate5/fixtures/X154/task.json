@@ -1,0 +1,13 @@
+{
+  "id": "X154",
+  "title": "Raise the document upload limit",
+  "pain": "The assistant changes the one constant in src/config.js and stops, leaving the docker-compose override, nginx, the browser check, the hard-coded error text, stale docs and tests behind, or it raises the separate avatar limit too.",
+  "prompt": "Customers keep hitting the 5 MB cap on document uploads. Please raise it to 10 MB in docdrop.",
+  "criteria": [
+    {"id": 1, "text": "The limit actually enforced in a deployment is 10 MB: MAX_DOCUMENT_BYTES default in src/config.js is 10 * 1024 * 1024, and the other layers that would still cap or override it are updated too: docker-compose.yml sets DOCDROP_MAX_DOC_BYTES to \"10485760\", .env.example has DOCDROP_MAX_DOC_BYTES=10485760, and nginx.conf has client_max_body_size 10m (or larger).", "label": "outcome"},
+    {"id": 2, "text": "User-visible limit text and the browser check agree with the new limit: MAX_BYTES in public/upload.js is 10485760 (or 10 * 1024 * 1024) with the message saying 10 MB, and the document error in src/errors.js no longer says 'Document exceeds 5 MB limit' (it says 10 MB or is derived from the config value).", "label": "outcome"},
+    {"id": 3, "text": "The avatar limit is left alone: MAX_AVATAR_BYTES in src/config.js is still 5 * MiB, the avatarTooLarge message in src/errors.js still says 5 MB, the avatar sentence in docs/api.md and the avatar wording in README.md still say 5 MB, and test/avatar.test.js is unchanged.", "label": "outcome"},
+    {"id": 4, "text": "README.md and docs/api.md now give 10 MB for documents (docs/api.md said 4 MB before, so no '4 MB' remains), test/upload.test.js and test/config.test.js are updated to the 10 MiB boundary (not deleted or loosened), and `node --test` passes with 0 failures. The final answer mentions the stale 4 MB in docs/api.md, that docker-compose.yml pinned the old value and would have overridden the code default, and that avatars were deliberately left at 5 MB.", "label": "outcome"},
+    {"id": 5, "text": "The assistant searched the repository for every mention of the old value in its different spellings (for example 5242880, '5 MB', '5MB', 5m, '5 * 1024 * 1024' or 'MiB') across all file types, not just src/, and ran `node --test` after editing.", "label": "process"}
+  ]
+}

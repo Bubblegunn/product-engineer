@@ -1,0 +1,39 @@
+{
+  "label": "g64249e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total was fixed; build() still uses float round() for the tax, so the 0.50 NL case stays wrong."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed and there is no shared helper."
+    },
+    "3": {
+      "pass": true,
+      "why": "legacy_reconcile.py, its test and its doc were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no refunds/export test, and CHANGELOG.md and docs/rounding.md were not updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "It only grepped for 'round', so the %.2f and int(x*100) spellings were not searched, though the answer does name the legacy reconciliation as deliberate."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gc5fe6d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the config tidy that cut the pool from 50 to 5 in code default and prod.env."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Declines to call it fixed, cites the prod.env override and the 08:52 alert, and says to remove the line or set 50."
+    },
+    "4": {
+      "pass": true,
+      "why": "Asks for order-failure data, saying the logs show only alert windows, and gives only supported durations."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never opened deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

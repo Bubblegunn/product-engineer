@@ -1,0 +1,40 @@
+{
+  "label": "g76f2c7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "timeout_ms is used in config and json, and the PINGBOX_TIMEOUT env name stays with ms values in every file."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, and the tests show 30.0 and 5.0 reaching the socket and urlopen calls."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry flagging the breaking change."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the last edit, and reported 12 passing and the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

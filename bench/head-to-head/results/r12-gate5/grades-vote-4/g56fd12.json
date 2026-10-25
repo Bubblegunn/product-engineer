@@ -1,0 +1,39 @@
+{
+  "label": "g56fd12",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total was fixed; the tax in build() still uses float round()."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and its docs were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; docs and CHANGELOG were not updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It read refunds and export, identified %.2f and cents(), ran unittest after the last edit, and explained why legacy was left alone."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

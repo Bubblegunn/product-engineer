@@ -1,0 +1,32 @@
+{
+  "label": "ga3415ed0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All files hold ms values with consistent names."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The CHANGELOG has a breaking entry, but the runbook still says 'Raise the timeout to 60 seconds' without naming ms."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest after the last edit and reported 12 passing, correcting the assumption."
+    }
+  }
+}

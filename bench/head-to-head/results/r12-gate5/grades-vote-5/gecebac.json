@@ -1,0 +1,39 @@
+{
+  "label": "gecebac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Cause given as 50 to 5 in two places, with orders refused as 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes are covered with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Declares verification FAIL due to the prod.env override and the unresolved alert, and proposes setting 50 or removing the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only says 'confirm end time' and does not state what is missing from the repo. It leads with a jargon-heavy tool report and includes a made-up commitment."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g42c3a4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "search.js was deliberately left at 20, so search does not return 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "The openapi search default, the README search line and the CHANGELOG are not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep -w 20, npm test after the last edit, and the answer says more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

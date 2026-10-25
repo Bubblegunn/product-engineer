@@ -1,0 +1,32 @@
+{
+  "label": "ga34c415d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi, README, api.md and a CHANGELOG entry are all updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses the response's limit, and the test checks a 50-item page as true and a 7-item page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran npm test after the last edit, and the answer reports the result and that more than config.js changed."
+    }
+  }
+}

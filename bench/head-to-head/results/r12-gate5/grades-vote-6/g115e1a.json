@@ -1,0 +1,40 @@
+{
+  "label": "g115e1a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The default and all config files hold ms values with a consistent key and env name."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert to seconds and the existing tests check each."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based settings and retry/backoff are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, ran unittest after the last edit, and reported 12 passing with the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

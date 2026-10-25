@@ -1,0 +1,39 @@
+{
+  "label": "gedf06a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Gives the 50 to 5 cut in both places but never mentions orders being refused with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline has 09:12, 10:48, 10:55, 15:20, 15:34 and 08:52."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says production is likely still at 5 because prod.env overrides the default, and names removing or setting it."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not state that counts are absent, and it gives a muddled impact discussion."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never read deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

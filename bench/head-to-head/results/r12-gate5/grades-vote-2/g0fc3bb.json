@@ -1,0 +1,39 @@
+{
+  "label": "g0fc3bb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All four layers are updated: config default, compose, .env.example and nginx 10m."
+    },
+    "2": {
+      "pass": true,
+      "why": "upload.js is 10485760 with a 10 MB message, and errors.js now says 10 MB."
+    },
+    "3": {
+      "pass": true,
+      "why": "The avatar constant, message and docs wording are untouched, and the avatar test is not in the diff."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs, tests and the passing run are fine, but the answer never says the pinned compose value would have overridden the code default."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped repo-wide for several spellings and ran npm test after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X154",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

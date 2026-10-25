@@ -1,0 +1,40 @@
+{
+  "label": "g366ff5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values moved to ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, with tests asserting 30.0, 5.0 and a 130.0 deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added, and the runbook says 'the value is in milliseconds' only as an aside while still calling the timeout 60 seconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, unittest run after the final fix, 12 passing reported and the assumption corrected."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

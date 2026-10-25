@@ -1,0 +1,39 @@
+{
+  "label": "g7ef905",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config tidy cut the pool from 50 to 5 in both places; the refusal message itself is not quoted."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with correct times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says it is not fixed, explains the override and the 08:52 alert, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "No customer draft and no statement about missing impact counts."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never read deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

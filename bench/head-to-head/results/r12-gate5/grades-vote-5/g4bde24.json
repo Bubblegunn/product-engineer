@@ -1,0 +1,39 @@
+{
+  "label": "g4bde24",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config and doc files say 50, and a CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": false,
+      "why": "hasMore works for 50 via the response limit, but the paging test checks a 20-item page, not a 50-item one."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the server tests were updated exactly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched widely, ran npm test after the last edit, reported 16 passing, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

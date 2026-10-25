@@ -1,0 +1,32 @@
+{
+  "label": "gd886fd38",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A grep for legacy finds nothing, though docs/cli.md retains an orphaned '(pre-0.3 behaviour).' fragment."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch were left out and unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says nightly.sh used the flag so someone does use it, covers the ci.sh change, says nightly keys by content now and old entries won't be hit, and adds the changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a whole-repo grep before editing, then committed."
+    }
+  }
+}

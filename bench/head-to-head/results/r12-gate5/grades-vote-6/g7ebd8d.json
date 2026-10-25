@@ -1,0 +1,39 @@
+{
+  "label": "g7ebd8d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All docs and config updated with a CHANGELOG entry."
+    },
+    "3": {
+      "pass": false,
+      "why": "The paging test still uses a 20-item page with limit 20, not a 50-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s untouched, tests exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped, ran tests last, honest report."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gcb382c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV code is only on the unmerged feature/csv-export branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says email_delivery false and empty smtp_host in config/settings.json; someone must enable it and set the host."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise CSV and says the docs are wrong for main today."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the CSV branch, and cat config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

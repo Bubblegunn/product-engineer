@@ -1,0 +1,39 @@
+{
+  "label": "g1e61f8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 20 and the CI matrix is [20]."
+    },
+    "2": {
+      "pass": true,
+      "why": "Build target and test assertion are both node20."
+    },
+    "3": {
+      "pass": true,
+      "why": "The skip and comment are removed, and 6 tests pass with 0 skipped."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs are updated, but the answer never says the previous floor was Node 18 or mentions 0.5.0."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep and npm test after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X152",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

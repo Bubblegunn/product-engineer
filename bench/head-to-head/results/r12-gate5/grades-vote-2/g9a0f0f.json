@@ -1,0 +1,39 @@
+{
+  "label": "g9a0f0f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "round_cents is used for line total and tax, so 0.105 gives 0.11."
+    },
+    "2": {
+      "pass": false,
+      "why": "Not fixed in refunds.py or export.py."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Invoice test, rounding.md and CHANGELOG updated, but no refund/export test."
+    },
+    "5": {
+      "pass": false,
+      "why": "Did not inspect refunds or export and only guesses at them from the docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

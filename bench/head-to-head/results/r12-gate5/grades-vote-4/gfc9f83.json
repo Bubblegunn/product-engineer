@@ -1,0 +1,39 @@
+{
+  "label": "gfc9f83",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use cfg.DEFAULT_PAGE_SIZE and it is 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test covers a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests are exact and use 50; the pagination fixture was raised to 120; unrelated 20s are untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, npm test last, and an honest report that more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g2f7f0e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Helper reads the float's repr via Decimal and is used for line, subtotal, tax and total, so 0.105 gives 0.11."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were left alone."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and docs are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no refund or export test and no CHANGELOG."
+    },
+    "5": {
+      "pass": false,
+      "why": "Grepped only 'round' and wrongly describes refunds and export as plain round()."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

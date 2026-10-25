@@ -1,0 +1,32 @@
+{
+  "label": "gf43a12d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The rename to *_MS is applied consistently with ms values in every file."
+    },
+    "2": {
+      "pass": true,
+      "why": "Three modules convert to seconds, and the tests assert 30.0/5.0 and the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds and cache_ttl_seconds are untouched, and so are retry.py and the backoff sleep."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, CLI help and a Breaking changelog entry were all updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the edits, reported 12 passing and corrected the assumption."
+    }
+  }
+}

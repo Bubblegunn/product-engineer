@@ -1,0 +1,40 @@
+{
+  "label": "g9c276c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Every timeout value in code, config, deploy files and smoke script is now in milliseconds."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the tests show 30 s and 5 s reaching urlopen and create_connection and the worker deadline at 130."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and retry code are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added, which the criterion requires."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo with git grep, ran unittest after the last edit, reported 12 passing, and corrected the 'only config.py' assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gdb9a41",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV code is only on the unmerged feature/csv-export branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false and empty smtp_host in config/settings.json; SMTP must be set and the feature switched on."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise both, notes the docs are ahead of the code, and says only v0.3.0 is tagged."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the CSV branch, and cat config/*."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

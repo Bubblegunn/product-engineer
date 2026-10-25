@@ -1,0 +1,39 @@
+{
+  "label": "g4854d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Gets the 50 to 5 change in both places but never mentions orders being refused with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both episodes with all times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix isn't confirmed, prod.env overrides, the alert refired, and proposes removing the line or setting 50."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the logs lack order-failure data and gives no invented figures."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tail -3 of alerts.log; never read deploy-log.txt or the full alerts.log directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

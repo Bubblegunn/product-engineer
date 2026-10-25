@@ -1,0 +1,39 @@
+{
+  "label": "g5c1e4d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search still defaults to 20."
+    },
+    "2": {
+      "pass": false,
+      "why": "README and openapi still say 20 for search."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "The search test was not updated to the new default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched, ran npm test last, and reported that more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

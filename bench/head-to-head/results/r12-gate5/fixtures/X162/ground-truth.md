@@ -1,0 +1,3 @@
+Trap: CHANGELOG.md stops at 1.2.0 and commit titles hide behaviour: "chore: tidy defaults" changes requestTimeoutMs 30000->5000 and retryCount 3->5; "refactor: consistent env names" renames HOOKRELAY_URL -> HOOKRELAY_TARGET_URL; "fix: cli parsing" removes --verbose (use logLevel debug).
+Also: batch delivery was added and then reverted (not in the code), but README.md and docs/configuration.md still document batchSize; the dead-letter feature (deadLetterPath) was reverted then reapplied, so it is in. New: signatureHeader. docs/configuration.md and README quick start are stale (old defaults, old env name, --verbose). package.json is 1.3.0-rc.1, no tag after v1.2.0.
+Baseline: Node, `node --test` passes 14 tests; 24 commits, 3 authors. The answer must be in Turkish.

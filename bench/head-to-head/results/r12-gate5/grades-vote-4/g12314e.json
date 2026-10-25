@@ -1,0 +1,40 @@
+{
+  "label": "g12314e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A search for 'legacy' in the listed paths finds nothing."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only, both legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch are not in the commit and remain in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer does not say the scripts relied on the mode or that old path-keyed cache entries are now unused, and it wrongly implies a missing flag is an error for the env var case."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep and git status first, and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gd21b1b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting the pool from 50 to 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline lists both episodes with the key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Doubts the fix because prod.env still sets 5, cites the 08:52 alert, and offers to change prod.env."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failed order counts are absent, and the draft rounds to 1h45m."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tailed alerts.log and never read deploy-log.txt."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

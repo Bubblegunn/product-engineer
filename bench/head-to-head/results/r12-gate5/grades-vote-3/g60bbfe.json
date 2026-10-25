@@ -1,0 +1,39 @@
+{
+  "label": "g60bbfe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config, compose, .env.example and nginx are all at 10 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "upload.js and errors.js both say 10 MB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Avatar settings are untouched; the README keeps 5 MB, only with a space added."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer does not say compose pinned the old value and would have overridden the default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo with several patterns and ran npm test after editing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X154",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

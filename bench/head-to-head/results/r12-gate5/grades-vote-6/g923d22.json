@@ -1,0 +1,40 @@
+{
+  "label": "g923d22",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' match remains in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py is content-hash only, cli/config are clean, both tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch are not in the commit and remain unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says two scripts did still use it, names nightly.sh and ci.sh, explains the cold cache, and the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep and git status ran first, before any edits or the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

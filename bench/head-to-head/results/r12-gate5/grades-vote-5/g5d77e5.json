@@ -1,0 +1,39 @@
+{
+  "label": "g5d77e5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A real --no-ff merge with no wip commits on main."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both changelog entries are kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "The rename is fixed and the test fix is a follow-up commit, so main's final state passes the unit-column test."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says the exporter core (67acd6e) had already been merged and reports the conflict, the rename fix and the stale test."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log before merging, then unittest after."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X153",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

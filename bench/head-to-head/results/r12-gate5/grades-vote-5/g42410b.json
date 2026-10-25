@@ -1,0 +1,39 @@
+{
+  "label": "g42410b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "The floor is unchanged and the matrix is [18, 22]."
+    },
+    "3": {
+      "pass": false,
+      "why": "The CHANGELOG line was inserted under the existing 2.3.0 heading and the README is unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not give the local Node version or say Docker and CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo and ran npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

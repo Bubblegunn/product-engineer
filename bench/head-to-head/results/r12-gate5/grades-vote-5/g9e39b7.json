@@ -1,0 +1,39 @@
+{
+  "label": "g9e39b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting change cut connections from 50 to 5 and orders were refused."
+    },
+    "2": {
+      "pass": true,
+      "why": "First episode has its times and the second is given as re-applied later with failures from 15:34, which is acceptable."
+    },
+    "3": {
+      "pass": true,
+      "why": "Verdict FAIL because of the prod.env override and the unresolved 08:52 alert, with removal of the line as the action."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only says to confirm the end time and total duration, never that the repo lacks order or downtime data, and leads with a jargon-heavy tool report."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

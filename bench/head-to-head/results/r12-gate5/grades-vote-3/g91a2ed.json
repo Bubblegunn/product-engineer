@@ -1,0 +1,40 @@
+{
+  "label": "g91a2ed",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Consistent rename to _MS names with ms values in every file."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker divide by 1000, with tests for 30, 5 and a 130.0 deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds settings and the retry/backoff code are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, help text and a Breaking CHANGELOG entry are present, and the runbook uses PINGBOX_TIMEOUT_MS=60000."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, unittest run after the last edit, 12 passing reported and the assumption corrected."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

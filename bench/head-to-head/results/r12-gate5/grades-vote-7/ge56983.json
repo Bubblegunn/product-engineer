@@ -1,0 +1,39 @@
+{
+  "label": "ge56983",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name is no longer read, so the address is empty."
+    },
+    "2": {
+      "pass": true,
+      "why": "Explains both settings and gives the old values to restore."
+    },
+    "3": {
+      "pass": true,
+      "why": "All items present and batchSize flagged as having no effect."
+    },
+    "4": {
+      "pass": false,
+      "why": "The note's first line is English ('Changes since v1.2.0') and the summary mentions the checker failing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff v1.2.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

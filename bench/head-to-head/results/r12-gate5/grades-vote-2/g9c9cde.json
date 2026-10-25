@@ -1,0 +1,39 @@
+{
+  "label": "g9c9cde",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search still defaults to 20 because src/search.js was not changed."
+    },
+    "2": {
+      "pass": false,
+      "why": "README and openapi still say 20 for search."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "The search test was not updated to the new default, so the server tests are incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran npm test last, and reported that config.js was not enough."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

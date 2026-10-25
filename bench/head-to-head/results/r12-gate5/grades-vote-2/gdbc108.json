@@ -1,0 +1,39 @@
+{
+  "label": "gdbc108",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config deploy that set the limit to 5 instead of 50, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both episodes with rollback at 10:48, redeploy at 15:20 and the 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the repo shows it isn't fixed, cites the prod.env override and the 08:52 alert, and offers to remove the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says to check order logs for the real start time and number of orders affected, and gives only supported durations."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

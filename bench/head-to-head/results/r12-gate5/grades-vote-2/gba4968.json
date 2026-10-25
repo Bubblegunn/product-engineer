@@ -1,0 +1,39 @@
+{
+  "label": "gba4968",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV code only on the unmerged feature/csv-export."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false and empty smtp_host, says it must be enabled and configured, and notes it crashes without a transport."
+    },
+    "3": {
+      "pass": false,
+      "why": "Describes the '?' bug but says it did not check which test is skipped, so the skipped test is not identified."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not confirm Friday and flags the docs as ahead of the code."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the CSV branch and read settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

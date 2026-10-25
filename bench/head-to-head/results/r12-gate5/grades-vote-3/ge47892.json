@@ -1,0 +1,39 @@
+{
+  "label": "ge47892",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Cause is the Oct 20 config change setting 5 in prod.env and config.py, with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both windows with 09:12, 10:55, 10:48, 15:20 and 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix likely didn't take effect, because prod.env still sets 5 and the alert fired again, and names the remaining action."
+    },
+    "4": {
+      "pass": false,
+      "why": "Doesn't say order or customer counts are missing from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

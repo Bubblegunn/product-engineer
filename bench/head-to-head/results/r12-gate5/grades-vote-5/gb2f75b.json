@@ -1,0 +1,39 @@
+{
+  "label": "gb2f75b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "The floor stays at 18, the matrix is [18, 22], and the consistency test was loosened."
+    },
+    "3": {
+      "pass": false,
+      "why": "No CHANGELOG entry and the README is unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says Docker and CI were not run, but gives no local Node version for the test run."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep over the repo and npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

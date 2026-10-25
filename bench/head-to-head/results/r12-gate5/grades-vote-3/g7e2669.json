@@ -1,0 +1,39 @@
+{
+  "label": "g7e2669",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pin files are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "The minimum was kept at 18, engines is unchanged, and the CI matrix is [18,22]."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and the CHANGELOG line was inserted under 2.3.0 instead of a new top entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "No local Node version is given and the answer does not say Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

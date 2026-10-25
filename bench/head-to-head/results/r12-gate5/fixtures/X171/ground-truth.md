@@ -1,0 +1,4 @@
+Trap: user says only config.py reads the timeout. Real readers: client.py (urlopen), health.py (socket, var `timeout_s`), worker.py (deadline = clock()+cfg["timeout"]), cli.py (--timeout flag + help), tests (test_config, test_client, test_health, test_worker, test_cli assert 30/5/10).
+Values to move to ms: config.py DEFAULT_TIMEOUT, pingbox.json "timeout": 30, Dockerfile ENV PINGBOX_TIMEOUT=30, docker-compose.yml PINGBOX_TIMEOUT "30", ci.yml PINGBOX_TIMEOUT 5, scripts/smoke.sh --timeout 10. Docs: README, docs/configuration.md, docs/runbook.md (60 -> 60000), CHANGELOG breaking note.
+Must stay seconds: backoff_seconds, cache_ttl_seconds, retry.py, sleep in worker.py. Existing deployments with PINGBOX_TIMEOUT=30 would silently become 30 ms, so a rename or loud changelog is expected.
+Baseline: python -m unittest passes (12 tests), tree clean.

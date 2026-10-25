@@ -1,0 +1,39 @@
+{
+  "label": "gbe8f1e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name is silently ignored and the target may be empty."
+    },
+    "2": {
+      "pass": false,
+      "why": "Shows the table and says to write the old values, but never explains what the change means (timeouts, more attempts); one sentence is garbled."
+    },
+    "3": {
+      "pass": true,
+      "why": "All covered; batchSize is left out of the note and flagged as reverted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Turkish with identifiers kept, plain wording."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD on the source files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

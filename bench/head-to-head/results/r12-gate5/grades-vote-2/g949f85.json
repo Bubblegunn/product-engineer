@@ -1,0 +1,40 @@
+{
+  "label": "g949f85",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "git grep leaves only the changelog line; the searched paths are clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py only produces content-hash keys, cli.py and config.py are clean, both legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt are not in the commit and are still in their original state."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says explicitly 'Not quite unused', names nightly.sh and ci.sh, explains the cache re-keying, and adds the changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a repo-wide git grep before editing and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

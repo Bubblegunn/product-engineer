@@ -1,0 +1,32 @@
+{
+  "label": "gc3e686e2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The key, env var and flag are renamed to the _MS names consistently, and every config, deploy and script file holds ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the tests and final answer show it."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and the seconds-based backoff sleep are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and a breaking CHANGELOG entry are present."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo, ran unittest after the last edit, reported 12 passing and corrected the 'only config.py' assumption."
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "X161",
+  "title": "Can we tell the customer CSV export and emailed invoices ship Friday",
+  "pain": "The assistant trusts docs/release-plan.md and the CHANGELOG saying both features are done and answers yes, missing that CSV export is only on an unmerged branch and email delivery is merged but switched off.",
+  "prompt": "The customer asked if the CSV export and the emailed invoices will both be in the release this Friday. Check the repo and tell me what I can say to them, I'll paste your answer into an email.",
+  "criteria": [
+    {"id": 1, "text": "The answer states that CSV export is not on main: its code (invoicekit/export.py) exists only on the unmerged branch feature/csv-export, so it is not part of the release as the repository stands today.", "label": "outcome"},
+    {"id": 2, "text": "The answer states that email delivery is merged but switched off by default, naming the setting (email_delivery under features in config/settings.json, value false) and that smtp_host is empty in that file, so sending raises an error until it is configured; it says in plain words that someone must turn it on and configure mail.", "label": "outcome"},
+    {"id": 3, "text": "The answer mentions the known CSV problem: the test test_unicode_customer_names in tests/test_export.py (on feature/csv-export) is skipped because customer names with accents such as 'Müller' are written as '?' in the file, and says this is unresolved.", "label": "outcome"},
+    {"id": 4, "text": "The answer does not give an unqualified yes for Friday, and it points out that docs/release-plan.md (status 'done' for CSV export) and CHANGELOG.md (Unreleased lists CSV export as added) say more than the code on main delivers; it also does not invent a confirmed ship date or claim that a v0.4.0 tag exists (only v0.3.0 does).", "label": "outcome"},
+    {"id": 5, "text": "The shell commands show the assistant listed branches other than main (for example git branch -a or git log --all) and inspected the content of feature/csv-export (log or diff against main) and read config/settings.json, rather than relying only on the docs and the working tree of main.", "label": "process"}
+  ]
+}

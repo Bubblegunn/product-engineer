@@ -1,0 +1,39 @@
+{
+  "label": "g4c6fc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, compose, .env.example and nginx all moved to 10 MB in the diff."
+    },
+    "2": {
+      "pass": true,
+      "why": "upload.js MAX_BYTES and message and the errors.js document message all say 10 MB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Avatar constant, message, README avatar wording and avatar test are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Tests pass and 4 MB and avatars are mentioned, but the answer never says compose pinned the old value and would have overridden the default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped for several spellings across the repo and ran npm test after editing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X154",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

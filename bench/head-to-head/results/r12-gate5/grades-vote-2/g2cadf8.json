@@ -1,0 +1,40 @@
+{
+  "label": "g2cadf8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "timeout_ms and PINGBOX_TIMEOUT_MS are used consistently with ms values across all files."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, and the tests assert seconds."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, help text, runbook and a breaking CHANGELOG entry are all updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran tests after the last edit, and reported 12 passed and the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

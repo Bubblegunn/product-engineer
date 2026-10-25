@@ -1,0 +1,40 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' reference remains in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only, both legacy tests are deleted, and unittest passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Only the specific changed files were added; README.md and scratch are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer names nightly.sh (passed the flag) and ci.sh, says nightly now uses content-hash keys and refills /var/cache/tidepool, and CHANGELOG has an Unreleased entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It used git grep over tracked files before editing and ran git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

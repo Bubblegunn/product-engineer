@@ -1,0 +1,39 @@
+{
+  "label": "gfe258d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV only on the unmerged branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "Mentions features.email_delivery and smtp_host but never says false or empty, and settings.json was not read."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Hedged and flags docs ahead of code."
+    },
+    "5": {
+      "pass": false,
+      "why": "Did not read config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

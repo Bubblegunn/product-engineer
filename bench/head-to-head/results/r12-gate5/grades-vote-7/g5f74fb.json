@@ -1,0 +1,40 @@
+{
+  "label": "g5f74fb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No legacy references remain in the live files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache.key now takes only content, the legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/ are excluded from the commit and untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer lists the script edits but never says the mode was in use, and never mentions path-keyed cache entries going unused for nightly."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep first."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

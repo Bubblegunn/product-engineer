@@ -1,0 +1,40 @@
+{
+  "label": "g123443",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/cli.md leaves an orphaned '(pre-0.3 behaviour).' line attached to the --no-cache bullet, a leftover of the removed mode."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch were not committed and are preserved."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names the nightly.sh and ci.sh edits and says old path-keyed entries in /var/cache/tidepool will never be hit; the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep first, and git status before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g67e7b1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A search for 'legacy' in the listed paths finds nothing; only the 0.3.0 changelog line remains."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only content-hash keys remain, both legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Only the intended paths were added; README is still modified and scratch is untracked."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says 'Not quite unused', names both scripts, describes the nightly re-keying and the orphaned cache, and the CHANGELOG entry is present."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep across the repo and git status, and ran git status again before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

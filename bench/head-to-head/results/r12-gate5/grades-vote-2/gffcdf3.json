@@ -1,0 +1,40 @@
+{
+  "label": "gffcdf3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' string remains in the searched paths; a dangling '(pre-0.3 behaviour).' line is left in docs/cli.md but it doesn't match the search."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py is content-hash only, cli.py and config.py are clean, the two legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit only adds files under the changed paths; README.md stays modified and scratch/notes.txt stays untracked."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says both scripts still ran legacy mode and were switched to content keys, that nightly's path-keyed entries in /var/cache/tidepool are no longer hit, and it adds an Unreleased changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep -rni before editing and git diff --stat before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

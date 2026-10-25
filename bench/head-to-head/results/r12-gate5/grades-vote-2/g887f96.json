@@ -1,0 +1,39 @@
+{
+  "label": "g887f96",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Authors and search use config and all return 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All docs and config say 50 and CHANGELOG has an entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses nextOffset and the tests check a 50-item page with a next offset and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the server tests are updated exactly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched, ran npm test (17/17) after the last edit, and reported that config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

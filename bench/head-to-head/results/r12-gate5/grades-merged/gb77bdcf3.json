@@ -1,0 +1,32 @@
+{
+  "label": "gb77bdcf3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the code is only on the unmerged feature/csv-export, not main."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says email_delivery false and smtp_host empty, with SMTP host and port to be set and the feature switched on."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding problem."
+    },
+    "4": {
+      "pass": true,
+      "why": "Avoids promising both, says README/CHANGELOG/plan are ahead of the code, and notes only v0.3.0 exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, diffed the branch and read config."
+    }
+  }
+}

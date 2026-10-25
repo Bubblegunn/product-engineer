@@ -1,0 +1,39 @@
+{
+  "label": "g19f1b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting 50 to 5 and the 'busy, try again' alert."
+    },
+    "2": {
+      "pass": true,
+      "why": "Lists both Oct 21 episodes with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explains the prod.env override and the 08:52 alert, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Gives only rough durations, writes no customer text, and never says failure counts are missing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

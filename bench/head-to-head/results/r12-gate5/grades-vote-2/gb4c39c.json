@@ -1,0 +1,39 @@
+{
+  "label": "gb4c39c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting connections from 50 to 5, refusing orders with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both windows with the 10:48 revert, the 15:20 re-apply and the 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix probably didn't work, cites prod.env:5 and the 08:52 alert, and names the removal or 50."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failure counts are missing, and the table says 1h45 and 'at least 17 hours'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the fix diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

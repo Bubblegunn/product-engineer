@@ -1,0 +1,32 @@
+{
+  "label": "g7d00fc34",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used throughout line total, subtotal, tax and total, so the half-cent cases are correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export test and no CHANGELOG update."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, read the files, ran unittest after the edits, and the answer lists all three spellings and the legacy reason."
+    }
+  }
+}

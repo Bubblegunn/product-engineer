@@ -1,0 +1,39 @@
+{
+  "label": "gb80864",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR and engines are unchanged and the tests fail."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and there is no CHANGELOG entry."
+    },
+    "4": {
+      "pass": true,
+      "why": "It is honest about the 3 failing tests, cites local Node 24.13, says images and CI were not exercised, and notes the worker, CI and engines premise corrections."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf081b2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the tidy config change cutting the limit from 50 to 5."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix may not have worked, because prod.env still sets 5 and the alert re-fired, and says to delete the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Draft invents that tests and the runbook were updated and doesn't say counts are missing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs, prod.env and show the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

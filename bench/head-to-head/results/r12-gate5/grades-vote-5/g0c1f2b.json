@@ -1,0 +1,40 @@
+{
+  "label": "g0c1f2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/cli.md keeps a stray '(pre-0.3 behaviour).' line from the removed flag's description."
+    },
+    "2": {
+      "pass": true,
+      "why": "Content-hash only, tests deleted, call sites updated, unittest passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, and the working tree still shows them."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is about the stop gate and never mentions nightly.sh, ci.sh or the cache consequences."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep first and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g3cfb58",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal with ROUND_HALF_UP is used throughout line_total and build."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were left unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy code, its test and reconciliation.md are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export test and no CHANGELOG entry, although docs/rounding.md was updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read the refund, export and legacy files, ran the tests after the last edit, and reported the other spellings and why legacy was left alone."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

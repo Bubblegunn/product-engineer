@@ -1,0 +1,39 @@
+{
+  "label": "gb2b06d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pin files are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines >=22, CI [22], MIN_MAJOR 22 and check-node tests are updated."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/development.md still says 'nvm install 18'."
+    },
+    "4": {
+      "pass": false,
+      "why": "It claims the repo is on 22 everywhere, gives no local Node version, and does not say Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

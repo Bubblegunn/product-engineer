@@ -1,0 +1,40 @@
+{
+  "label": "g5b1a56",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "It removed everything, including the dangling docs line via sed, and the final grep is clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt were not committed and are preserved."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is about the stop gate and never tells the user the mode was in use by the scripts."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep first, and git status before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

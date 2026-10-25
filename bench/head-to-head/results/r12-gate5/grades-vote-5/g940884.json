@@ -1,0 +1,39 @@
+{
+  "label": "g940884",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the tidy config deploy cutting the connection limit from 50 to 5, explains what the limit caps, and later notes prod.env."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both 21 Oct episodes with the 09:12, 10:48, 10:55, 15:20 and 15:34 times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Declines to call it fixed and explains that prod.env DB_POOL_SIZE=5 overrides the fix. It cites the 08:52 alert with no resolve and proposes removing the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Invents no figures and flags that the real start time and number of orders affected must come from order logs, though it never says outright that the repo lacks them."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read alerts.log, deploy-log, prod.env and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g953161",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A Decimal helper is applied to the line total, subtotal, tax and total, which gives 1.01 and 0.11."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The legacy files are unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no refunds/export test, and neither docs nor CHANGELOG were updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was for 'round|Decimal' only, and it did not read refunds.py or export.py."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

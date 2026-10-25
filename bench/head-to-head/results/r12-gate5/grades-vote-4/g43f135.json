@@ -1,0 +1,39 @@
+{
+  "label": "g43f135",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "CHANGELOG.md has no entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging tests check a 50-item page and a short page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination test expects 45 items and null, so it no longer verifies the default of 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, tests run, and it says config.js was not the only change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

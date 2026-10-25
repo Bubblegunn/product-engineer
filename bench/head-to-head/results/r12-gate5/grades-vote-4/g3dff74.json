@@ -1,0 +1,40 @@
+{
+  "label": "g3dff74",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config and deploy files hold ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three modules convert, and the tests cover client, health and worker."
+    },
+    "3": {
+      "pass": true,
+      "why": "The seconds values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The CHANGELOG has a breaking entry, but the runbook still says 'Raise the timeout to 60 seconds', which is not an ms statement."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest after the last edit, reported 12 passing, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

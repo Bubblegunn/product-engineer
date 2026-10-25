@@ -1,0 +1,39 @@
+{
+  "label": "gb276d0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used for the line total, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The legacy files are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no refunds/export test and no CHANGELOG update."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo with git grep, read the other modules, ran the tests last, and its answer lists %.2f, int(x*100+0.5) and the legacy reason."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

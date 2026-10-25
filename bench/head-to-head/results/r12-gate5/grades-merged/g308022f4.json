@@ -1,0 +1,32 @@
+{
+  "label": "g308022f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All docs and config are updated, including a CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses nextOffset, and the tests cover a full page with a next offset and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo, ran npm test after the last edit (17 of 17), and the answer says more than config.js changed."
+    }
+  }
+}

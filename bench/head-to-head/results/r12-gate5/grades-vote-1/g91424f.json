@@ -1,0 +1,39 @@
+{
+  "label": "g91424f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml was not touched, so the matrix still has 16 and 18, and MIN_MAJOR and engines are unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "No README or CHANGELOG changes."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never mentions the CI matrix and gives no local Node version."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo and ran npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

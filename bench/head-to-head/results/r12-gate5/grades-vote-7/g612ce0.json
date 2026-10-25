@@ -1,0 +1,40 @@
+{
+  "label": "g612ce0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config files and the default moved to millisecond values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert ms to seconds and the answer says so."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values and retry.py are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added, and the runbook still says '60 seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, ran unittest last, reported 12 passing, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

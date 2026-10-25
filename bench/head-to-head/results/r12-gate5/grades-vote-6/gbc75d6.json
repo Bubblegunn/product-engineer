@@ -1,0 +1,40 @@
+{
+  "label": "gbc75d6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default is 30000 and every config file uses timeout_ms or PINGBOX_TIMEOUT_MS with ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the existing tests assert 30, 5 and a 130.0 deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds, retry.py and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, configuration, runbook (60000), CLI help and a breaking CHANGELOG entry are all updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo, ran unittest after the last edit, and reported 12 passing and corrected the config.py-only assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

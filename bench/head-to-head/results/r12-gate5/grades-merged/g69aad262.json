@@ -1,0 +1,32 @@
+{
+  "label": "g69aad262",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are ms with names unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker divide by 1000, and the tests assert seconds at the stdlib calls and the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "The seconds values and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG.md breaking entry in the diff."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the final edits, reported 12 passing and corrected the assumption."
+    }
+  }
+}

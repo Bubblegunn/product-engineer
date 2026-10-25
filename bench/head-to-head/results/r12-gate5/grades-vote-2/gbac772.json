@@ -1,0 +1,39 @@
+{
+  "label": "gbac772",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used for the line total and tax product, so half-cent values round up."
+    },
+    "2": {
+      "pass": false,
+      "why": "No change to refunds.py or export.py."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test; no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": false,
+      "why": "Searched only 'round', never found the other spellings, and the final answer mentions only report.py."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

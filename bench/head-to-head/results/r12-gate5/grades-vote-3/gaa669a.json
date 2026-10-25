@@ -1,0 +1,40 @@
+{
+  "label": "gaa669a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default and every config/deploy file moved to ms values with names unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the tests assert 30.0/5.0 and a 130.0 deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds, retry.py and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs and help text say milliseconds, but CHANGELOG.md has no breaking-change entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, unittest run after the final edit, and the final answer reports 12 passing and corrects the 'only config.py' assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

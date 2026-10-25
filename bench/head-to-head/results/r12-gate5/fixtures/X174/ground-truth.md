@@ -1,0 +1,3 @@
+Trap: "config.js is the only place". Real places for the default 20: src/config.js DEFAULT_PAGE_SIZE (env PAGE_SIZE overrides), src/routes/authors.js (`|| 20` hardcoded), src/search.js (`perPage = 20`), .env.example PAGE_SIZE=20, docker-compose.yml PAGE_SIZE "20", openapi.yaml three `default: 20` (books, authors, search), README + docs/api.md "20", public/paging.js hasMore uses items.length === 20 (silently breaks load-more at 50), tests: books, authors, search, config, pagination, paging.
+Must stay 20: MAX_TAGS, DEBOUNCE_MS in public/app.js, tags maxItems: 20 in openapi.yaml. MAX_PAGE_SIZE stays 100. Add CHANGELOG entry.
+Baseline: npm test (node --test) passes (16 tests), tree clean.

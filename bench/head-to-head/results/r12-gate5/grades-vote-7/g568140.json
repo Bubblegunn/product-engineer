@@ -1,0 +1,39 @@
+{
+  "label": "g568140",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config, docs, openapi and CHANGELOG are all updated to 50."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore checks 50 and the paging test uses 50 items and 7 items."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the tests assert 50, with the author seed raised so the authors test can assert a full 50-item default page."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran tests after the last edit, and said more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

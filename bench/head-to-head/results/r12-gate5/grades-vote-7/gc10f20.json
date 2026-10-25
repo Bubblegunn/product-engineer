@@ -1,0 +1,39 @@
+{
+  "label": "gc10f20",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all default to 50 via cfg.DEFAULT_PAGE_SIZE; the cap stays 100."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi (three defaults), README, api.md and a CHANGELOG entry all say 50."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now checks 50 and the paging test uses a 50-item page and a 7-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "MAX_TAGS, debounce and the tag maxItems are untouched, and the server tests assert exact new values."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran npm test after the last edit, and the answer says more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

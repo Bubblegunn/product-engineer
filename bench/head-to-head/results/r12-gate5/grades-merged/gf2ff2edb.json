@@ -1,0 +1,32 @@
+{
+  "label": "gf2ff2edb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No legacy references remain in the checked paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch were not committed."
+    },
+    "4": {
+      "pass": false,
+      "why": "It lists the script edits but never says the mode was in use or that old path-keyed entries are now unused."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep first and git status before committing."
+    }
+  }
+}

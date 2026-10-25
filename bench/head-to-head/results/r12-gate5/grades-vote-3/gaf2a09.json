@@ -1,0 +1,39 @@
+{
+  "label": "gaf2a09",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22 (.nvmrc is '22')."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR and engines are unchanged and the CI matrix is [18,22]."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and development.md keeps 18 for the minimum."
+    },
+    "4": {
+      "pass": false,
+      "why": "No local Node version is given and Docker and CI not being run is not explicitly stated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

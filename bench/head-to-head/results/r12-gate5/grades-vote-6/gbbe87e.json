@@ -1,0 +1,40 @@
+{
+  "label": "gbbe87e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' match remains in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "The code is cleaned up, the two tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, which remain unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never says the mode was still in use, never gives the nightly job's cache impact, and only lists the script edits."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep and git status ran at the start, before any edits or the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

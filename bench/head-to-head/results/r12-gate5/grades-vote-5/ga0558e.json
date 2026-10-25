@@ -1,0 +1,39 @@
+{
+  "label": "ga0558e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The helper covers line total, subtotal, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export test and no CHANGELOG entry, although docs/rounding.md was updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped for 'round' and wrongly says refunds and export use round(); it also added unrelated changelog content."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

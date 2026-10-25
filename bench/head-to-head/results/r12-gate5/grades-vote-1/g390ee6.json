@@ -1,0 +1,39 @@
+{
+  "label": "g390ee6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used for line total and tax, so the half-cent cases are correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export test and no CHANGELOG update."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was for round( only and the answer wrongly says refunds and export use round()."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

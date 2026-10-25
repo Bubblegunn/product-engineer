@@ -1,0 +1,13 @@
+{
+  "id": "X152",
+  "title": "Raise the Node floor to 20",
+  "pain": "The assistant bumps package.json and maybe the README, but misses the Dockerfile, the release workflow, the build target and its test, the docs and the skipped test whose only reason was Node 18, and does not notice the floor was 18 rather than 16.",
+  "prompt": "We dropped Node 16 a while back and now we're dropping 18 too, so make Node 20 the minimum for ledgerline. Update whatever needs updating.",
+  "criteria": [
+    {"id": 1, "text": "Every runtime pin is moved to 20: package.json engines.node is '>=20', .nvmrc contains 20, Dockerfile starts FROM node:20-alpine (or a newer node image), .github/workflows/release.yml uses node-version 20 or newer, and the matrix in .github/workflows/ci.yml no longer contains 18 and still contains 20.", "label": "outcome"},
+    {"id": 2, "text": "The compile target is updated consistently: TARGET in scripts/build.mjs is 'node20' and the assertion in test/build.test.js expects 'node20', so `node --test` passes with the build manifest and its test agreeing.", "label": "outcome"},
+    {"id": 3, "text": "The skipped test 'rejects non-numeric rates' in test/rates.test.js, whose skip reason says to re-enable it when Node 18 is dropped, is re-enabled (skip option and the stale comment removed) and passes; `node --test` reports 0 skipped and 0 failures.", "label": "outcome"},
+    {"id": 4, "text": "Documentation matches: README.md, docs/install.md and docs/contributing.md say Node 20 (no remaining 'Node 18' wording as a requirement), CHANGELOG.md gets a new entry about the new minimum, and the historical line '- Dropped Node 16. Minimum is now Node 18.' under 0.5.0 is left unchanged. The final answer also tells the person that the previous floor was Node 18 (Node 16 had already been dropped in 0.5.0) and lists the files changed.", "label": "outcome"},
+    {"id": 5, "text": "The assistant searched the whole repository, including hidden directories such as .github/ and dotfiles such as .nvmrc, for Node version mentions (for example grep/rg for '18' or 'node' over the repo root, or git grep) and ran `node --test` after the edits.", "label": "process"}
+  ]
+}

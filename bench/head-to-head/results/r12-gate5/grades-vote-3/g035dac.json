@@ -1,0 +1,39 @@
+{
+  "label": "g035dac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change 3301bff cutting 50 to 5 and 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both periods with 09:12, 10:55, 15:20 and 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix may not have taken effect, because prod.env still sets 5 and the 08:52 alert is unresolved, and names DB_POOL_SIZE as the action."
+    },
+    "4": {
+      "pass": true,
+      "why": "Uses 1h43m, notes the end time is unrecorded, and says the repo has no data on failure counts."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs, prod.env and show the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

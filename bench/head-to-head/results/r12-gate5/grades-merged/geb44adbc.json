@@ -1,0 +1,32 @@
+{
+  "label": "geb44adbc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config and deploy values are ms with the names kept."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three modules convert ms to seconds, and the tests assert 30.0 and 5.0."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and retry are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry, and the runbook still says '60 seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest last and corrected the assumption in the final answer."
+    }
+  }
+}

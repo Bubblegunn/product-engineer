@@ -1,0 +1,39 @@
+{
+  "label": "g187ea1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Draft says the limit was reduced by mistake in a settings update and prod.env shows 5 against a normal 50, though it doesn't quote the commit title."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both periods with 09:12, 10:55, 15:20 and 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the repo doesn't show the fix working, prod.env still sets 5, the 08:52 alert is unresolved, and says to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says order or customer counts are missing from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat the ops files, deploy files and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

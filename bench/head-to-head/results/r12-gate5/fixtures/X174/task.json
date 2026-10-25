@@ -1,0 +1,13 @@
+{
+  "id": "X174",
+  "title": "Default page size from 20 to 50",
+  "pain": "The assistant changes the default in config.js only, leaving the authors route, the search default, the env/compose overrides, the OpenAPI defaults, the browser 'has more' check and tests on 20, or it replaces every 20 in the repo including unrelated limits.",
+  "prompt": "Can we make the default page size 50 instead of 20? It's set in config.js, so I assume that's the only code change plus a test or two.",
+  "criteria": [
+    {"id": 1, "text": "Server behaviour: with no limit given, /books (src/routes/books.js), /authors (src/routes/authors.js, which hardcodes '|| 20') and search (src/search.js, 'perPage = 20' / per_page) all return pages of 50. config.js has DEFAULT_PAGE_SIZE 50, preferably used by all three. The cap MAX_PAGE_SIZE stays 100 and an explicit limit still wins up to that cap.", "label": "outcome"},
+    {"id": 2, "text": "Configuration and documentation agree with 50: .env.example and docker-compose.yml no longer force PAGE_SIZE=20 (changed to 50 or removed, since the env value overrides the default), openapi.yaml shows default 50 for /books, /authors and /search (maximum stays 100), README.md and docs/api.md say 50, and CHANGELOG.md has a new entry saying the default changed.", "label": "outcome"},
+    {"id": 3, "text": "The browser code no longer assumes 20: public/paging.js hasMore (which returns items.length === 20) works for a page of 50, either by using the response's limit/nextOffset or by the new number, and test/paging.test.js is updated so it checks a 50-item page as 'has more' and a short page as 'no more'.", "label": "outcome"},
+    {"id": 4, "text": "Unrelated 20s are left alone: MAX_TAGS = 20 in src/config.js, DEBOUNCE_MS = 20 in public/app.js, and 'maxItems: 20' for tags in openapi.yaml are unchanged. Server tests (books, authors, search, config, pagination) are updated to the new default using 50 or a value derived from config, not deleted, skipped or loosened to non-exact checks.", "label": "outcome"},
+    {"id": 5, "text": "Process: the assistant searched the whole repository for 20 in its different spellings (20, \"20\", PAGE_SIZE, per_page, perPage, limit) rather than trusting that config.js is the only place, ran npm test after its last edit, and the final answer reports the real test result and tells the person that config.js was not the only place.", "label": "process"}
+  ]
+}

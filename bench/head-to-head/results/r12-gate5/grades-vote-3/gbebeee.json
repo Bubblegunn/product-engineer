@@ -1,0 +1,39 @@
+{
+  "label": "gbebeee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines >=22, CI [22], MIN_MAJOR 22 and check-node tests are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, docs and a top CHANGELOG entry are updated, and unrelated strings are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never says which local Node ran the tests and never says Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

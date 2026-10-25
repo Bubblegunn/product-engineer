@@ -1,0 +1,39 @@
+{
+  "label": "g9458d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting the pool from 50 to 5 in code default and prod.env."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline includes the first episode and the 15:20 re-apply with the 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Declines to say it's fixed, cites the prod.env override and the 08:52 alert, and asks whether to change prod.env."
+    },
+    "4": {
+      "pass": false,
+      "why": "The draft says about 1h45 against the 1h43 in the log, and it never says failure counts are missing from the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never opened deploy-log.txt directly; it relied on git show output."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

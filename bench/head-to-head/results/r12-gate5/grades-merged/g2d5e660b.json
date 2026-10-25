@@ -1,0 +1,32 @@
+{
+  "label": "g2d5e660b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Every listed pin is at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR stays 18, engines stays >=16.14, matrix is [16,18,22]."
+    },
+    "3": {
+      "pass": false,
+      "why": "README and the development.md minimum line still say 18, and there is no CHANGELOG entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not state the local Node version used for the test run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo and ran node --test after the last edit."
+    }
+  }
+}

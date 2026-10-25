@@ -1,0 +1,32 @@
+{
+  "label": "gc77095e0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test uses a 50-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped for 20 and PAGE_SIZE, ran npm test, and the answer says config.js was not the only place."
+    }
+  }
+}

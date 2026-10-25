@@ -1,0 +1,39 @@
+{
+  "label": "g9dd2a8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Float product repr into Decimal quantize gives 0.11 for 0.105; ordinary values are unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "Other modules were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test; no CHANGELOG or refund/export test."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped 'round' and never discussed refunds or export; the final answer is padded with an unrelated changelog."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "ge4fa23",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config and deploy files hold ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert, with tests asserting 30.0 and 5.0."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The runbook says '60000 milliseconds', the README, configuration doc and CLI help say ms, and the CHANGELOG flags the break."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest after the last edit and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

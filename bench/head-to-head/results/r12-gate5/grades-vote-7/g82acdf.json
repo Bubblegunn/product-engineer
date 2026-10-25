@@ -1,0 +1,40 @@
+{
+  "label": "g82acdf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config, deploy and CI values hold millisecond numbers."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the tests cover them."
+    },
+    "3": {
+      "pass": true,
+      "why": "Second-based values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, CLI help and a Breaking CHANGELOG entry are updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the last sed fix, and the answer corrects the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

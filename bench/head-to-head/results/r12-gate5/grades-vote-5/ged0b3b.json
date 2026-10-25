@@ -1,0 +1,40 @@
+{
+  "label": "ged0b3b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker convert to seconds."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Its final answer claims no CHANGELOG change and the diff has none."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest last, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g495061",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tidy config lowered the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with correct times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Does not claim fixed, explains the override and the 08:52 alert, and names the prod.env action."
+    },
+    "4": {
+      "pass": false,
+      "why": "No statement that impact counts are missing from the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tail -3 of alerts.log, and it never read deploy-log.txt."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g4df58b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed paths are clean of legacy references."
+    },
+    "2": {
+      "pass": true,
+      "why": "It removed the hash-only branch logic and both tests, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README and scratch, which remain as they were."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names nightly.sh (was passing the flag) and ci.sh, says path-keyed entries won't be reused, and adds a changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran grep -r over the whole repo plus git status at the start, before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

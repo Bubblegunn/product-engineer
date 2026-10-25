@@ -1,0 +1,40 @@
+{
+  "label": "g07ca3f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All references removed and docs/cli.md is clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "Content-hash only, legacy tests deleted, tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt are excluded from the commit and intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "Lists the script edits but never says the mode was in use or that nightly keys change; it only mentions the flag and env var behaviour."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep and an initial git status; the only status check before the commit is that initial one."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g0805d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All timeout value slots were converted to ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the tests check the second values."
+    },
+    "3": {
+      "pass": true,
+      "why": "The seconds values and the retry/backoff code are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The docs and help text are updated, and CHANGELOG has a Breaking entry."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CHANGELOG edit came after the last unittest run, so tests were not run after the final edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

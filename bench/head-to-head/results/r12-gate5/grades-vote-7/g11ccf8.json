@@ -1,0 +1,40 @@
+{
+  "label": "g11ccf8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config files and the default moved to millisecond values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the answer says so."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The CHANGELOG entry is breaking, but the runbook still says '60 seconds' rather than milliseconds."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CHANGELOG edit came after the last unittest run, so tests were not rerun after the final edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

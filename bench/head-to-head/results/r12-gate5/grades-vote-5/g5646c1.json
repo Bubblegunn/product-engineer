@@ -1,0 +1,39 @@
+{
+  "label": "g5646c1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names 3301bff adding DB_POOL_SIZE=5 in prod.env, cutting 50 to 5, with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both periods with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix changed only the default and prod.env's 5 overrides it, the alert fired at 08:52 with no resolve, and the line needs 50 or removal."
+    },
+    "4": {
+      "pass": true,
+      "why": "States the log doesn't record the end, and that the repo has no order-failure count or compensation data."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

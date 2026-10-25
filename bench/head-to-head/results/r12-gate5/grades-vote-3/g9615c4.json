@@ -1,0 +1,39 @@
+{
+  "label": "g9615c4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Cause is the tidy config cutting 50 to 5 in both places, refusing orders."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline has both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Fix restored only the default, prod.env still sets 5, the alert is unresolved, and it offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says order or customer counts are missing from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

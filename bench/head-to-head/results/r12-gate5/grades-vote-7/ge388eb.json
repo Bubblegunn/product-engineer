@@ -1,0 +1,40 @@
+{
+  "label": "ge388eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config files and the default moved to millisecond values with names kept consistently."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the final answer names all three."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and retry.py are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added, and the runbook still says 'seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the last edit, reported 12 passing, and corrected the config.py-only assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g6f512a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says export code lives only on unmerged feature/csv-export and main has no export.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false and empty smtp_host in config/settings.json; says the customer must configure them."
+    },
+    "3": {
+      "pass": false,
+      "why": "Does not mention the accent/encoding problem."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise CSV, calls the docs misleading, and invents no date or tag."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, logged and diffed the CSV branch, and grepped config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

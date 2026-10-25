@@ -1,0 +1,39 @@
+{
+  "label": "g7ad4e4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All pins at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines >=22, matrix [22], MIN_MAJOR 22, check-node tests now reject 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and README say 22, new top changelog entry, old entries intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "States tests ran on local Node 24, nothing on Node 22 or in CI, and corrects the premise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Broad grep and node --test after last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

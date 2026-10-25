@@ -1,0 +1,39 @@
+{
+  "label": "g18735b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says CSV code is absent and only guesses it may be on a branch it cannot see, though the branch exists."
+    },
+    "2": {
+      "pass": true,
+      "why": "States email_delivery false, empty smtp_host, and that it crashes when enabled without a transport."
+    },
+    "3": {
+      "pass": false,
+      "why": "Never found the CSV branch or the bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise either feature and notes the docs mark CSV done with no code."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never listed branches or inspected feature/csv-export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

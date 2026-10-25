@@ -1,0 +1,40 @@
+{
+  "label": "g02518a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default and all deploy/CI/smoke files were converted to millisecond values with the names kept consistently."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the tests assert 30 s and 5 s at the stdlib calls and a 130 s worker clock."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds, retry.py and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "README, docs, runbook and CLI help are updated, but no CHANGELOG entry was added; the answer says so."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo, ran unittest after the last edit, and the answer corrects the 'only config.py' assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

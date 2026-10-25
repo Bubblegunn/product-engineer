@@ -1,0 +1,32 @@
+{
+  "label": "g25ec922b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal-based helper covers line total, tax and total, so 1.005 gives 1.01 and 0.105 gives 0.11."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were left unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and reconciliation doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export regression test, and CHANGELOG.md was not updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, read all modules, ran pytest after its edits, and the answer reports the other paths and the legacy reason."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g26925a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR and engines are unchanged and the consistency test was loosened."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and there is no CHANGELOG entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "No local Node version and no statement that Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the final test edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

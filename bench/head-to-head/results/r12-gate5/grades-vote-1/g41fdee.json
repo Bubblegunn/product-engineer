@@ -1,0 +1,40 @@
+{
+  "label": "g41fdee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Values in pingbox.json, Dockerfile, compose, CI and smoke.sh are all ms, with names kept consistent."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, and the tests assert seconds at the sinks."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry, and the runbook still says '60 seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the final edits, and the final answer reports the result and corrects the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

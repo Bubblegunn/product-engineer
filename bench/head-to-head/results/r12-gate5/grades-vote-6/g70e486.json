@@ -1,0 +1,39 @@
+{
+  "label": "g70e486",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name is not read and falls back to targetUrl, which may be empty."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives the table and says to restore the timeout if the target is slow."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose and logLevel, both new options with defaults, and warns that batchSize does not work."
+    },
+    "4": {
+      "pass": true,
+      "why": "Fully Turkish with identifiers kept."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff v1.2.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

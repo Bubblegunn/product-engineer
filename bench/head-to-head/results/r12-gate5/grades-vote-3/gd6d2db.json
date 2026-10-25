@@ -1,0 +1,40 @@
+{
+  "label": "gd6d2db",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "git grep shows only the changelog history line remaining."
+    },
+    "2": {
+      "pass": true,
+      "why": "The code is hash-only, both tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit staged specific files only, leaving README and scratch alone."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names both scripts, explains the nightly job's cache keys change and its first run refills /var/cache/tidepool, and adds a changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep across tracked files before editing and git status before and after the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

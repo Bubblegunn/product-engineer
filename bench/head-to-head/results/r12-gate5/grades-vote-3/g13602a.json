@@ -1,0 +1,39 @@
+{
+  "label": "g13602a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines >=22, CI [22], MIN_MAJOR 22 and check-node tests are updated to reject lower versions."
+    },
+    "3": {
+      "pass": true,
+      "why": "README, docs and a new top CHANGELOG entry are updated, and unrelated strings are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "It corrects the premise, says tests ran on local Node 24, and says Docker images and CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Broad grep, then npm test and node -v after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

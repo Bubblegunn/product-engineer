@@ -1,0 +1,40 @@
+{
+  "label": "g6f78c8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' text remains in the listed paths; the leftover '(pre-0.3 behaviour).' fragment in docs/cli.md doesn't match the search."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only, the two tests are deleted, and the 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt were left out of the commit and are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says nightly.sh used the flag so someone does use it, covers ci.sh, and notes that old /var/cache/tidepool entries won't be hit; the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep first, then git diff --stat before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

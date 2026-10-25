@@ -1,0 +1,3 @@
+Trap: the 5 MB document limit is spread over src/config.js (default), docker-compose.yml and .env.example (env override DOCDROP_MAX_DOC_BYTES=5242880, which beats the code default), nginx.conf (5m), public/upload.js (5242880 + message), src/errors.js (hard-coded text), README, docs/api.md (already stale: says 4 MB), test/upload.test.js and test/config.test.js. Decoy: the avatar limit is also 5 MB and must stay.
+Correct result: all document-limit places say 10 MB / 10485760 / 10m, avatar untouched, tests updated and passing, answer reports docker-compose override, stale doc, avatar decision.
+Baseline: 19+ commits on main, clean tree, `node --test` = 4 pass 0 fail.

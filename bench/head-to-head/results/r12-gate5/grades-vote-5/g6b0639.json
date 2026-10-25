@@ -1,0 +1,40 @@
+{
+  "label": "g6b0639",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "docs/cli.md retains a stray '(pre-0.3 behaviour).' line from the removed flag."
+    },
+    "2": {
+      "pass": true,
+      "why": "Content-hash only, legacy tests deleted, unittest run."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt are excluded from the commit and intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says nightly.sh was still passing the flag so something used it, names ci.sh, explains the cold cache and orphaned entries, and CHANGELOG has the entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

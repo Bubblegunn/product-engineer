@@ -1,0 +1,32 @@
+{
+  "label": "g90bd7a15",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal helper is used for line total and tax, so the half-cent cases are correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; docs and CHANGELOG were not updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was for round( only and the answer wrongly says refunds and export use plain round()."
+    }
+  }
+}

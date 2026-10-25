@@ -1,0 +1,39 @@
+{
+  "label": "gac60e2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints default to 50 through the config; the cap is unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test checks a 50-item and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and tests use exact values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched broadly, ran node --test after the last edit, and reported 16 passing and that other places needed changes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

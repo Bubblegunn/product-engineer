@@ -1,0 +1,39 @@
+{
+  "label": "gb27d7f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV code is only on the unmerged feature branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "Only says customers must configure the mail server; no email_delivery flag or empty smtp_host."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise CSV and flags the misleading README, changelog and release plan."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never read config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "X162",
+  "title": "v1.2.0'dan beri değişenler: yükseltme rehberi",
+  "pain": "The assistant writes the upgrade notes from commit titles and the CHANGELOG, so it misses that a 'chore: tidy defaults' commit changed timeout and retry defaults, that an env var was renamed, that --verbose was removed, and it announces batching because the README still documents it.",
+  "prompt": "Müşterilerimize v1.2.0'dan şu anki sürüme geçerken ne yapmaları gerektiğini anlatan kısa bir yükseltme notu yazar mısın? Teknik olmayan insanlar da okuyacak, o yüzden sade olsun ama ayarların adları doğru yazılsın.",
+  "criteria": [
+    {"id": 1, "text": "The answer tells users that the environment variable HOOKRELAY_URL was renamed to HOOKRELAY_TARGET_URL (src/config.js no longer reads the old name), so deployments that set the old name must be changed or the target URL silently becomes empty.", "label": "outcome"},
+    {"id": 2, "text": "The answer states that the defaults in config/default.json changed after v1.2.0: requestTimeoutMs from 30000 to 5000 and retryCount from 3 to 5 (done under the commit titled 'chore: tidy defaults'), explains in plain words what that means (slower targets may now time out; more attempts per delivery), and tells users who depend on the old behaviour to set the old values explicitly.", "label": "outcome"},
+    {"id": 3, "text": "The answer says the --verbose command-line option was removed (the program now stops with 'unknown option' if it is passed) and that the replacement is setting logLevel to debug in the config; it also mentions the new options signatureHeader (default X-Hook-Signature) and deadLetterPath (default null, failed payloads are saved to that folder) as available, and it does not present batching (batchSize, still described in README.md) as a working feature because that code was reverted.", "label": "outcome"},
+    {"id": 4, "text": "The whole answer is written in Turkish (not English), while exact identifiers such as HOOKRELAY_TARGET_URL, requestTimeoutMs, retryCount, logLevel are kept untranslated, and the explanation avoids unexplained jargon for a non-technical reader.", "label": "outcome"},
+    {"id": 5, "text": "The shell commands show the assistant compared the tag v1.2.0 with the current HEAD (for example git diff v1.2.0..HEAD or git log v1.2.0..HEAD followed by looking at the changed files such as config/default.json, src/config.js, src/cli.js), not only the commit titles or CHANGELOG.md.", "label": "process"}
+  ]
+}

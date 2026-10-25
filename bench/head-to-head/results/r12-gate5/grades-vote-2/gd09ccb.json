@@ -1,0 +1,40 @@
+{
+  "label": "gd09ccb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config, deploy and script files hold ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three modules convert ms to seconds, and the tests assert seconds at the socket and urlopen calls."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, help text and runbook are updated, and CHANGELOG has a breaking entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, ran unittest after the last edit, and reported the result and the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

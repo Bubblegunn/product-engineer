@@ -1,0 +1,32 @@
+{
+  "label": "g176eaea1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was merged; it asked for confirmation instead."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CHANGELOG conflict was never resolved on main."
+    },
+    "3": {
+      "pass": false,
+      "why": "Main was not changed, so the merged result was never fixed or verified."
+    },
+    "4": {
+      "pass": false,
+      "why": "It notes the earlier merge and the conflict, but it fixed nothing and did not merge."
+    },
+    "5": {
+      "pass": false,
+      "why": "It inspected the branch relation, but the only test run was on a trial merge in a throwaway worktree, not on a merged main."
+    }
+  }
+}

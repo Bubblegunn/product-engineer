@@ -1,0 +1,39 @@
+{
+  "label": "gfee417",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search was left at 20."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry and openapi/README still say 20 for search."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "The search test was not updated to the new default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched with git grep, ran npm test last, and reported that config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g52c979",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A real --no-ff merge with no wip commits on main."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both changelog entries are kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "The rename is fixed and the test now asserts the exact unit-column output, which is consistent with the new column."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports the earlier exporter-core merge, the conflict and the rename fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log before merging, then pytest after."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X153",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g86aba6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies 3301bff cutting connections from 50 to 5 with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both periods, the reapply at 15:20 and the 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix isn't confirmed because prod.env overrides it, cites the 08:52 alert, and names the line to change."
+    },
+    "4": {
+      "pass": false,
+      "why": "The draft says 1h45 against the 1h43 in the log, never says failure counts are missing, and mentions an unrelated September alert."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

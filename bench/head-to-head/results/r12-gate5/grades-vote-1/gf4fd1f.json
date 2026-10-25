@@ -1,0 +1,40 @@
+{
+  "label": "gf4fd1f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No legacy references remain in the checked paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch were not committed."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names both scripts and says they would otherwise have broken the nightly job, and the changelog is updated; it omits the stale path-keyed cache entries but still explains what was done."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep first and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

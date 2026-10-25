@@ -1,0 +1,32 @@
+{
+  "label": "g5393564b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' references remain in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache only produces content keys, both tests are deleted, and tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch; both remain unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer covers only the Stop hook issue and never mentions that the scripts used the mode."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status plus a repo-wide grep first, and git status again before the commit."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g1281cc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints return 50 via the config value."
+    },
+    "2": {
+      "pass": false,
+      "why": "The CHANGELOG entry is missing and docs/api.md still says 'than 20 rows per request'."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test uses a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the server tests were updated exactly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran the tests after the last edit, reported 16 passing, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

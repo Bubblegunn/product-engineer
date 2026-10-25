@@ -1,0 +1,40 @@
+{
+  "label": "g33516b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A git grep confirms only the changelog history still mentions legacy."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only, cli/config are clean, both tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch, which are intact in the working tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says 'Not quite unused', names nightly.sh and ci.sh, explains the re-keyed cache in /var/cache/tidepool, and the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide git grep and git status ran first, and git status ran before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

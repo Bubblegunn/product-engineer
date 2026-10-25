@@ -1,0 +1,39 @@
+{
+  "label": "g59410d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All amounts go through the helper, so tax rounds correctly."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export test and no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped for 'round'; the final answer is mostly a verify report and does not cover the other spellings."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

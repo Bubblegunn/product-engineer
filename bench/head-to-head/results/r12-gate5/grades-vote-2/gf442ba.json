@@ -1,0 +1,40 @@
+{
+  "label": "gf442ba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All values are converted to milliseconds."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the tests assert 30.0 and 5.0 for client and health, with the worker deadline test."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The changelog has a breaking entry and the runbook notes '120000 ms', though the 60000 line is bare, so this is a marginal pass."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest after the last edit, reported 12 passing, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

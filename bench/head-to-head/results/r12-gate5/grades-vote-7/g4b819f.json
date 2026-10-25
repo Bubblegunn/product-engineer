@@ -1,0 +1,39 @@
+{
+  "label": "g4b819f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with correct times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Doubts the fix, explains the prod.env override and the unresolved 08:52 alert, and names the line to remove."
+    },
+    "4": {
+      "pass": false,
+      "why": "No customer-readable text, and the pool is not explained in plain words."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tail -3 of alerts.log, and deploy-log.txt was not read."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

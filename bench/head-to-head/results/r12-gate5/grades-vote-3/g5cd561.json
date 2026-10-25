@@ -1,0 +1,39 @@
+{
+  "label": "g5cd561",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV only on the unmerged branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false in settings.json and empty smtp_host; both must be set."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Neither certain, README and CHANGELOG flagged as misleading, no invented tag."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, branch diff and cat config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

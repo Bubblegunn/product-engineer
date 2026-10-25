@@ -1,0 +1,39 @@
+{
+  "label": "gd420b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "The minimum was left at 18, engines is unchanged, the CI matrix is [18,22] and the consistency test was loosened."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and there is no CHANGELOG entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "The local Node version is not stated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

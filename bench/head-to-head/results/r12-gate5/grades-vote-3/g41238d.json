@@ -1,0 +1,39 @@
+{
+  "label": "g41238d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "engines was left at >=16.14, so the compatibility floor is not fully consistent."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/development.md still says 'nvm install 18'."
+    },
+    "4": {
+      "pass": true,
+      "why": "It corrects the premise, cites Node v24.13.0, and says Docker and CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

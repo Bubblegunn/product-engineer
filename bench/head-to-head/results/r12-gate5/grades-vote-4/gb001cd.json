@@ -1,0 +1,39 @@
+{
+  "label": "gb001cd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config and docs say 50 and CHANGELOG has an Unreleased entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore compares against the server limit, and the tests pass 50 and 7 items with a page size of 50."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and tests are exact, with the pagination fixture raised to 120."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, passing suite run after the last edit, and it states the change went beyond config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

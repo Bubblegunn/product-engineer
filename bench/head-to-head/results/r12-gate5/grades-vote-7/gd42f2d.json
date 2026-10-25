@@ -1,0 +1,39 @@
+{
+  "label": "gd42f2d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the code is not on main and exists only on the unmerged branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false and the empty smtp_host in config/settings.json, and that it must be switched on with SMTP set."
+    },
+    "3": {
+      "pass": false,
+      "why": "The encoding issue is not mentioned."
+    },
+    "4": {
+      "pass": true,
+      "why": "Hedged on both, notes the docs are ahead of the code, and says only v0.3.0 exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, diffed the branch and read config/*."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

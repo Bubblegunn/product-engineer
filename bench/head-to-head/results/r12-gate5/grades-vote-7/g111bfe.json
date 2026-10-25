@@ -1,0 +1,40 @@
+{
+  "label": "g111bfe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No legacy references remain in the live files."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py is content-hash only, the legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/, and both are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says something may still use the mode, names both scripts, and says old path-keyed entries in /var/cache/tidepool will no longer be hit; CHANGELOG is updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran grep and git diff --stat first, and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

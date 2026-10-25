@@ -1,0 +1,39 @@
+{
+  "label": "gcce3d4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the old name is silently ignored and the target may stay empty."
+    },
+    "2": {
+      "pass": false,
+      "why": "Has a table and tells users to write the old values, but never explains in plain words what the new timeout and retry values mean."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose to logLevel, signatureHeader with X-Hook-Signature, deadLetterPath with null and a folder, and does not present batchSize as working."
+    },
+    "4": {
+      "pass": true,
+      "why": "Written in Turkish with identifiers left untranslated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD on the changed files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

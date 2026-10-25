@@ -1,0 +1,40 @@
+{
+  "label": "gae8ef7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All timeout values are ms with the key name kept consistently."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and the final answer says so for each."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff and cache TTL are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, docs, CLI help and runbook are updated, and CHANGELOG has a breaking entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo and ran unittest after the code edits; only the CHANGELOG edit came after, which cannot affect tests. The answer reports 12 passing and the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

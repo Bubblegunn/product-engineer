@@ -1,0 +1,39 @@
+{
+  "label": "gdd067d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV code is only on the unmerged branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says only that customers must configure their mail server, with no mention of the off-by-default flag or the empty smtp_host."
+    },
+    "3": {
+      "pass": false,
+      "why": "The encoding problem is not mentioned."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise CSV and says the README and changelog are misleading."
+    },
+    "5": {
+      "pass": false,
+      "why": "config/settings.json was not read."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf48afa",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the cleanup that cut the pool from 50 to 5 and added DB_POOL_SIZE=5, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers the 09:12 to 10:55 episode and the 15:20 reapply with the 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix probably didn't take effect, cites the prod.env override and the 08:52 alert, and names the line to change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failure counts are missing, and the draft promises a check and a guide update that the repo doesn't support."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

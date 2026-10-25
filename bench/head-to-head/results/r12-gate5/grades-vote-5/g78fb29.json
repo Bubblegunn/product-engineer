@@ -1,0 +1,39 @@
+{
+  "label": "g78fb29",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV only on unmerged branch, main has no export.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names email_delivery false and empty smtp_host in config/settings.json and says they must be configured."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Hedged, flags docs as misleading, uses the plan's date, and makes no tag claim."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the feature branch and grepped config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

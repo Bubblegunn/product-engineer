@@ -1,0 +1,40 @@
+{
+  "label": "ge8f629",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The default, pingbox.json, Dockerfile, compose, CI and smoke.sh hold ms values with consistent naming."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three modules convert to seconds, and the tests show 30 and 5 reaching the client and socket plus the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds settings and retry code are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest last, reported 12 passing and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g1e44c0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config, docs and CHANGELOG are all updated."
+    },
+    "3": {
+      "pass": false,
+      "why": "The paging test still uses a 20-item page with limit 20 rather than a 50-item page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination test expects 45 items and null, so it no longer verifies the default of 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Greps, tests passing at the end, and it says more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

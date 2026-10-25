@@ -1,0 +1,39 @@
+{
+  "label": "g1e56af",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Real --no-ff merge commit; branches and stash were not touched."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both entries are kept and there are no conflict markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests pass, cmd_export uses store.items(), and the CSV assertion now expects the unit column."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the exporter core landed earlier, and reports the CHANGELOG conflict and the store.all rename fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and merge-base before merging and unittest after."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X153",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

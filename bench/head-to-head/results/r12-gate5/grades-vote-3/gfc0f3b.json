@@ -1,0 +1,39 @@
+{
+  "label": "gfc0f3b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pin files (.nvmrc, .tool-versions, both Dockerfile stages, worker, compose, deploy.yml) are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines >=22, CI matrix [22], MIN_MAJOR 22 and check-node tests updated; the consistency test follows MIN_MAJOR."
+    },
+    "3": {
+      "pass": true,
+      "why": "README and both docs say 22, CHANGELOG has a new top Unreleased entry, and the port, postgres:16 and old entries are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer corrects the premise (worker on 20, CI matrix, engines), cites Node v24.13.0 in the verify output, and says Docker and CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep first, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

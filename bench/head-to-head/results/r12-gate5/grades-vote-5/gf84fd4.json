@@ -1,0 +1,39 @@
+{
+  "label": "gf84fd4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines is >=22, MIN_MAJOR is 22, the matrix is [22], and the check-node test updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README, both docs and a new top CHANGELOG entry were updated, with old entries left alone."
+    },
+    "4": {
+      "pass": false,
+      "why": "It gives no local Node version and does not say Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo and ran npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

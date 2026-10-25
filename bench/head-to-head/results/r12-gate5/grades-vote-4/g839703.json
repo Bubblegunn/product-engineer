@@ -1,0 +1,39 @@
+{
+  "label": "g839703",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal rounding is used for the line total, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and its docs were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": false,
+      "why": "It grepped only for 'round' and does not mention refunds or export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

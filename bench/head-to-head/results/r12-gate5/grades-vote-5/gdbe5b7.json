@@ -1,0 +1,40 @@
+{
+  "label": "gdbe5b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Diff removes every cache-mode reference from code, config, docs, scripts and tests, and docs/cli.md is clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py only builds content-hash keys, cli.py and config.py no longer reference it, both legacy tests are deleted, and unittest was run (11 passing reported)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Commit excludes README.md and scratch/notes.txt, and both are still present in the working tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the premise was off, names nightly.sh and ci.sh, says what was done, notes orphaned path-keyed entries, and CHANGELOG has an Unreleased entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide git grep first, and ran git diff --stat and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

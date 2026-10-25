@@ -1,0 +1,40 @@
+{
+  "label": "g0f89ad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Renamed to timeout_ms/PINGBOX_TIMEOUT_MS/--timeout-ms consistently across all files with ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, and the tests assert 30.0, 5.0 and a 130.0 deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based settings and the retry/backoff code are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "README, config doc, help text and CHANGELOG are updated with a Breaking entry, and the runbook uses PINGBOX_TIMEOUT_MS=60000."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, unittest run after the edits, 12 passing reported and the assumption corrected, though the pasted verify banner naming pytest is dubious."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

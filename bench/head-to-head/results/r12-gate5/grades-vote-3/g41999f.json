@@ -1,0 +1,40 @@
+{
+  "label": "g41999f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' string remains in the listed paths, though docs/cli.md keeps a stray '(pre-0.3 behaviour).' line."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py is hash-only, both tests are deleted, and 11 tests pass; the key signature change is consistent."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README and scratch, which remain intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names both scripts, says the nightly job now uses content-hash keys so old path-keyed files won't be hit, and adds a changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep at the start and git status before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

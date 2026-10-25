@@ -1,0 +1,39 @@
+{
+  "label": "g0bc3c4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry, and docs/api.md still says 'than 20 rows per request'."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging tests check a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and tests are exact, with the pagination fixture raised to 120."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, tests passing at the end, and it says more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

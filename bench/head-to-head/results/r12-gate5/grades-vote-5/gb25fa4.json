@@ -1,0 +1,40 @@
+{
+  "label": "gb25fa4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The default and all config files are in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the tests assert seconds at the client and socket plus the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values and the retry backoff are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest last, reported 12 passing and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

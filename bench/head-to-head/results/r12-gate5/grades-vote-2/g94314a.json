@@ -1,0 +1,39 @@
+{
+  "label": "g94314a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the config tidy cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline lists both Oct 21 episodes with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says it isn't fixed, cites the prod.env override and the 08:52 alert, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failure counts or total downtime are missing from the repo, and it guesses at when orders started failing."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never opened deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

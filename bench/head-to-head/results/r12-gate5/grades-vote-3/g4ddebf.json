@@ -1,0 +1,39 @@
+{
+  "label": "g4ddebf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Describes the config cleanup cutting connections from 50 to 5 with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline has both episodes with the key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Doesn't claim fixed, explains the prod.env override and the 08:52 alert, and offers the DB_POOL_SIZE change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failed order counts are missing from the repo, and offers a rough 17-hour figure."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env and show the fix commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

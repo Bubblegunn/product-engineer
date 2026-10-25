@@ -1,0 +1,32 @@
+{
+  "label": "g8ccc4d63",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says export.py and its tests exist only on unmerged feature/csv-export."
+    },
+    "2": {
+      "pass": true,
+      "why": "States email_delivery false and empty smtp_host in config/settings.json, and that the flag and SMTP details must be set."
+    },
+    "3": {
+      "pass": false,
+      "why": "No encoding problem mentioned."
+    },
+    "4": {
+      "pass": true,
+      "why": "Not safe to promise both, says plan/CHANGELOG/README run ahead of the code; Thursday is only a confirm-by date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the CSV branch and cat config/settings.json."
+    }
+  }
+}

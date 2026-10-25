@@ -1,0 +1,40 @@
+{
+  "label": "g22dc9c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All files now hold ms values under the same names."
+    },
+    "2": {
+      "pass": true,
+      "why": "urlopen, create_connection and the deadline are all divided by 1000, and the tests show it for the three modules."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and the retry sleep are unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "CHANGELOG.md has no breaking entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest after the last edit, and the answer corrects the assumption and reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g796f2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "round_cents uses Decimal throughout invoice.py, giving 1.01 and 0.11."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The legacy files were not changed."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no refunds/export test, though docs and CHANGELOG were updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was for 'round|Decimal' only, and it did not inspect the other spellings."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

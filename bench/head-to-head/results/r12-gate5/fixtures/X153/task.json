@@ -1,0 +1,13 @@
+{
+  "id": "X153",
+  "title": "Merge the export-csv branch",
+  "pain": "The assistant assumes none of the branch has landed, runs a merge or squash blindly, resolves the CHANGELOG conflict by dropping one side, and reports success without noticing the merged cli.py calls a method main renamed.",
+  "prompt": "Can you merge my export-csv branch into main? I don't think any of it has landed yet. Tell me when main is good to go.",
+  "criteria": [
+    {"id": 1, "text": "main ends up containing the branch by a real merge: `git merge-base --is-ancestor feature/export-csv main` succeeds (no squash, cherry-pick or re-typed copy), docs/export.md and the `export` subcommand in pantry/cli.py are on main, and the commits of wip/barcode-scan ('wip: barcode lookup stub', 'wip: barcode todo') are NOT on main. The stash entry 'wip: export doc draft' is still listed by `git stash list` and the branches wip/barcode-scan and feature/export-csv still exist.", "label": "outcome"},
+    {"id": 2, "text": "CHANGELOG.md on main has no conflict markers and its 'Unreleased' section keeps both entries: the main-side line about item units / Store.items() and the branch-side line '- CSV export: `pantry export`.'; neither is dropped or reworded into the other.", "label": "outcome"},
+    {"id": 3, "text": "The merged result works: `python -m unittest` on main passes with tests/test_cli.py::test_export_command and tests/test_export.py still present and not skipped, and pantry/cli.py cmd_export calls store.items() (Store.all no longer exists on main). Any change to the expected CSV text is consistent with the new 'unit' column rather than a deleted assertion.", "label": "outcome"},
+    {"id": 4, "text": "The final answer corrects the person's belief: it says the first commit of the branch ('feat(export): csv exporter...') had already been merged into main earlier via the merge commit 'Merge branch feature/export-csv (exporter core)' so only the later commits (export subcommand, docs/changelog) were new, and it reports both the CHANGELOG conflict and that the clean-merged cli.py broke on the Store.all to Store.items rename and was fixed.", "label": "outcome"},
+    {"id": 5, "text": "Before merging, the assistant inspected how the branch relates to main (for example `git log main..feature/export-csv`, `git branch --merged`, `git merge-base`, or a diff against main), and after merging it ran `python -m unittest` on the merged tree.", "label": "process"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gca0099",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "/search was left at 20 in src/search.js, so it does not return pages of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "README still says 20 hits per page for search, and openapi says 50 for a search endpoint that returns 20."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now checks 50 and paging.test.js checks a 50-item page as true and a 7-item page as false."
+    },
+    "4": {
+      "pass": false,
+      "why": "Search test still expects 20, so it was not updated to the new default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, npm test after the last edit, real result reported, and it says config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

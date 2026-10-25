@@ -1,0 +1,39 @@
+{
+  "label": "g7bc1f5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All docs and config are updated, including a CHANGELOG entry."
+    },
+    "3": {
+      "pass": false,
+      "why": "hasMore uses the response's limit, but paging.test.js still uses a 20-item page with limit 20, not a 50-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; server tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, tests run after the last edit, and the answer reports 16 passing and that more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

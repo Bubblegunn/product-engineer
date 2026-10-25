@@ -1,0 +1,40 @@
+{
+  "label": "gfb5169",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Case-insensitive 'legacy' search of the listed paths finds nothing about the cache mode."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py only builds content-hash keys, cli.py and config.py no longer reference the mode, both legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, and the working tree still shows README modified and scratch untracked."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer only discusses the stop-gate finding and never says the mode was in use or names nightly.sh and ci.sh, although the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "The first command was a repo-wide grep plus git status, and git status was run again before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

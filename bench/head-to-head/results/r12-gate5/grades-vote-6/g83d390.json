@@ -1,0 +1,40 @@
+{
+  "label": "g83d390",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All files carry ms values with consistent names."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert by /1000, with tests covering client, health and worker."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values and the retry sleep are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "All docs, the cli help and a Breaking CHANGELOG entry are updated, and the runbook shows 60000."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CHANGELOG edit came after the last unittest run, so the tests were not rerun after its last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

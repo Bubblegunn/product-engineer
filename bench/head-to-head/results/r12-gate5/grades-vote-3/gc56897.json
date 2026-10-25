@@ -1,0 +1,39 @@
+{
+  "label": "gc56897",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Cause is the tidy config change cutting the pool from 50 to 5, with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives 09:12, 10:48, 10:55, 15:20 and 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "FAIL verdict, prod.env override, unresolved 08:52 alert, and the DB_POOL_SIZE action."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says failed order or customer counts are absent from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

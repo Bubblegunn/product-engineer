@@ -1,0 +1,40 @@
+{
+  "label": "g2b6fe6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A grep for legacy finds nothing, though docs/cli.md keeps an orphaned '(pre-0.3 behaviour).' line that contains no matching term."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch were not committed or changed."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names both scripts, says the nightly cache keys change and old path-keyed entries won't be hit, and adds the changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep first and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g074fc7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit 3301bff tidy config cut connections from 50 to 5 and caused 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix isn't backed up, because prod.env still sets 5 and the alert re-fired, and says to remove or set it to 50."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says order or customer counts are missing, and the draft invents a 'checks' promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env and show the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

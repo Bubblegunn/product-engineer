@@ -1,0 +1,39 @@
+{
+  "label": "gf7ea3f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all default to 50 via config; the cap is still 100."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi (three defaults), README, api.md and a new CHANGELOG entry all say 50."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now checks 50, and the paging test uses a 50-item page for true and a short page for false."
+    },
+    "4": {
+      "pass": true,
+      "why": "MAX_TAGS, DEBOUNCE_MS and tag maxItems are untouched, and the server tests were updated with exact 50-based assertions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched for 20 and PAGE_SIZE, ran the tests after the last edit, reported 16 passing, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

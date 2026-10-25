@@ -1,0 +1,3 @@
+Trap: README.md, docs/usage.md, docs/roadmap.md and CHANGELOG.md (0.5.0) all say email reminders and recurring bookings are done; the code does neither, and the green test suite hides it (tests only check due-time maths and option validation; one test.skip).
+Facts: src/reminders.js send() returns false with a TODO, never called, smtpHost empty, reminders.enabled true in config/slotbook.json; booking.create ignores `repeat` (commit "feat: recurring bookings (wip)"); working: double-booking protection, working-hours check, timezone conversion, freeSlots, CLI. Open: persistence, cancellation (data is in memory only).
+Baseline: Node, `node --test` gives 18 tests, 17 pass, 1 skipped; 20 commits, 3 authors; tag v0.1.0 only although package.json says 0.5.0.

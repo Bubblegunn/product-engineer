@@ -1,0 +1,32 @@
+{
+  "label": "gc91c10cd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "books, authors and search use the config default of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "CHANGELOG.md has no new entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "paging.js uses 50 and its test covers a full and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are left alone; tests are exact (pagination fixture raised to 120)."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, npm test after the last edit, and the answer reports that more than config.js changed."
+    }
+  }
+}

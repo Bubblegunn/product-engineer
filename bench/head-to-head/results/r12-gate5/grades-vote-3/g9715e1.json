@@ -1,0 +1,39 @@
+{
+  "label": "g9715e1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints return 50 (authors and search hardcode 50 rather than using cfg, which is only preferred); the cap stays 100."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are left alone and the tests assert exact 50 values with a 120-item pagination fixture."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran npm test last, reported 16 of 16 and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

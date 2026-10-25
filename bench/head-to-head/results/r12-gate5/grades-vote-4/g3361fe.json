@@ -1,0 +1,39 @@
+{
+  "label": "g3361fe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config, docs and CHANGELOG are all updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging tests check a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests assert exact 50 values; raising the author seed to 120 is disclosed and unrelated 20s are untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, passing tests after the last edit, and it says the change went beyond config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

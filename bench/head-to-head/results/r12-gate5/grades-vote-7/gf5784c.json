@@ -1,0 +1,39 @@
+{
+  "label": "gf5784c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the 20 Oct 'tidy config' change (3301bff), 50 to 5, and orders refused with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both episodes: 09:12 to 10:55 on the 21st, then re-applied at 15:20 and alert again at 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix is not confirmed, that prod.env still has DB_POOL_SIZE=5 overriding the default, that the 08:52Z alert is open, and names the remaining action."
+    },
+    "4": {
+      "pass": true,
+      "why": "Facts stay within the repo, the draft is plain, and the end time is marked as unconfirmed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran cat on alerts.log, deploy-log.txt and prod.env, and git show on both commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

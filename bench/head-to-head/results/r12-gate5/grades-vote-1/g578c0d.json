@@ -1,0 +1,39 @@
+{
+  "label": "g578c0d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name is silently ignored and the target address may stay empty."
+    },
+    "2": {
+      "pass": false,
+      "why": "Gives the values and says to write the old ones, but never explains in plain words what the changes mean (slower targets, more attempts)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose, both new options, and batchSize is not presented as working."
+    },
+    "4": {
+      "pass": true,
+      "why": "Turkish with identifiers kept."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

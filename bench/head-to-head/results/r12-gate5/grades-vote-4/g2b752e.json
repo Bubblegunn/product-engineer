@@ -1,0 +1,39 @@
+{
+  "label": "g2b752e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three return 50 by default, though authors and search hardcode 50 instead of reading config."
+    },
+    "2": {
+      "pass": false,
+      "why": "The changelog entry was not added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test checks a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and tests are exact, with the pagination fixture raised to 120."
+    },
+    "5": {
+      "pass": true,
+      "why": "Thorough grep, npm test last with 16 passing, and it says config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb9133a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config, docs and CHANGELOG are all updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore takes pageSize defaulting to 50 and the tests check a 50-item page and a short page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination test expects 45 items and null, so it no longer verifies the default of 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, passing suite, and it says config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

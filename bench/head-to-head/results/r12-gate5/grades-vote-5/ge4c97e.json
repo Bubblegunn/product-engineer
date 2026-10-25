@@ -1,0 +1,40 @@
+{
+  "label": "ge4c97e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All references removed and docs/cli.md is clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "Content-hash only, legacy tests deleted, 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, and both are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says nightly.sh was using the flag, names ci.sh, explains path-keyed entries won't be hit, and CHANGELOG has the entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep first and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

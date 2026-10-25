@@ -1,0 +1,39 @@
+{
+  "label": "gd8adbf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all default to 50 via config."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test is updated for a 50-item page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination test keeps a 45-item fixture and now expects 45/null, so it no longer exercises the 50 default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo, ran the tests last, reported 16 passing and said config.js was not enough."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

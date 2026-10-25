@@ -1,0 +1,39 @@
+{
+  "label": "g9f2815",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix isn't confirmed, prod.env still sets 5, the last alert is firing, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says order or customer counts are absent from the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never read deploy-log.txt and only tailed alerts.log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

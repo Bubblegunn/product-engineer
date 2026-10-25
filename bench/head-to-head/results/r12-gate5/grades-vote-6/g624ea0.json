@@ -1,0 +1,39 @@
+{
+  "label": "g624ea0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Gives the 50 to 5 cut in both places but never mentions orders being refused with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline includes both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix is doubtful because prod.env still sets 5, cites the 08:52 alert, and offers to change it to 50 or remove it."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not state that counts are missing, and the draft states 'about 1 hour 45 minutes'."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never read deploy-log.txt."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf4a104",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "search.js still uses perPage = 20, so /search does not return 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "README still says 20 hits per page for search, and openapi says 50 for per_page while the code returns 20."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are left alone; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran tests after the last edit, and reported more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

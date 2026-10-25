@@ -1,0 +1,39 @@
+{
+  "label": "g6d9c6f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tidy config cut connections from 50 to 5, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both periods with their times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix is not confirmed, explains the prod.env override and the unresolved alert, and names the remedy."
+    },
+    "4": {
+      "pass": false,
+      "why": "Leaves the end time as a placeholder and never plainly says order counts or total downtime are missing from the repo; it also includes a prevention promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

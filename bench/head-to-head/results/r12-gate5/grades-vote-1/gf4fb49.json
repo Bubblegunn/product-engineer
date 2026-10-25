@@ -1,0 +1,39 @@
+{
+  "label": "gf4fb49",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "Matrix is [18,22], MIN_MAJOR 18, engines unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "The CHANGELOG line was added under the 2.3.0 heading instead of a new top entry, and the README is unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "No local Node version is given and it does not say Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched widely and ran npm test last."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

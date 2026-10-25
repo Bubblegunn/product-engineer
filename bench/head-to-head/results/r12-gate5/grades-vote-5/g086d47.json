@@ -1,0 +1,40 @@
+{
+  "label": "g086d47",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All references removed, including docs/cli.md and docs/configuration.md."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only, both legacy tests deleted, 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "Unrelated edits are left out of the commit and still present."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names both scripts, explains the nightly cache effect and the orphaned entries, and CHANGELOG has the entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep first, plus git status right before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

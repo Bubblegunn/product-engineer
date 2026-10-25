@@ -1,0 +1,32 @@
+{
+  "label": "g1555e782",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No legacy references remain in the checked paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted (and the key test tightened), and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Only specific paths were staged and the unrelated edits are intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never says the mode was actually in use by the nightly job, and says nothing about old path-keyed entries in /var/cache/tidepool."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a whole-repo grep before editing, then committed."
+    }
+  }
+}

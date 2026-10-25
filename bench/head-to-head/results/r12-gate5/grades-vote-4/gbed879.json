@@ -1,0 +1,39 @@
+{
+  "label": "gbed879",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config and docs are updated and an Unreleased changelog entry was added."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now uses nextOffset and the tests check true for nextOffset 50 and false for null."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and server tests use exact 50 values with a 120-item pagination fixture."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, tests run after the last edit with 17/17 reported, and it says config.js was not the only change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

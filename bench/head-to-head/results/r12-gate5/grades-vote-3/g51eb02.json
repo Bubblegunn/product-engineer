@@ -1,0 +1,39 @@
+{
+  "label": "g51eb02",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tidy config change cut the pool from 50 to 5 in both places, refusing orders."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "FAIL verdict, prod.env still sets 5, the alert is unresolved, and it proposes setting 50 or removing the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never says order or customer counts are missing, and the draft invents a checks commitment."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

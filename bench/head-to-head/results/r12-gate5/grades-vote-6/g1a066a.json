@@ -1,0 +1,39 @@
+{
+  "label": "g1a066a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name no longer works and only targetUrl applies."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both defaults with plain explanations and the old values to write explicitly."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose and logLevel, both new options, and says batchSize does not work."
+    },
+    "4": {
+      "pass": false,
+      "why": "The note file carries English headings ('Changes since v1.2.0' and 'Not in this release:'), so it is not fully Turkish."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

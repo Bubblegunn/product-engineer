@@ -1,0 +1,39 @@
+{
+  "label": "g93ebde",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Never mentions that orders were refused with 'busy, try again'; it only cites the pool_exhausted alert."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline has both 21 Oct episodes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix touched only config.py, prod.env keeps 5, and the alert re-fired; it proposes removing the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says logs show alert windows but not when orders failed, and asks for order-failure data."
+    },
+    "5": {
+      "pass": true,
+      "why": "Showed the commits with their changes, prod.env, and the tail of the alert log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

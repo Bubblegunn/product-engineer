@@ -1,0 +1,40 @@
+{
+  "label": "g491723",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default and all config, deploy and script files hold ms values under consistently renamed names."
+    },
+    "2": {
+      "pass": true,
+      "why": "client, health and worker all divide by 1000, and tests assert the seconds values."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and the retry code are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, help text and the _MS names are updated, and the CHANGELOG has a Breaking entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the whole repo, ran unittest after the last edit, and corrected the 'only config.py' assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

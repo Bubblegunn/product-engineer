@@ -1,0 +1,32 @@
+{
+  "label": "g1ae6451d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' references remain in the listed paths."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-hash only (an unused path argument remains but there is no legacy branch), both tests are deleted, and tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch; both remain unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names nightly.sh and ci.sh, says the nightly job and CI used path-keyed entries, and explains the orphaned /var/cache/tidepool files; the CHANGELOG entry is present."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep first, and git status before committing."
+    }
+  }
+}

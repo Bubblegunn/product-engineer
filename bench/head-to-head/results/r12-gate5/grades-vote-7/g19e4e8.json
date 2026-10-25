@@ -1,0 +1,39 @@
+{
+  "label": "g19e4e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints return 50 by default, though authors and search hardcode 50 instead of using the config."
+    },
+    "2": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore checks 50 and the paging test uses 50 items and 7 items."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the server tests are updated with exact values."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched thoroughly, ran tests after the last edit, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

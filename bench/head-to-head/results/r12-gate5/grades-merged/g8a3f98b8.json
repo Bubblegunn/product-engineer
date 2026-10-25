@@ -1,0 +1,32 @@
+{
+  "label": "g8a3f98b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the config tidy cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline includes both episodes with key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says not fixed, prod.env overrides the default, the 08:52 alert is unresolved, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "No statement that failed-order counts are missing from the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tail -3 of alerts.log, never read deploy-log.txt directly."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g4456ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config, docs and CHANGELOG are all updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses a limit argument defaulting to 50 and the paging tests check a 50-item page and a 7-item page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination fixture stayed at 45 and now asserts 45 and null, so it no longer verifies the default of 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep, tests run last with 16 passing, and it says the change touched 17 files, not just config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g1e3fc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "export.py only on the unmerged feature/csv-export branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "email_delivery false in settings.json, smtp_host empty, nothing is sent until both are set."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the accent bug."
+    },
+    "4": {
+      "pass": true,
+      "why": "Neither is certain, and the README and CHANGELOG are flagged as misleading."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed branches, diffed the CSV branch and cat config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

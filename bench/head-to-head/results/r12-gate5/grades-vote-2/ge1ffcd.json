@@ -1,0 +1,39 @@
+{
+  "label": "ge1ffcd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the Oct 20 change that cut the limit from 50 to 5 in code and prod.env, with 'busy, try again' errors, though it never cites the commit title."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both Oct 21 episodes with 09:12, 10:48 revert, 10:55, then the 15:20 re-apply and 15:34 failures."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says it can't confirm the fix, explains the prod.env override and the 08:52 alert, and offers to set DB_POOL_SIZE to 50."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never states that failed-order or customer counts are absent from the repo, and adds the unsupported claim that the problem showed up when order volume picked up."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g14bb14",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "The timeline has both episodes and the re-apply."
+    },
+    "3": {
+      "pass": true,
+      "why": "Doubts the fix, explains the prod.env override and the 08:52 alert, and asks about changing the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Durations are supported, the draft is plain, and the end time is marked for confirmation."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never read deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

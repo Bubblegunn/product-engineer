@@ -1,0 +1,39 @@
+{
+  "label": "g8fee51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Draft gives the 50 to 5 cut from a prior-day settings change, the 'busy, try again' errors, and the tidy-config commit in the verdict."
+    },
+    "2": {
+      "pass": true,
+      "why": "Draft gives both episodes, the 09:12 to 10:55 window and the return at 15:34 after the accidental re-apply."
+    },
+    "3": {
+      "pass": true,
+      "why": "Verdict is FAIL because prod.env still sets 5 and the alert fired again at 08:52Z; it names removing the line or setting 50 as the action."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not state that failed-order or customer counts are missing from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs and prod.env, plus the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

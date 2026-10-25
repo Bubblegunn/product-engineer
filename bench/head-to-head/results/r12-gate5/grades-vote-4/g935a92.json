@@ -1,0 +1,39 @@
+{
+  "label": "g935a92",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A Decimal(repr) helper is applied across the whole invoice."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and its docs were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only invoice tests were added; docs/rounding.md was not updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "It grepped only for 'round', so the other spellings were not searched, and the answer does not mention refunds or export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

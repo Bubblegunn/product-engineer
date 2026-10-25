@@ -1,0 +1,39 @@
+{
+  "label": "g559487",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total was fixed; build() still uses float round() for the tax."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and its docs were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no CHANGELOG entry."
+    },
+    "5": {
+      "pass": false,
+      "why": "It grepped only for 'round' and never read the other spellings in refunds or export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g0b2000",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A --no-ff merge was committed on main with the export docs and subcommand present, and no sign the wip commits, stash or branches were touched."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both CHANGELOG entries are kept with no conflict markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "cmd_export uses store.items(), the test expects the unit column, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says main already contained the exporter core (46fd488) and reports the CHANGELOG conflict and the Store.all rename fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected the branch relation before merging and ran unittest and the suite after the merge."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X153",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

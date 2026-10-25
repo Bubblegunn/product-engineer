@@ -1,0 +1,39 @@
+{
+  "label": "g2afc16",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change (3301bff) that cut the limit from 50 to 5, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers the 09:12 to 10:55 first period and the 15:20 re-apply with failures from 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the repo doesn't show a fix, explains the prod.env override and the 08:52 alert, and says that line needs to be 50 or removed."
+    },
+    "4": {
+      "pass": true,
+      "why": "Uses 1h43m, leaves the end time blank, and explicitly says it left out failure counts because the repo has no data."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

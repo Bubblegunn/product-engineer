@@ -1,0 +1,39 @@
+{
+  "label": "gcf0117",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all default to 50, with authors and search reading config."
+    },
+    "2": {
+      "pass": false,
+      "why": "Config and docs are updated but CHANGELOG.md has no entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and paging tests check a 50-item page as true and a short page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and tests use exact 50 values, with the pagination fixture raised to 120."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched widely, ran npm test last, and reported 16 passing and that other places were hardcoded."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g70874b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Everything is renamed consistently to timeout_ms and PINGBOX_TIMEOUT_MS with ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert and the tests assert seconds at the API."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds settings and retry are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, runbook (60000), CLI help and a breaking CHANGELOG entry are updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest after the last edit, and reported 12 passing with the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

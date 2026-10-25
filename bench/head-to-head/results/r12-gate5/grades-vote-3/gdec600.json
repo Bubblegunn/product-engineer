@@ -1,0 +1,39 @@
+{
+  "label": "gdec600",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins moved to 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR and engines were left alone and the CI matrix is [18,22], so the floor was not moved."
+    },
+    "3": {
+      "pass": false,
+      "why": "README still says Node 18 and development.md still says 18 for the minimum."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer corrects the premise and says Docker and CI were not run, but never states the local Node version used for the test run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Broad grep, then npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

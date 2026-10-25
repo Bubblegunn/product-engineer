@@ -1,0 +1,39 @@
+{
+  "label": "g6026b3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search was left at 20."
+    },
+    "2": {
+      "pass": false,
+      "why": "The /search openapi default was changed to 50 but README search still says 20."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test was updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "Search test was not updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped, ran npm test last, honest report."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

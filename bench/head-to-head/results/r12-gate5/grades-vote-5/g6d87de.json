@@ -1,0 +1,39 @@
+{
+  "label": "g6d87de",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A real --no-ff merge with no wip commits on main."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both changelog entries are kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "cmd_export uses store.items(), the test was updated for the unit column, and the tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports the earlier exporter-core merge (67acd6e), the changelog conflict and the rename fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected with git log and merge-base, then ran pytest after the merge."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X153",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

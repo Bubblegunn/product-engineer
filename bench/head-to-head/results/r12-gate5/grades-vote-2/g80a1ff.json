@@ -1,0 +1,39 @@
+{
+  "label": "g80a1ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the rename and that the old name is silently ignored so the address may be empty."
+    },
+    "2": {
+      "pass": false,
+      "why": "Gives a table of values and says to write the old ones, but never explains what the change means (slow targets, more attempts)."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose, logLevel debug, both new options with defaults, and batchSize is not presented as working."
+    },
+    "4": {
+      "pass": true,
+      "why": "Turkish with identifiers kept."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD on README, bin, config, docs and src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ga5124b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Gets the 50 to 5 change but never mentions orders being refused with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both episodes with all times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says not fixed, prod.env overrides, the 08:52 alert is open, and proposes 50 or removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "Rounds to 1h45m and does not say order counts are absent from the repo."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only tail -3 of alerts.log; never read deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

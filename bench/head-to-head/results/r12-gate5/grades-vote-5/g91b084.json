@@ -1,0 +1,40 @@
+{
+  "label": "g91b084",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All live references are removed and docs/cli.md is clean."
+    },
+    "2": {
+      "pass": true,
+      "why": "Content-hash only, both legacy tests deleted, unittest run."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch/notes.txt are untouched and uncommitted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names both scripts, says the nightly job was using path keys and will now rebuild its cache, and CHANGELOG has the entry; the premise correction is implicit but conveyed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a whole-repo grep first, plus git status and git diff --stat before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

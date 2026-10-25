@@ -1,0 +1,39 @@
+{
+  "label": "gd7cbea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use the config default of 50."
+    },
+    "2": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore checks 50 and the paging test uses 50 items and 7 items."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the tests use exact new values."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, ran npm test last, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

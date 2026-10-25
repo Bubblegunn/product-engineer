@@ -1,0 +1,39 @@
+{
+  "label": "g106db8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config change cut the pool from 50 to 5, causing refused orders."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix missed prod.env, the alert fired again with no resolve, and the remedy is 50 or delete the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the log has no resolve time so total duration can't be stated, and that order counts are not available."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

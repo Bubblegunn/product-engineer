@@ -1,0 +1,40 @@
+{
+  "label": "gbbbb70",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All timeout values are in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert ms to seconds."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds settings are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was written."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched with git grep, ran unittest last, and reported 12 tests passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

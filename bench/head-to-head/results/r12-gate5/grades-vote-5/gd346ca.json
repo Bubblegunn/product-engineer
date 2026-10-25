@@ -1,0 +1,39 @@
+{
+  "label": "gd346ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total uses the half-up helper; build() still uses float round() for tax, so the NL 0.105 case stays 0.1."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed and there is no shared helper."
+    },
+    "3": {
+      "pass": true,
+      "why": "legacy_reconcile.py, its test and reconciliation.md are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export test and no CHANGELOG entry."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped for 'round', so it missed '%.2f' and int(x*100+0.5), and it wrongly says refunds and export use round(); it confirms the user's guess instead of correcting it."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

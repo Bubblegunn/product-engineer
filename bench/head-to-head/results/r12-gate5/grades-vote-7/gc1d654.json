@@ -1,0 +1,40 @@
+{
+  "label": "gc1d654",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The key was renamed to timeout_ms with 30000, and the env var, Dockerfile, compose, CI and smoke values are all in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the answer says so."
+    },
+    "3": {
+      "pass": true,
+      "why": "backoff_seconds, cache_ttl_seconds and retry.py are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "It explicitly skipped the CHANGELOG, and the runbook still says '60 seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, ran unittest last, reported 12 passing, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

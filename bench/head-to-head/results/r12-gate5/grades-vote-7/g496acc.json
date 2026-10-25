@@ -1,0 +1,39 @@
+{
+  "label": "g496acc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says CSV code is only on the unmerged feature/csv-export branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "States email_delivery false and the empty smtp_host in config/settings.json, and that someone must set smtp_host and enable the feature."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the accent problem."
+    },
+    "4": {
+      "pass": true,
+      "why": "Does not promise CSV and flags the docs as wrong for main."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, cat config/settings.json and a branch log/diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "ga2472dbb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal-based helper is used for line total, tax and total, so the half-cent cases are correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was for round( only, the answer never mentions refunds or export, and it adds an unrequested changelog."
+    }
+  }
+}

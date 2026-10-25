@@ -1,0 +1,39 @@
+{
+  "label": "g8e4e5e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR and engines are unchanged and the CI matrix is [16,18,22]."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated and there is no CHANGELOG entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "No local Node version is given."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep, then node --test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

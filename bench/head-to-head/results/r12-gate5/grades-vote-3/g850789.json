@@ -1,0 +1,39 @@
+{
+  "label": "g850789",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The tidy config deploy set the limit to 5 instead of 50, with 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with all key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Fix may not have worked because prod.env still sets 5, the alert re-fired, and it offers to remove the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Notes the repo doesn't give the real start time or the number of orders affected, and invents no figures."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commands cat both logs and prod.env."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

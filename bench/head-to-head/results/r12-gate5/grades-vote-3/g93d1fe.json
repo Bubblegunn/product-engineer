@@ -1,0 +1,39 @@
+{
+  "label": "g93d1fe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all return 50 via config."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi, docs and the CHANGELOG all agree on 50."
+    },
+    "3": {
+      "pass": false,
+      "why": "hasMore now needs pageSize and the paging test passes 20 and 20, so it never checks a 50-item page."
+    },
+    "4": {
+      "pass": false,
+      "why": "The pagination test still uses 45 items and expects 45/null, which no longer verifies the 50 default."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo, ran node --test last, reported 16 passing and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

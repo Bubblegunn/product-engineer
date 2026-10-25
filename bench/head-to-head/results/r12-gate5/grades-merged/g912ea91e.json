@@ -1,0 +1,32 @@
+{
+  "label": "g912ea91e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed runtime pins are at 22 and none at 16/18/20 remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "Engines, matrix [22], MIN_MAJOR 22 and the check-node test are updated, and consistency test now follows MIN_MAJOR 22."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/development.md still says 'nvm install 18', so a runtime description was missed."
+    },
+    "4": {
+      "pass": false,
+      "why": "It corrects the premise but gives no local Node version and never says Docker or CI were not run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Broad repo grep was done and npm test ran after the last edit."
+    }
+  }
+}

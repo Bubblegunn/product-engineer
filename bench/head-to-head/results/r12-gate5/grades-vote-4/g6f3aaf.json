@@ -1,0 +1,40 @@
+{
+  "label": "g6f3aaf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' text remains in the listed paths, although the orphaned '(pre-0.3 behaviour).' fragment stays in docs/cli.md."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache only builds content-hash keys, the legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch/notes.txt, and the working tree still shows them."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is only about the stop-gate and never mentions nightly.sh, ci.sh, or the cache consequences, though the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and a repo-wide grep before editing, and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

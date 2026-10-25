@@ -1,0 +1,32 @@
+{
+  "label": "gdf3981d2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A grep for legacy finds nothing, though docs/cli.md retains an orphaned '(pre-0.3 behaviour).' line."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache is content-only, the tests are deleted, and the suite passes."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit contains only the intended files and the unrelated edits remain."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer focuses on the stop-gate issue and does not mention nightly.sh, ci.sh, or the cache key impact."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep and git status before editing and committing."
+    }
+  }
+}

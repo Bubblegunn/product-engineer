@@ -1,0 +1,39 @@
+{
+  "label": "gff98ec",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "books, authors and search all default to 50 via cfg.DEFAULT_PAGE_SIZE and the cap is unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config and docs say 50, including all three openapi defaults and a CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test checks a 50-item page as true and a short page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s untouched and server tests updated with exact values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped broadly, ran npm test last, reported 16 passing and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g5df11dcb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed paths are clean of legacy references and the scripts, config and docs entries are removed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache only does content-hash keys, cli and config are clean, both legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit staged only specific paths; README.md stays modified and scratch/notes.txt stays untracked."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names nightly.sh and ci.sh, says the nightly job now keys by content so old path-keyed entries are not reused, and adds an Unreleased entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep and git status before editing, then committed."
+    }
+  }
+}

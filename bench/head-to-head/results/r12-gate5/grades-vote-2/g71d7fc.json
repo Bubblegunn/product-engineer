@@ -1,0 +1,39 @@
+{
+  "label": "g71d7fc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal(repr) half-up helper is applied to line, subtotal, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "Refunds and export were not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Invoice test and rounding.md, but no refund/export test and no CHANGELOG."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read refunds.py and export.py and described their spellings; unittest ran after the code edit; the answer reports the result and explains the legacy exception."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

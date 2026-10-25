@@ -1,0 +1,39 @@
+{
+  "label": "gbb6ecb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the 'config tidy' cutting the pool from 50 to 5 in code and prod.env."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline has both episodes with all the key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix is incomplete because prod.env still sets 5, cites the unresolved 08:52 alert, and names the prod.env change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says the logs don't show actual order-failure impact and asks for order-failure data; invents no figures."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran tail -3 on alerts.log and never read deploy-log.txt directly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g7e86b4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used for line total and tax and values are rounded half-up."
+    },
+    "2": {
+      "pass": false,
+      "why": "Other modules were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Invoice test and rounding.md, but no refund/export test and no CHANGELOG."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never found the other rounding spellings, and the final answer wrongly says refunds and export use round()."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

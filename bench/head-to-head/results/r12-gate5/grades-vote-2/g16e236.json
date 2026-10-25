@@ -1,0 +1,39 @@
+{
+  "label": "g16e236",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total was fixed; build() still uses float round() for tax, so 0.105 gives 0.1."
+    },
+    "2": {
+      "pass": false,
+      "why": "Refunds and export were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy is untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export test; docs and CHANGELOG not updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "Searches were limited and the final answer wrongly says refunds and export round on their own."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

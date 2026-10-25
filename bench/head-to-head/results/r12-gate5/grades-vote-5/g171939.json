@@ -1,0 +1,39 @@
+{
+  "label": "g171939",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the old name is no longer read and the target URL stays empty."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives a table of 30000→5000 and 3→5, says slow targets may time out, and tells users to write the old values."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers --verbose removal with the unknown option error, logLevel debug, both new options with defaults, and says batchSize was reverted."
+    },
+    "4": {
+      "pass": true,
+      "why": "Written in Turkish, identifiers kept, plain wording."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD, including the non-test file changes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

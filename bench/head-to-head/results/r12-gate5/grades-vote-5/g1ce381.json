@@ -1,0 +1,39 @@
+{
+  "label": "g1ce381",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit 3301bff cut 50 to 5 in two places, with orders refused."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table has both episodes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Fix only changed the default, prod.env still has 5, and the 08:52 alert has no resolve."
+    },
+    "4": {
+      "pass": false,
+      "why": "States roughly 17 hours as possible failure time and never plainly says the repo lacks end time or order counts; the draft promises invented follow-ups."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

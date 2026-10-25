@@ -1,0 +1,39 @@
+{
+  "label": "g0bc08f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Authors and search now use cfg.DEFAULT_PAGE_SIZE, so all three return 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config and docs say 50 and CHANGELOG has an Unreleased entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test uses a 50-item page and a 7-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched, ran npm test with exit 0 after the last edit, and the answer says config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

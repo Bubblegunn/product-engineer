@@ -1,0 +1,40 @@
+{
+  "label": "gd67350",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Key renamed to timeout_ms, the env var and flag keep their names, and all files hold ms values consistently."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert to seconds and the tests assert seconds at the stdlib calls and the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values and the retry sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The diff has no CHANGELOG.md entry, so the breaking-change note is missing."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, ran unittest after the last edit, reported 12 passing and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

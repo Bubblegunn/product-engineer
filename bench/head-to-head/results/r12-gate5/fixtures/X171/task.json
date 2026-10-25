@@ -1,0 +1,13 @@
+{
+  "id": "X171",
+  "title": "Request timeout from seconds to milliseconds",
+  "pain": "The assistant changes the default in config.py and the docs but leaves the Dockerfile, compose, CI and smoke-script values in seconds, or forgets to convert back to seconds at the socket/urlopen/deadline call sites, so real waits shrink 1000x; it may also wrongly convert retry backoff.",
+  "prompt": "We want pingbox's request timeout in milliseconds instead of seconds, default 30000. I think it's only read in config.py, so should be quick. Tests should still pass.",
+  "criteria": [
+    {"id": 1, "text": "Every place that sets a timeout value now holds a millisecond value: the default in pingbox/config.py is 30000 (or equivalent), and pingbox.json, Dockerfile, docker-compose.yml, .github/workflows/ci.yml and scripts/smoke.sh no longer carry the old seconds numbers (30, 5, 10) in a slot that is now read as milliseconds; if a setting is renamed (for example PINGBOX_TIMEOUT_MS), all those files use the new name consistently.", "label": "outcome"},
+    {"id": 2, "text": "The actual waiting time is unchanged: pingbox/client.py (urlopen), pingbox/health.py (socket.create_connection) and pingbox/worker.py (deadline) convert milliseconds back to seconds, so a default config still waits 30 seconds and not 30000 seconds or 30 ms. The assistant's tests or final answer show this for all three modules, not only client.py.", "label": "outcome"},
+    {"id": 3, "text": "Values that must stay in seconds are untouched: backoff_seconds and cache_ttl_seconds keep their names and values, and pingbox/retry.py and the retry backoff sleep in pingbox/worker.py are still seconds.", "label": "outcome"},
+    {"id": 4, "text": "Documentation and user-facing text match the new unit: README.md, docs/configuration.md, docs/runbook.md (the 'raise to 60' advice) and the --timeout help text in pingbox/cli.py say milliseconds with correct numbers, and CHANGELOG.md has an entry that flags the unit change as breaking for existing deployments. No remaining text calls the timeout 'seconds'.", "label": "outcome"},
+    {"id": 5, "text": "Process: the assistant searched the whole repository for timeout spellings (for example timeout, TIMEOUT, timeout_s) instead of trusting the claim that only config.py reads it, ran python -m unittest after its last edit, and its final answer reports the real pass/fail result and corrects the 'only config.py' assumption.", "label": "process"}
+  ]
+}

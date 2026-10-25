@@ -1,0 +1,39 @@
+{
+  "label": "g8adf86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Clearly says CSV is only on the unmerged feature/csv-export branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "States email_delivery false and the empty smtp_host in config/settings.json, and that it must be enabled and configured."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding issue."
+    },
+    "4": {
+      "pass": true,
+      "why": "Not safe to promise, docs described as running ahead of the code, and no claim of a v0.4.0 tag."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, diffed the CSV branch and cat config/settings.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

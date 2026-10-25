@@ -1,0 +1,39 @@
+{
+  "label": "g0aba2f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "books, authors and search all use cfg.DEFAULT_PAGE_SIZE (50); MAX_PAGE_SIZE is still 100."
+    },
+    "2": {
+      "pass": false,
+      "why": "Env, compose, openapi, README and api.md are updated, but CHANGELOG.md has no entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore now checks 50 and paging.test.js uses a 50-item page and a 7-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "MAX_TAGS, DEBOUNCE_MS and tag maxItems are untouched; server tests use exact 50/45 values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped for 20 and PAGE_SIZE, ran npm test after the last edit, and the answer says config.js was not enough."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

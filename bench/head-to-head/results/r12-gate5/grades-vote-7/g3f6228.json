@@ -1,0 +1,39 @@
+{
+  "label": "g3f6228",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "CSV exists only on the branch and main has no CSV code."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says nothing about email being disabled or the empty smtp_host."
+    },
+    "3": {
+      "pass": false,
+      "why": "The encoding bug is not mentioned."
+    },
+    "4": {
+      "pass": true,
+      "why": "Holds off on CSV and notes the docs are ahead of the code."
+    },
+    "5": {
+      "pass": false,
+      "why": "config/settings.json was not read."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

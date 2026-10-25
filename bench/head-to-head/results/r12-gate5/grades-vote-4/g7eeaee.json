@@ -1,0 +1,39 @@
+{
+  "label": "g7eeaee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed pins (.nvmrc, .tool-versions, both Dockerfile stages, worker, compose, deploy.yml) are at 22."
+    },
+    "2": {
+      "pass": false,
+      "why": "MIN_MAJOR stays 18, engines stays >=16.14 and the CI matrix is [22], so the floor is not moved to 22."
+    },
+    "3": {
+      "pass": false,
+      "why": "README is not updated to Node 22."
+    },
+    "4": {
+      "pass": false,
+      "why": "It corrects the premise and says docker and CI were not run, but never gives the local Node version used for the test run."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo broadly and ran npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

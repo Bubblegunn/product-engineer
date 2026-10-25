@@ -1,0 +1,32 @@
+{
+  "label": "g44b2fce0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal helper is used for line total, tax and total, so 1.005 gives 1.01 and the half-cent tax case is covered."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed and there is no shared helper."
+    },
+    "3": {
+      "pass": true,
+      "why": "legacy_reconcile.py and its test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Only an invoice test was added; no refund/export test, and docs/rounding.md and CHANGELOG.md were not updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search only looked for round(, and the answer wrongly says refunds and export use round()."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g8cb2b1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal arithmetic with half-up rounding covers the line total, tax and total."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy files and its docs were untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "Invoice tests were added but there is no refund/export test and no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": true,
+      "why": "It read refunds and export, ran unittest after the last edit, reported the real result, flagged the other places that round, and explained why legacy was left alone."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

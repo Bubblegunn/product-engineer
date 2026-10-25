@@ -1,0 +1,32 @@
+{
+  "label": "gda9467b1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Covers the stub, the unused reminder = null and the empty smtpHost, but never mentions the skipped test."
+    },
+    "2": {
+      "pass": true,
+      "why": "States create() validates then ignores repeat, and the test only asserts acceptance."
+    },
+    "3": {
+      "pass": false,
+      "why": "Explicitly says it didn't run the tests and gives no 17 pass / 1 skipped."
+    },
+    "4": {
+      "pass": true,
+      "why": "Names the README, CHANGELOG, usage.md and roadmap, says to correct them, and lists persistence and cancellation as todo with in-memory storage."
+    },
+    "5": {
+      "pass": false,
+      "why": "Did not run the tests and never grepped the tests for the skip, so the skipped test was not seen."
+    }
+  }
+}

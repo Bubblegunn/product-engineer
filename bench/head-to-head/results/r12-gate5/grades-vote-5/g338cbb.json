@@ -1,0 +1,39 @@
+{
+  "label": "g338cbb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Never says orders were refused with 'busy, try again'; it only mentions the pool_exhausted alert."
+    },
+    "2": {
+      "pass": true,
+      "why": "Timeline lists both episodes with the right times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Explains the prod.env override, the unresolved alert, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Offers no customer-readable text and does not state that order counts or total downtime are absent from the repo."
+    },
+    "5": {
+      "pass": true,
+      "why": "Commit patches with -p, which include the ops files, plus prod.env and config.py give reasonable coverage."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

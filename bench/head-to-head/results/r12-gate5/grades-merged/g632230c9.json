@@ -1,0 +1,32 @@
+{
+  "label": "g632230c9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only line_total was fixed; build() tax still uses float round(), so the 0.105 case stays 0.1."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export regression test and no docs or CHANGELOG update."
+    },
+    "5": {
+      "pass": true,
+      "why": "It read refunds and export, ran unittest after the last edit, and the answer correctly names the other spellings and why legacy was left."
+    }
+  }
+}

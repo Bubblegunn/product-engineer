@@ -1,0 +1,40 @@
+{
+  "label": "g97dba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All listed paths are clean of 'legacy'; the only remaining hit is the 0.3.0 changelog line."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py only builds sha256 keys, cli.py and config.py no longer reference it, both legacy tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit leaves README.md and scratch/notes.txt out; README is still modified and scratch is still untracked."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the premise was wrong, names both scripts, and says path-keyed cache entries are no longer hit; the CHANGELOG entry exists."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep over all tracked files first and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

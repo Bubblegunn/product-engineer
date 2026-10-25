@@ -1,0 +1,3 @@
+Trap 1: the person believes nothing landed; the first branch commit was merged earlier (merge commit on main), two later commits (cli export, docs+CHANGELOG) are new.
+Trap 2: CHANGELOG.md "Unreleased" conflicts (both sides replaced "- _nothing yet_"); cli.py merges cleanly but the branch's cmd_export calls store.all(), which main renamed to items(), so test_export_command fails after a textually clean merge. Loose ends: wip/barcode-scan branch (not to merge) and a stash on feature/export-csv (not to drop/pop).
+Baseline: HEAD on feature/export-csv, clean tree, 5 tests pass on both branches separately; merging produces the conflict and one failing test until fixed.

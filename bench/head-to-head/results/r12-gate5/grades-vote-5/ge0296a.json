@@ -1,0 +1,39 @@
+{
+  "label": "ge0296a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tidy config cut simultaneous connections from 50 to 5 in both places, giving 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Lists both 21 Oct episodes with times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Verdict FAIL: prod.env keeps 5, the alert fired at 08:52 with no resolve, and it offers to set 50."
+    },
+    "4": {
+      "pass": true,
+      "why": "Notes the log has no resolution for the second episode and that its length is unknown, and invents no figures."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

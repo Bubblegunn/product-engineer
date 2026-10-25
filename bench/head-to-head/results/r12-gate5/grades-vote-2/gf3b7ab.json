@@ -1,0 +1,39 @@
+{
+  "label": "gf3b7ab",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Authors and search use the config, books uses 50, and the cap is unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "All files say 50 and CHANGELOG has an entry."
+    },
+    "3": {
+      "pass": false,
+      "why": "hasMore uses the response limit, but the paging test passes a 20-item page with limit 20, not a 50-item page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the server tests are updated exactly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched, ran npm test after the last edit, and reported that config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

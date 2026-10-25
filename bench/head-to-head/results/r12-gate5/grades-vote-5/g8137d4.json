@@ -1,0 +1,39 @@
+{
+  "label": "g8137d4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Cleanup cut the pool from 50 to 5 and added the prod.env line, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both 21 Oct episodes with their times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Fix only restored the default, prod.env overrides it, the alert fired again at 08:52, and it says to change the line to 50."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says it cannot give an accurate duration until recovery is known, gives 1h43m for the first episode, and marks placeholders."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

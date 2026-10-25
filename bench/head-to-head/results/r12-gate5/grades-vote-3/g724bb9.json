@@ -1,0 +1,40 @@
+{
+  "label": "g724bb9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All config/deploy files hold ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "The three modules convert and the tests assert seconds."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, CLI help and a breaking CHANGELOG entry are updated."
+    },
+    "5": {
+      "pass": false,
+      "why": "The CHANGELOG edit was the last edit and no unittest ran after it."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

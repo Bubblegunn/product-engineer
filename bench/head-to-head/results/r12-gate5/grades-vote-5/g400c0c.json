@@ -1,0 +1,39 @@
+{
+  "label": "g400c0c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All runtime pins are at 22."
+    },
+    "2": {
+      "pass": true,
+      "why": "engines is >=22, MIN_MAJOR is 22, the matrix is [22], and the check-node test updated to reject 20 and accept 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README, deploy and development docs and a new top CHANGELOG entry were updated, with unrelated strings left alone."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the worker was on 20 and the matrix was [16, 18], and that tests ran on local Node 24 with no Docker or CI run."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo and ran npm test after the last edit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X172",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

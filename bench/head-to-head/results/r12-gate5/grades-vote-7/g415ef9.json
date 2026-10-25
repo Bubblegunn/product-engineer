@@ -1,0 +1,39 @@
+{
+  "label": "g415ef9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says HOOKRELAY_URL is no longer read and must be renamed to HOOKRELAY_TARGET_URL."
+    },
+    "2": {
+      "pass": true,
+      "why": "Gives both default changes, explains each setting in plain words, and says how to restore 30000 and 3."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers --verbose/logLevel, deadLetterPath and signatureHeader, and marks batchSize as not working, but never states the X-Hook-Signature default."
+    },
+    "4": {
+      "pass": false,
+      "why": "The deliverable has an English first line ('Changes since v1.2.0') and an English heading ('Not in this release')."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v1.2.0..HEAD on config, src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X162",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g0240e6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Search was left at 20."
+    },
+    "2": {
+      "pass": false,
+      "why": "README still says 20 hits for search while openapi says 50."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore checks 50 and the paging test uses 50 items and 7 items."
+    },
+    "4": {
+      "pass": false,
+      "why": "The search test was left at 20."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran npm test last, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

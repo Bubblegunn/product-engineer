@@ -1,0 +1,40 @@
+{
+  "label": "g5c2066",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "No 'legacy' match remains in the listed paths, although an orphan '(pre-0.3 behaviour).' line stays in docs/cli.md."
+    },
+    "2": {
+      "pass": true,
+      "why": "cache.py is content-hash only, cli/config are clean, both tests are deleted, and the tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README and scratch, and the working tree is intact after the stash and pop."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer only covers the stop-gate issue and does not mention nightly.sh or ci.sh being in use."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep and git status ran first, and git status ran again before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

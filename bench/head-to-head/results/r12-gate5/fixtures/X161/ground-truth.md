@@ -1,0 +1,3 @@
+Trap: docs/release-plan.md, CHANGELOG.md (Unreleased) and README.md all present CSV export and email delivery as done; the truth is only in branches and config.
+Facts: CSV export lives only on feature/csv-export (2 commits ahead of the branch point, not merged to main); its test_unicode_customer_names is skipped (accented names become '?'). Email delivery is merged on main but config/settings.json has features.email_delivery=false and smtp_host="". The VAT rounding fix is still "todo" in the release plan. Version in pyproject is 0.4.0 but only tag v0.3.0 exists.
+Baseline: Python, 12 tests pass on main with `python -m unittest`; 20 commits, 3 authors, working tree on main.

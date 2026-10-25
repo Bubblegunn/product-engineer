@@ -1,0 +1,39 @@
+{
+  "label": "g868918",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all use cfg.DEFAULT_PAGE_SIZE, which is 50; the cap stays 100."
+    },
+    "2": {
+      "pass": false,
+      "why": "Env, compose, openapi and the docs are updated, but CHANGELOG.md has no entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test checks a 50-item page and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are intact and the server tests assert 50; the authors test checks limit 50 and the pagination fixture is 120."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, npm test after the last edit, real result reported, and the answer says more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

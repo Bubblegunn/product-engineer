@@ -1,0 +1,39 @@
+{
+  "label": "g20103a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the setting change that cut the limit from 50 to 5, causing 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Draft covers the first period and the re-applied change with failures from 15:34."
+    },
+    "3": {
+      "pass": true,
+      "why": "Verdict FAIL: says the prod.env override defeats the fix and the 08:52 alert is unresolved, and names the line to fix."
+    },
+    "4": {
+      "pass": false,
+      "why": "The draft says about 1h45 against the 1h43 it states elsewhere, and it never says failure counts are missing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs and prod.env and ran the effective-value probe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

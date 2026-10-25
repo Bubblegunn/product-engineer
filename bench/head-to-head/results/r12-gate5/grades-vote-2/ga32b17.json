@@ -1,0 +1,39 @@
+{
+  "label": "ga32b17",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Authors and search now read cfg.DEFAULT_PAGE_SIZE and books uses the config, so all return 50; cap unchanged."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi, README, api.md and a CHANGELOG Unreleased entry all say 50."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test checks a 50-item page as true and a short page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched and the tests are updated exactly, with fixtures adjusted."
+    },
+    "5": {
+      "pass": true,
+      "why": "Broad grep, npm test run after the last edit, and the answer says more than config.js changed with the real result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

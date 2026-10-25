@@ -1,0 +1,32 @@
+{
+  "label": "gf1667926",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal is used throughout line total, subtotal, tax and total, so the half-cent cases are correct."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy file, test and doc are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund/export test, and docs and CHANGELOG were not updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It read refunds and export, ran unittest after the last edit, and the answer notes the other rounding paths and why legacy was left."
+    }
+  }
+}

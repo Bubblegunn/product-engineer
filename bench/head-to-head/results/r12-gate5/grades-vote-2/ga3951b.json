@@ -1,0 +1,39 @@
+{
+  "label": "ga3951b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Decimal line total and a tax product that stringifies to 0.105 round half-up; ordinary values unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "refunds.py and export.py were not changed and there is no shared helper."
+    },
+    "3": {
+      "pass": true,
+      "why": "legacy_reconcile, its test and reconciliation.md are untouched, and report.py is unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "No refund or export regression test, no CHANGELOG entry."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only grepped 'round', so the '%.2f' and int(*100) spellings were missed, and the final answer wrongly says refunds and export use round()."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X173",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

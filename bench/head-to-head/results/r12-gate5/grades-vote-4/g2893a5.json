@@ -1,0 +1,40 @@
+{
+  "label": "g2893a5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A search for 'legacy' in the listed paths finds nothing; only an orphaned '(pre-0.3 behaviour)' line remains in docs/cli.md."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache.key takes only content, no legacy argument, both legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit excludes README.md and scratch, and the working tree still shows both unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer names nightly.sh and ci.sh, says nightly now keys by content and old entries in /var/cache/tidepool are unused, and CHANGELOG has an Unreleased entry; it never says outright that the mode was in use."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep before editing and git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

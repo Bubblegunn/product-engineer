@@ -1,0 +1,39 @@
+{
+  "label": "g4cf297",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says CSV exists only on the unmerged branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says email is off unless enabled and smtp_host is configured, but gives no value for the setting and no empty smtp_host in settings.json."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the encoding issue."
+    },
+    "4": {
+      "pass": true,
+      "why": "Not confirmed for Friday, and the README, CHANGELOG and plan are noted as ahead of the code."
+    },
+    "5": {
+      "pass": false,
+      "why": "config/settings.json was not read."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X161",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

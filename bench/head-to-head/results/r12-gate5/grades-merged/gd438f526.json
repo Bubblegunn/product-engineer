@@ -1,0 +1,32 @@
+{
+  "label": "gd438f526",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use the config default of 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "All docs and config are updated, including a CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore defaults to 50, and the tests check a 50-item page as true and a short page as false."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are untouched; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo, ran npm test after the last edit, and the answer reports the result and that more than config.js changed."
+    }
+  }
+}

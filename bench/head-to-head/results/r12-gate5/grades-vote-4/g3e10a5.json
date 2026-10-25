@@ -1,0 +1,40 @@
+{
+  "label": "g3e10a5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The key was renamed to timeout_ms consistently in config and json, and the env values in the other files are all in ms."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the tests assert the second values."
+    },
+    "3": {
+      "pass": true,
+      "why": "The seconds values and the retry/backoff code are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry flagging the breaking change, although the docs were updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched the repo, reran unittest after the last edit, reported the pass, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

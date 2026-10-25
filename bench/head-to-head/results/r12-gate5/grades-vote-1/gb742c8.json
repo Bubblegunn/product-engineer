@@ -1,0 +1,39 @@
+{
+  "label": "gb742c8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three endpoints use cfg.DEFAULT_PAGE_SIZE, which is 50."
+    },
+    "2": {
+      "pass": true,
+      "why": "Env, compose, openapi (three defaults), README, api.md and an Unreleased CHANGELOG entry are all updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore uses 50 and the paging test is updated for 50 and a short page."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are unchanged; the search test asserts exactly 50."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran npm test after the last edit, and the answer reports the result and that more than config.js changed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb75cb2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting the limit from 50 to 5 and orders refused."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both episodes with 10:48 revert, 15:20 reapply and 15:34 alert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Flags that the fix left DB_POOL_SIZE=5 in place, cites the 08:52 alert, and proposes deleting the line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Leaves the end time and total duration blank because the logs don't show them, and the draft is plain."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both logs, config.py, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gc3f50a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All timeout values are converted to milliseconds in every file."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000 and the existing tests cover client, health and worker."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based values and retry code are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The changelog has a breaking entry, but the runbook line 'raise to 60 seconds (PINGBOX_TIMEOUT=60000)' never says milliseconds."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest after the last edit, reported 12 passing, and corrected the assumption."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

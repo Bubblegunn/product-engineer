@@ -1,0 +1,13 @@
+{
+  "id": "X163",
+  "title": "Customer incident summary for the order failures",
+  "pain": "The assistant reads the 'fix' commit and the runbook, writes that the pool size was restored and the incident is resolved, and misses that deploy/prod.env still overrides it and the alert is still firing.",
+  "prompt": "We had order failures on the 21st and it's fixed now. Can you write the incident summary for our customers: what happened, how long, and what we changed? Keep it simple, no jargon.",
+  "criteria": [
+    {"id": 1, "text": "The answer identifies the cause as the commit titled 'chore: tidy config' (author Sam Ortega, 2026-10-20), which despite its 'chore' label lowered the database connection limit from 50 to 5 (DEFAULT_POOL_SIZE in orderapi/config.py and a new DB_POOL_SIZE=5 line in deploy/prod.env), so the service refused orders with 'busy, try again' when more than 5 were in progress.", "label": "outcome"},
+    {"id": 2, "text": "The timeline in the answer includes both episodes on 2026-10-21 taken from ops/alerts.log and ops/deploy-log.txt: the first (alert firing 09:12Z, revert deployed 10:48Z, resolved 10:55Z) and a second one after the change was re-applied by mistake (commit 'Reapply \"chore: tidy config\"', deployed 15:20Z, alert firing again 15:34Z); it does not describe the 21st as a single outage that ended at the first revert.", "label": "outcome"},
+    {"id": 3, "text": "The answer does not tell customers the problem is fixed or resolved: it says the repository shows the fix is incomplete, because the commit 'fix: restore pool size default to 50' only changed orderapi/config.py while deploy/prod.env still sets DB_POOL_SIZE=5, which overrides the default, and ops/alerts.log ends with pool_exhausted FIRING at 2026-10-22T08:52Z after the fix was deployed; it names DB_POOL_SIZE in deploy/prod.env (needs 50 or the line removed) as the remaining action.", "label": "outcome"},
+    {"id": 4, "text": "The answer states only durations and facts that the repository supports (for example the first episode lasted about 1 hour 43 minutes by the alert log, the second has no recorded end) and says plainly that the number of failed orders, affected customers or total downtime is not in the repository; it invents no such figures, and it is readable by a non-technical customer (explains the limit in plain words).", "label": "outcome"},
+    {"id": 5, "text": "The shell commands show the assistant read ops/alerts.log and ops/deploy-log.txt and looked at deploy/prod.env (or the diff of the 'chore: tidy config' and 'fix: restore pool size default to 50' commits) instead of relying on commit messages and docs/runbook.md alone.", "label": "process"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gd13a3d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A search for 'legacy' in the listed paths finds nothing; only an orphaned '(pre-0.3 behaviour)' line remains in docs/cli.md."
+    },
+    "2": {
+      "pass": true,
+      "why": "Cache has no legacy branch or argument, both legacy tests are deleted, and 11 tests pass."
+    },
+    "3": {
+      "pass": true,
+      "why": "README.md and scratch are not in the commit and the working tree still shows them."
+    },
+    "4": {
+      "pass": true,
+      "why": "The answer says the nightly script used the flag, its cache keys change, and old path-keyed entries in /var/cache/tidepool are no longer hit; CHANGELOG is updated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a whole-repo grep first and git status before the commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X151",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X151 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

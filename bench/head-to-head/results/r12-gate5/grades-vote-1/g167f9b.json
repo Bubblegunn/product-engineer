@@ -1,0 +1,39 @@
+{
+  "label": "g167f9b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "authors and search hardcode 50 instead of using the config, but they behave correctly and the cap is unchanged."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CHANGELOG entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore checks 50 and the test is updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 20s are explicitly left alone; tests are exact."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep -w 20, npm test after the last edit, and the answer says it was more than config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

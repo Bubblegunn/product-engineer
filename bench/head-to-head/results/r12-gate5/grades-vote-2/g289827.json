@@ -1,0 +1,39 @@
+{
+  "label": "g289827",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the tidy config change cutting the pool from 50 to 5 in both places."
+    },
+    "2": {
+      "pass": true,
+      "why": "Covers both episodes with the key times."
+    },
+    "3": {
+      "pass": true,
+      "why": "Verdict FAIL: the prod.env override defeats the fix, the 08:52 alert is unresolved, and it asks whether to set 50 or remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "The draft says 1h45 against the 1h43 it states elsewhere, and it never says failure counts are missing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gee62ad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Books, authors and search all return 50 via config, and the probe confirmed the override."
+    },
+    "2": {
+      "pass": true,
+      "why": "All config, docs and the CHANGELOG are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "hasMore is 50 and the paging test is updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The seed was changed to 120 authors so the tests assert exact 50 values, and unrelated 20s are untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped, ran npm test last, reported 16 passing, and said config.js was not the only place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X174",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

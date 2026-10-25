@@ -1,0 +1,40 @@
+{
+  "label": "g26c6ec",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "It renamed to timeout_ms, PINGBOX_TIMEOUT_MS and --timeout-ms, and every file uses the new names with ms values."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules divide by 1000, and the tests assert seconds at the stdlib calls and the worker deadline."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds-based settings and the backoff sleep are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, CLI help and a Breaking changelog entry all use the new unit and names."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo, reran unittest after fixing its first failed script, and reported 12 OK with the correction."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X171",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X171 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

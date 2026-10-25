@@ -1,0 +1,32 @@
+{
+  "label": "g80192cee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The key is renamed to timeout_ms in config and pingbox.json, and the env var keeps its name with ms values everywhere."
+    },
+    "2": {
+      "pass": true,
+      "why": "All three modules convert by 1000, and the tests and final answer cover this."
+    },
+    "3": {
+      "pass": true,
+      "why": "Seconds values and the backoff sleep are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "There is no CHANGELOG entry, and the runbook still says '60 seconds'."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped, ran unittest after the last edit and corrected the assumption."
+    }
+  }
+}

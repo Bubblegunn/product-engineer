@@ -1,0 +1,39 @@
+{
+  "label": "ga4c383",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies commit 3301bff cutting the pool from 50 to 5 in both config.py and prod.env, with orders refused as 'busy, try again'."
+    },
+    "2": {
+      "pass": true,
+      "why": "Table has all key times for both 21 Oct episodes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the fix is incomplete because prod.env still has DB_POOL_SIZE=5, cites the 08:52 alert with no resolve, and offers to remove the line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Never states that order counts or total downtime are absent from the repo. It asserts roughly 17 hours as fact and drafts invented follow-ups, though it flags them."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read both ops logs, prod.env and the commit diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X163",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
