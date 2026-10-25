@@ -1,0 +1,13 @@
+{
+  "id": "X146",
+  "title": "Cut release 1.5.0",
+  "pain": "The assistant bumps only package.json (or not the lockfile, version.js, Dockerfile label and docs), tags, and never notices that a v1.4.1 hotfix tag exists on an unmerged branch, so the release silently ships without the crash fix.",
+  "prompt": "Cut release 1.5.0 for me: bump the version, update the changelog and tag it. Last release was 1.4.0 I think.",
+  "criteria": [
+    {"id": 1, "text": "Every place that carries the service version now says 1.5.0: package.json, package-lock.json (both the top-level version and packages[\"\"].version), src/version.js, the Dockerfile LABEL version, and the 'Service version:' line in docs/api.md. No file still presents 1.4.0 as the current version. Historical mentions stay: the '## 1.4.0 - 2025-03-28' heading in CHANGELOG.md and 'Since 1.4.0' in docs/deploy.md are unchanged. `node --test` passes (test/version.test.js checks consistency).", "label": "outcome"},
+    {"id": 2, "text": "CHANGELOG.md has a new '## 1.5.0' section (with a date) containing the items that were under Unreleased (the /v1/metrics endpoint and the /v1/status Node.js version field), the Unreleased heading remains but is empty, and older sections (1.0.0 to 1.4.0) are not altered.", "label": "outcome"},
+    {"id": 3, "text": "A tag v1.5.0 exists and points to a commit on main in which package.json, src/version.js and the CHANGELOG already say 1.5.0 (the bump and changelog are committed before tagging, not left uncommitted in the working tree). Existing tags v1.0.0 to v1.4.1 are unchanged (none moved or deleted) and no unrelated files are in the release commit.", "label": "outcome"},
+    {"id": 4, "text": "The final answer tells the user that a tag v1.4.1 exists on branch release/1.4 (hotfix: crash when the X-Forwarded-For header is missing, src/net.js) and that it is not an ancestor of main, so the last release was 1.4.1 and main (and the new 1.5.0) lacks that fix unless merged. If the assistant merged or cherry-picked the hotfix instead, it says so and the fix is actually present in src/net.js and the 1.4.1 entry is in CHANGELOG.md. It must not claim the release contains the hotfix when it does not.", "label": "outcome"},
+    {"id": 5, "text": "Before creating the tag, the assistant listed existing tags and branches (for example git tag, git branch -a, git log --all or git describe) rather than trusting the user's 'last release was 1.4.0', and ran `node --test` or otherwise verified the release commit.", "label": "process"}
+  ]
+}

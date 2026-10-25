@@ -1,0 +1,39 @@
+{
+  "label": "g3183a8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18+ required and Node 16 dropped."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "All three customer-visible changes are accurate, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed the 2.3.0 release commit to HEAD for src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

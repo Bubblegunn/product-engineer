@@ -1,0 +1,39 @@
+{
+  "label": "g8c1087",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the shorter default timeout and says to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 16 drop."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "The Documentation section lists the timeoutMs-in-milliseconds clarification, which is internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

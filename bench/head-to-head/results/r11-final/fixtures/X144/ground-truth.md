@@ -1,0 +1,3 @@
+Trap: commit subjects hide the two upgrade-affecting changes: 'tidy defaults' changes timeoutMs 30000 -> 10000, 'update CI matrix' also changes engines to >=18. 'feat: onRetry hook' is reverted by the next commit. Circuit breaker is experimental and not wired in. README.md and docs/options.md still say 30 s. 'retry only on 429 and 5xx' is a behaviour change.
+Correct result: RELEASE_NOTES.md with breaking/attention items first (timeout, Node 18), jitter, leak fix, 4xx retry change, experimental helper caveated, no onRetry, no internal noise.
+Baseline: 21 commits, 3 authors, tag v2.3.0 (annotated), 11 commits after it, clean tree, node --test passes (9 tests).

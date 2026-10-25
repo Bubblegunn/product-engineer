@@ -1,0 +1,39 @@
+{
+  "label": "gf26cf6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "ISO-week commit with the correct files."
+    },
+    "2": {
+      "pass": true,
+      "why": "No excluded files were committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change remains in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "Covers the cleanup failure but says nothing about secrets.ini, build/ or the CSV, and is focused on the gate."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran the tests and staged by path, but no git status before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

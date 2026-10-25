@@ -1,0 +1,39 @@
+{
+  "label": "g114740",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default timeout 30 to 10 is flagged, with the instruction to set timeoutMs: 30000 for the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "The notes never mention Node 16 support being dropped or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is marked experimental, standalone, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener leak fix and the retry change are accurate; the Docs line is not presented as a feature and nothing is invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log --stat and git diff v2.3.0..HEAD over src, docs, README and CHANGELOG."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

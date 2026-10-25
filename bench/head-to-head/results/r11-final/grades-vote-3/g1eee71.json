@@ -1,0 +1,39 @@
+{
+  "label": "g1eee71",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete and a rejection test was added."
+    },
+    "2": {
+      "pass": true,
+      "why": "The build:compat script, the release.sh line and the CI step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is clean, legacy tests are deleted, tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs are updated, but the final answer never says this is a breaking change or describes the user impact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for legacy and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

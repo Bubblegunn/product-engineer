@@ -1,0 +1,39 @@
+{
+  "label": "ga3de9c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change with timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": false,
+      "why": "Node 16 drop is not mentioned."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker experimental and unwired."
+    },
+    "4": {
+      "pass": false,
+      "why": "Documentation section lists the timeout-unit clarification."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

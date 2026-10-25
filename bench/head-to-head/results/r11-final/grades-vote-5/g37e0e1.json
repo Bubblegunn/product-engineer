@@ -1,0 +1,39 @@
+{
+  "label": "g37e0e1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States 30s to 10s, flags it as affecting existing code, and says to set timeoutMs: 30000 to keep the old limit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 16 is no longer supported and Node 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is not mentioned; the circuit breaker is marked experimental, standalone, not used by retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener leak fix, and 429/5xx-only retries, with no internal items and no invented version or date (placeholders only)."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff v2.3.0..HEAD over src, docs, package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

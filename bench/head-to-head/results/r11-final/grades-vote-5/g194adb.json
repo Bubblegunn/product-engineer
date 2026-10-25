@@ -1,0 +1,39 @@
+{
+  "label": "g194adb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five version files were bumped, committed, and npm test passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section is dated with both items, Unreleased is empty, and older sections are untouched."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tag v1.5.0 sits on the release commit with only the version files and the changelog, and no existing tags moved."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says v1.4.1 is only on release/1.4, not in main, so 1.5.0 lacks the crash fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags, checked branches, and ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

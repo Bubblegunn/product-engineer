@@ -1,0 +1,32 @@
+{
+  "label": "g66c0c19f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 10s (was 30) is under Changed, with timeoutMs: 30000 in the upgrading notes."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter off by default, the leak fix and the 4xx retry change are accurate, with nothing invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD --stat, git show on the key commits, and diffs of package.json, README and .github."
+    }
+  }
+}

@@ -1410,3 +1410,8 @@ Gate 4 (`docs/DEV-GATE-r11.md`, frozen before the first session; `results/r11-ga
 ## Resume (r11, after gate 4)
 
 Product `bbe8673c` (code); gate 4 passed under the frozen I1 rule. The 12 gate-4 tasks and everything before are read material. Next: a final on a fresh sealed set from a further new writer (protocol frozen before its first run).
+
+## Results, r11 final (2026-10-25): I1 does not hold
+
+Protocol `docs/FINAL-PROTOCOL-r11.md` (frozen `2fc53a46`), evidence `results/r11-final/` (SUMMARY.md first). Product `bbe8673c`, sealed set of writer W13 (6 tasks), 8 arms, 3 runs. Ours 19.33 of 24, iso 19.67 (best other), gwc-invoked 19.00, iso-invoked 18.67, base 18.33, dod-invoked 16.67, dod 14.33, gwc 18.00. Ours minus iso: -0.06 per cell, 95% interval [-0.61, +0.44]: I1 does not hold. F6-grader passes. Cost 1.42 times base. The largest loss is X146: ours found that the premise of a release request was wrong, changed nothing and asked; the release was not cut (0 of 3 on three criteria). That set is read material now.
+Descriptive, pooled over gate 4 and the final (18 tasks, 3 runs): ours 60.66 of 72, gwc-invoked 54.33, iso-invoked 53.34, iso 52.67, base 51.00.

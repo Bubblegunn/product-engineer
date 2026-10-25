@@ -1,0 +1,39 @@
+{
+  "label": "g17356f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Lists the timeout change as one that may affect users, with the timeoutMs: 30000 workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 16 is no longer supported and Node 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener fix and the 4xx retry change are accurate, with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read git diff --stat, git show on the key commits, and the package.json and .github diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

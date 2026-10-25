@@ -1,0 +1,39 @@
+{
+  "label": "g906dc6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting defaults to 25, server.py uses MAX_UPLOAD_BYTES, messages say 25 MB, and boundary tests pass."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 25m and compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi.yaml and chunk_upload.py are all updated; avatar, rate limit and trash values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Boundary tests are updated and pass; the answer notes the 8 MB doc error, the nginx and compose changes, and the skipped test as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep before editing and unittest run afterwards."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

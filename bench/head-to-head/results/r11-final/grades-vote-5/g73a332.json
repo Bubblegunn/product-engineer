@@ -1,0 +1,39 @@
+{
+  "label": "g73a332",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, legacyJson key, env var and src/legacy.js are removed, and the verify probe shows html output working and --legacy-json exiting 2 with Unknown option."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed in the diff."
+    },
+    "3": {
+      "pass": true,
+      "why": "The example config key is gone, legacy tests are deleted including the skipped one, and 11 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, migrating note and changelog are updated, the final lists the build/release/example-config dependents, and it warns that configs with legacyJson now fail."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a recursive grep for legacy across the repo (which covers .github) and npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

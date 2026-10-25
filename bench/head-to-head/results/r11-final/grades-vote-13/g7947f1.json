@@ -1,0 +1,39 @@
+{
+  "label": "g7947f1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the 10s default in 'Before you upgrade' with the timeoutMs: 30000 fix."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is unsupported, Node 18+ required, tested on 18, 20 and 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, standalone and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the abort listener fix and the retry change; version and date are placeholders, not invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log --stat and the diffs of src, docs, package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

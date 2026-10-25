@@ -1,0 +1,39 @@
+{
+  "label": "g05fd86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default timeout change is flagged as affecting users, with the timeoutMs: 30000 workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 18 or newer is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener cleanup and the 429/5xx-only retry change are accurate; docs note is only a docs line."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs, README, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

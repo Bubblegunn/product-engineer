@@ -1,0 +1,39 @@
+{
+  "label": "gd31ec2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 10s (was 30) is flagged in the checklist and a section, with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is no longer supported and Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (default false), the leak fix and the 429/5xx retry change are accurate; version and date are placeholders."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log with stat, then diffs of src, docs, README, package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

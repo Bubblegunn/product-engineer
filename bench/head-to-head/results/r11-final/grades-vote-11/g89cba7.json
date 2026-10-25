@@ -1,0 +1,39 @@
+{
+  "label": "g89cba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Clear 10s vs 30s change with the instruction to set timeoutMs."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are accurate; the docs line is in a Documentation section, not listed as a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

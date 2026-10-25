@@ -1,0 +1,39 @@
+{
+  "label": "g1d57a9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default timeout 10s (was 30), flagged under 'please read', with timeoutMs: 30000 as the fix."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required (was 16) and tells Node 16 users to upgrade."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is standalone, not connected to retrying, and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the 4xx retry change are accurate; no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read git log --stat and git diff v2.3.0..HEAD over src, docs, README and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

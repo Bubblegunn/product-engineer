@@ -1,0 +1,39 @@
+{
+  "label": "gaba1ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, legacyJson/DOCGEN_LEGACY_JSON handling and src/legacy.js are removed; tests pass and the example run works."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config no longer has legacyJson, test/legacy.test.js is deleted, and 9/9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, migrating and a 3.0.0 changelog entry are updated and the answer lists release.sh, CI, build:compat and the example config. It says the key and flag now fail rather than using the word 'breaking'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git grep -i legacy over tracked files, including .github, and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

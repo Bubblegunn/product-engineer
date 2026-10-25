@@ -1,0 +1,39 @@
+{
+  "label": "g8b9b2a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was never bumped and still says 1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 section with both items was added and an empty Unreleased heading remains."
+    },
+    "3": {
+      "pass": false,
+      "why": "The tagged commit still has src/version.js at 1.4.0."
+    },
+    "4": {
+      "pass": false,
+      "why": "Vague: it never names release/1.4 or the X-Forwarded-For crash, and only guesses 'may be a hotfix on another branch'."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests were never run before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

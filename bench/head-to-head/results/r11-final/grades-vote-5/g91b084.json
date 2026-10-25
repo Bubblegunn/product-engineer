@@ -1,0 +1,39 @@
+{
+  "label": "g91b084",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Application code is at 25 MB, derived from the setting, and the tests exercise the boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are all updated to 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, openapi and the client script say 25 MB, and the unrelated values are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests were updated and pass, the answer mentions the old 8 MB docs and the nginx change, and the skip is only mentioned neutrally."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep before and after the edits and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

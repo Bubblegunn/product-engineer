@@ -1,0 +1,39 @@
+{
+  "label": "g0d47b5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All version locations were bumped to 1.5.0, historical mentions were left alone, and tests passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "1.5.0 section with both items, an empty Unreleased heading, and the older sections plus the merged 1.4.1 entry intact."
+    },
+    "3": {
+      "pass": true,
+      "why": "The release commit on main touches only the version and changelog files, v1.5.0 points to it, and existing tags are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Merged release/1.4, said so, the fix is in src/net.js, and the 1.4.1 entry is in the changelog."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches, then ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gdbe5b7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting defaults to 25, server.py uses MAX_UPLOAD_BYTES, the message says 25 MB, and the boundary tests cover 25 MB accepted and +1 rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 25m and compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi (26214400) and chunk_upload are all 25 MB, with avatar, rate limit and retention untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Boundary tests were updated, the answer notes the old 8 MB docs and the nginx change, and it treats the skipped test as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a broad git grep and a test run (pytest) before finishing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

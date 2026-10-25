@@ -1,0 +1,39 @@
+{
+  "label": "g13cd80",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the default is now 10s (was 30) in the pre-upgrade section and tells readers to set timeoutMs: 30000 to keep the old limit."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is no longer supported and Node 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted, and the circuit breaker is marked experimental, not used by retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener leak fix and the 429/5xx-only retry change, with placeholders instead of invented version or date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, README, docs and package.json, plus test and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

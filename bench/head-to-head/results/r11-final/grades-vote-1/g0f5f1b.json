@@ -1,0 +1,39 @@
+{
+  "label": "g0f5f1b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Source removal is complete."
+    },
+    "2": {
+      "pass": true,
+      "why": "package.json, release.sh and ci.yml are all fixed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "Docs are updated and the dependents are listed, but there is no explicit breaking-change statement."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for 'legacy' and npm test were both run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

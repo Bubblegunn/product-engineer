@@ -1,0 +1,39 @@
+{
+  "label": "gbb329d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default and says to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or later is required and Node 16 is dropped."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate; the placeholders are not invented values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

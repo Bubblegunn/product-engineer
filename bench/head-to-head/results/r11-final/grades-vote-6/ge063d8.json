@@ -1,0 +1,39 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default, early reject and message are all 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 25m, compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, openapi and the client script are 25 MB, and unrelated values are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests pass; the answer mentions the 8 MB doc error and the nginx change, and treats the skipped test as the known flaky one."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched with git grep and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

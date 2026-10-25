@@ -1,0 +1,39 @@
+{
+  "label": "g5e046d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files were bumped and the diff shows consistent versions, though the tests were not run."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section has both items, Unreleased is empty, and older sections are unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated v1.5.0 sits on a committed release commit with only the version files and the changelog."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states v1.4.1 is only on release/1.4, was never merged, and 1.5.0 lacks the crash fix."
+    },
+    "5": {
+      "pass": false,
+      "why": "It listed tags and branches but explicitly did not run tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

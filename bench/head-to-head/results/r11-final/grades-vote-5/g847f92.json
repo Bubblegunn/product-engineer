@@ -1,0 +1,39 @@
+{
+  "label": "g847f92",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, key, env var and legacy.js are removed and tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was never edited and still runs npm run build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final does not mention release.sh as a dependent, and it was left broken."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for legacy and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

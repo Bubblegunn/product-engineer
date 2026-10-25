@@ -1,0 +1,39 @@
+{
+  "label": "g439950",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The timeout change is under 'Action required', with the instruction to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or newer is required, changed from >=16 to >=18."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry appears only under 'Not in this release'; the circuit breaker is not connected to retrying and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (default false), the listener fix and the 429/5xx retry change are accurate, with no invented items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the relevant commits, git grep, and read docs/options.md."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

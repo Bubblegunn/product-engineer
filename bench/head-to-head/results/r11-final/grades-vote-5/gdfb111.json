@@ -1,0 +1,39 @@
+{
+  "label": "gdfb111",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag handling, env var and src/legacy.js are removed and probes show Unknown option."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, release.sh and the CI step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is cleaned, legacy tests are removed, and 11 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The docs are edited, but the final answer is only a FAIL verify report; it does not list the dependents or state the breaking change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a recursive grep for legacy and npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

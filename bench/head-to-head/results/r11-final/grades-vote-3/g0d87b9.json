@@ -1,0 +1,39 @@
+{
+  "label": "g0d87b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh is not modified and still calls build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer does not list release.sh as a dependent, which it left unfixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep -i legacy over tracked files and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

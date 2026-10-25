@@ -1,0 +1,39 @@
+{
+  "label": "g6b19e3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files are bumped in the working tree and npm test passed, though nothing is committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section is dated with both items, Unreleased is empty, and older sections are unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changes were left uncommitted and no v1.5.0 tag was created."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states v1.4.1 is from release/1.4, never merged into main, and main still crashes."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags and branches and ran the test suite plus an e2e probe on the release changes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

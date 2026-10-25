@@ -1,0 +1,39 @@
+{
+  "label": "gd97bbd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change from 30s to 10s is listed under 'Changed — please read', with the explicit timeoutMs: 30000 upgrade step."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node.js 18 or newer is required and Node 16 users are told to upgrade."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; circuit breaker is marked experimental, standalone and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and the 4xx retry change are accurate and no internal items are listed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, docs, README and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g81bb2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs action."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Documentation section lists the timeout unit clarification and README wording, which are internal-only items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git log --stat and diffed src from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gba4968",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit 37dba15 holds the grouping files with an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the three files were committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change is still in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer is about the stop gate and omits secrets.ini, build/ and the CSV."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git status and git diff, ran the unit tests, and staged by path."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

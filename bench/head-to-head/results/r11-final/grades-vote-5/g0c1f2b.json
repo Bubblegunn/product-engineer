@@ -1,0 +1,39 @@
+{
+  "label": "g0c1f2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is derived from the setting and the probe shows 201 at 25 MB and 413 at 25 MB + 1."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and client are at 25 MB and the unrelated values are unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant rewrote the skipped rate-limit test and implemented the TODO, so it presented the skip as something it fixed rather than pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep and unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

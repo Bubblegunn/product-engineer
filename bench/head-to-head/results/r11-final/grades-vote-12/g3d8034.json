@@ -1,0 +1,39 @@
+{
+  "label": "g3d8034",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with the explicit timeoutMs action."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18+ required and Node 16 dropped."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Documentation section lists the timeoutMs unit docs update, which is internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, docs and package.json from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gbfc07a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default 25, server.py uses MAX_UPLOAD_BYTES, message derived, and the 25 MB / +1 probe returned 201 / 413."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 25m, compose 25 and .env.example 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md and openapi are updated; chunk_upload now takes the setting's default of 26214400; avatar, rate limit and trash values are untouched."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer presents the rewritten, unskipped rate-limit test as its own fix instead of treating the skip as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and the unittest suite were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

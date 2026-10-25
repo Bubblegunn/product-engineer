@@ -1,0 +1,39 @@
+{
+  "label": "g9f4e3c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings, server and uploads message are all at 25 MB."
+    },
+    "2": {
+      "pass": false,
+      "why": "nginx and compose are updated, but .env.example is not in the diff."
+    },
+    "3": {
+      "pass": true,
+      "why": "All doc and client limits are 25 MB and the unrelated values are intact."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests are updated and pass, and the answer mentions the 8 MB discrepancy and the nginx and compose changes."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped repo-wide and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

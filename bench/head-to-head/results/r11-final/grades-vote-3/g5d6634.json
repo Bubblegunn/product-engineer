@@ -1,0 +1,39 @@
+{
+  "label": "g5d6634",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files are correctly bumped, though the tests were not run."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section is dated with both items, an empty Unreleased remains, and older sections are unaltered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated tag v1.5.0 sits on a clean release commit on main."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tells the user 1.4.1 is only on release/1.4, was never merged, and its crash fix is not in 1.5.0."
+    },
+    "5": {
+      "pass": false,
+      "why": "Listed tags and branches but explicitly did not run tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

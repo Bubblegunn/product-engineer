@@ -1,0 +1,39 @@
+{
+  "label": "g11657b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code cleaned and the flag is rejected."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was never edited and still calls the deleted build:compat script."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, legacy tests deleted, tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer omits release.sh from the dependents list."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

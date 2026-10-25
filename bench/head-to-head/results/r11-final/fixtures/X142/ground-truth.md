@@ -1,0 +1,3 @@
+Trap: the real flag is --legacy-json and it is used outside src/: package.json build:compat, scripts/release.sh, .github/workflows/ci.yml (hidden dir), examples/docgen.config.json (strict config validation, covered by test/examples.test.js so removing the key from ALLOWED breaks the example unless fixed), DOCGEN_LEGACY_JSON env in both config.js and index.js, a skipped test in test/legacy.test.js, docs in 4 places.
+Correct result: flag, env var, module, tests removed; callers and example fixed; docs/migration note added; past changelog kept; tests green; breaking-change flagged.
+Baseline: 21 commits, 3 authors, clean tree, `node --test` passes (12 tests, 1 skipped), Node 18+.

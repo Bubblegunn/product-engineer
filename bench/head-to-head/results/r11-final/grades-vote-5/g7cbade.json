@@ -1,0 +1,39 @@
+{
+  "label": "g7cbade",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is derived from the setting and the probe confirms the boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deploy config is updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "The client now derives its limit from settings, which gives 25 MB by default, and the docs are at 25 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant rewrote the skipped rate-limit test and implemented the TODO, so it presented the skip as fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep and unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

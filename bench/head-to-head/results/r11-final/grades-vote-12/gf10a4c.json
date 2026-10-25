@@ -1,0 +1,39 @@
+{
+  "label": "gf10a4c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with the timeoutMs and timeoutMs: 30000 upgrade actions."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and standalone."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD, including src/defaults.js, src/retry.js and src/index.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

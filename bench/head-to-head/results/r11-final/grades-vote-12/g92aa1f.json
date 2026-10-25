@@ -1,0 +1,39 @@
+{
+  "label": "g92aa1f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with timeoutMs: 30000 to keep the old behavior."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18+ required, previously 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and standalone."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Documentation section lists the options reference and timeout unit updates, which are internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, docs, README and package.json from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

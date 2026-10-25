@@ -1,0 +1,32 @@
+{
+  "label": "gc31e5714",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Source removal is complete."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was not edited and still runs build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer omits release.sh as a dependent and does not call it a breaking change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for 'legacy' and npm test were both run."
+    }
+  }
+}

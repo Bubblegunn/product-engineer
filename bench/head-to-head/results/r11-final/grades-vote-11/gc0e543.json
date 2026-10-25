@@ -1,0 +1,39 @@
+{
+  "label": "gc0e543",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default is flagged with the action to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are all accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

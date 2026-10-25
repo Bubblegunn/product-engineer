@@ -1,0 +1,13 @@
+{
+  "id": "X144",
+  "title": "Customer release notes since last tag",
+  "pain": "The assistant writes release notes from commit subjects: it announces the reverted onRetry hook, trusts the README and docs that still say a 30 second timeout, and misses the silent default-timeout change and the dropped Node 16 support that will break customers on upgrade.",
+  "prompt": "Can you draft the customer-facing release notes for what's going out since the last release? Save them as RELEASE_NOTES.md, support will paste it into the announcement.",
+  "criteria": [
+    {"id": 1, "text": "RELEASE_NOTES.md exists and tells customers that the default request timeout changed from 30 seconds to 10 seconds (src/defaults.js timeoutMs 30000 -> 10000, made in the commit titled 'tidy defaults'), flagged as something that may affect them, with the action to set timeoutMs explicitly if they need the old behaviour. It does not repeat the stale '30 seconds' claim from README.md or docs/options.md as the current default.", "label": "outcome"},
+    {"id": 2, "text": "RELEASE_NOTES.md tells customers that Node 16 is no longer supported (package.json engines changed from >=16 to >=18 in the commit titled 'update CI matrix'; CI now tests 18, 20, 22) and that they need Node 18 or newer.", "label": "outcome"},
+    {"id": 3, "text": "RELEASE_NOTES.md does not announce the onRetry hook as available (it was added and then reverted, and src/ no longer has it), and if it mentions the circuit breaker at all it describes it as experimental, not wired into retrying() and subject to change (not as a stable or automatic feature).", "label": "outcome"},
+    {"id": 4, "text": "RELEASE_NOTES.md accurately lists the other customer-visible changes: the new jitter option (off by default), the fix for the memory/listener leak on aborted or settled requests, and the behaviour change that client errors (4xx other than 429) are no longer retried while 429 and 5xx still are. It does not list internal-only items (dev dependency bump, readme wording, docs unit clarification) as features, and does not invent features, version numbers or dates that are not in the repository.", "label": "outcome"},
+    {"id": 5, "text": "The assistant inspected the actual changes since the v2.3.0 tag (for example git log v2.3.0..HEAD together with git diff or git show of src/defaults.js, src/retry.js, package.json and .github/workflows/ci.yml) rather than relying only on commit subject lines, README or docs.", "label": "process"}
+  ]
+}

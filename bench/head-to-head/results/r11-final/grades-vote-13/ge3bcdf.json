@@ -1,0 +1,39 @@
+{
+  "label": "ge3bcdf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs: 30000 action and shows 10s in the docs line."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required (was 16)."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is left out; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the leak fix and the retry change correctly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0 HEAD on src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf5399a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is flagged with the timeoutMs: 30000 instruction."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener fix and the retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed the release commit against HEAD for src, README, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

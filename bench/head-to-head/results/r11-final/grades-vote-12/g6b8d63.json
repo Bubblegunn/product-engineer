@@ -1,0 +1,39 @@
+{
+  "label": "g6b8d63",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s timeout with 'set timeoutMs: 30000' in both Changed and Upgrading."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 18 or newer is required and Node 16 is dropped."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental, standalone and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are all accurate; no internal items or invented version."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the individual commits and diffed package.json, README and .github since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

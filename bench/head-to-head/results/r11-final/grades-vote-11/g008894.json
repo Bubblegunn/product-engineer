@@ -1,0 +1,39 @@
+{
+  "label": "g008894",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the 30s to 10s change under behavior changes and says to set timeoutMs: 30000 for the old behavior."
+    },
+    "2": {
+      "pass": true,
+      "why": "The notes never mention that Node 16 is dropped or that Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted and the circuit breaker is described as experimental, not connected to retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener fix and the 429/5xx retry change without inventing versions or dates."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff over v2.3.0..HEAD for src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

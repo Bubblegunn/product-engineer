@@ -1,0 +1,39 @@
+{
+  "label": "g14c230",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says timeout is now 10s, was 30, under a 'check before upgrade' section, with 'set timeoutMs: 30000' to keep the old value."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is absent; the circuit breaker is marked experimental, not connected to retrying and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener leak fix and the 429/5xx-only retry change; no internal items, and the version/date are placeholders rather than invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, README, docs and package.json, plus the test diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

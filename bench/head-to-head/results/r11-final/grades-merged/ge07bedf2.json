@@ -1,0 +1,32 @@
+{
+  "label": "ge07bedf2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default is 25, server uses MAX_UPLOAD_BYTES, and the uploads message says 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 25m, compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi.yaml and chunk_upload.py all say 25 MB; avatar, rate limit and trash values are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests are updated and pass, and the answer notes limits.md said 8 MB and that nginx and compose had to change; the skipped test is not claimed as fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo and ran the unittest suite."
+    }
+  }
+}

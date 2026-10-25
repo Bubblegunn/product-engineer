@@ -1,0 +1,39 @@
+{
+  "label": "g648215",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh is not in the diff and still calls the removed build:compat script."
+    },
+    "3": {
+      "pass": true,
+      "why": "The example config is fixed and tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never mentions release.sh as a dependent."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for 'legacy' and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

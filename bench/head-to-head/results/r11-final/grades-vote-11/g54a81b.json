@@ -1,0 +1,39 @@
+{
+  "label": "g54a81b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flagged with a timeoutMs: 30000 example."
+    },
+    "2": {
+      "pass": false,
+      "why": "No mention of the Node 16 drop in the notes."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

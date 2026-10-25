@@ -1,0 +1,39 @@
+{
+  "label": "g9ececc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is cleaned and tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was never edited and still runs build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final omits release.sh from the dependents and has no breaking-change statement."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

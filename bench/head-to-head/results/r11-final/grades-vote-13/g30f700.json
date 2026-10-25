@@ -1,0 +1,39 @@
+{
+  "label": "g30f700",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention Node 16 or 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, not connected to retrying, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the listener fix and the retry change; README wording and doc unit appear only in a Documentation section."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log v2.3.0..HEAD --stat and the diffs of src and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

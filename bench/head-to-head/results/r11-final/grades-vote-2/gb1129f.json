@@ -1,0 +1,39 @@
+{
+  "label": "gb1129f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The notes say the timeout is now 10s and to set timeoutMs explicitly if requests need longer."
+    },
+    "2": {
+      "pass": true,
+      "why": "The notes say Node 16 is unsupported, Node 18+ is required, and CI covers 18, 20 and 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted, and the circuit breaker is experimental, not connected and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry rule are accurate, and the docs line is in a separate section, not presented as a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git diff v2.3.0..HEAD over the full tree."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

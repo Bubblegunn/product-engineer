@@ -1,0 +1,39 @@
+{
+  "label": "g145396",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All flag, config key and env var handling and src/legacy.js are removed and tests pass."
+    },
+    "2": {
+      "pass": true,
+      "why": "package.json, release.sh and the CI step are all fixed in the diff."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is cleaned, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, migrating section and a **Breaking** changelog entry are added, and the final lists the dependents and the hard-failure behaviour."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep -i legacy before and after, plus node --test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

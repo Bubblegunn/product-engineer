@@ -1,0 +1,39 @@
+{
+  "label": "g60bbfe",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change with before-upgrade action and snippet for timeoutMs 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 unsupported, Node 18+ needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker experimental, standalone, API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, leak fix and 4xx change are accurate; version and date are placeholders, not invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected log with stat and diffs of src, package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

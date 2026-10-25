@@ -1,0 +1,39 @@
+{
+  "label": "g938ad6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is listed with an upgrade step to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node.js 18 or newer is required and Node 16 users are told to upgrade."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener fix and the retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the key commits and diffed package.json, README and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

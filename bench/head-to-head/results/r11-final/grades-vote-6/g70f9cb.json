@@ -1,0 +1,39 @@
+{
+  "label": "g70f9cb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is changed, and the probe returned 201 at 25 MB and 413 at 25 MB + 1."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and the client script are updated, and unrelated values are unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is about the Stop hook and never mentions the limits.md 8 MB discrepancy or the nginx/compose changes."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the whole repo and ran the test suite via the harness script."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

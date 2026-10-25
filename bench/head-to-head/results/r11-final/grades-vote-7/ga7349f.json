@@ -1,0 +1,39 @@
+{
+  "label": "ga7349f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action-required item gives 10000 ms versus 30000 ms and says to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required, with the engines change from >=16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry appears only as not available; circuit breaker is not connected to retrying and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener fix and the 429/5xx retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the key commits and grepped for the defaults."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

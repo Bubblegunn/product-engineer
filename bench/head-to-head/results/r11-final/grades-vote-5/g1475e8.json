@@ -1,0 +1,39 @@
+{
+  "label": "g1475e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is shown with the instruction to set timeoutMs explicitly, plus the pass timeoutMs: 30000 note."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes contain nothing about Node 16 being dropped or Node 18 being required."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, not connected to retrying, and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the listener leak and the 429/5xx retry change are accurate, and nothing is invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff over src/defaults.js, src/retry.js and src/index.js and read package.json and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

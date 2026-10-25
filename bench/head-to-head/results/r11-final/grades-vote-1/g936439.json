@@ -1,0 +1,39 @@
+{
+  "label": "g936439",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files say 1.5.0 in the working tree and the 4 tests pass, though nothing was committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The working-tree changelog has the dated 1.5.0 section and an empty Unreleased heading."
+    },
+    "3": {
+      "pass": false,
+      "why": "Nothing was committed or tagged."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states v1.4.1 came from release/1.4, was never merged into main, and main still has the crash."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags and branches, ran tests and an e2e probe, and reported honestly."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

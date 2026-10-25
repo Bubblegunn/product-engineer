@@ -1,0 +1,39 @@
+{
+  "label": "g4c6fc3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States timeout 30s to 10s under Changed with explicit timeoutMs action and no stale claim."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 18 or newer required (was Node 16)."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker marked experimental, not wired, may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter, listener leak and 4xx retry change, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff v2.3.0..HEAD over src, package.json and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

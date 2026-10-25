@@ -1,0 +1,39 @@
+{
+  "label": "g915f93",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is listed, with the timeoutMs: 30000 upgrade step."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18+ required and the upgrade step for Node 16 users."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": true,
+      "why": "Accurate customer-visible items only, no invented data."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g75bd70",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flagged with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed from the 2.3.0 release commit, which is the same range, including package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

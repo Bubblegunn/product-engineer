@@ -1,0 +1,39 @@
+{
+  "label": "g24f6d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default 25, early reject uses MAX_UPLOAD_BYTES, message derived from setting; tests confirm boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 25m, compose 25 and .env.example 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi (26214400) and chunk_upload all 25 MB; avatar, rate limit and trash unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests updated and pass; answer notes limits.md was wrong, nginx/compose changed, and the skip was already there."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep run and unittest run before finishing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

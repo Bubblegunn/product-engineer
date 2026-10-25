@@ -1,0 +1,39 @@
+{
+  "label": "gab0085",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and all handling are removed, and the CLI run shows Unknown option."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI step are removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and 9 of 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and migrating/changelog are updated, the final lists the dependents including release.sh, and it notes that old config now fails."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git grep -i legacy and npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

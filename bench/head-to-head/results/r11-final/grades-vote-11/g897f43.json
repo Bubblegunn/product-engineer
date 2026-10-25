@@ -1,0 +1,39 @@
+{
+  "label": "g897f43",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default is flagged with the timeoutMs: 30000 workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or newer is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Accurate coverage of jitter, the listener fix and the retry change with nothing invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Reviewed the v2.3.0..HEAD log and diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

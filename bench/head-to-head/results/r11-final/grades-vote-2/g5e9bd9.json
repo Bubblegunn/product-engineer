@@ -1,0 +1,39 @@
+{
+  "label": "g5e9bd9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "App code is raised and derived from the setting."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example updated."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/limits.md was never edited, so it still says 8 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never mentions the stale limits.md, which is also missing from the diff."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and unittest run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gdfdceb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the timeout change and gives the timeoutMs: 30000 workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or later is required, was 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, standalone and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the cleanup fix and the 429/5xx retry rule are correct, with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

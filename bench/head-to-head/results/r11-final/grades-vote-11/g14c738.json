@@ -1,0 +1,39 @@
+{
+  "label": "g14c738",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the 10s default and the timeoutMs: 30000 snippet to restore the old behavior."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 16 is unsupported and Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Other changes are accurate; version and date are placeholders, not invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read the log, stat and diff for v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

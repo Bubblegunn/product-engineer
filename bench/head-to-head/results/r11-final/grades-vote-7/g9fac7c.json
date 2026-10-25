@@ -1,0 +1,39 @@
+{
+  "label": "g9fac7c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is listed first among changes that may affect users, with the explicit timeoutMs workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 16 is no longer supported and Node.js 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the AbortSignal leak fix and the retry change are accurate with no invented content."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the key commits and diffed docs, README, package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g535b6c9b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit 2d572f7 has the three grouping files and an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Excluded files are not committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The cleanup.py change was stashed and restored, and appears in the final diff."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not mention secrets.ini, build/ or the CSV."
+    },
+    "5": {
+      "pass": true,
+      "why": "Checked status and diff, ran tests before committing, and staged by path."
+    }
+  }
+}

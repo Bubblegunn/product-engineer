@@ -1,0 +1,39 @@
+{
+  "label": "gf398dc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The working tree has all five locations at 1.5.0 and tests pass (4 pass), though nothing was committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The working-tree CHANGELOG has a dated 1.5.0 section with both items and an empty Unreleased heading."
+    },
+    "3": {
+      "pass": false,
+      "why": "Nothing was committed and no tag was created."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports v1.4.1 from release/1.4, never merged into main, the crash fix, and that 1.5.0 would lack it."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches, then ran npm test and an e2e probe to verify."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g81fed5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removed."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was never edited and still calls the removed build:compat script."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, tests deleted, 9 pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer omits release.sh from the dependents list."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep -i legacy covers tracked hidden files, and tests were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

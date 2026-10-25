@@ -1,0 +1,39 @@
+{
+  "label": "g04b8e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is in the heads-up section with the timeoutMs: 30000 instruction."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 16 drop or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener cleanup and the retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Reviewed git log --stat and diffs of src, docs, README and CHANGELOG since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf6efb5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is flagged with the explicit timeoutMs: 30000 example."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener leak fix and the 429/5xx retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs, README and CHANGELOG."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

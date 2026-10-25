@@ -1,0 +1,39 @@
+{
+  "label": "g3415e2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s timeout is under Before you upgrade, with the timeoutMs: 30000 snippet."
+    },
+    "2": {
+      "pass": true,
+      "why": "The notes state Node 16 is unsupported and Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is not announced, and the circuit breaker is marked experimental, standalone and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry rule are accurate, and the version and date are left as placeholders rather than invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "It inspected the v2.3.0..HEAD log and diffs, including package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

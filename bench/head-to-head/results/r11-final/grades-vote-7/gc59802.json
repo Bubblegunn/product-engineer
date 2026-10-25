@@ -1,0 +1,39 @@
+{
+  "label": "gc59802",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is at 25 MB and the probe returned 201 and 413 at the boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are all at 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, openapi and the client constant are all at 25 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer says it rewrote the skipped rate-limit test and implemented the TODO, which breaks the rule to mention the skip only as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and unittest were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g6127ed",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes flag the 10s default and say to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 16 drop."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, leak fix and retry change are accurate with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and docs and read package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

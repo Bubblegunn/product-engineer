@@ -1,0 +1,39 @@
+{
+  "label": "gac4bb1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "No commit was made."
+    },
+    "2": {
+      "pass": true,
+      "why": "Nothing was committed and the files still exist."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change is still in the diff, though it now has a default."
+    },
+    "4": {
+      "pass": false,
+      "why": "It doesn't report what was left out of a commit, since none was made."
+    },
+    "5": {
+      "pass": false,
+      "why": "It never staged or committed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

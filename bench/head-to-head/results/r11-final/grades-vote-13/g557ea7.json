@@ -1,0 +1,39 @@
+{
+  "label": "g557ea7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "ISO-week commit with the right files."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the grouping files were committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The working-tree diff still shows the dry_run change, even after a stash and pop."
+    },
+    "4": {
+      "pass": false,
+      "why": "Gate-focused answer that doesn't mention secrets.ini, build/ or the CSV."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git status, diff and the tests before committing, and staged by path."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

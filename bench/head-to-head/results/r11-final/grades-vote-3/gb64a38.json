@@ -1,0 +1,39 @@
+{
+  "label": "gb64a38",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change with timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 unsupported, Node 18 or later needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker experimental, standalone."
+    },
+    "4": {
+      "pass": false,
+      "why": "Other changes lists docs timeout unit and CI matrix, which are internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD including package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

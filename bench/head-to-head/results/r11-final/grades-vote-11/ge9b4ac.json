@@ -1,0 +1,39 @@
+{
+  "label": "ge9b4ac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the 10s default and tells readers to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 is no longer supported and Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is not mentioned; circuit breaker is experimental and not used by retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are correct; version and date are placeholders, not invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

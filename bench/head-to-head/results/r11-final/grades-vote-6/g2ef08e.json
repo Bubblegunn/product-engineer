@@ -1,0 +1,39 @@
+{
+  "label": "g2ef08e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes the 10s default and says to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is no longer supported and Node 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "The Documentation section lists the docs changes, which are internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD across the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

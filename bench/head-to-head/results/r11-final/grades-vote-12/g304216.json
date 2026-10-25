@@ -1,0 +1,39 @@
+{
+  "label": "g304216",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with timeoutMs: 30000 to keep the previous behavior."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, README and docs from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

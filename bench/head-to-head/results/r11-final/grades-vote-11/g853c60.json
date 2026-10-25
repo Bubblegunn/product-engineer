@@ -1,0 +1,39 @@
+{
+  "label": "g853c60",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting-derived limit and messages; probe shows 413 above 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and client updated; unrelated values unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant fixed the skipped rate-limit test and its answer is mostly the verify report; it never mentions the limits.md or nginx points."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo grep and unittest run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

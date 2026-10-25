@@ -1,0 +1,39 @@
+{
+  "label": "g3d50ac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code fully cleaned."
+    },
+    "2": {
+      "pass": false,
+      "why": "release.sh still calls the removed build:compat script."
+    },
+    "3": {
+      "pass": true,
+      "why": "Config fixed, legacy tests deleted, tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer omits release.sh as a dependent, and it was left broken."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

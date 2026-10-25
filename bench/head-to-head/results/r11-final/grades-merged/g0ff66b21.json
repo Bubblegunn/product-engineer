@@ -1,0 +1,32 @@
+{
+  "label": "g0ff66b21",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 10s (was 30) is under 'please read', with timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the 4xx retry change are accurate; the docs lines are minor and not presented as features."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log v2.3.0..HEAD --stat and a diff over src, README and CHANGELOG."
+    }
+  }
+}

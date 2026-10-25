@@ -1,0 +1,39 @@
+{
+  "label": "g22851f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the timeout change and tells readers to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 16 drop or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are all correct, with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, docs and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g8037c8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The working tree has all five files at 1.5.0, and npm test passed with 4 passing."
+    },
+    "2": {
+      "pass": true,
+      "why": "The working-tree changelog has a correct 1.5.0 section with an empty Unreleased heading."
+    },
+    "3": {
+      "pass": false,
+      "why": "Nothing was committed or tagged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports v1.4.1 on release/1.4 with the crash fix not on main, confirmed by the e2e probe."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches and ran tests and verification on the release changes, though no tag was created."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gf5784c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes state the timeout is now 10s instead of 30s, flagged as action required, with the instruction to set timeoutMs to 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is now required and to upgrade from 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry appears only under 'Not in this release' as unavailable; circuit breaker is described as not connected and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener leak fix and the 429/5xx-only retry change, with no internal items or invented details."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git show on the relevant commits and grepped the tree, not just subject lines."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

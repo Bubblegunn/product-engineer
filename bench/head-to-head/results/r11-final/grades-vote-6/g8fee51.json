@@ -1,0 +1,39 @@
+{
+  "label": "g8fee51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the 10s default and tells readers to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry and marks the circuit breaker experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the leak fix and the 4xx retry change accurately, with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src/defaults.js, retry.js and the rest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

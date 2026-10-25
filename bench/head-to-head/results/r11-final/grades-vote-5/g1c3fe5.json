@@ -1,0 +1,39 @@
+{
+  "label": "g1c3fe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code handling is fully removed and tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh still calls npm run build:compat, which was removed, so the release script now breaks."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final omits release.sh from the dependents, and release.sh was never fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git grep -i legacy over the tree and npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

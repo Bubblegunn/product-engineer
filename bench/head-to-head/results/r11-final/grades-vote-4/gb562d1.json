@@ -1,0 +1,39 @@
+{
+  "label": "gb562d1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was never bumped and still says 1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 section with the two items was added, Unreleased was left empty, and older sections are untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "The tag points to a commit where src/version.js still says 1.4.0."
+    },
+    "4": {
+      "pass": false,
+      "why": "Vague: says v1.4.1 is not in main's history and 'may be a hotfix on another branch', without naming release/1.4 or the fix."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run and the commit was not verified before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g68102a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is fully removed."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh still runs npm run build:compat, which no longer exists, so the release script is broken."
+    },
+    "3": {
+      "pass": true,
+      "why": "Config and tests are fixed, and tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer omits release.sh from the dependents it lists."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

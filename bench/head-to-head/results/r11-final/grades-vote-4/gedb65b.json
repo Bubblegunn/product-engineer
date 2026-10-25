@@ -1,0 +1,39 @@
+{
+  "label": "gedb65b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit contains grouping.py, test_grouping.py and usage.md, and the message describes the ISO-week change."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit holds only the three files and the others remain in the tree."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change remains in the working tree diff."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says it did not run the tests and never mentions the test_cleanup failure."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only git diff was run, no tests, though files were staged by path."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

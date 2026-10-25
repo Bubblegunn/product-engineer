@@ -1,0 +1,39 @@
+{
+  "label": "gcc9c4d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the default is now 10s and to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 16 is unsupported and Node 18+ is required, tested on 18, 20 and 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "All other changes are accurate and no version or date is invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD across the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

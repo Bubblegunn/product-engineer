@@ -1,0 +1,39 @@
+{
+  "label": "g1af20f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is no longer supported and Node 18+ is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, not connected to retrying, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the AbortSignal listener fix and the retry change accurately."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD --stat plus git show and diffs of package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

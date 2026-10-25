@@ -1,0 +1,39 @@
+{
+  "label": "g14bb14",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flagged as affecting users, with an explicit timeoutMs: 30000 example."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node.js 18 or newer is now required, previously 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter off by default, the AbortSignal listener fix and the 4xx retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, README, docs, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g0dfab1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete."
+    },
+    "2": {
+      "pass": false,
+      "why": "release.sh is untouched and still calls the removed build:compat script."
+    },
+    "3": {
+      "pass": true,
+      "why": "The example config is fixed and tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer lists no release.sh dependent."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for 'legacy' and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

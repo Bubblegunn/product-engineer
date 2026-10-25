@@ -1,0 +1,39 @@
+{
+  "label": "gd322c5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s default is under 'Check before you upgrade', with the timeoutMs: 30000 instruction."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is no longer supported and Node 18 or later is needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, not used by retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate; the Other changes docs/CI lines are not framed as features, and version and date are placeholders."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD over src, README, docs, package.json, and also test and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

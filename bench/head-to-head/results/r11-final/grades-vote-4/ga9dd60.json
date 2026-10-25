@@ -1,0 +1,39 @@
+{
+  "label": "ga9dd60",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Lists the timeout change and says to set timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 18+ is required and Node 16 is dropped."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, leak fix and 4xx retry change are accurate, with no internal items or invented data."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected git diff and git show since v2.3.0 including package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

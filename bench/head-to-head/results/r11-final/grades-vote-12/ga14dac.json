@@ -1,0 +1,39 @@
+{
+  "label": "ga14dac",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with timeoutMs: 30000 to keep the old limit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 is no longer supported; Node 18 or later is needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and retrying does not use it."
+    },
+    "4": {
+      "pass": false,
+      "why": "The 'Other changes' section lists the docs unit wording and the CI matrix, which are internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, README, docs and package.json, and .github, from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

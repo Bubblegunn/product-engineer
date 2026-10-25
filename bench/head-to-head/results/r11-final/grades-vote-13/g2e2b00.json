@@ -1,0 +1,39 @@
+{
+  "label": "g2e2b00",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, not connected to retrying, and its design may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the listener leak fix and the retry change correctly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed the 2.3.0 release commit to HEAD on src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gff9d20",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var and src/legacy.js removed from src/; tests run and the unknown-option check was executed."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config cleaned, legacy tests deleted, 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs updated, 3.0.0 changelog and migration note added, and the answer lists all hidden dependents and says configs now fail."
+    },
+    "5": {
+      "pass": true,
+      "why": "grep -rni legacy over the repo including hidden dirs, plus npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

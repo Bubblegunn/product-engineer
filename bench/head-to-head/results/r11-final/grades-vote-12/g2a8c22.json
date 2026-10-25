@@ -1,0 +1,39 @@
+{
+  "label": "g2a8c22",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files say 1.5.0 after the merge and bump, deploy.md is unchanged, and 5 tests passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 section holds the two items, Unreleased is empty, and the 1.4.1 entry is added by the merge without altering 1.4.0 and earlier."
+    },
+    "3": {
+      "pass": true,
+      "why": "The v1.5.0 tag points to release commit 37226b4 on main, which contains only the version files and changelog."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says it merged release/1.4 and the fix is present in src/net.js, with the 1.4.1 changelog entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches, ran npm test and an e2e probe, and refreshed verify."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

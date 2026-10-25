@@ -1,0 +1,39 @@
+{
+  "label": "g6ee546",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s default is listed under 'Changed — please read', with the explicit timeoutMs advice."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is now required, up from Node 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, standalone, and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener leak fix and the 429/5xx retry change, with no invented items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log --stat and git diff v2.3.0..HEAD over src, docs, README, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

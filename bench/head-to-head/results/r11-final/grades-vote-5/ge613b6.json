@@ -1,0 +1,39 @@
+{
+  "label": "ge613b6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five version files say 1.5.0, docs/deploy.md and the 1.4.0 heading are untouched, and npm test passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 section holds the two items, Unreleased is empty, and the 1.4.1 and 1.4.0 entries are intact."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated tag v1.5.0 sits on main at a release commit touching only version files and the changelog, with no existing tags moved."
+    },
+    "4": {
+      "pass": true,
+      "why": "It merged release/1.4, and the net.js fix and the 1.4.1 changelog entry are present."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags and branches, checked ancestry, and ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

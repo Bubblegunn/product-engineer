@@ -1,0 +1,39 @@
+{
+  "label": "g8b41c3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default 25, server.py uses the setting, messages derived; tests confirm 25 MB boundary."
+    },
+    "2": {
+      "pass": false,
+      "why": "nginx and compose were updated, but .env.example still says 10 and the answer does not explain why."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/limits.md was never changed and still says 8 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "Final answer never mentions limits.md disagreeing with the code."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and unittest run before finishing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

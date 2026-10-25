@@ -1,0 +1,39 @@
+{
+  "label": "g2e9885",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct three files committed with an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Secrets, build/ and the CSV stayed out of the commit and remain on disk."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change is still in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "No mention of the test_cleanup failure, and it says it did not run tests."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests were not run, and only git diff was run, not git status."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

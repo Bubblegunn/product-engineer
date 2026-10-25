@@ -1,0 +1,39 @@
+{
+  "label": "ga82933",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with the explicit timeoutMs action."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18 or newer required, was 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate; no internal items listed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git log --stat and diffed src and package.json from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

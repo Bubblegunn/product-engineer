@@ -1,0 +1,39 @@
+{
+  "label": "gbc17a2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was committed."
+    },
+    "2": {
+      "pass": true,
+      "why": "No commits exist, so none contain the excluded files, and they remain in the working tree."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change is still in the diff, although the assistant gave it a default."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not state that anything was left out of a commit, since there was no commit."
+    },
+    "5": {
+      "pass": false,
+      "why": "No selective staging or commit took place."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

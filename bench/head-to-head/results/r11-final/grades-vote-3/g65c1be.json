@@ -1,0 +1,39 @@
+{
+  "label": "g65c1be",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All legacy code is removed."
+    },
+    "2": {
+      "pass": true,
+      "why": "The build:compat script, the release.sh call and the CI step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "The changelog entry is marked Breaking, the dependents are listed, and the answer describes the hard failures."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for legacy and node --test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g42f282",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting-derived limit and messages; probe shows 201/413."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose, .env.example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs and client updated; unrelated values unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant fixed and unskipped the rate-limit test as its own change instead of treating it as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo grep and unittest run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

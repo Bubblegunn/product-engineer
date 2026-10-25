@@ -1,0 +1,39 @@
+{
+  "label": "gfa0eba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention the Node 16 to 18 change."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the listener fix and the retry change correctly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log --stat and the diffs of src and docs from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gfee2eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The timeout change is under 'Changed — please read', and Upgrading says to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required and tells Node 16 users to upgrade."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, not connected to retrying, and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate, with no invented items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log v2.3.0..HEAD --stat and git diff over src, docs, README, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

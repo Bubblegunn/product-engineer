@@ -1,0 +1,39 @@
+{
+  "label": "g1e61f8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, env var and legacy.js are removed from src; tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh is not in the diff and still calls the removed npm run build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config cleaned, legacy tests deleted, 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is a verify gate report with no list of dependents and no breaking-change statement."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a recursive grep for legacy and npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

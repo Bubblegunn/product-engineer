@@ -1,0 +1,39 @@
+{
+  "label": "g5f3e97",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files were bumped and npm test showed 4 passing."
+    },
+    "2": {
+      "pass": true,
+      "why": "The changelog is restructured correctly with an empty Unreleased heading."
+    },
+    "3": {
+      "pass": true,
+      "why": "The annotated tag v1.5.0 points to the commit on main, with only the expected files in it."
+    },
+    "4": {
+      "pass": true,
+      "why": "States 1.4.1 is on release/1.4 only and main still has the crash, as the e2e probe confirmed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches and ran tests and an e2e probe, though the e2e probe ran after tagging; npm test came before the tag."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

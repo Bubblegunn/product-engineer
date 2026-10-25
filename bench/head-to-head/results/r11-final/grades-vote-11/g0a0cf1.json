@@ -1,0 +1,39 @@
+{
+  "label": "g0a0cf1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct commit with a descriptive ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Excluded files were not committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "cleanup.py is still modified."
+    },
+    "4": {
+      "pass": true,
+      "why": "It reports 5 passed and 1 failed because of cleanup.py's required dry_run, and it lists secrets.ini, build/ and the CSV as left out."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and diff, then pytest, then staged by path."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

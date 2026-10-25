@@ -1,0 +1,39 @@
+{
+  "label": "g07ab9d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default under behavior changes and says to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 dropped, Node 18+ required, CI runs 18/20/22."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Documentation section lists the docs unit clarification and jitter docs, which are internal-only items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD for the full diff and the commit log."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g81afb9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five version locations were bumped and npm test passes (4 tests)."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Unreleased heading was renamed to 1.5.0 rather than kept empty, so it no longer remains."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tag v1.5.0 was created on main after committing only the release files, and no existing tags were moved."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports v1.4.1 only on release/1.4, not in main's history, and that 1.5.0 lacks it; it does not name src/net.js or the X-Forwarded-For header."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches and ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

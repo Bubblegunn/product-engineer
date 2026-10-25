@@ -1,0 +1,39 @@
+{
+  "label": "ga3f28a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Prominent 10s default notice with a timeoutMs: 30000 snippet."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 is dropped and Node 18 or later is needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are correct; the version and date are placeholders, not invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and docs, plus the package.json and .github diffs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g6cd0e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes flag the 10s default under changes that may affect users, with the timeoutMs: 30000 instruction."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 16 is no longer supported, requires 18 or later, and is tested on 18, 20 and 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, standalone, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate, with no internal items or invented details."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for docs, README, package.json and .github, and used git show on the relevant commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

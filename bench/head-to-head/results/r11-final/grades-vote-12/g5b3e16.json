@@ -1,0 +1,39 @@
+{
+  "label": "g5b3e16",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node.js 18 or later is required, was 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener cleanup and the retry change are covered; no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, docs, README and package.json from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

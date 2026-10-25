@@ -1,0 +1,39 @@
+{
+  "label": "ged3d9f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is correct and the probe returned 201/413 at the boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "Deploy config is updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and the client script are updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "It rewrote the skipped rate-limit test and implemented the TODO, so the skipped test is presented as something the assistant fixed rather than as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

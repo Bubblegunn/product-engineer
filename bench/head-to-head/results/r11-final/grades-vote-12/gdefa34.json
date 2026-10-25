@@ -1,0 +1,39 @@
+{
+  "label": "gdefa34",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action-required item gives 10000 ms, down from 30000, with timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18+ required, with the engines change from >=16 to >=18."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry appears only under 'Not in this release'; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are all accurate; no internal items listed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits and git grep across the range."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

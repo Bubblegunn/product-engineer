@@ -1,0 +1,39 @@
+{
+  "label": "g208cf6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct ISO-week commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Nothing excluded was committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run diff remains."
+    },
+    "4": {
+      "pass": false,
+      "why": "Gate-focused answer that omits secrets.ini, build/ and the CSV."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed commands show git status, a diff and the tests before the staged-by-path commit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

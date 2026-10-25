@@ -1,0 +1,39 @@
+{
+  "label": "g6ff78e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct three-file ISO-week commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Excluded files are not committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The cleanup.py change is still in the working tree."
+    },
+    "4": {
+      "pass": true,
+      "why": "Explains the test_cleanup failure from the dry_run argument, says grouping tests pass, and lists the left-out files; no claim of a full pass."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never ran git status, and the answer itself says the tests were run in the wrong order."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

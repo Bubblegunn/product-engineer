@@ -1,0 +1,39 @@
+{
+  "label": "gd09dea",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default and says to pass timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the listener fix and the retry change correctly."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff --stat and the diffs of src files from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

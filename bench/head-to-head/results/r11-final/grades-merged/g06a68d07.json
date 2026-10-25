@@ -1,0 +1,32 @@
+{
+  "label": "g06a68d07",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default timeout 10s (was 30) is flagged, with timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required (previously 16)."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, standalone and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the 429/5xx retry change are accurate; no invented versions or dates."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD --stat and a diff over src, README, docs, CHANGELOG and package.json."
+    }
+  }
+}

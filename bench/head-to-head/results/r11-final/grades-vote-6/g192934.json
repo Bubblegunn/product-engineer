@@ -1,0 +1,39 @@
+{
+  "label": "g192934",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the 30s to 10s change, flags it as something to read, and says to set timeoutMs: 30000 for the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or newer is required, was Node 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "Leaves out onRetry and labels the circuit breaker experimental, not connected to retrying, and likely to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener cleanup and the 429/5xx-only retry rule, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD on src and docs and read the package.json diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

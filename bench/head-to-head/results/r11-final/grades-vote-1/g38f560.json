@@ -1,0 +1,39 @@
+{
+  "label": "g38f560",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 10s (was 30) is in 'may affect you', with timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or the Node 18 requirement."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, standalone and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the 4xx retry change are accurate; the docs line is a minor note, not a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD --stat and a diff over src, docs, README and CHANGELOG."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

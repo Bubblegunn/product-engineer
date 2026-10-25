@@ -1,0 +1,39 @@
+{
+  "label": "g59f6d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default 25, early reject raised to 26214400, messages say 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 25m, compose 25 and .env.example 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, openapi and the client script say 25 MB / 26214400; unrelated limits unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests updated, suite passes, answer notes the old 8 MB doc and the nginx/compose change, and the skip is only a count."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and unittest were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

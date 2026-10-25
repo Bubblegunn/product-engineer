@@ -1,0 +1,39 @@
+{
+  "label": "gb13e0c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings and server code are correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are all at 25."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/limits.md is not in the diff and still says 8 MB, although the answer claims the docs match."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer does not mention the limits.md discrepancy, which was never fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped broadly and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

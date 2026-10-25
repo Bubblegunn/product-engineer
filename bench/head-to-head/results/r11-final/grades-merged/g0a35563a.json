@@ -1,0 +1,32 @@
+{
+  "label": "g0a35563a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code limit and message are 25 MB, derived from the setting."
+    },
+    "2": {
+      "pass": false,
+      "why": "nginx and compose are updated, but .env.example is not in the diff and the answer does not explain why."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/limits.md is not in the diff and still says 8 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "Tests pass, but the final answer never mentions that limits.md disagreed with the code."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the repo and ran unittest."
+    }
+  }
+}

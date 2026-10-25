@@ -1,0 +1,32 @@
+{
+  "label": "g1ebd1ec6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Shorter timeout (10000, was 30000) is flagged with timeoutMs: 30000 to keep the old value."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the leak fix and the 4xx retry change are accurate; placeholders are not invented values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, README, docs and package.json, plus the test diff."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g171939",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Nothing was bumped."
+    },
+    "2": {
+      "pass": false,
+      "why": "The changelog was not edited."
+    },
+    "3": {
+      "pass": false,
+      "why": "No v1.5.0 tag was created."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states v1.4.1 is on release/1.4, was never merged into main, and main lacks the fix."
+    },
+    "5": {
+      "pass": false,
+      "why": "It listed tags and branches but made no release commit and ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

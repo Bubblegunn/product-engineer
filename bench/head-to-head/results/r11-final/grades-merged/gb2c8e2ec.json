@@ -1,0 +1,32 @@
+{
+  "label": "gb2c8e2ec",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Source removal is complete."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was not edited and still calls build:compat."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config is fixed, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "release.sh is not listed as a dependent and the answer does not call it a breaking change."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep for 'legacy' and npm test were both run."
+    }
+  }
+}

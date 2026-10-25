@@ -1,0 +1,39 @@
+{
+  "label": "gdbec11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default and tells readers to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention the Node 16 drop."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "The Docs section lists the docs clarification, which is internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Read git log --stat and diffs of src and docs since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

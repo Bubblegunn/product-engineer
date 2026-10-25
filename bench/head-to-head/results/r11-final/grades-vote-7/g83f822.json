@@ -1,0 +1,39 @@
+{
+  "label": "g83f822",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 30s to 10s is under Action required, with the instruction to set timeoutMs to the needed value."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the minimum Node.js is now 18, up from 16, and to upgrade first."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed only as not available; circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (default false), the listener cleanup and the 429/5xx retry change are all accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show and git grep across the relevant commits and src files."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

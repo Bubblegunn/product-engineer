@@ -1,0 +1,39 @@
+{
+  "label": "ge54172",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "10s default with timeoutMs: 30000 to keep the old behavior."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Docs section lists the timeoutMs unit note and jitter docs, which are internal-only items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed src, docs, README and package.json from v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

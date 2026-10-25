@@ -1,0 +1,39 @@
+{
+  "label": "g0dd9b9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was not bumped and still says 1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "A 1.5.0 section was added with the right items, and an empty Unreleased heading remains."
+    },
+    "3": {
+      "pass": false,
+      "why": "The tag points at a commit where src/version.js still says 1.4.0."
+    },
+    "4": {
+      "pass": false,
+      "why": "Mentions v1.4.1 but not release/1.4 or the X-Forwarded-For crash, and only guesses it may be a hotfix."
+    },
+    "5": {
+      "pass": false,
+      "why": "Listed tags but ran no tests before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

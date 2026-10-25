@@ -1,0 +1,39 @@
+{
+  "label": "g66a186",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is flagged and the upgrade step says to pass timeoutMs: 30000."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 or Node 18."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter off by default, the listener leak fix and the 429/5xx retry change are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and docs and inspected the relevant commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g138a56",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is listed under changes that may affect users, with the instruction to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or newer is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is left out; the circuit breaker is experimental, standalone, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "All three other changes are accurate, and the Docs bullet is not framed as a feature; no invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, README, docs, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

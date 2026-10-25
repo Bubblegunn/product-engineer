@@ -1,0 +1,39 @@
+{
+  "label": "ge0d59c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The three-file commit has an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit is clean."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change remains in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer centres on the gate and does not explain the secrets.ini, build/ and CSV exclusions."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and git diff, ran the tests, and staged by path before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

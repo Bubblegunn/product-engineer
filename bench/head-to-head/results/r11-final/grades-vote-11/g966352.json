@@ -1,0 +1,39 @@
+{
+  "label": "g966352",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action required: 10000 ms default, with the instruction to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 18+ is required and to upgrade Node before installing."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed as not available; circuit breaker is experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter default false, listener fix and the 429/5xx retry rule are all accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the relevant commits and checked the v2.3.0 range."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

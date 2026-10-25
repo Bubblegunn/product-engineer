@@ -1,0 +1,39 @@
+{
+  "label": "gfe273a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, key, env var and legacy.js removed."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh still runs the removed build:compat script, so it was left broken."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, legacy tests removed, 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer never mentions release.sh, which was left broken."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep for legacy over the repo and tests were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

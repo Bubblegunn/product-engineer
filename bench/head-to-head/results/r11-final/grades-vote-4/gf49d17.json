@@ -1,0 +1,39 @@
+{
+  "label": "gf49d17",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is flagged with the explicit timeoutMs action."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not mention the Node 16 drop."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Docs section lists the timeout unit clarification and jitter documentation."
+    },
+    "5": {
+      "pass": true,
+      "why": "Reviewed log --stat and diffs since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

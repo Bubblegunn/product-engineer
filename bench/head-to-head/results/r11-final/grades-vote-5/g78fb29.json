@@ -1,0 +1,39 @@
+{
+  "label": "g78fb29",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct three-file commit with an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Nothing sensitive or generated was committed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change is still present in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never ran the tests, so it omits the test_cleanup failure."
+    },
+    "5": {
+      "pass": false,
+      "why": "It inspected the tree and staged by path but did not run the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g8d125b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives the 10s default in Changed and says to set timeoutMs: 30000 under Upgrading."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is experimental, not connected to retrying, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the cancellation listener fix and the 429/5xx retry change with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the relevant commits and git diff of package.json, README and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ge8db51",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The timeout change is flagged, with the timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "The notes say Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted, and the circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": true,
+      "why": "All three other changes are accurate."
+    },
+    "5": {
+      "pass": true,
+      "why": "It diffed v2.3.0..HEAD, including package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

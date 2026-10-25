@@ -1,0 +1,39 @@
+{
+  "label": "g3cefb7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action required: timeout is now 10000 ms (was 30000); set timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required, with engines changed from >=16 to >=18."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed only as not available; the circuit breaker is not connected to retrying and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (default false), the leak fix and the 429/5xx retry rule are accurate; nothing invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the key commits and greps for the timeout values and the docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

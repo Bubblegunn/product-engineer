@@ -1,0 +1,39 @@
+{
+  "label": "gf27025",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var and legacy.js are removed, and the diff leaves html/text paths intact."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, its release.sh call and the CI step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, legacy tests deleted, npm test reported passing."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs updated, 3.0 notes added, non-obvious places listed, and a behaviour-change section covers the break."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep -rni legacy over the repo and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

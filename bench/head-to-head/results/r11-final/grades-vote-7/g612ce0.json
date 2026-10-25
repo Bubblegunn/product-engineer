@@ -1,0 +1,39 @@
+{
+  "label": "g612ce0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files bumped, historical mentions left, npm test run before the commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "New 1.5.0 section with the items, empty Unreleased heading kept, older sections untouched."
+    },
+    "3": {
+      "pass": true,
+      "why": "Bump committed, then v1.5.0 tagged on main with only release files in the commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "States v1.4.1 is only on release/1.4, not in main's history, and the crash fix is missing from 1.5.0."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and ran git branch --contains v1.4.1 before tagging, and ran npm test."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gcbc3cd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s default is flagged, with an explicit timeoutMs: 30000 example."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes do not say Node 16 is dropped or that Node 18 is needed."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, not connected to retrying, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the leak fix and the retry change are accurate; the milliseconds line is under Documentation, not a feature."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD over src, docs, README and CHANGELOG."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

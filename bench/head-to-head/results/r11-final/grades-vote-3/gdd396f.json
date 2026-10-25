@@ -1,0 +1,39 @@
+{
+  "label": "gdd396f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was not bumped and still says 1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section is dated with both items and an empty Unreleased remains."
+    },
+    "3": {
+      "pass": false,
+      "why": "The tagged commit lacks the src/version.js bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not identify release/1.4 or the crash fix, only a vague 'may be a hotfix on another branch'."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

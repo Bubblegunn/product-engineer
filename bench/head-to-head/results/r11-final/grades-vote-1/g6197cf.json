@@ -1,0 +1,39 @@
+{
+  "label": "g6197cf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action-required item says the default is 10s (was 30) and to set timeoutMs if longer is needed."
+    },
+    "2": {
+      "pass": true,
+      "why": "States the minimum Node.js is now 18, previously 16, and to upgrade first."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed only under 'not in this release / not available'; the circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (default false), the leak cleanup and the 429/5xx retry rule are accurate; nothing invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git show on the commits, and grepped the docs for the timeout values."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g97dba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default is 25, server.py derives from MAX_UPLOAD_BYTES, the message says 25 MB, and the boundary tests pass."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 25m, compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi.yaml (26214400) and chunk_upload.py are all 25 MB; avatar, rate limit and trash values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests updated and passing; the answer notes limits.md said 8 MB, the nginx/compose change, and the skipped test as pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the repo broadly and ran the suite via pytest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

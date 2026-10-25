@@ -1,0 +1,39 @@
+{
+  "label": "g411366",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes flag the 30s to 10s change and tell customers to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Notes state Node.js 18 or newer is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": false,
+      "why": "Jitter, leak fix and 4xx retry change are correct, but a Documentation section lists the docs update as a change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD over src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

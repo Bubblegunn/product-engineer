@@ -1,0 +1,39 @@
+{
+  "label": "g26f969",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is listed under 'Check before you upgrade' with the timeoutMs: 30000 workaround."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 is no longer supported, Node 18 or later is required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, standalone, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener leak fix and the 4xx retry change are accurate; the version and date are placeholders."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, README, docs, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

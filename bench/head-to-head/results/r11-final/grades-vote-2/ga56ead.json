@@ -1,0 +1,39 @@
+{
+  "label": "ga56ead",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var and src/legacy.js are removed, and tests pass."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "legacyJson is gone from the example config, the legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and a 3.0.0 changelog entry are updated, the 2.0.0 entry is kept, and the answer lists the dependents and breaking changes."
+    },
+    "5": {
+      "pass": true,
+      "why": "A repo-wide grep for legacy was run and npm test passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

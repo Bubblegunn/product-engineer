@@ -1,0 +1,32 @@
+{
+  "label": "g5b5c2088",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action required: default is 10s, not 30; set timeoutMs to 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "States retryfetch needs Node.js 18 or newer, so upgrade from 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed only as not available; the circuit breaker is not connected to retryfetch and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the leak fix and the 429/5xx retry rule are accurate; nothing invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used a range tool, git show on the key commits and greps for the timeout values."
+    }
+  }
+}

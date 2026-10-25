@@ -1,0 +1,39 @@
+{
+  "label": "g8f6baf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the 30s to 10s change under 'please read' and tells users to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required (was 16)."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is described as experimental, standalone, not connected to retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Covers jitter (off by default), the listener cleanup fix and the 4xx retry change, with no internal items or invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD on src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

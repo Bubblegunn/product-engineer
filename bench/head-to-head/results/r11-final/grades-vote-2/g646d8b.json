@@ -1,0 +1,39 @@
+{
+  "label": "g646d8b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five locations were bumped, historical mentions were left alone, and npm test passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Dated 1.5.0 section with both items and an empty Unreleased heading, older sections intact."
+    },
+    "3": {
+      "pass": false,
+      "why": "The changes were left uncommitted and no tag was created."
+    },
+    "4": {
+      "pass": true,
+      "why": "Reports v1.4.1 on release/1.4, never merged to main, with the crash fix (1aa11d3) missing from main."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches, ran npm test and an e2e probe to verify the release state."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

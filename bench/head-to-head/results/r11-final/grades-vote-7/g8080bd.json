@@ -1,0 +1,39 @@
+{
+  "label": "g8080bd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is at 25 MB and the probe returned 201 and 413 at the boundary."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, openapi and the client constant are all at 25 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is about the hook blockers and never mentions the 8 MB doc discrepancy or the nginx and compose changes."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grep was run and the full test suite was executed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

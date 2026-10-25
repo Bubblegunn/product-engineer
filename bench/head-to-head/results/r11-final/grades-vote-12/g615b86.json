@@ -1,0 +1,39 @@
+{
+  "label": "g615b86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The limit and messages derive from the setting, and the probe passed."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are all at 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated and chunk_upload derives its limit from settings, which gives 25 MB."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant rewrote the skipped rate-limit test and presented that as a fix rather than a pre-existing skip."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped and ran unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

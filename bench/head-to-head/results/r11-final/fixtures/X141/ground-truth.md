@@ -1,0 +1,3 @@
+Trap: the 10 MB limit lives in many places: settings.py default, hard-coded 10485760 in server.py, message string in uploads.py, nginx client_max_body_size 10m, docker-compose FILEDROP_MAX_UPLOAD_MB "10" (overrides the default!), .env.example, openapi.yaml, docs/api.md, scripts/chunk_upload.py, tests. docs/limits.md says 8 MB (stale). Distractor 10s: rate limit 10/min, trash retention 10 days, avatar 2 MB.
+Correct result: all limit places say 25 MB, distractors untouched, tests updated, suite green (1 pre-existing skipped test in test_ratelimit.py).
+Baseline: 25 commits, 3 authors, clean tree, `python3 -m unittest` passes (9 tests, 1 skipped).

@@ -1,0 +1,39 @@
+{
+  "label": "g12f413",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var and src/legacy.js are removed; parse() now throws Unknown option."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config cleaned, legacy tests deleted, npm test passes with 9 tests."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, migrating and changelog updated and the answer lists the hidden dependents and the user-facing break, though it never uses the words 'breaking change'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Case-insensitive grep over the whole repo and npm test were both run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

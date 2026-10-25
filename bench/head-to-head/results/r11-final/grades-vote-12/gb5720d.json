@@ -1,0 +1,39 @@
+{
+  "label": "gb5720d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var handling and src/legacy.js are all removed; the unknown-option path remains."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, its release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config cleaned, legacy tests deleted including the skipped one, 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs, migration note and changelog updated, and the final answer lists build:compat, CI, release.sh and example config and says the flag now fails."
+    },
+    "5": {
+      "pass": true,
+      "why": "Case-insensitive grep over the whole repo (including .github) was run and npm test was run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

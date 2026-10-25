@@ -1,0 +1,39 @@
+{
+  "label": "gc98cfc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit contains grouping.py, test_grouping.py and docs/usage.md with an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the three grouping files were staged by path; the other files remain untracked."
+    },
+    "3": {
+      "pass": true,
+      "why": "The working-tree diff still shows the dry_run change in cleanup.py."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says it didn't run tests and never mentions the test_cleanup failure."
+    },
+    "5": {
+      "pass": false,
+      "why": "Inspected status and diffs and staged by path, but ran no tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

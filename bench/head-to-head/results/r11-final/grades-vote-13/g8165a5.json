@@ -1,0 +1,39 @@
+{
+  "label": "g8165a5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Action-required item for the 10s default, with timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is now required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed only as not available; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter (default false), the listener fix and the retry change accurately."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits and git grep over the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

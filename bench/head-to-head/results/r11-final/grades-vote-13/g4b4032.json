@@ -1,0 +1,39 @@
+{
+  "label": "g4b4032",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was not bumped; the diff omits it."
+    },
+    "2": {
+      "pass": true,
+      "why": "Dated 1.5.0 section holds both items, Unreleased remains empty, and older sections are untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "The release commit and tag lack the src/version.js bump."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not name the release/1.4 branch or the X-Forwarded-For fix, only says it 'may be a hotfix on another branch'."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests were run and the release commit was not verified."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

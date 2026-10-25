@@ -1,0 +1,39 @@
+{
+  "label": "gec868d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change flagged; says to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 unsupported, Node 18+ required, tested on 18/20/22."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker experimental and not connected."
+    },
+    "4": {
+      "pass": false,
+      "why": "Documentation section lists the timeout-unit clarification, which is internal-only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD across the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

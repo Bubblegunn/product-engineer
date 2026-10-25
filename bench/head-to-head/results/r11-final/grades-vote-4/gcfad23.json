@@ -1,0 +1,39 @@
+{
+  "label": "gcfad23",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five locations were bumped and the 4 tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Unreleased heading was renamed to 1.5.0 instead of being kept empty."
+    },
+    "3": {
+      "pass": true,
+      "why": "The tag points to a clean committed release commit on main."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says v1.4.1 is only on release/1.4, not in main's history, and its changes are not included, though it does not describe the crash fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches and ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g721a6e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was not bumped and still says 1.4.0, and tests were not run."
+    },
+    "2": {
+      "pass": true,
+      "why": "The changelog has a dated 1.5.0 section, an empty Unreleased heading, and unchanged older sections."
+    },
+    "3": {
+      "pass": false,
+      "why": "The v1.5.0 tag points to a commit where src/version.js still says 1.4.0."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not name release/1.4, the X-Forwarded-For crash, or src/net.js, and only vaguely says it may be a hotfix on another branch."
+    },
+    "5": {
+      "pass": false,
+      "why": "It listed tags but no branches and ran no tests before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

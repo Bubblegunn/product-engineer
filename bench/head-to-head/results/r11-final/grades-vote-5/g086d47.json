@@ -1,0 +1,39 @@
+{
+  "label": "g086d47",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "settings is 25, server.py has a hardcoded 26214400, and the message says 25 MB, which meets the raised-or-derived requirement."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, openapi and the client are all at 25 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests were updated and pass, the answer covers the 8 MB docs and the nginx change, and it says the skip was not checked, without claiming a fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep and unittest."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

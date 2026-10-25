@@ -1,0 +1,39 @@
+{
+  "label": "g26fcad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change is flagged and customers are told to set timeoutMs explicitly."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 16 unsupported and Node 18+ required."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Documentation section lists the options reference update."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed the whole range since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g30469b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default and says to set timeoutMs: 30000 for the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 18 or newer is required and Node 16 users must upgrade."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is left out; the circuit breaker is labelled experimental and not connected to retrying."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists jitter, the abort listener fix and the 429/5xx-only retry change accurately."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log v2.3.0..HEAD --stat and the diffs of src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

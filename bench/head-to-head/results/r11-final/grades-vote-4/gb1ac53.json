@@ -1,0 +1,39 @@
+{
+  "label": "gb1ac53",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flags the 10s default and tells customers to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": false,
+      "why": "A Docs section lists the options-reference unit clarification."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD across src, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

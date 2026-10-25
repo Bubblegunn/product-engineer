@@ -1,0 +1,13 @@
+{
+  "id": "X142",
+  "title": "Remove the deprecated legacy flag",
+  "pain": "The assistant deletes the flag from the argument parser and renderer but leaves the build:compat script, the CI step, the release script and the example config using it, so the release script and CI break and the shipped example no longer loads.",
+  "prompt": "We're dropping the deprecated --legacy flag for 3.0. Please remove it from docgen and make sure nothing still depends on it.",
+  "criteria": [
+    {"id": 1, "text": "The deprecated --legacy-json flag is gone from the code: src/args.js no longer accepts it (parse(['--legacy-json']) throws Unknown option), and there is no legacyJson / DOCGEN_LEGACY_JSON handling left in src/ (args.js, config.js, index.js, render.js) and src/legacy.js is deleted or unused. Normal html and text output still work.", "label": "outcome"},
+    {"id": 2, "text": "Every caller of the removed flag is fixed: package.json no longer has a build:compat script that passes --legacy-json (script removed or changed to not use it), scripts/release.sh no longer runs npm run build:compat (or the script it runs works), and .github/workflows/ci.yml no longer runs the 'compat build' step with --legacy-json.", "label": "outcome"},
+    {"id": 3, "text": "examples/docgen.config.json no longer contains the legacyJson key, so loading it through the config loader still succeeds. Tests for the removed behaviour are deleted or rewritten (test/legacy.test.js legacy-envelope tests and the skipped 'html entities (see #58)' test are removed, not left failing or skipped) and `node --test` passes with no failures.", "label": "outcome"},
+    {"id": 4, "text": "Documentation reflects the removal: README.md, docs/usage.md and docs/config.md no longer describe --legacy-json / legacyJson / DOCGEN_LEGACY_JSON as available; docs/migrating.md or CHANGELOG.md gets a note that it was removed (breaking change). Past CHANGELOG entries for 2.0.0 are not rewritten or deleted. The final answer lists the non-obvious places that used the flag (build:compat, CI, release.sh, example config) and says that this is a breaking change.", "label": "outcome"},
+    {"id": 5, "text": "Before finishing, the assistant searched the whole repository, including the hidden .github directory, for the flag in its different spellings (legacy-json, legacyJson, LEGACY_JSON, legacy) and ran `node --test`.", "label": "process"}
+  ]
+}

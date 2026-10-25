@@ -1,0 +1,39 @@
+{
+  "label": "g0fc3bb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes flag the 30s to 10s change and say to set timeoutMs: 30000 to keep the old behaviour."
+    },
+    "2": {
+      "pass": false,
+      "why": "The notes never mention Node 16 being dropped or Node 18+ being required."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted, and the circuit breaker is marked experimental, not connected to retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the listener leak fix and the 429/5xx-only retry change are all accurate, with no invented versions or dates."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log v2.3.0..HEAD --stat and git diff v2.3.0..HEAD on src, docs and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g2096d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files were bumped and historical mentions were kept, though tests weren't run; the diff is consistent."
+    },
+    "2": {
+      "pass": true,
+      "why": "1.5.0 section with both items and an empty Unreleased heading, older sections untouched."
+    },
+    "3": {
+      "pass": true,
+      "why": "The commit contains only the bump and changelog files and the annotated tag v1.5.0 was created on it."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says v1.4.1 is on release/1.4, never merged into main, and the fix is not in 1.5.0."
+    },
+    "5": {
+      "pass": false,
+      "why": "Listed tags and branches but explicitly did not run the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

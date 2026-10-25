@@ -1,0 +1,25 @@
+set r11-final: 144 DONE runs on X141, X142, X143, X144, X145, X146
+task   ours   base   dod    dod-invoked  gwc    gwc-invoked  iso    iso-invoked  max
+X141   4.00   3.00   3.00   3.00         4.00   4.00         4.00   4.00         4  
+X142   3.33   3.33   2.67   3.00         2.67   4.00         3.33   3.33         4  
+X143   3.00   3.67   0.00   1.00         3.00   3.33         3.33   3.33         4  
+X144   4.00   3.33   3.67   3.67         3.67   3.67         3.67   4.00         4  
+X145   4.00   3.00   3.00   2.33         3.00   3.00         3.33   3.00         4  
+X146   1.00   2.00   2.00   3.67         1.67   1.00         2.00   1.00         4  
+total  19.33  18.33  14.33  16.67        18.00  19.00        19.67  18.67        24 
+lost   4.67   5.67   9.67   7.33         6.00   5.00         4.33   5.33            
+best other arm: iso (total 19.67)
+best natural other arm (not -invoked): iso (total 19.67) (same as the best other arm)
+Rule A: FAIL (ours lost 4.67 against 4.33 for iso, limit 0.8 x)
+per task (Rule B, Rule B-prime):
+  X141: ours 4.00, best other gwc 4.00, max 4, B pass
+  X142: ours 3.33, best other gwc-invoked 4.00, max 4, B FAIL
+  X143: ours 3.00, best other base 3.67, max 4, B FAIL
+  X144: ours 4.00, best other iso-invoked 4.00, max 4, B pass
+  X145: ours 4.00, best other iso 3.33, max 4, B pass
+  X146: ours 1.00, best other dod-invoked 3.67, max 4, B FAIL
+Rule B: FAIL: X142, X143, X146
+Rule B-prime: FAIL
+bootstrap: 18 paired cells, ours minus iso: mean -0.06, 95% interval [-0.61, 0.44] (10000 resamples, seed 12345)
+I1: does not hold (interval lower bound not above zero)
+runs with an error criterion: none

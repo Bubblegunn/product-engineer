@@ -1,0 +1,39 @@
+{
+  "label": "gf3a618",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All files say 1.5.0, the 1.4.0 history in the changelog and deploy.md is preserved, and npm test passes with 5 tests."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 1.5.0 section holds the two items, Unreleased is empty, and the 1.4.1 entry was added from the merge without altering older sections."
+    },
+    "3": {
+      "pass": true,
+      "why": "The v1.5.0 tag is on a main commit that touches only the version files and changelog, and existing tags are unchanged."
+    },
+    "4": {
+      "pass": true,
+      "why": "It merged release/1.4, disclosed the merge, and the fix in src/net.js and the 1.4.1 changelog entry are present in the diff."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags and branches, then ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

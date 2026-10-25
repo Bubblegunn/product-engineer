@@ -1,0 +1,39 @@
+{
+  "label": "g08e158",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code is derived from the setting and the message is built from the setting, with the probe at 25 MB and +1 correct."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example are updated in the working tree."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs and the client are at 25 MB and the unrelated values are unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer is a stop-and-ask about the gate and omits the 8 MB docs discrepancy and the nginx/compose change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a broad grep and unittest before stopping."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

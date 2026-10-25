@@ -1,0 +1,39 @@
+{
+  "label": "g4112c4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s default is under 'Changes that may affect you', with the timeoutMs: 30000 example."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is now required, previously Node.js 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, standalone, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the listener fix and the 429/5xx retry change are accurate, with no invented versions."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD over src, README, docs, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

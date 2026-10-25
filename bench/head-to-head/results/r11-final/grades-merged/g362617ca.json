@@ -1,0 +1,32 @@
+{
+  "label": "g362617ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag, config key, env var and src/legacy.js are all removed, and tests plus a manual run confirm it."
+    },
+    "2": {
+      "pass": true,
+      "why": "build:compat, the release.sh call and the CI compat step are all removed."
+    },
+    "3": {
+      "pass": true,
+      "why": "The example config key is removed, legacy tests are deleted, and 9 tests pass."
+    },
+    "4": {
+      "pass": true,
+      "why": "Docs and notes are updated, dependents including release.sh are listed, and the config failure is described."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a recursive grep for 'legacy' (hidden dirs included) and npm test."
+    }
+  }
+}

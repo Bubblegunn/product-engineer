@@ -1,0 +1,39 @@
+{
+  "label": "g44c43c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Settings default is 25, the early reject uses MAX_UPLOAD_BYTES, the message says 25 MB, and the updated boundary tests pass."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 25m, compose and .env.example are 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "api.md, limits.md, openapi.yaml (26214400) and chunk_upload.py are all 25 MB, and the avatar, rate and trash values are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests are updated and pass, and the answer notes the 8 MB doc error and the nginx and compose changes without claiming to have touched the skipped test."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep and unittest before finishing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gdf4c94",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Marked 'Action required', gives the 10s default, and says to set timeoutMs to 30000 for the old behaviour."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node.js 18 or newer is needed and to upgrade from Node.js 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry appears only under 'Not in this release'; the circuit breaker is not connected to the rest and its shape may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter (off by default), the listener leak fix and the 429/5xx retry change are accurate, with no invented items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git show on the relevant commits, and grepped and read docs, src and the CI/package changes."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

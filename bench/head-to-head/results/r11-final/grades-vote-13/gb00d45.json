@@ -1,0 +1,39 @@
+{
+  "label": "gb00d45",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Default 25, early reject uses MAX_UPLOAD_BYTES, messages say 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example all at 25."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs, openapi and client helper at 25 MB; unrelated limits untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "Tests updated and pass; answer covers limits.md, nginx and compose; skip mentioned neutrally, not claimed as fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep and unittest were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

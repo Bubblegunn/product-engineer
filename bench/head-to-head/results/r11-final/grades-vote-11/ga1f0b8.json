@@ -1,0 +1,39 @@
+{
+  "label": "ga1f0b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five version files say 1.5.0, deploy.md is untouched, and npm test passes with 4 tests."
+    },
+    "2": {
+      "pass": true,
+      "why": "A dated 1.5.0 section holds the two items, an empty Unreleased heading remains, and older sections are unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "An annotated v1.5.0 tag sits on a commit on main containing only the six release files."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says v1.4.1 is on release/1.4 only, the crash fix is not on main, and 1.5.0 lacks it."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git tag --list and git branch -a --contains, then npm test, all before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

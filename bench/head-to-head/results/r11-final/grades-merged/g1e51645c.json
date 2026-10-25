@@ -1,0 +1,32 @@
+{
+  "label": "g1e51645c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Shorter default timeout is flagged, with the explicit timeoutMs: 30000 action."
+    },
+    "2": {
+      "pass": true,
+      "why": "Node 16 dropped, Node 18+ required, tested on 18, 20 and 22."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is omitted; the circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the 429/5xx retry change are accurate; nothing internal or invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git diff v2.3.0..HEAD, git show on the key commits, and diffed package.json and .github."
+    }
+  }
+}

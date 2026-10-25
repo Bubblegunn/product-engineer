@@ -1,0 +1,39 @@
+{
+  "label": "g803664",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete and the CLI rejects the flag."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh was never edited and still runs npm run build:compat, which no longer exists."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, legacy test file removed, tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "Final answer wrongly says release.sh has no references, so it misses a key dependent."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide case-insensitive grep and npm test were run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

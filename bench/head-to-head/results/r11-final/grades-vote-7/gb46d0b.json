@@ -1,0 +1,39 @@
+{
+  "label": "gb46d0b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "src/version.js was not bumped and still says 1.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "1.5.0 section added with the items, Unreleased heading kept, older sections untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "Tagged commit has src/version.js still at 1.4.0."
+    },
+    "4": {
+      "pass": false,
+      "why": "Vague 'may be a hotfix on another branch'; doesn't name release/1.4 or the crash fix."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tests run before tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

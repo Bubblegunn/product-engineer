@@ -1,0 +1,32 @@
+{
+  "label": "g989156d7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit has the three grouping files and an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the three grouping files were staged; the unwanted files were left alone."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change in cleanup.py is still in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not mention the test_cleanup failure and says tests were not run."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests were never run, and git status was not run."
+    }
+  }
+}

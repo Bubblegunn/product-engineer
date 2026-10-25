@@ -1,0 +1,39 @@
+{
+  "label": "g6f3ad6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "'Action required' covers the 10s default and setting timeoutMs."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the minimum Node.js version is 18, was 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry is listed as not available; the circuit breaker is experimental and not connected."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener cleanup and the 429/5xx retry rule are accurate, with no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the key commits and grepped for the timeout values."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

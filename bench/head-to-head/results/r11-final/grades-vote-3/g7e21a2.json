@@ -1,0 +1,39 @@
+{
+  "label": "g7e21a2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Code removal is complete and tests pass."
+    },
+    "2": {
+      "pass": false,
+      "why": "scripts/release.sh is untouched and still runs npm run build:compat, which no longer exists."
+    },
+    "3": {
+      "pass": true,
+      "why": "Example config fixed, legacy tests deleted, 9 tests pass."
+    },
+    "4": {
+      "pass": false,
+      "why": "The answer never mentions release.sh as a dependent, although it mentions the config error for existing users."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep for legacy and npm test were both run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X142",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

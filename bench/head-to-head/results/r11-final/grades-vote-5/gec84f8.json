@@ -1,0 +1,39 @@
+{
+  "label": "gec84f8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Notes give the 30000 to 10000 change and tell readers to set timeoutMs: 30000 to keep the old value."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; the circuit breaker is marked experimental, not connected to retrying, and subject to change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener leak and the 429/5xx-only retry change are accurate, and the version is a placeholder rather than invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD over src, README, docs and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

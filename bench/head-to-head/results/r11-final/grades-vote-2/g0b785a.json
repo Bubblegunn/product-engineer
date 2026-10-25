@@ -1,0 +1,39 @@
+{
+  "label": "g0b785a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Commit with the three grouping files and an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "Only the three files were committed; the untracked files remain."
+    },
+    "3": {
+      "pass": true,
+      "why": "The cleanup.py dry_run diff is still in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says it left out cleanup.py and the untracked files, but never ran the tests, so it does not report the test_cleanup failure."
+    },
+    "5": {
+      "pass": false,
+      "why": "Inspected the diff and staged by path, but never ran the tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

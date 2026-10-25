@@ -1,0 +1,39 @@
+{
+  "label": "g9f54eb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the 10s default and the timeoutMs: 30000 action in Upgrading."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says Node 18+ is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental and standalone."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, listener fix and retry change are accurate; no internal items are listed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD including package.json and .github."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

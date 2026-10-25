@@ -1,0 +1,39 @@
+{
+  "label": "g234585",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All five files are bumped in the commit and npm test passes with 4 tests."
+    },
+    "2": {
+      "pass": true,
+      "why": "The dated 1.5.0 section holds the two items, an empty Unreleased heading remains, and older sections are unchanged."
+    },
+    "3": {
+      "pass": true,
+      "why": "The annotated v1.5.0 tag is on a main commit with only the six release files."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says v1.4.1 is on release/1.4 not main, main still has the crash, and the 1.5.0 changelog lacks the 1.4.1 entry."
+    },
+    "5": {
+      "pass": true,
+      "why": "It listed tags and branches and ran npm test before committing and tagging."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X146",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

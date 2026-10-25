@@ -1,0 +1,39 @@
+{
+  "label": "ge70207",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flagged with the timeoutMs: 30000 action, and the docs edit does not leave a stale 30s claim in the notes."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required, was 16."
+    },
+    "3": {
+      "pass": true,
+      "why": "Omits onRetry; circuit breaker is experimental, standalone and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Other changes are accurate and nothing is invented."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0 HEAD for src, docs, package.json and README."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

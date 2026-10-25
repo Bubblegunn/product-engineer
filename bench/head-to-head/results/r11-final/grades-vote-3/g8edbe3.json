@@ -1,0 +1,39 @@
+{
+  "label": "g8edbe3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change with explicit timeoutMs action."
+    },
+    "2": {
+      "pass": false,
+      "why": "Node version requirement is absent from the notes."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker experimental and unwired."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, leak and retry change accurate; no internal items."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

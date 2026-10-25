@@ -1,0 +1,39 @@
+{
+  "label": "g70038a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The 10s default is flagged under changes that may affect users, with the timeoutMs: 30000 instruction."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the listener cleanup and the retry change are accurate, with no invented details."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD over src, docs, README, CHANGELOG and package.json."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

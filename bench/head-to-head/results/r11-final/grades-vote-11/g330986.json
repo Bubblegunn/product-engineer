@@ -1,0 +1,39 @@
+{
+  "label": "g330986",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Setting-derived limit and messages; 25 MB accepted and +1 returns 413 per probe."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx, compose and .env.example updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "All docs and client script updated; avatar and other values unchanged."
+    },
+    "4": {
+      "pass": false,
+      "why": "The assistant rewrote and unskipped the rate-limit test, presenting it as its own fix rather than pre-existing."
+    },
+    "5": {
+      "pass": true,
+      "why": "Wide grep and unittest run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X141",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

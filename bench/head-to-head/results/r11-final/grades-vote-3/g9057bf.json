@@ -1,0 +1,39 @@
+{
+  "label": "g9057bf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout change with a timeoutMs: 30000 snippet."
+    },
+    "2": {
+      "pass": false,
+      "why": "Node 16 drop is not mentioned."
+    },
+    "3": {
+      "pass": true,
+      "why": "No onRetry; circuit breaker experimental and not connected."
+    },
+    "4": {
+      "pass": false,
+      "why": "Documentation section lists the timeout-unit clarification and jitter docs."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, README and docs."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

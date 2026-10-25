@@ -1,0 +1,39 @@
+{
+  "label": "g7eecb1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The timeout change is listed, with an Upgrading step to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or newer is required, Node 16 is no longer supported, and tells users to upgrade first."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; the circuit breaker is experimental, standalone, and its API may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter, the leak fix and the retry change are accurate, and the heading is not an invented version."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the relevant commits and git diff over package.json, README and .github since v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

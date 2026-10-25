@@ -1,0 +1,39 @@
+{
+  "label": "gcbd6e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correct commit with an ISO-week message."
+    },
+    "2": {
+      "pass": true,
+      "why": "The commit is clean and the other files remain."
+    },
+    "3": {
+      "pass": true,
+      "why": "The dry_run change remains in the working tree."
+    },
+    "4": {
+      "pass": false,
+      "why": "It explains the test failure well but says of build/ and the CSV only that it did not look at them, never calling them generated."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git status and git diff, ran pytest, and staged by path before committing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X145",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

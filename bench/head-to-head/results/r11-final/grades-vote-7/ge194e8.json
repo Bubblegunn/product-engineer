@@ -1,0 +1,39 @@
+{
+  "label": "ge194e8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Timeout 30000 to 10000 is flagged with the instruction to set timeoutMs: 30000."
+    },
+    "2": {
+      "pass": true,
+      "why": "States Node.js 18 or later is required and Node 16 is no longer supported."
+    },
+    "3": {
+      "pass": true,
+      "why": "onRetry omitted; circuit breaker is experimental, not connected to retrying, and may change."
+    },
+    "4": {
+      "pass": true,
+      "why": "Jitter default off, the AbortSignal listener fix and the retry change are accurate; placeholders are not invented values."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v2.3.0..HEAD for src, README, docs and package.json, and inspected the log bodies."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X144",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}
