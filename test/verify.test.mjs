@@ -116,11 +116,31 @@ test("scope: a new file the owner staged and the session never wrote is not repo
   assert.ok(text(verify({ cwd: dir, session: S([W(dir, "src/ownernew.js"), B("npm test")]) }), "unwired-file").includes("ownernew"));
 });
 
+test("scope: a name that a file the session did not write writes again is not dangling; the owner's twin is not the session's finding", () => {
+  const dir = repo({
+    ...TESTED,
+    "src/api.js": "export function fetchUser(id) {\n  return db.get(id);\n}\n",
+    "src/page.js": "import { fetchUser } from './api.js';\nexport const show = (id) => fetchUser(id);\n",
+    "src/owner.js": "export const unrelated = 1;\n",
+    "src/a.js": "export function total(items) {\n  return items.map(priceOf).reduce(sumOf, 0) + tax(items, rate);\n}\n",
+    "src/b.js": "export function subtotal(list) {\n  return list.map(priceOf).reduce(sumOf, 0) + tax(list, rate);\n}\n",
+  });
+  // The session rewrites api.js without the old name; the owner's unfinished work in owner.js introduces that name again.
+  put(dir, { "src/api.js": "export function loadUser(id) {\n  return db.get(id);\n}\n", "src/owner.js": "export const fetchUser = 2;\n" });
+  assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/api.js"), B("npm test")]) })).includes("names-dangling"), "fetchUser is written again in the same change");
+  // The owner's edit removes a line that has a copy; the session never touched it.
+  put(dir, { "src/api.js": "export function fetchUser(id) {\n  return db.get(id);\n}\n", "src/owner.js": "export const unrelated = 1;\n", "src/a.js": "export function total(items) {\n  return items.map(priceOf).reduce(sumOf, 0) + tax(items, 0.2);\n}\n" });
+  put(dir, { "src/page.js": "import { fetchUser } from './api.js';\nexport const show = (id) => fetchUser(id) + 1;\n" });
+  assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/page.js"), B("npm test")]) })).includes("twins-open"), "the owner's a.js edit is out of scope");
+  assert.ok(ids(verify({ cwd: dir, session: S([W(dir, "src/a.js"), B("npm test")]) })).includes("twins-open"), "the same edit is a finding when the session wrote a.js");
+});
+
 test("scopeChange: keeps lines of written files, passes a baseline change through, keeps the change whole without a usable scope", () => {
   const change = { range: "HEAD", removed: [{ path: "a.js", line: 1, text: "x" }, { path: "b.js", line: 1, text: "y" }], added: [{ path: "a.js", line: 1, text: "z" }, { path: "b.js", line: 1, text: "w" }] };
   const narrowed = scopeChange(change, ["a.js"]);
   assert.deepEqual(narrowed.removed.map((l) => l.path), ["a.js"]);
   assert.deepEqual(narrowed.added.map((l) => l.path), ["a.js"]);
+  assert.equal(narrowed.addedAll.length, 2, "the added lines of every file stay available to ask whether a name is written again");
   assert.equal(scopeChange({ ...change, baseline: true }, ["a.js"]).removed.length, 2);
   assert.equal(scopeChange(change, []).removed.length, 2);
   assert.equal(scopeChange(change, [], ["cat > /tmp/x"]).removed.length, 2);

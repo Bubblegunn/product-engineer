@@ -219,7 +219,7 @@ export function scopeChange(change, written, shellCommands = []) {
   }
   if (!paths.size) return change;
   const keep = (l) => paths.has(l.path);
-  return { ...change, removed: change.removed.filter(keep), added: change.added.filter(keep), scope: paths };
+  return { ...change, removed: change.removed.filter(keep), added: change.added.filter(keep), addedAll: change.added, scope: paths };
 }
 
 /** The test command the repository has, or null. package.json wins; otherwise the test files name their runner. */
@@ -256,10 +256,12 @@ function namesDangling(ctx) {
   const change = ctx.change();
   if (!change) return [];
   const tokens = removedTokens(change).slice(0, TOKEN_CAP);
-  const addedBlob = change.added.map((a) => a.text).join("\n");
+  // A name written again anywhere in the change (also in a file the session did not write) is not dangling.
+  const addedAny = change.addedAll ?? change.added;
+  const addedBlob = addedAny.map((a) => a.text).join("\n");
   const candidates = tokens.filter((t) => !wordRe(t).test(addedBlob));
   if (!candidates.length) return [];
-  const addedAt = new Set(change.added.map((a) => `${a.path}:${a.line}`));
+  const addedAt = new Set(addedAny.map((a) => `${a.path}:${a.line}`));
   const dir = mkdtempSync(join(tmpdir(), "pe-verify-"));
   const items = [];
   try {
@@ -290,7 +292,7 @@ function twinsOpen(ctx) {
   if (events.some((e) => e.kind === "bash" && TWINS_RUN.test(e.command))) return [];
   const tokens = removedTokens(change);
   const grepped = events.some((e) => e.kind === "bash" && GREP_RUN.test(e.command) && tokens.some((t) => e.command.includes(t)));
-  const report = twinsOf({ range: change.range, cwd: ctx.top });
+  const report = twinsOf({ range: change.range, cwd: ctx.top, paths: change.scope ? [...change.scope] : null });
   const items = [];
   for (const r of grepped ? [] : report.removed) {
     for (const t of r.twins) if (items.length < SHOWN) items.push({ t, r, loose: false });

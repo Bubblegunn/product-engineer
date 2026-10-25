@@ -493,3 +493,16 @@ test("a number that did not change, or a change that adds no number, reports not
   edit(dir, "src/limits.js", "export const MAX_UPLOAD_MB = 25;\n// Uploads above 25 MB are refused.\n");
   assert.deepEqual(twins({ cwd: dir }).stale, []);
 });
+
+test("paths narrows the change to those files, and the twins are still searched in the whole tree", () => {
+  const dir = repo({ ...base, "src/other.js": "export function other(x) {\n  return x.gross - x.refunds;\n}\n", "src/third.js": "export function third(t) {\n  return t.gross - t.refunds;\n}\n" });
+  edit(dir, "src/invoice.js", fixInvoice);
+  edit(dir, "src/other.js", "export function other(x) {\n  return x.gross - x.refunds - x.fees;\n}\n");
+  const all = twins({ cwd: dir });
+  assert.deepEqual(all.removed.map((r) => r.path).sort(), ["src/invoice.js", "src/other.js"]);
+  const narrowed = twins({ cwd: dir, paths: ["src/invoice.js"] });
+  assert.deepEqual(narrowed.removed.map((r) => r.path), ["src/invoice.js"]);
+  assert.ok(narrowed.removed[0].twins.some((t) => t.path === "src/statement.js"));
+  assert.ok(narrowed.removed[0].twins.some((t) => t.path === "src/third.js"), "a file outside the narrowed change is still searched as a twin");
+  assert.deepEqual(twins({ cwd: dir, paths: [] }).removed.map((r) => r.path).sort(), ["src/invoice.js", "src/other.js"]);
+});

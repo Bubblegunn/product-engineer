@@ -88,6 +88,7 @@ test("a name with no explanation, a bare name, and an internal name are still er
     "The retry setting maxRetries replaces the old name, so set it to the number of attempts you want.", // bare, not marked as a name to type
     "The export step moved into `EventStore`, which now keeps events for the whole month view in memory.", // a class name is internal
     "The export step moved into `src/export/month.js`, which now keeps events for the whole month view.", // a path is internal
+    "If you take the `tax.js` change, halves go to the nearest even cent, so some totals differ by a cent.", // a source file is internal even though it looks like a dotted key
     "The export step now calls `exportMonth()` once for the whole month view and keeps events in memory.", // a call is internal
   ]) assert.ok(codes(`${head}${line}\n`).includes("error:code-identifier:2"), line);
 });

@@ -570,10 +570,12 @@ export function previewEdit({ path, removed, added, cwd = process.cwd(), maxFile
   return { twins: twinList, stale, numbers, uses };
 }
 
-export function twins({ range, cwd = process.cwd() } = {}) {
+export function twins({ range, cwd = process.cwd(), paths: only = null } = {}) {
   const { rangeArgs, label, source } = chooseChange(range, cwd);
   if (!rangeArgs) return { label, checked: 0, withTwins: 0, removed: [], mentions: [], stale: [] };
-  const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--src-prefix=a/", "--dst-prefix=b/", ...rangeArgs], cwd);
+  // `paths` narrows the change to those files (a pathspec after `--`); the files searched for twins stay the whole tree.
+  const narrowed = Array.isArray(only) && only.length > 0;
+  const patch = git([...(narrowed ? ["--literal-pathspecs"] : []), "diff", "-U0", "--no-color", "--no-ext-diff", "--src-prefix=a/", "--dst-prefix=b/", ...rangeArgs, ...(narrowed ? ["--", ...only] : [])], cwd);
   const { removed, added, addedText, contexts, paths } = parsePatch(patch);
   const targets = [];
   const groups = new Map();

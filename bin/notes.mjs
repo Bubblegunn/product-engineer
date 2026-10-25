@@ -136,7 +136,9 @@ const EXPLAINED_WORDS = 5;
 function isKeptName(id, line) {
   if (!/^`[^`]+`$/.test(id)) return false;
   const inner = id.slice(1, -1);
-  if (!SETTING_NAME.test(inner) && !CONFIG_FILE.test(inner)) return false;
+  // A name that ends in a file extension is a file: only a config file stays; a source file (tax.js) is internal.
+  const isFile = new RegExp(`\\.(?:${EXTENSIONS})$`, "i").test(inner);
+  if (isFile ? !CONFIG_FILE.test(inner) : !SETTING_NAME.test(inner)) return false;
   const words = line.replace(BACKTICK, " ").match(/\p{L}{2,}/gu) ?? [];
   return words.length >= EXPLAINED_WORDS;
 }

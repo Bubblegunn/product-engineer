@@ -28,7 +28,7 @@ const BRANCH_WIDTH = 100;
 const COMMENT_LINE = /^\s*(?:\/\/|#|\/\*|\*|<!--|--|;)/;
 const CONVENTIONAL = /^([a-z]+)(\([^)]*\))?!?:/i;
 // Skipped or disabled tests, as added or present text (no word boundaries: git grep -E must read the same on every platform).
-const SKIP_PATTERN = "\\.(skip|todo)\\(|(^|[^A-Za-z0-9_])x(it|describe|test)\\(|@pytest\\.mark\\.skip|t\\.Skip(Now)?\\(|#\\[ignore\\]|@Disabled|@unittest\\.skip";
+const SKIP_PATTERN = "\\.(skip|todo)\\(|(^|[^A-Za-z0-9_])x(it|describe|test)\\(|@pytest\\.mark\\.skip|t\\.Skip(Now)?\\(|#\\[ignore\\]|@Disabled|@unittest\\.skip|[{,] *(skip|todo) *: *(true|[\"'`])";
 const FINAL = 'Settle counts with product-engineer range / claims, repeated code with twins, and "nothing else uses X" with git grep before you say it.';
 /**
  * Rules that hold for every task, printed after the brief at every session start. The skill that carries the long form loads in

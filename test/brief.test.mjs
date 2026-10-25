@@ -172,6 +172,15 @@ test("skipped tests: counts skipped tests in tracked test files and names the fi
   });
 });
 
+test("skipped tests: the option forms of node:test count, and a skip option set to false does not", () => {
+  withRepo((dir) => {
+    commit(dir, { "test/a.test.mjs": "test('a', { skip: 'flaky on CI' }, () => {});\ntest('b', { todo: true }, () => {});\ntest('c', { timeout: 5 }, () => {});\n", "test/b.test.mjs": "test('d', { skip: false }, () => {});\n" }, "test: add");
+    const lines = sections(dir);
+    assert.ok(lines.includes("skipped or todo tests: 2 in tracked test files on this branch"));
+    assert.ok(lines.includes("  test/a.test.mjs:1") && lines.includes("  test/a.test.mjs:2"));
+  });
+});
+
 test("skipped tests: says none when no tracked test file skips a test", () => {
   withRepo((dir) => {
     commit(dir, { "test/a.test.mjs": "test('ok', () => {});\n" }, "test: add");

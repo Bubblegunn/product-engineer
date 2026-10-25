@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, editLines, lineDiff } from "../bin/pre-edit.mjs";
+import { bashEdits, describe, editLines, lineDiff } from "../bin/pre-edit.mjs";
 import { previewEdit } from "../bin/twins.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -64,6 +64,41 @@ test("editLines: replace_all changes every line, MultiEdit applies its edits in 
   assert.equal(editLines("Read", { file_path: "/x" }, () => file), null);
   // An old_string that is not in the file (the file changed since it was read) falls back to the lines of the fragments.
   assert.deepEqual(editLines("Edit", { file_path: "/x", old_string: "zz 18", new_string: "zz 20" }, () => file), { removed: ["zz 18"], added: ["zz 20"] });
+});
+
+const FILES_AT = { "/w/a.js": "const MIN_MAJOR = 18;\nx\n", "/w/README.md": "Requires Node 18 or newer\nTTL is 60 seconds\n", "/w/$FILE": "18\n" };
+const readAt = (p) => { if (!(p in FILES_AT)) throw new Error("no file"); return FILES_AT[p]; };
+
+test("bashEdits: sed -i substitutions are applied to the file text, in every common spelling", () => {
+  const one = (cmd) => bashEdits(cmd, "/w", readAt).map((e) => [e.file, e.after]);
+  assert.deepEqual(one('sed -i "s/MIN_MAJOR = 18/MIN_MAJOR = 20/" a.js'), [["/w/a.js", "const MIN_MAJOR = 20;\nx\n"]]);
+  assert.deepEqual(one("sed -i '' 's/Node 18/Node 20/g' README.md"), [["/w/README.md", "Requires Node 20 or newer\nTTL is 60 seconds\n"]]);
+  assert.deepEqual(one("sed -i.bak -e 's/18/20/' -e 's/60/90/' README.md && git add -A"), [["/w/README.md", "Requires Node 20 or newer\nTTL is 90 seconds\n"]]);
+  assert.deepEqual(one("sed -E -i 's/(Node) 18/\\1 22/' README.md"), [["/w/README.md", "Requires Node 22 or newer\nTTL is 60 seconds\n"]]);
+  assert.deepEqual(one("sed -i 's/\\(Node\\) 18/\\1 24/' README.md"), [["/w/README.md", "Requires Node 24 or newer\nTTL is 60 seconds\n"]], "a basic regex group is written with escaped parentheses");
+  assert.deepEqual(one("sed -i 's/(Node)/N/' README.md"), [], "and a bare parenthesis is a literal one");
+  assert.deepEqual(one("sed -i 's|Node 18|Node 20|' README.md"), [["/w/README.md", "Requires Node 20 or newer\nTTL is 60 seconds\n"]]);
+});
+
+test("bashEdits: a heredoc into cat > file replaces the whole file; an append, a read-only sed and an unreadable script change nothing", () => {
+  const a = bashEdits("cat > a.js <<'EOF'\nconst MIN_MAJOR = 20;\nx\nEOF\nnpm test", "/w", readAt);
+  assert.deepEqual(a.map((e) => [e.file, e.before, e.after]), [["/w/a.js", "const MIN_MAJOR = 18;\nx\n", "const MIN_MAJOR = 20;\nx\n"]]);
+  assert.deepEqual(bashEdits("cat >> a.js <<'EOF'\nmore\nEOF", "/w", readAt), []);
+  assert.deepEqual(bashEdits("sed -n 1,5p a.js", "/w", readAt), []);
+  assert.deepEqual(bashEdits("sed 's/18/20/' README.md", "/w", readAt), [], "without -i sed prints and writes nothing");
+  assert.deepEqual(bashEdits("grep -i 's/18/20/' README.md", "/w", readAt), [], "-i on another command is not in-place");
+  assert.deepEqual(bashEdits("sed -i '/foo/d' a.js", "/w", readAt), [], "only s commands are read");
+  assert.deepEqual(bashEdits("sed -i 's/18/20/' $FILE", "/w", readAt), [], "a path with a variable is not guessed");
+  assert.deepEqual(bashEdits("sed -i 's/zzz/y/' a.js", "/w", readAt), [], "a substitution that matches nothing is no edit");
+  assert.deepEqual(bashEdits("sed -i 's/18/20/' missing.js", "/w", readAt), [], "a missing file is skipped");
+  assert.deepEqual(bashEdits("echo 'sed -i s/18/20/ a.js'", "/w", readAt), [], "text inside quotes is not a command");
+});
+
+test("bashEdits: a later command sees the file as an earlier one wrote it", () => {
+  const e = bashEdits("cat > a.js <<'EOF'\nconst MIN_MAJOR = 19;\nEOF\nsed -i 's/19/20/' a.js", "/w", readAt);
+  assert.equal(e.length, 1);
+  assert.equal(e[0].before, "const MIN_MAJOR = 18;\nx\n");
+  assert.equal(e[0].after, "const MIN_MAJOR = 20;\n");
 });
 
 test("previewEdit: an old value written beside the same words in another file is named before the edit", () => withRepo(FILES, (dir) => {
@@ -145,6 +180,27 @@ test("hook: before an edit that replaces a value it prints PreToolUse additional
   }
 }));
 
+test("hook: a sed -i or a heredoc in a Bash command gets the same context before it runs, and a plain command gets none", () => withRepo(FILES, (dir) => {
+  const sids = [];
+  const ask = (command) => {
+    const sid = `pe-test-bash-${process.pid}-${sids.length}-${Date.now()}`;
+    sids.push(sid);
+    return hook(dir, { session_id: sid, tool_name: "Bash", tool_input: { command } }).stdout;
+  };
+  try {
+    const sed = JSON.parse(ask("sed -i 's/Node 18 or newer/Node 20 or newer/' README.md"));
+    assert.equal(sed.hookSpecificOutput.hookEventName, "PreToolUse");
+    assert.match(sed.hookSpecificOutput.additionalContext, /docs\/setup\.md:1/);
+    const doc = "# tool\nRequires Node 20 or newer to run the tool.\n";
+    const here = JSON.parse(ask(`cat > README.md <<'EOF'\n${doc}EOF\nnpm test`));
+    assert.match(here.hookSpecificOutput.additionalContext, /docs\/setup\.md:1/);
+    assert.equal(ask("git status && npm test"), "");
+    assert.equal(ask("sed -n 1,5p README.md"), "");
+  } finally {
+    for (const sid of sids) rmSync(stateOf(sid), { force: true });
+  }
+}));
+
 test("hook: silent for a new file, a lock file, a tool it does not watch, outside a repository, and when switched off", () => withRepo({ ...FILES, "package-lock.json": "Install Node 18 or newer, then run npm install.\n" }, (dir) => {
   const edit = { tool_name: "Edit", tool_input: { file_path: join(dir, "README.md"), old_string: "Node 18 or newer", new_string: "Node 20 or newer" } };
   const sids = [];
@@ -181,7 +237,7 @@ test("hook: stops adding context after six reports in one session", () => withRe
 test("hooks.json registers the hook for Edit, MultiEdit and Write, and the package ships it", () => {
   const hooks = JSON.parse(readFileSync(join(ROOT, "hooks", "hooks.json"), "utf8")).hooks.PreToolUse;
   const entry = hooks.find((h) => h.hooks.some((x) => x.command.includes("pre-edit.mjs")));
-  assert.equal(entry.matcher, "Edit|MultiEdit|Write");
+  assert.equal(entry.matcher, "Edit|MultiEdit|Write|Bash");
   assert.ok(readFileSync(join(ROOT, "scripts", "pack-allowlist.txt"), "utf8").split("\n").includes("bin/pre-edit.mjs"));
   assert.ok(existsSync(HOOK));
 });
