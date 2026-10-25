@@ -44,6 +44,7 @@ export const RULES = [
   "6. Keep the names and numbers a reader must type, change or check (a setting, option, limit, version). Explain them in plain words next to the exact name; do not remove them.",
   "7. A line that says none or nothing is true only for what was searched; say what that was.",
   "8. State only what a command of this session shows. Leave unrelated work of the owner out of your commit.",
+  "9. When a request asks you to do something and you find its premise is off (a wrong version, a branch you did not expect), still do the part that can be undone (an edit, a local commit, a local tag), say what you assumed and what you found, and ask only before something that cannot be undone (a push, a publish, a delete).",
 ].join("\n");
 
 const USAGE = `usage: product-engineer brief [--hook]

@@ -239,9 +239,9 @@ test("--hook prints the always-on rules after the brief, and they name no file, 
   });
   const lines = RULES.split("\n");
   assert.ok(lines.length <= 10, "ten lines at most");
-  assert.ok(RULES.length <= 1300, `short enough to cost little: ${RULES.length}`);
+  assert.ok(RULES.length <= 1700, `short enough to cost little: ${RULES.length}`);
   // Each rule the owner listed is there: shape follows the request, search before editing, real test state, every branch, keep names, scoped none.
-  for (const re of [/request decides the shape/, /search the whole repository/, /real test state/, /every branch/, /Keep the names and numbers/, /true only for what was searched/]) assert.match(RULES, re);
+  for (const re of [/request decides the shape/, /search the whole repository/, /real test state/, /every branch/, /Keep the names and numbers/, /true only for what was searched/, /still do the part that can be undone/, /ask only before something that cannot be undone/]) assert.match(RULES, re);
 });
 
 test("identifiers changed: names a removed identifier that no added line carries", () => {

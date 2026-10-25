@@ -9,7 +9,7 @@ examples live in `references/`.
 
 ## When you are told to commit
 
-When the person tells you to commit, commit. Do not ask which files or for confirmation.
+When the person tells you to commit, commit. Do not ask which files or for confirmation. The same goes for any task: if you find the request's premise is off (a wrong version, an unexpected branch), do the part that can be undone (an edit, a local commit, a local tag), state what you assumed and what you found, and ask only before something that cannot be undone (a push, a publish, a delete).
 If a staged file looks like a secret (`.env`, `*.pem`, `*.key`, `credentials.*`, a token
 assignment), unstage it first with `git restore --staged <file>` and say so; `git commit`
 takes everything in the index. A hook may stop a commit that would include a secret or a conflict marker; do what its message says and name the file you left out in your answer. The request decides the shape: when it says one commit, one message or what the message holds, do that. Otherwise, if the rest holds work with a different purpose (another fix or feature, not a cleanup or version bump that ships with the main change), make one commit per group:
@@ -92,7 +92,7 @@ method ("git log --no-merges, merges excluded"). If you did not count it, do not
 ## 6. Speak the stakeholder's language
 
 With non-technical people use their nouns. Say "the booking shows up twice" before you say
-"idempotency", and keep the exact name or number they must type, change or check (a setting, option, command, limit, version, the name of a skipped test) right after the plain sentence: "the retry setting `maxRetries`", never the plain sentence alone. Name each finding of your investigation (a failing, skipped or TODO test, a mismatch between a document and the code, an unmerged branch) in a status you write. The translation table is in `references/plain-language.md`, with Turkish,
+"idempotency", and keep the exact name or number they must type, change or check (a setting, option, command, limit, version, the name of a skipped test) right after the plain sentence: "the retry setting `maxRetries`", never the plain sentence alone. Name each finding of your investigation (a failing, skipped or TODO test, a mismatch between a document and the code, a roadmap or commit message that says done while the code says otherwise, an unmerged branch) in a status you write. The translation table is in `references/plain-language.md`, with Turkish,
 Japanese and Chinese versions in `plain-language.<lang>.md`; when a word is not there,
 explain it in one sentence of your reply the first time and move on (never inside a rewrite).
 

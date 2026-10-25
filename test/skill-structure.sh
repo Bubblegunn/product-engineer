@@ -136,3 +136,6 @@ grep -qF 'fails before the fix and passes after' "$cbs" || fail "$cbs: a fix wit
 grep -qF 'users see no change' "$cbs" || fail "$cbs: a refactor says users see no change"
 grep -qF 'unless you measured it' "$cbs" || fail "$cbs: a refactor names no benefit unless measured"
 echo "ok: skill structure (4 skills)"
+
+# Round r12: act on the undoable part when a premise is off, ask only before the irreversible.
+grep -qF 'ask only before something that cannot be undone' skills/product-engineer/SKILL.md || fail "product-engineer must say to ask only before something that cannot be undone"
