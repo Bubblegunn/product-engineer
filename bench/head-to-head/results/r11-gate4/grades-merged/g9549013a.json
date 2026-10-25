@@ -1,0 +1,32 @@
+{
+  "label": "g9549013a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correctly attributes the cause to Tomas's commit, with retry as an aggravator."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is unreleased but gives no env-var workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions in-memory and the wrong runbook line but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'Between roughly Oct 15 and now', which asserts a deployment-era date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on the fix and git describe."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g3fb7a3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change contributed but was not the main cause, and names the Tomas dedupe default change."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment-variable workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text states a software update on October 15 and says repeats will stop once the fix is live."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag --contains and log v2.3.0..main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

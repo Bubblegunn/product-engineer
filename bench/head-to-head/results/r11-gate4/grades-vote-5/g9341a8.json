@@ -1,0 +1,39 @@
+{
+  "label": "g9341a8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change is not the main cause and names the Tomas dedupe default change shipped in 2.3.0."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment-variable workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text states 'A software update on October 15' as a date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag listing, and merge-base --is-ancestor."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

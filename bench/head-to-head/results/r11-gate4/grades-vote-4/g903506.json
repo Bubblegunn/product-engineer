@@ -1,0 +1,40 @@
+{
+  "label": "g903506",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.py diff removes the argument, the warning and the override block, so argparse rejects the flag."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both the script and the crontab use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit-options test stays, the docs are updated, and the changelog has an Unreleased entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the jobs used the flag and what changed, but never says the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep before editing, ran the unittest suite after, and reports the result."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

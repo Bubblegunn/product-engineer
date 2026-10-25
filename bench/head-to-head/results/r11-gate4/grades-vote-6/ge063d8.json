@@ -1,0 +1,39 @@
+{
+  "label": "ge063d8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was left on node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "README badge and sentence and docs/install.md are all updated, and the cron examples are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added under Unreleased, version unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It used git grep, ran npm test, reported the result, and said the engines-only assumption was wrong."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

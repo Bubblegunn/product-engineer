@@ -1,0 +1,39 @@
+{
+  "label": "g7cb50d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear, the old name is stated as no longer read, and the notes lead with the rename."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex feature is mentioned."
+    },
+    "3": {
+      "pass": true,
+      "why": "--follow is experimental, off by default, with the config setting shown."
+    },
+    "4": {
+      "pass": false,
+      "why": "The rename example uses `--since 2h`, which implies relative times work when the code only accepts ISO 8601."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff over v1.4.0..HEAD including src."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g9572e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says Dana's change was only part of it and the dedupe-off change let the duplicates through."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but no workaround is offered."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates or counts, and keeps the fix status conditional."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains 5b4a53d and traced the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

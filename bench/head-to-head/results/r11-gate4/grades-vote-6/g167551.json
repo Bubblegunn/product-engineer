@@ -1,0 +1,39 @@
+{
+  "label": "g167551",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 as the main cause and the retry change as a second route."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test at test/dedupe.test.js:24 with #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'a software update on October 15' and 'expect the repeats to stop'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains 5b4a53d and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

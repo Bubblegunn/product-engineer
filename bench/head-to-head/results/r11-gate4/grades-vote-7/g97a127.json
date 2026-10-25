@@ -1,0 +1,39 @@
+{
+  "label": "g97a127",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tomas's commit is named as the likely cause and the retry change as a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Mentions that setting DEDUPE_WINDOW_SECONDS in production would change the picture, but does not offer it as a workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test pointing to #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text cites 'October 15' and says 'you should stop seeing repeats once the fix is live'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on the fix and on the bug commit, and git describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

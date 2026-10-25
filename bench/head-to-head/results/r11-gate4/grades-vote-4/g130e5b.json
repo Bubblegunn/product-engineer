@@ -1,0 +1,39 @@
+{
+  "label": "g130e5b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's change to 0 in 2.3.0 as the cause and the retries as making it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "Covers the untagged fix and the runbook but offers no env workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions restart duplicates and the wrong runbook, not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no count, date or promise and support is told not to promise zero repeats."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show, git tag --contains and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g71e934",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, .env.example and docker-compose.yml all set to 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx client_max_body_size is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests, README, api.md (prose and 413 example) and capacity.md (200 MB) all updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer explains that 200 MB exceeds the old 256m budget."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep was run, unittest ran, and the answer reports 11 tests passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

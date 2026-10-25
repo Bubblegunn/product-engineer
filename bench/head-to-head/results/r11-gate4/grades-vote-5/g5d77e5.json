@@ -1,0 +1,40 @@
+{
+  "label": "g5d77e5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its warning are removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit test remains, the docs are consistent, and the Unreleased changelog entry is added."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was still in use and what it changed, but does not say the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then unittest, and reported 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

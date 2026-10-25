@@ -1,0 +1,32 @@
+{
+  "label": "g68fe042b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.py drops the argument and the override block, and the explicit options remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both the script and the crontab now use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit-options test remains, the docs are updated, and the changelog has an Unreleased entry with history kept."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was still in use and what changed, but never says '--delimiter ;' alone was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, ran the tests after editing, and reports 11 passed."
+    }
+  }
+}

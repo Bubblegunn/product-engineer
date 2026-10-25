@@ -1,0 +1,32 @@
+{
+  "label": "gf4c1d92f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit was created after the hook was bypassed, with the correct two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config and changelog are correct with no markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both the middleware and the test use config.proxy.trust, and git grep found no trustProxy."
+    },
+    "4": {
+      "pass": true,
+      "why": "The commit staged only specific files, and the README edit and scratch.http remain uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git grep for trustProxy and npm test after resolving, and the answer reports 16 passing and the adaptation."
+    }
+  }
+}

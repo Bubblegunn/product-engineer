@@ -1,0 +1,39 @@
+{
+  "label": "gc9fb6a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, the lockfile and .nvmrc are all 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "release.yml still uses 16 and the Dockerfile was not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "README and install.md were updated with no collateral changes."
+    },
+    "4": {
+      "pass": true,
+      "why": "The changelog line and version are correct."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests ran, but it never mentioned that release.yml still pins 16, and the Dockerfile and clone.js went unmentioned."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

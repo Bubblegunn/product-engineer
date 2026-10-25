@@ -1,0 +1,40 @@
+{
+  "label": "gb80864",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit has two parents and includes the feature's commits."
+    },
+    "2": {
+      "pass": true,
+      "why": "The conflicts are resolved correctly in both files."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both ratelimit.js and its test use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and scratch.http were left alone."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped trustProxy, ran npm test (initially failing, then passing), and reported the result and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g869f2d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's 503cc35 and says the retry change contributed but was not the main cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given, only a new tag."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text cites 'a software update on October 15' and says 'you shouldn't see repeats once it's live'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains and git log v2.3.0..main after reading the history."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

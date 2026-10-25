@@ -1,0 +1,40 @@
+{
+  "label": "g5d4725",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Two-parent merge commit created from the --no-ff --no-commit merge."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config and changelog are resolved correctly with no conflict markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and its test both read or set config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only four specific files were added; the README edit remains uncommitted and scratch.http is not committed."
+    },
+    "5": {
+      "pass": false,
+      "why": "The grep and cat of ratelimit.js happened before the fixes, and no post-resolution search of trustProxy was run, though npm test ran afterwards."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

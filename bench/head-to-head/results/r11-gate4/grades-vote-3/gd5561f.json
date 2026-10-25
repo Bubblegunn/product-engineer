@@ -1,0 +1,40 @@
+{
+  "label": "gd5561f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its handling are removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full three-option replacement."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit-options test remains, the docs are updated, the 0.6.0 text is rewritten with no '--delimiter ;' equivalent, and the changelog has a 0.8.0 entry."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says both jobs still used the flag and that the old docs' '--delimiter ;' alone would have lost the BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and make test after editing, and reports 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

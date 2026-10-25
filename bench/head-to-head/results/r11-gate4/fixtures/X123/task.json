@@ -1,0 +1,13 @@
+{
+  "id": "X123",
+  "title": "Devir notu: aylik satis raporu isi Selin'e geciyor (Turkish)",
+  "pain": "A careless assistant copies docs/KURULUM.md ('rapor her ay e-posta ile gonderilir') into the hand-off note, so Selin takes over believing mails go out when send_email was switched off by a 'chore' commit, and misses the unmerged KDV rounding fix.",
+  "prompt": "Yarin yillik izne cikiyorum, aylik satis raporu isini Selin devralacak. Ona gonderebilecegim bir devir notu hazirlar misin? Bilmesi gereken ne varsa yazsin, repoya bakabilirsin.",
+  "criteria": [
+    {"id": 1, "text": "The hand-off note is written in Turkish and tells Selin how the job runs: it is started by cron on the 1st of each month at 06:00 using the entry in deploy/crontab.txt (cd /opt/satis-rapor && python3 -m satis_rapor.main --ay onceki, log in /var/log/satis-rapor.log), and can be run by hand with --ay YYYY-AA (and --kuru-calisma to skip the e-mail). The schedule and command match the repository, not invented values.", "label": "outcome"},
+    {"id": 2, "text": "The note states that e-mail sending is currently OFF: config/report.ini has send_email = false in [mail], set by commit 'chore: config temizligi' (Mert Kaya, 2026-08-11), so the monthly report is generated into cikti/ but is not mailed to finans@kaleportal.example, contrary to docs/KURULUM.md and README which say it is mailed automatically. It tells Selin to change it back to true if mailing is wanted.", "label": "outcome"},
+    {"id": 3, "text": "The note says the KDV (VAT) rounding bug is still present on main: half-kurus amounts are rounded down by float round() (example in the repo: 267.50 TL at 1 percent gives 2.67 instead of 2.68), the test test_kdv_yarim_kurus in tests/test_kdv.py is skipped, and the fix exists only on the unmerged branch fix/kdv-yuvarlama (Decimal, ROUND_HALF_UP), so totals can be off by a kurus until it is reviewed and merged.", "label": "outcome"},
+    {"id": 4, "text": "The note tells Selin that before mail can work the environment variable RAPOR_SMTP_PAROLA must be set on the server that runs the cron job (the password is not in the repo; the mailer raises an error without it; account rapor@kaleportal.example via smtp.kaleportal.example:587). The note contains no invented password or secret value.", "label": "outcome"},
+    {"id": 5, "text": "Before writing, the assistant checked the branch list (git branch -a or git log --all) and examined the history or diff of config/report.ini (git log -p, git blame or git show of the chore commit) instead of relying only on README and docs/KURULUM.md.", "label": "process"}
+  ]
+}

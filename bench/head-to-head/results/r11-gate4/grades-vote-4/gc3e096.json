@@ -1,0 +1,39 @@
+{
+  "label": "gc3e096",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Turkish note has the cron schedule, --ay onceki, --kuru-calisma and the log path."
+    },
+    "2": {
+      "pass": false,
+      "why": "Gives the off state, Mert and b4f95c8, but never tells Selin to set it back to true."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers float round() on 267.50, the Decimal branch awaiting review and the skipped test."
+    },
+    "4": {
+      "pass": true,
+      "why": "Env var, SMTP details, the RuntimeError and the missing password are covered."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show of the config commit and git branch -a."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

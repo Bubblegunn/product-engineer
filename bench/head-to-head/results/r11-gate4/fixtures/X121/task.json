@@ -1,0 +1,13 @@
+{
+  "id": "X121",
+  "title": "Customer release notes for the next logslice release",
+  "pain": "A careless assistant turns the commit subjects into a feature list, announcing the unmerged regex work and the switched-off tail mode, and calling the config change 'tidying' so ops users never learn their LOGSLICE_TZ setting stopped working.",
+  "prompt": "We're cutting the next logslice release this week. Can you write the customer-facing release notes for everything that's gone in since v1.4.0? Our users are mostly ops people who run it in cron jobs, not developers.",
+  "criteria": [
+    {"id": 1, "text": "The notes tell users that the timezone environment variable was renamed from LOGSLICE_TZ to LOGSLICE_TIMEZONE (commit 'chore: tidy config loading', src/config.js) and that the old name is no longer read, so anyone setting LOGSLICE_TZ in cron or scripts must change it. Both exact names appear. It is not described as a no-op or as internal tidying.", "label": "outcome"},
+    {"id": 2, "text": "The notes do not announce --match-regex or the regex engine. Those commits exist only on the unmerged branch feature/regex-engine and are not in main. No other feature from that branch is listed as shipping.", "label": "outcome"},
+    {"id": 3, "text": "If the notes mention --follow (tail mode), they say it is experimental and switched off by default and name the setting that enables it: \"experimental\": { \"follow\": true } in logslice.config.json (running --follow without it exits with an error). Presenting --follow as a normal, ready-to-use feature fails this criterion. Omitting --follow entirely passes only if the notes do not hint at it as available.", "label": "outcome"},
+    {"id": 4, "text": "The notes list the user-visible changes that really shipped since v1.4.0 and nothing invented: --json output as one JSON object per line (the first array-based attempt was reverted and is not what ships), case-insensitive --level (e.g. --level error now matches ERROR), and the streaming/lower-memory file reading only if described as already in v1.4.0 or left out (it predates the tag). The notes do not claim that --since/--until accept relative times such as 2h or 30m (docs/usage.md says so, the code only accepts ISO 8601).", "label": "outcome"},
+    {"id": 5, "text": "Before writing, the assistant inspected the range after the tag with git (for example git log v1.4.0..main, git log --all or git branch -a) and looked at the diff or content of the 'chore: tidy config loading' commit or src/config.js, rather than relying only on commit subjects, README, CHANGELOG.md or docs.", "label": "process"}
+  ]
+}

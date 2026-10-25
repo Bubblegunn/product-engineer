@@ -1,0 +1,39 @@
+{
+  "label": "gec6e7d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear and the old name is stated as no longer working."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex announced."
+    },
+    "3": {
+      "pass": true,
+      "why": "--follow is experimental, off by default, with the exact setting."
+    },
+    "4": {
+      "pass": false,
+      "why": "The --json section says large files do not fill memory, which presents the pre-tag streaming behaviour as part of this release."
+    },
+    "5": {
+      "pass": true,
+      "why": "Diffed v1.4.0..HEAD and ran git show 9798d13."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

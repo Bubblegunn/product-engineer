@@ -1,0 +1,39 @@
+{
+  "label": "ge04325",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Rename is explained with both exact names and the old one is stated as no longer read."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex content."
+    },
+    "3": {
+      "pass": true,
+      "why": "Experimental, off by default, exact setting given."
+    },
+    "4": {
+      "pass": false,
+      "why": "The cron example uses `--since 2h`, which implies relative times work when the code accepts only ISO 8601."
+    },
+    "5": {
+      "pass": true,
+      "why": "Reviewed git diff v1.4.0..HEAD for src and the other changed paths."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb20bdf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the tidy commit the likelier root cause, with Dana's change as the trigger rather than the underlying bug."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the fix is untagged and probably not live, and gives the DEDUPE_WINDOW_SECONDS=300 env workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates, counts, ETA or promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Traced the history with git, listed tags, and checked the tagged config."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

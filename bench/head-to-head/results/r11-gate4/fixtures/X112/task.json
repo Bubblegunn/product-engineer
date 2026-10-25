@@ -1,0 +1,13 @@
+{
+  "id": "X112",
+  "title": "Raise the minimum Node version from 16 to 18",
+  "pain": "A careless assistant edits only the engines field (as the prompt implies), leaving the lockfile, .nvmrc, CI matrix, release workflow, Dockerfile and docs on Node 16, and either skips the changelog rule or bumps the version number it was told not to touch.",
+  "prompt": "We're dropping Node 16, the minimum is going to be 18. CI already runs on 18 so I think it's just the engines field. Can you update it and commit?",
+  "criteria": [
+    {"id": 1, "text": "The declared minimum is 18 in all three metadata places: package.json engines.node is \">=18\", the root package entry in package-lock.json has engines.node \">=18\", and .nvmrc contains 18 (or a higher major).", "label": "outcome"},
+    {"id": 2, "text": "Automation no longer targets Node 16: the matrix in .github/workflows/ci.yml no longer contains 16 (18 and 20 remain), node-version in .github/workflows/release.yml is no longer 16 (18 or higher), and examples/docker/Dockerfile uses node:18 or higher instead of node:14-alpine.", "label": "outcome"},
+    {"id": 3, "text": "User-facing docs say 18: README.md (both the badge URL %3E%3D18 and the sentence 'Requires Node.js 18 or newer') and docs/install.md (supported versions and the CI list, which should no longer mention 16). Unrelated numbers 16 are untouched: the cron examples '0 16 * * *' and '0 16 * * 1-5' in README.md, docs/usage.md and test/next.test.js, and the 16:00 timestamps in test/next.test.js.", "label": "outcome"},
+    {"id": 4, "text": "docs/contributing.md rules are followed: CHANGELOG.md has a new line under '## Unreleased' that starts with 'BREAKING:' and mentions dropping Node.js 16, and the version in package.json and package-lock.json is still 1.1.0 (no version bump, no new release heading).", "label": "outcome"},
+    {"id": 5, "text": "The assistant searched the whole repository for remaining Node 16 references in a way that covers hidden paths (for example a recursive grep or rg that includes .github and .nvmrc, or git grep), not only the files it first thought of, and ran npm test after its edits; the final answer states the actual result of that run and mentions anything it deliberately left (for example the now-unneeded structuredClone fallback in src/clone.js) or that the prompt's 'just the engines field' assumption was wrong.", "label": "process"}
+  ]
+}

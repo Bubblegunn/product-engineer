@@ -1,0 +1,39 @@
+{
+  "label": "ga3951b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Release commit changes all three files to 2.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "2.4.0 section has --tz and extremes fix, Parquet removed, empty Unreleased kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated v2.4.0 tag created on the release commit; old tags untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "todo.md still modified in working tree and not committed; no stash commands run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped code for parquet, ran the suite before committing, reported 11 passed and the Parquet drop."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X133",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

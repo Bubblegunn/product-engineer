@@ -1,0 +1,39 @@
+{
+  "label": "g1a7829",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's commit as most likely cause; retry is only a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Mentions DEDUPE_WINDOW_SECONDS only as a condition ('unless set'), not as a workaround to apply."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the skipped test and issue #41, and the wrong runbook line."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'on October 15', a deployment date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran tag --contains on both commits and describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

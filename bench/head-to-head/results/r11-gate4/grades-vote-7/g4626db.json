@@ -1,0 +1,39 @@
+{
+  "label": "g4626db",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's commit and v2.3.0, with the retry change as a trigger that only made it more frequent."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and the wrong runbook, but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'We've fixed the cause and are rolling it out', which overstates the fix status."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran tag --contains, describe and log v2.3.0..main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g42e8cf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the Tomas tidy commit as the likely cause and the retry change as secondary."
+    },
+    "2": {
+      "pass": false,
+      "why": "Notes the fix is untagged but offers no interim DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store but does not mention the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'between roughly Oct 15 and the fix going live', asserting a start date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Traced the commits with git show, ran git tag --contains and listed the tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

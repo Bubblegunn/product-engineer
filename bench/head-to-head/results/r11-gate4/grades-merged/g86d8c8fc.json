@@ -1,0 +1,32 @@
+{
+  "label": "g86d8c8fc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are consistent, the explicit test remains, and the changelog has a 0.8.0 entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the jobs used the flag and what it changed, but doesn't mention the docs' incomplete replacement."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then make test and unittest, and reported 11 passing."
+    }
+  }
+}

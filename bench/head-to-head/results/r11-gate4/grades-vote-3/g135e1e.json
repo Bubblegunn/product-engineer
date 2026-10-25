@@ -1,0 +1,40 @@
+{
+  "label": "g135e1e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag definition and the args.legacy_csv block were removed from cli.py, so argparse rejects it."
+    },
+    "2": {
+      "pass": true,
+      "why": "The nightly script and the crontab line both use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": false,
+      "why": "migration.md still keeps the 0.6.0 text saying the flag 'still works' and to 'Switch to --delimiter ;'."
+    },
+    "4": {
+      "pass": false,
+      "why": "The final answer says the flag was still in use but never says the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and ran unittest discover after editing; the answer says the tests pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

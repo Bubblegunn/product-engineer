@@ -1,0 +1,39 @@
+{
+  "label": "g065ee2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the tidy commit the likelier root cause and Dana's change a trigger."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the fix is untagged and gives the DEDUPE_WINDOW_SECONDS=300 env workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and the wrong runbook, not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no count, date, ETA or no-more-duplicates promise, and support is told not to promise a stop."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git log -p, git tag --list and git show v2.3.0:src/config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

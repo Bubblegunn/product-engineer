@@ -1,0 +1,39 @@
+{
+  "label": "g1eee71",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "package-lock.json was not updated."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was not updated."
+    },
+    "3": {
+      "pass": true,
+      "why": "README and docs/install.md are updated and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "A BREAKING line was added under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git grep, ran tests, reported 10 passing, and mentioned the Dockerfile and clone.js it left."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

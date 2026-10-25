@@ -1,0 +1,39 @@
+{
+  "label": "g80f83d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the dedupe default change the cause and Dana's retry change not the direct cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged and likely not deployed, but no env-var workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the restart forgetting and the wrong runbook, but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text uses placeholders and makes no commitment; the notes say not to promise compensation or a stop date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits and git tag --contains 5b4a53d."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

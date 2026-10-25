@@ -1,0 +1,40 @@
+{
+  "label": "g67956b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and its handling removed; rejection test added."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration replaced with a removal note, changelog entry added, other docs updated, explicit test kept."
+    },
+    "4": {
+      "pass": false,
+      "why": "Corrects the premise but does not say the documented '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep first, unittest run after edits, 12 OK reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

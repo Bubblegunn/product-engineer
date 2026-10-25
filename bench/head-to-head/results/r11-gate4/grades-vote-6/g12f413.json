@@ -1,0 +1,39 @@
+{
+  "label": "g12f413",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's 'tidy config defaults' commit, the 300 to 0 default and 2.3.0 as the cause, and says Dana's change is contributing, not the direct cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is on main and untagged, but never gives the DEDUPE_WINDOW_SECONDS=300 environment workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Says a restart forgets the store and the runbook is wrong, but never mentions the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no counts, no ETA and no compensation promise, and it leaves placeholders for the date and policy."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the chore commit, git tag --contains 5b4a53d and git branch --contains."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

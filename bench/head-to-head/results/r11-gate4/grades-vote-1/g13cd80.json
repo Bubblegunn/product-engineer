@@ -1,0 +1,39 @@
+{
+  "label": "g13cd80",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Math.ceil replaces Math.floor in paginate.js and nothing else in the file changed."
+    },
+    "2": {
+      "pass": false,
+      "why": "export.js was not changed."
+    },
+    "3": {
+      "pass": false,
+      "why": "The paginate test is re-enabled, but no export test was added."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only paginate.js and the test were committed; users.js and NOTES-wip.txt were left alone."
+    },
+    "5": {
+      "pass": false,
+      "why": "No git status or diff was run before the commit, and the answer only 'suspects' the skip hid a bug."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X114",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

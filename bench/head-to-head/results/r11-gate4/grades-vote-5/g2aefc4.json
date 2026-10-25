@@ -1,0 +1,40 @@
+{
+  "label": "g2aefc4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its warning are removed and a rejection test was added."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit test remains, the docs and migration note are consistent, and the changelog has an Unreleased removal entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was in use and what it changed, but does not say the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then unittest, and reported 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

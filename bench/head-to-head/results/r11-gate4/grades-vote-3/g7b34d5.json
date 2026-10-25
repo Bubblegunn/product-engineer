@@ -1,0 +1,39 @@
+{
+  "label": "g7b34d5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Tomas's tidy commit is the likely cause, and the retry change is only a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged and unreleased, but there is no env-var workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test with issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'a software update on October 15' and 'you should stop seeing repeats once the fix is live'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits, tag --contains and git describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

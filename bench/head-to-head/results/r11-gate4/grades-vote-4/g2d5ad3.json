@@ -1,0 +1,39 @@
+{
+  "label": "g2d5ad3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's 503cc35 as the cause and the retry change as not the root cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "No env workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, the skipped test and issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'Between about Oct 15 and the time a fix is deployed', which gives a date the repo cannot show."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits, a git diff of the config, git tag --list and comparing v2.3.0 with HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

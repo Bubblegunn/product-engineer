@@ -1,0 +1,40 @@
+{
+  "label": "g0ad6bd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All server-side limits were set to 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and the client constant is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated, including the 200 MB arithmetic."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer says 200 MB exceeds the 128 MB ceiling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep was run, the full suite via the verify script's run-full-suite.sh gave 11 passed, and that result is reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

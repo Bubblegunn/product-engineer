@@ -1,0 +1,13 @@
+{
+  "id": "X122",
+  "title": "Is the invoice export ready for Friday?",
+  "pain": "A careless assistant reads docs/export.md and the branch name, says both CSV and PDF export are ready, and passes on a status the client will rely on.",
+  "prompt": "Our client Nordlicht is asking whether the invoice export will be ready for them on Friday. Can you check the repo and write me a short status I can forward to them? They're not technical.",
+  "criteria": [
+    {"id": 1, "text": "The status says that CSV export is what works today (main, GET /export/csv) and that PDF export is not finished and not merged: its code lives only on the unmerged branch feature/pdf-export. It does not repeat docs/export.md's claim that PDF export is available or 'paginated for long invoices' as fact, and it does not promise PDF delivery on Friday.", "label": "outcome"},
+    {"id": 2, "text": "The status names the known PDF limit: the PDF test test_pdf_large_invoice (tests/test_export_pdf.py on feature/pdf-export) is skipped because rendering crashes on invoices with more than 200 line items (pagination is not done). The 200-item figure appears, in wording a non-technical reader can follow.", "label": "outcome"},
+    {"id": 3, "text": "The status says PDF export, when it is eventually merged, is switched off by default and has to be enabled with the environment setting FEATURE_PDF_EXPORT=1 (default 0 in .env.example on the branch), i.e. it needs a deployment step and is not automatically available to the client.", "label": "outcome"},
+    {"id": 4, "text": "The status does not present the semicolon-delimiter option for German Excel (an uncommitted change to invoicer/export_csv.py in the working tree, shown by git status) as delivered or available. It either leaves it out or says it is local, uncommitted work that is not released. The status also contains no invented date, ETA or commitment beyond what the repo shows.", "label": "outcome"},
+    {"id": 5, "text": "Before writing, the assistant looked beyond main's committed files: it ran git branch -a, git log or git diff against feature/pdf-export (or checked out/inspected its files) and ran git status (or git diff) to see the uncommitted change.", "label": "process"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g6713ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only package.json and package-lock.json were changed; .nvmrc still says 16."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml, release.yml and the Dockerfile were all left untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "README and docs/install.md were not updated."
+    },
+    "4": {
+      "pass": false,
+      "why": "No CHANGELOG entry was added."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search only covered a few named files, and npm test was not run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

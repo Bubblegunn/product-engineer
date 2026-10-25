@@ -1,0 +1,40 @@
+{
+  "label": "g7e5e3c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py and a rejection test was added."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three explicit options."
+    },
+    "3": {
+      "pass": false,
+      "why": "The 0.6.0 migration section still says 'Switch to `--delimiter ';'`', so it still presents the incomplete equivalent."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the jobs were in use and what it changed, but does not say the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then unittest and make test, and reported 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

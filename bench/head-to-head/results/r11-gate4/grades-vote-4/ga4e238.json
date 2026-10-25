@@ -1,0 +1,40 @@
+{
+  "label": "ga4e238",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and warning removed; argparse rejects unknown args."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc rewritten with no leftover --delimiter ';' advice, test_explicit_excel_options kept, and an Unreleased changelog entry added."
+    },
+    "4": {
+      "pass": false,
+      "why": "Corrects the premise and states the change, but never mentions the documented replacement missing BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, make test, reports 11 of 11."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

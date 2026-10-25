@@ -1,0 +1,39 @@
+{
+  "label": "gb0e323",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says CSV is ready and PDF is not ready for Friday, with the branch named in the notes."
+    },
+    "2": {
+      "pass": true,
+      "why": "Names the over 200 line item failure in plain terms."
+    },
+    "3": {
+      "pass": false,
+      "why": "No mention of the FEATURE_PDF_EXPORT setting."
+    },
+    "4": {
+      "pass": false,
+      "why": "Invents 'We'll confirm on Thursday' and offers a limited PDF launch."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, git diff main feature/pdf-export and git status."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X122",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

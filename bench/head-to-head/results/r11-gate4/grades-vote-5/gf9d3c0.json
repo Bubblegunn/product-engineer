@@ -1,0 +1,39 @@
+{
+  "label": "gf9d3c0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the cause was the Tomas dedupe default change, not the retry change, which only made redelivery more likely."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment-variable workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the skipped test and issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The support guidance cites the Oct 15 release as the start and says duplicates 'should stop' once deployed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag --contains, git describe, and checked v2.3.0's config."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g480dda",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear and the old name is not read."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex announced."
+    },
+    "3": {
+      "pass": true,
+      "why": "--follow is experimental, off by default, with the exact setting."
+    },
+    "4": {
+      "pass": false,
+      "why": "The rename example uses `--since 2h`, implying relative times work when only ISO 8601 is accepted."
+    },
+    "5": {
+      "pass": true,
+      "why": "Looked at the log, the src diff and the test diff for TZ."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

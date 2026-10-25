@@ -1,0 +1,40 @@
+{
+  "label": "gc36ff5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed and a test confirms it is rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full replacement."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit-options test remains, migration.md was replaced with a 0.8.0 removal note, and the changelog has an Unreleased entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was in use but does not say the documented '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and the test suite after editing, and reports 12 OK."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

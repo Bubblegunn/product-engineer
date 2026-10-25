@@ -1,0 +1,39 @@
+{
+  "label": "g1c3fe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was not updated from node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "All README and install.md changes are made and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It used git grep, ran npm test, reported 10 passed, and said the engines-only assumption was wrong."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

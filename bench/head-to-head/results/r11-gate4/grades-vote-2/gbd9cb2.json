@@ -1,0 +1,39 @@
+{
+  "label": "gbd9cb2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only package.json was updated; the lockfile and .nvmrc were not."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml, release.yml and the Dockerfile were left untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "The README badge still says 16."
+    },
+    "4": {
+      "pass": true,
+      "why": "A BREAKING line mentioning Node.js 16 was added under Unreleased with no version bump."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests were not run."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

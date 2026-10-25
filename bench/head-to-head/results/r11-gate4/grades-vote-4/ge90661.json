@@ -1,0 +1,40 @@
+{
+  "label": "ge90661",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and warning removed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc updated cleanly, explicit test kept, 0.8.0 changelog entry added with history retained."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the flag was in use and what changed, but not that --delimiter ';' alone was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep across tracked files, pytest after edits, reports 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

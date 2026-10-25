@@ -1,0 +1,39 @@
+{
+  "label": "g940884",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Turkish note gives the 1st-of-month 06:00 cron from deploy/crontab.txt, the log path, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "States send_email=false but omits the chore commit and Mert, the contradiction with the docs, and any instruction to set it back to true."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50→2.67 example, the skipped test, the unmerged fix/kdv-yuvarlama branch with Decimal, and the kurus drift."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says RAPOR_SMTP_PAROLA is not in the repo, must be set for cron, and gives the account and SMTP host; no invented secret."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran git branch -a but only git log --stat, never a diff or show of config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

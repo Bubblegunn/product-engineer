@@ -1,0 +1,39 @@
+{
+  "label": "g73edba",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names both variables, says the old one is ignored, and tells cron users to rename it."
+    },
+    "2": {
+      "pass": true,
+      "why": "No mention of regex or --match-regex."
+    },
+    "3": {
+      "pass": true,
+      "why": "Calls --follow experimental and off by default, and gives the exact config setting."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists --json as one object per line and case-insensitive --level, and makes no relative-time claim."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff over v1.4.0..HEAD including src, which covers config.js."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

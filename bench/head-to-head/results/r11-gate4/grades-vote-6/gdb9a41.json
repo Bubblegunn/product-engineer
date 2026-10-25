@@ -1,0 +1,39 @@
+{
+  "label": "gdb9a41",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's 503cc35 as the likely cause, with the retry change making redelivery more likely."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and wrong runbook but not the skipped test."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates, counts, compensation or ETA."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran git tag --contains on the bug commit and listed tags; never checked the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

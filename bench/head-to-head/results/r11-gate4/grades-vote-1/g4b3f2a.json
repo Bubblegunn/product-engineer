@@ -1,0 +1,39 @@
+{
+  "label": "g4b3f2a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The Turkish file covers cron on the 1st at 06:00, /opt/satis-rapor, the log, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": true,
+      "why": "It states send_email=false set by Mert on 2026-08-11 (b4f95c8), that the report is produced but not sent, and says to set true to send."
+    },
+    "3": {
+      "pass": true,
+      "why": "It covers 267.50 giving 2.67 instead of 2.68 via round, the skipped test, and the unmerged Decimal fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the env var requirement, no password in the repo, an error when unset, and the account and host; placeholders only, no invented secret."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git branch -a and git show b4f95c8 -- config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g9c65284c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, .env.example and compose all set to 25 MB."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests, README, api.md and capacity.md all updated, with 200 MB arithmetic."
+    },
+    "4": {
+      "pass": false,
+      "why": "The blanket sed changed FILEDROP_TTL_DAYS from 10 to 25 in .env.example, an unrelated value."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the whole repo, ran the tests after editing, and reported 11 passing."
+    }
+  }
+}

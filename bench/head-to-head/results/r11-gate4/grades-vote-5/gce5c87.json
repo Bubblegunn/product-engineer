@@ -1,0 +1,39 @@
+{
+  "label": "gce5c87",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says the main cause is a different commit, but also says the retry change 'created the duplicates', which blurs the correction."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is correctly shown as unreleased, but no DEDUPE_WINDOW_SECONDS=300 env workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "States in-memory store, restart forgets, runbook wrong, and skipped test with issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text uses a date placeholder, gives no count or promise, and does not claim reminders only."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits, tag list, and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

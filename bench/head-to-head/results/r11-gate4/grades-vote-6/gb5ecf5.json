@@ -1,0 +1,39 @@
+{
+  "label": "gb5ecf5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Names Tomas's commit but then says 'the retry change created the duplicates', which partly confirms the user's guess."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test with #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no counts, dates, compensation or ETA."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git describe, git log v2.3.0..HEAD and listed tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "ga546fa",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed; the new test checks that it is rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated fully."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/migration.md keeps the 0.6.0 section saying the flag still works and to switch to --delimiter ';'."
+    },
+    "4": {
+      "pass": true,
+      "why": "Corrects the premise and explicitly says --delimiter ';' alone would have dropped the BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, unittest, reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

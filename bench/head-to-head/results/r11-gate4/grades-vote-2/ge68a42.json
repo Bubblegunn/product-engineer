@@ -1,0 +1,39 @@
+{
+  "label": "ge68a42",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc were all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml and release.yml were fixed, but the Dockerfile still uses node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "README badge and sentence and docs/install.md were updated; cron 16s were untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line was added under Unreleased and the version was not bumped."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test was not run and the answer says so."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g632a04",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Turkish note covers cron on the 1st at 06:00, the log, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "It states e-mail is off and says send_email=true should be set if finance expects the report, but gives no commit or Mert attribution and no docs contrast."
+    },
+    "3": {
+      "pass": true,
+      "why": "It covers 267.50 as 2.675 vs 2.68, the skipped test, and the unmerged Decimal fix."
+    },
+    "4": {
+      "pass": true,
+      "why": "It states the env var requirement, no password in the repo, an error when unset, and the account and host; nothing invented."
+    },
+    "5": {
+      "pass": false,
+      "why": "It checked branches and diffed the fix branch, but never examined the history or diff of config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

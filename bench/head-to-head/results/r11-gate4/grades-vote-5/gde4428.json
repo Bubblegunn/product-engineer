@@ -1,0 +1,40 @@
+{
+  "label": "gde4428",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge was applied to main with `git merge --no-ff --no-commit` and then committed, giving two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "The resolved files were copied into main and are correct and marker-free."
+    },
+    "3": {
+      "pass": true,
+      "why": "The ratelimit middleware and test on main use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "The README edit remains uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran tests and inspected ratelimit.js in the worktree, ran node --test on main after committing, and the final answer reports 16 passing tests and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

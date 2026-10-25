@@ -1,0 +1,39 @@
+{
+  "label": "gb9e239",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the main cause is the tidy commit and the retry change only made it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is untagged and notes the unknown prod env setting, but gives no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store but not the skipped test or #41, and doesn't clearly call the runbook wrong."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text gives 'Oct 15 and Oct 22' dates and says 'expect no more duplicates'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on the chore commit and listed tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g4e9b63",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Correctly says the retry change isn't the main cause and the dedupe default change is."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is unreleased but gives no workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Cites the in-memory store, the skipped test and issue #41, and the wrong runbook line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no date, count or ETA and no promise of no more duplicates."
+    },
+    "5": {
+      "pass": true,
+      "why": "Checked tags containing the fix and used merge-base --is-ancestor."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

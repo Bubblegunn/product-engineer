@@ -1,0 +1,40 @@
+{
+  "label": "gb2f75b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit was created with `--no-ff` after the hook override, giving two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "The resolved config and changelog meet the requirements and contain no markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and its test use config.proxy.trust, and git grep found no trustProxy."
+    },
+    "4": {
+      "pass": true,
+      "why": "The README edit and scratch.http are outside the merge commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep trustProxy and npm test after the fix, and the final answer reports 16 passing tests and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

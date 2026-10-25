@@ -1,0 +1,39 @@
+{
+  "label": "g81b16d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 as what turned duplicates on, and the retry change as setting conditions."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and the wrong runbook, not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text blames 'a bug in how we retry sending' and asserts no extra charges, which is unverified."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show, git tag --contains for both commits and rev-parse of the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

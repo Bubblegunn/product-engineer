@@ -1,0 +1,40 @@
+{
+  "label": "g200eee",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are consistent, the explicit test remains, and the changelog has an 'Unreleased (0.8.0)' entry."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was in use and what it changed, but doesn't mention the docs' incomplete replacement."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran grep -rn first, then unittest, and reported 12 OK."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

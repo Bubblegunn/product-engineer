@@ -1,0 +1,39 @@
+{
+  "label": "gb3a3c7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Dedupe default change is called the main cause and the retry change a smaller contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers in-memory store, restart, runbook wrong, and skipped test with issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text asserts 'On Oct 15' and says the cause is corrected, and the answer states an Oct 15–22 window."
+    },
+    "5": {
+      "pass": true,
+      "why": "Traced the history with git show and the tag list, and confirmed the fix is after v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

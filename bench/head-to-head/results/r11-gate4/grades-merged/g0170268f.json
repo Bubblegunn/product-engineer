@@ -1,0 +1,32 @@
+{
+  "label": "g0170268f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its warning are removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The 0.6.0 migration text is cleaned up, the explicit test remains, and the changelog has an Unreleased entry."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says the docs recommended '--delimiter ;' but the flag also enabled the BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep and make test, and reports 11 passing."
+    }
+  }
+}

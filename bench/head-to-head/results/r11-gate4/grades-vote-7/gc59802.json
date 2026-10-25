@@ -1,0 +1,39 @@
+{
+  "label": "gc59802",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three metadata places are set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was not updated and still says node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README badge and sentence and install.md are updated, and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line is present and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "Its searches were limited to named files and folders, not the whole repo, so the repo-wide search requirement is not met."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

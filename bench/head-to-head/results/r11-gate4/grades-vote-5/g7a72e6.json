@@ -1,0 +1,39 @@
+{
+  "label": "g7a72e6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Note gives the cron schedule from deploy/crontab.txt, /opt/satis-rapor, the log path, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "Covers send_email=false, Mert, b4f95c8 and the docs contradiction, but never tells Selin to set it back to true."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50 example, the skipped test, and the unmerged branch with Decimal and the half-kurus round-up."
+    },
+    "4": {
+      "pass": true,
+      "why": "Env variable required, not in the repo, error without it, account and host given."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a and git show b4f95c8 -- config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

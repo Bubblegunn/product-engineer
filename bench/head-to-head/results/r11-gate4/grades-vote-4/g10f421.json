@@ -1,0 +1,40 @@
+{
+  "label": "g10f421",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed; a test asserts it is rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use all three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc replaced with a removal note, explicit test kept, changelog entry added."
+    },
+    "4": {
+      "pass": false,
+      "why": "Premise corrected, but no statement that --delimiter ';' alone was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, unittest discover, final answer reports 12 OK."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

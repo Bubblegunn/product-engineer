@@ -1,0 +1,40 @@
+{
+  "label": "g11ecd2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The final history shows a single two-parent merge commit containing the feature branch."
+    },
+    "2": {
+      "pass": true,
+      "why": "config.js and CHANGELOG are resolved, with the markers removed from CHANGELOG."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and the test use config.proxy.trust, and grep confirmed no trustProxy remains."
+    },
+    "4": {
+      "pass": true,
+      "why": "README edit is still uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep and npm test after resolution, and the answer reports 16 passed and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

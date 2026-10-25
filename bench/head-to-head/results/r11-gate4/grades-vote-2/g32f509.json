@@ -1,0 +1,39 @@
+{
+  "label": "g32f509",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Clearly states Tomas's tidy commit is the cause and the retry change only made it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "The fix is flagged as unreleased, but no workaround is offered."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer wording has no counts, dates or promises, and the notes tell support not to promise it's fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, git describe --tags, git tag --contains and git diff against HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

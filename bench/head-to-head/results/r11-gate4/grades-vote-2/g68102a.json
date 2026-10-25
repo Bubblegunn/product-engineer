@@ -1,0 +1,39 @@
+{
+  "label": "g68102a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three metadata places say 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was left on node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "The badge, README sentence and install.md were updated, with no cron or timestamp collateral."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line is under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep and npm test, reported that tests pass, and noted the Dockerfile and clone.js as left alone."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

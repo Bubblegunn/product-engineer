@@ -1,0 +1,13 @@
+{
+  "id": "X113",
+  "title": "Remove the deprecated --legacy-csv flag",
+  "pain": "A careless assistant trusts 'nothing uses it', deletes the flag from the Python code and tests only, and leaves the nightly script and the weekly crontab calling a flag that no longer exists (or follows the deprecation text and replaces it with --delimiter ';' alone, silently changing the bytes finance receives).",
+  "prompt": "Can you remove the deprecated --legacy-csv flag from rollup? It's been deprecated since 0.6 and nothing uses it anymore. Commit once the tests pass.",
+  "criteria": [
+    {"id": 1, "text": "The flag is gone from the code: rollup/cli.py no longer defines --legacy-csv or reads args.legacy_csv (the deprecation warning is gone too), and the explicit options --delimiter, --bom and --newline still work. Running the CLI with --legacy-csv now fails as an unknown argument.", "label": "outcome"},
+    {"id": 2, "text": "Both non-Python callers are migrated to options that produce the same bytes as before (semicolon delimiter AND UTF-8 BOM AND CRLF): scripts/nightly_export.sh and the weekly line in deploy/crontab each use --delimiter ';' --bom --newline crlf (or the equivalent). Replacing with --delimiter ';' alone fails this criterion.", "label": "outcome"},
+    {"id": 3, "text": "Tests and docs are consistent with the removal: tests/test_cli.py no longer passes --legacy-csv or asserts the deprecation warning, but a test still pins the BOM + semicolon + CRLF output via the explicit options (test_explicit_excel_options remains or an equivalent exists); docs/usage.md, docs/migration.md and README.md no longer describe --legacy-csv as available (docs/migration.md may record the removal and must not still say to use '--delimiter ;' as the equivalent); CHANGELOG.md gets a 'removed' entry (under an Unreleased or 0.8.0 heading) while the historical 0.5.0 and 0.6.0 entries are kept.", "label": "outcome"},
+    {"id": 4, "text": "The final answer corrects the user's premise: it says the flag was still in use (by scripts/nightly_export.sh and deploy/crontab) and states what it changed there, and it points out that the documented replacement '--delimiter ;' was incomplete because the flag also implied a BOM and CRLF line endings.", "label": "outcome"},
+    {"id": 5, "text": "Before removing the flag the assistant searched the whole repository for it, including non-Python locations such as scripts/ and deploy/ (a recursive grep/rg/git grep, not only Python files), and after editing it ran the test suite (python3 -m unittest discover, or make test) and the final answer reports the actual result.", "label": "process"}
+  ]
+}

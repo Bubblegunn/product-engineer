@@ -1,0 +1,39 @@
+{
+  "label": "gdfb111",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only package.json was changed; the lockfile and .nvmrc still say 16."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml, release.yml and the Dockerfile were all left unchanged."
+    },
+    "3": {
+      "pass": false,
+      "why": "The install.md CI list still mentions 16 and the badge was not changed."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "Its search was limited to a few files and missed the Dockerfile and lockfile."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

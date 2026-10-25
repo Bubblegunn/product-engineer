@@ -1,0 +1,40 @@
+{
+  "label": "gc7b73c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its handling are removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers are migrated to all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The 0.8.0 migration note and changelog entry are present, and the 0.6.0 note is now only historical with no '--delimiter ;' advice."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the jobs still used the flag and what it changed, but does not call out the incomplete documented replacement."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then make test, and reported all 11 tests passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

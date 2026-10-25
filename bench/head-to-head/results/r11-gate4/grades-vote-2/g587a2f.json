@@ -1,0 +1,40 @@
+{
+  "label": "g587a2f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A `--no-ff` merge commit was created."
+    },
+    "2": {
+      "pass": true,
+      "why": "The config was rewritten correctly and the changelog has both entries; a grep for conflict markers was run."
+    },
+    "3": {
+      "pass": true,
+      "why": "sed changed the old name in ratelimit.js and its test."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only the four files were committed; the README edit and scratch.http remain uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for the old name and ran npm test after resolving; the answer reports 16 passing and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

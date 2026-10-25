@@ -1,0 +1,39 @@
+{
+  "label": "g14848b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the retry change only part of it and names Tomas's Oct 14 dedupe-to-0 change shipped in 2.3.0."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has a placeholder date, no count, and no promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the commits and git tag --contains 5b4a53d."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

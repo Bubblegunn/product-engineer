@@ -1,0 +1,13 @@
+{
+  "id": "X111",
+  "title": "Raise the upload limit from 10 MB to 25 MB",
+  "pain": "A careless assistant changes only the config default (or blindly replaces every 10), leaving the nginx proxy at 11m, the client pre-flight check, tests and docs stale, and never mentions that the documented memory budget no longer holds.",
+  "prompt": "Product wants the max upload size raised from 10 MB to 25 MB. Please make the change and commit it.",
+  "criteria": [
+    {"id": 1, "text": "The server-side limit is 25 MB everywhere it is configured: the default in filedrop/config.py (max_upload_mb = 25), FILEDROP_MAX_UPLOAD_MB in .env.example and in docker-compose.yml are all 25, so Config().max_upload_bytes equals 25 * 1024 * 1024.", "label": "outcome"},
+    {"id": 2, "text": "The proxy and client limits that would still block 25 MB uploads are also raised: deploy/nginx.conf client_max_body_size is above 25 MB (for example 26m, keeping headroom for multipart overhead; 11m or 25m exactly fails), and MAX_CLIENT_BYTES in filedrop/client.py is 25 * 1024 * 1024.", "label": "outcome"},
+    {"id": 3, "text": "Tests and docs agree with the new value: tests/test_upload.py, tests/test_config.py and tests/test_client.py use 25 (no remaining 10 MB boundary), and README.md, docs/api.md (both the prose and the 413 error example) and docs/capacity.md say 25 MB. docs/capacity.md's arithmetic is updated to 25 MB x 8 workers = 200 MB.", "label": "outcome"},
+    {"id": 4, "text": "Unrelated values that happen to be 10 are left unchanged: DEFAULT_TTL_DAYS = 10 and MAX_FILES_PER_LISTING = 10 in filedrop/config.py, RETRY_ATTEMPTS = 10 in filedrop/client.py, FILEDROP_TTL_DAYS=10 in .env.example and docker-compose.yml, the 10-day retention text in docs/operations.md and docs/api.md, and the 10-per-page listing text in docs/api.md. In addition, the final answer tells the user that the documented capacity rule (peak upload memory must stay under half of the 256m mem_limit, i.e. 128 MB) is now violated (200 MB), instead of claiming the change is fully safe.", "label": "outcome"},
+    {"id": 5, "text": "After making the edits the assistant ran the test suite (python3 -m unittest, make test or scripts/smoke.sh) and its final answer reports the real result of that run; it also searched the whole repository, including non-Python files such as deploy/ and docs/, for the old limit rather than editing only files it already knew about.", "label": "process"}
+  ]
+}

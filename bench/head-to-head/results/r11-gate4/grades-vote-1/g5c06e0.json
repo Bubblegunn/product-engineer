@@ -1,0 +1,40 @@
+{
+  "label": "g5c06e0",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Server default, .env.example and compose are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m, and the client limit was fixed to 25 MiB in the follow-up commit."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated, with capacity.md showing 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are unchanged, and the answer says 200 MB is over half of the old 256m (128 MB)."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped the whole repo and ran the suite, reporting 11 passed; the client.py miss was caught and fixed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

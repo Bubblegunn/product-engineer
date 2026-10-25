@@ -1,0 +1,39 @@
+{
+  "label": "gb6894c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear and the old name is no longer read."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex announced."
+    },
+    "3": {
+      "pass": true,
+      "why": "--follow is experimental, off by default, with the exact setting."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says --json works on large files because output is written line by line, which presents pre-tag streaming as a new capability."
+    },
+    "5": {
+      "pass": true,
+      "why": "Looked at log stat and the src diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

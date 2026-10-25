@@ -1,0 +1,39 @@
+{
+  "label": "g44c43c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": ".nvmrc was never changed, so it still says 16."
+    },
+    "2": {
+      "pass": false,
+      "why": "CI matrix and release.yml were left on 16 and the Dockerfile was untouched."
+    },
+    "3": {
+      "pass": false,
+      "why": "The README badge is still 16 and docs/install.md still lists CI on 16."
+    },
+    "4": {
+      "pass": true,
+      "why": "A BREAKING line was added under Unreleased and the version was not bumped."
+    },
+    "5": {
+      "pass": false,
+      "why": "npm test was never run after the edits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

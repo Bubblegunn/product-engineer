@@ -1,0 +1,40 @@
+{
+  "label": "gf84fd4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A --no-ff merge commit was created and the branch's four commits are in its history."
+    },
+    "2": {
+      "pass": true,
+      "why": "Final config.js and CHANGELOG.md have no markers, include proxy.trust, rateLimit and requestTimeoutMs with no top-level trustProxy, and both changelog entries."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and ratelimit.test.js both use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "The README 'Local notes (Dana)' edit remains in the working tree diff, and scratch.http is untracked and not in any commit."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy, ran npm test after the fix, and reported 16 passing plus the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

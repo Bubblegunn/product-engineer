@@ -1,0 +1,32 @@
+{
+  "label": "g7b719423",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Merged in main with --no-ff --no-commit and then committed, giving a proper two-parent merge commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "Merged config.js and CHANGELOG.md are clean and contain every required setting and entry."
+    },
+    "3": {
+      "pass": true,
+      "why": "No config.trustProxy remains; both ratelimit.js and its test use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only the four resolved files were staged; the README edit and untracked scratch.http are untouched."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped for trustProxy and ran node --test after resolving, and the answer reports the real result and the adaptation."
+    }
+  }
+}

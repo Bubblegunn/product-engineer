@@ -1,0 +1,39 @@
+{
+  "label": "gcfc5a2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 as most likely the main cause and the retry change as a smaller contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the skipped test at line 24 (#41) and the runbook error."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text cites 'Oct 15' and says 'we've corrected the cause'."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran git tag and branch listings and never checked which tags contain the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

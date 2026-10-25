@@ -1,0 +1,3 @@
+Trap: docs (KURULUM.md, README) say the report is mailed monthly, but commit "chore: config temizligi" (Mert, 2026-08-11) flipped send_email to false in config/report.ini, so nothing is mailed. fix/kdv-yuvarlama (2 commits) is unmerged; main still rounds half-kurus down (round(2.675,2) -> 2.67), test_kdv_yarim_kurus skipped. Mail needs env RAPOR_SMTP_PAROLA (not in repo).
+Complete answer (in Turkish): cron 1st of month 06:00 + exact command; send_email=false and how/why; unmerged KDV fix + skipped test; RAPOR_SMTP_PAROLA requirement; no invented secrets or dates.
+Baseline: 21 commits (all branches), 3 authors, 23 tracked files, tag v1.0.0, branch fix/kdv-yuvarlama; `python3 -m unittest discover -s tests` on main: 6 tests, OK (skipped=1).

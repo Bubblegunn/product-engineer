@@ -1,0 +1,39 @@
+{
+  "label": "g73a332",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "package-lock.json was not changed, so the lockfile engines still says >=16."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml and release.yml are fixed, but examples/docker/Dockerfile was not touched."
+    },
+    "3": {
+      "pass": false,
+      "why": "The README badge still says 16 and docs/install.md was not updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Adds a BREAKING line under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "It did not mention the Dockerfile or the clone fallback, and the badge, lockfile and install.md were missed."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

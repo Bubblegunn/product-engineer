@@ -1,0 +1,39 @@
+{
+  "label": "g1552b6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the tidy commit as the cause and the retry change as only a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix may not be live; mentions setting DEDUPE_WINDOW_SECONDS in prod only as a possible reason it is fixed, not as a workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test under #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'a software update on October 15' and promises repeats should stop once the fix is live."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran rev-parse, git tag --contains and git describe --tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

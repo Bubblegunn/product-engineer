@@ -1,0 +1,40 @@
+{
+  "label": "g984a8d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and its warning block removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": false,
+      "why": "The 0.6.0 section of migration.md still says the flag works and to switch to --delimiter ';', which contradicts the removal."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says both jobs used the flag and that the hint of --delimiter ';' alone would have dropped the BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep first, unittest run after editing, and the answer reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

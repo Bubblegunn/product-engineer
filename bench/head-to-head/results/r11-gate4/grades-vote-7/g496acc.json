@@ -1,0 +1,39 @@
+{
+  "label": "g496acc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 and v2.3.0, and calls the retry change not the root cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "No env-var workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the skipped test and #41, and says the runbook is wrong."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'Between about Oct 15...'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Compared the config at HEAD and at the v2.3.0 tag and listed the tags, which shows the fix is not in the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

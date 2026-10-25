@@ -1,0 +1,39 @@
+{
+  "label": "ga643a6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the 503cc35 dedupe default as the likely cause and the retry change as making redelivery more likely."
+    },
+    "2": {
+      "pass": false,
+      "why": "Notes the fix is unreleased but gives no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and the wrong runbook, not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text makes no count, date, ETA or no-more-duplicates promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Showed the commits with git show and ran git tag --contains and git tag -l."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

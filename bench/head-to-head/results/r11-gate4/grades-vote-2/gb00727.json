@@ -1,0 +1,40 @@
+{
+  "label": "gb00727",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "cli.py diff removes the argument and the handling block, leaving --delimiter/--bom/--newline; argparse rejects the unknown flag."
+    },
+    "2": {
+      "pass": true,
+      "why": "nightly_export.sh and the crontab line both now use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "Legacy test deleted, test_explicit_excel_options kept, docs updated, 0.8.0 changelog entry added, history kept."
+    },
+    "4": {
+      "pass": true,
+      "why": "States both jobs still used the flag, what was changed, and that the old docs' --delimiter ';' alone would have dropped the BOM and CRLF."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a recursive grep first, then make test, and the answer reports 11 tests passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

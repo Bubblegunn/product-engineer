@@ -1400,3 +1400,13 @@ Decomposition (ours only):
 Decision: no cost cut is made. The only large lever would be shortening the skill text or dropping a claim family, and neither can be justified without a gate (a cut that removes a rule changes behaviour, and tuning against read tasks is excluded). The cost is the price of the checks that fire; report it as 1.3 times base without blocks and 1.5 times base with them.
 Loss diagnosis from gates 1 to 3: the remaining named losses were the two gaps built on 2026-10-24 (leftover old values, names of removed settings in customer notes). Nothing else repeats across writers.
 First place is not nearly certain, so no gate is run. Nothing is running.
+
+## Round r11 (2026-10-25): redesign, replay, development gate 4
+
+Owner order (asleep, autonomous): redesign against the best rivals (`docs/RIVAL-ANALYSIS-2026-10-25.md`), then keep measuring. Commits `3f6e4ad6`, `7c17fe31`, `bbe8673c`: names kept and explained, plain check only for a rewrite with a source, request decides the shape, pre-edit search hook (Edit, Write, Bash writes), eight always-on rules in the SessionStart output, "none" lines that name what they searched, repository checks scoped to the session's files. Step 0 replay on the 108 stored sessions (`docs/REPLAY-2026-10-25.md`): no new block, finding or error; every changed decision listed. Local gate: macOS 1268 tests pass; Docker node 20, 22, 24 the same single container-only failure as before the change.
+
+Gate 4 (`docs/DEV-GATE-r11.md`, frozen before the first session; `results/r11-gate4/SUMMARY.md`): ours 41.33 of 48, best other arm gwc-invoked 35.33, base 32.67; paired interval [+0.14, +0.86]; **I1 holds**. Cost 1.45 times base.
+
+## Resume (r11, after gate 4)
+
+Product `bbe8673c` (code); gate 4 passed under the frozen I1 rule. The 12 gate-4 tasks and everything before are read material. Next: a final on a fresh sealed set from a further new writer (protocol frozen before its first run).

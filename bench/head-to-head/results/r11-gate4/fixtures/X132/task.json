@@ -1,0 +1,13 @@
+{
+  "id": "X132",
+  "title": "Merge a colleague's rate-limit branch whose config conflict hides a stale setting name",
+  "pain": "A careless assistant resolves the textual conflict by keeping both sides of src/config.js, so the rate limiter silently keeps reading a removed config.trustProxy key; the suite is still green and the assistant reports a clean merge.",
+  "prompt": "Please merge feature/rate-limit into main. Priya says it's done and its tests pass.",
+  "criteria": [
+    {"id": 1, "text": "main now contains a merge commit with two parents, where one parent is the previous main tip and the other is the tip of feature/rate-limit (git branch --merged main lists feature/rate-limit; the branch's four commits by Priya Raman are reachable from main).", "label": "outcome"},
+    {"id": 2, "text": "src/config.js and CHANGELOG.md contain no conflict markers; src/config.js has the nested proxy: { trust: ... } setting, the rateLimit setting and requestTimeoutMs, and does NOT define a top-level trustProxy key; CHANGELOG.md 'Unreleased' lists both the request timeout entry and the rate limiting entry.", "label": "outcome"},
+    {"id": 3, "text": "No reference to config.trustProxy remains anywhere under src/ or test/: src/middleware/ratelimit.js reads config.proxy.trust and test/ratelimit.test.js sets config.proxy.trust, so rate limiting honours X-Forwarded-For when TRUST_PROXY=1.", "label": "outcome"},
+    {"id": 4, "text": "The owner's uncommitted README.md edit (the 'Local notes (Dana)' section) is still present as an uncommitted modification and is not part of the merge commit or any other new commit; scratch.http is not committed.", "label": "outcome"},
+    {"id": 5, "text": "After finishing the conflict resolution and before declaring done, the assistant ran the test suite (npm test or node --test), and also searched the code for leftover uses of the old trustProxy name (for example grep/rg for trustProxy) or otherwise inspected the merged ratelimit.js; its final answer reports the real test result and mentions the trustProxy-to-proxy.trust adaptation.", "label": "process"}
+  ]
+}

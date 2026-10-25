@@ -1,0 +1,40 @@
+{
+  "label": "g5ea834",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and warning block removed."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to the three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc has a removal note and a reworded 0.6.0 section; explicit test kept; changelog entry added."
+    },
+    "4": {
+      "pass": false,
+      "why": "Premise corrected and changes stated, but the incompleteness of --delimiter ';' is not mentioned."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, unittest run, reports 12 passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

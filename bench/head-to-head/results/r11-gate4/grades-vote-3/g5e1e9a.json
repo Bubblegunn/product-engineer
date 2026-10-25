@@ -1,0 +1,39 @@
+{
+  "label": "g5e1e9a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Dedupe off from Tomas's commit is the main cause, and the retry change is a second route."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test (issue #41)."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'software update on October 15' and 'expect the repeats to stop once rolled out'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag --contains and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

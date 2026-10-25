@@ -1,0 +1,39 @@
+{
+  "label": "g0987e7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the hunch was close but the dedupe-off commit is the cause, with retries making it more likely."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged and likely not deployed, but no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The suggested wording states 'Between roughly Oct 15 and now', an unverified date range."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on both commits and git describe --tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

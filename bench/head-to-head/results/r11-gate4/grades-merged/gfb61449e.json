@@ -1,0 +1,32 @@
+{
+  "label": "gfb61449e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "config.py, .env.example and docker-compose.yml all set to 25 in the commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests, README, api.md (prose and 413 example) and capacity.md (200 MB) all use 25."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer says 200 MB exceeds the old 128 MB budget."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran a repo-wide grep and unittest after the edits, and reports 11 passed."
+    }
+  }
+}

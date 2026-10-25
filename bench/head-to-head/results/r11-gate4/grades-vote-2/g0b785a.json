@@ -1,0 +1,39 @@
+{
+  "label": "g0b785a",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear, the old name is stated as no longer read, and cron users are told to rename it."
+    },
+    "2": {
+      "pass": true,
+      "why": "No regex feature is mentioned."
+    },
+    "3": {
+      "pass": true,
+      "why": "--follow is described as experimental and off by default, with the config snippet in logslice.config.json."
+    },
+    "4": {
+      "pass": true,
+      "why": "Lists --json as one object per line and case-insensitive --level, with no relative-time claim."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git log and git diff over v1.4.0..HEAD including src, which covers the config change."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

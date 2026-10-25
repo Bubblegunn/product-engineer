@@ -1,0 +1,40 @@
+{
+  "label": "gb715ef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag definition and handling removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, tests and an Unreleased changelog entry are consistent with the removal."
+    },
+    "4": {
+      "pass": false,
+      "why": "Corrects the premise but doesn't say the documented --delimiter ';' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep first, unittest run after editing, and the answer says the 11 remaining tests pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

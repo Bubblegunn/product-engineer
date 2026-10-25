@@ -1,0 +1,39 @@
+{
+  "label": "gfada3d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the Tomas commit as the cause and the retry change as not the root cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test (issue #41)."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'Between about Oct 15 and the time a fix is deployed'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, a tag listing, and loaded the config at the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

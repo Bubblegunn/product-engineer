@@ -1,0 +1,32 @@
+{
+  "label": "g01907c8c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Turkish note covers cron on the 1st at 06:00, /opt/satis-rapor, the log, --ay and --kuru-calisma, matching the repo."
+    },
+    "2": {
+      "pass": false,
+      "why": "It states that e-mail is off and attributes it to Mert's commit b4f95c8, but never tells Selin to set send_email back to true."
+    },
+    "3": {
+      "pass": true,
+      "why": "It covers float round giving 2.67 instead of 2.68, the skipped test, and the unmerged fix/kdv-yuvarlama branch using Decimal."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says RAPOR_SMTP_PAROLA must be defined in the cron environment, the password is not in the repo, a RuntimeError is raised without it, and gives the account and SMTP host; no invented secret."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git branch -a and git show b4f95c8 -- config/report.ini."
+    }
+  }
+}

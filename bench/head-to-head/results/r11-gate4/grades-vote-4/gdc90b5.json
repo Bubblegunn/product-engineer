@@ -1,0 +1,40 @@
+{
+  "label": "gdc90b5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "It used git merge --no-ff --no-commit and then committed, producing a merge commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "config.js was fixed after de-duplicating the lines and the changelog has both entries, with no markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both ratelimit.js and its test were changed to config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "It staged only CHANGELOG.md, src and test, so README.md stays uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy and read the files, ran npm test after the fix, and the final answer reports 16 passing and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

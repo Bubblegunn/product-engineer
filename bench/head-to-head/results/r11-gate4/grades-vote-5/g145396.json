@@ -1,0 +1,39 @@
+{
+  "label": "g145396",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile still uses node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "Badge, README sentence and docs/install.md are updated, and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "It states it did not run the tests."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

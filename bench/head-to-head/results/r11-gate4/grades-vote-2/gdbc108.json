@@ -1,0 +1,39 @@
+{
+  "label": "gdbc108",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Has the cron schedule, command, log, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says send_email=false but omits the commit, Mert and the date, and does not tell Selin to set true."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the round bug, the 267.50 example, the skipped test, and the Decimal fix on the unmerged branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "RAPOR_SMTP_PAROLA required, not in the repo, error if missing, with the SMTP details."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran git branch -a but never examined the history or diff of config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

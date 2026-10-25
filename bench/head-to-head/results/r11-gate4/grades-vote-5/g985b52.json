@@ -1,0 +1,40 @@
+{
+  "label": "g985b52",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three server settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client limit 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs all updated, with 200 MB arithmetic."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s untouched, and the answer says 200 MB is over half of the old 256m."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, unittest run, and 11 of 11 pass reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

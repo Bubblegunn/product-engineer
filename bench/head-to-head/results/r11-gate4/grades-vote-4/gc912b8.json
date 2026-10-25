@@ -1,0 +1,39 @@
+{
+  "label": "gc912b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three files say 2.4.0."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 2.4.0 section is correct, Parquet is removed, and Unreleased is empty."
+    },
+    "3": {
+      "pass": true,
+      "why": "The v2.4.0 tag is on the release commit."
+    },
+    "4": {
+      "pass": true,
+      "why": "todo.md edits are uncommitted and the stash was not touched."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the code for parquet and tz, ran pytest before committing, and reported 11 passing and the Parquet drop."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X133",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g18735b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 as the likely cause and says the retry change did not disable dedupe."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test tracked as issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text states 'roughly the week of Oct 15–22' and says the problem is fixed."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran no tag or branch containment check."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

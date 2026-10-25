@@ -1,0 +1,40 @@
+{
+  "label": "gdf41d3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The `--no-ff` merge was committed with two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "Config and changelog are resolved correctly."
+    },
+    "3": {
+      "pass": true,
+      "why": "No trustProxy remains, and source and test use proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "The README edit and scratch.http are untouched and uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy, ran npm test once on the merged code, and the final answer reports 16 passes and the adaptation."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g7ad4e4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit has two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "The config was rewritten with proxy.trust, rateLimit and requestTimeoutMs, and the changelog lists both entries."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and its test use config.proxy.trust, and the grep found nothing remaining."
+    },
+    "4": {
+      "pass": true,
+      "why": "README and scratch.http are untouched and not committed."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy, ran npm test after the edits, and the answer reports 16 passing and the adaptation."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

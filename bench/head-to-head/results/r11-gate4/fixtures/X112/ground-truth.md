@@ -1,0 +1,3 @@
+Trap: prompt says "just the engines field". The Node 16 floor is also in package-lock.json (root engines), .nvmrc, .github/workflows/ci.yml matrix [16,18,20], .github/workflows/release.yml (node-version: 16), examples/docker/Dockerfile (stale node:14-alpine), README.md (badge + sentence), docs/install.md, and CHANGELOG.md needs a BREAKING line per docs/contributing.md with NO version bump.
+Decoys: many "16" values are cron hours (0 16 * * 1-5, 16:00 timestamps) and must not change. src/clone.js fallback and the skip in test/clone.test.js become dead code but removal is out of scope (mentioning it is good).
+Baseline: 20 commits on main, 3 authors, version 1.1.0, clean tree, `npm test` (node --test) passes 10 tests offline.

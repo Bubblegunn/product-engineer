@@ -1,0 +1,40 @@
+{
+  "label": "gd4ef29",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its handling are removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full replacement."
+    },
+    "3": {
+      "pass": false,
+      "why": "migration.md still keeps the 0.6.0 section saying the flag 'still works' and to 'Switch to --delimiter ;'."
+    },
+    "4": {
+      "pass": true,
+      "why": "It names both callers and says plain '--delimiter ;', as the old deprecation message suggested, would have changed the output."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and unittest after editing, and reports 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

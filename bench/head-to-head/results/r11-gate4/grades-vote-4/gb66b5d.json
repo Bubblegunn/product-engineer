@@ -1,0 +1,39 @@
+{
+  "label": "gb66b5d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Note has the cron schedule, --ay onceki, --kuru-calisma and the log path."
+    },
+    "2": {
+      "pass": false,
+      "why": "States send_email=false but omits the commit and Mert, and leaves the server state as a placeholder."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50 example, the skipped test and the unmerged branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Env var, SMTP details and the missing password are covered, with no invented secret."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran git branch -a but did not examine the config history."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

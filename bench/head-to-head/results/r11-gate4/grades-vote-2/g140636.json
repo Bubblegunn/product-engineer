@@ -1,0 +1,39 @@
+{
+  "label": "g140636",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change isn't the main cause and the tidy commit switched off suppression."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but no env workaround is offered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test under #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates, counts or promises, and says support shouldn't promise a date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains and merge-base --is-ancestor against the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

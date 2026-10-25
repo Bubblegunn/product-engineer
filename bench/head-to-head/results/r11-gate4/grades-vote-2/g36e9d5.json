@@ -1,0 +1,39 @@
+{
+  "label": "g36e9d5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the cause was the tidy commit, not the retry change."
+    },
+    "2": {
+      "pass": false,
+      "why": "Suggests tagging 2.3.1 but gives no env-var workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test under #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Support guidance gives a window from the 2.3.0 release (Oct 15) and says duplicates should stop once deployed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains, merge-base and loaded config from both the tag and HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

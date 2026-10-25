@@ -1,0 +1,40 @@
+{
+  "label": "g996ebc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All server-side limits are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs updated, including 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "The over-eager TTL test change was reverted, and the answer discloses the capacity problem and the mem_limit raise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran unittest, reported 11 passed and the earlier failure; grep -r for the old limit."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g27da46",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, .env.example and compose all 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client constant 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs all updated, capacity.md reads 25x8=200."
+    },
+    "4": {
+      "pass": true,
+      "why": "TTL, listing and retry 10s unchanged; the answer explains 200 MB vs the old 128 MB ceiling."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and a unittest run; the answer reports tests pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

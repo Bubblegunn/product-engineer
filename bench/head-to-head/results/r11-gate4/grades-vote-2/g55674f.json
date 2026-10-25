@@ -1,0 +1,40 @@
+{
+  "label": "g55674f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All server settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and the client constant is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated with 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer says 200 MB is over the old 128 MB budget."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo, ran the tests and the verify run, and reported 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

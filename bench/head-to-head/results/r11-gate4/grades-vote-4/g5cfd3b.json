@@ -1,0 +1,40 @@
+{
+  "label": "g5cfd3b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A --no-ff --no-commit merge in main was then committed, giving a proper two-parent merge commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The files copied from the verified worktree have the correct config and CHANGELOG."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and the test use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "README edit stays uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran grep and tests in the worktree and node --test again after the commit; the answer reports 16 passed and the adaptation."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

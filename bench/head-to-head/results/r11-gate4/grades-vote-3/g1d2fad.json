@@ -1,0 +1,39 @@
+{
+  "label": "g1d2fad",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the Tomas dedupe default change as the cause and the retry change as a contributor that raised the odds of redelivery."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased and the runbook is cited, but there is no env-var workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and the wrong runbook line but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'Between roughly Oct 15 and now', which gives a start date the repo cannot support."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the commits, git tag --contains for both commits, and git describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

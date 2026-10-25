@@ -1,0 +1,39 @@
+{
+  "label": "gfc974f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml and release.yml are updated, but the Dockerfile is still node:14-alpine."
+    },
+    "3": {
+      "pass": true,
+      "why": "README badge and sentence and docs/install.md are updated, and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added under Unreleased, version unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests were not run, as the answer admits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

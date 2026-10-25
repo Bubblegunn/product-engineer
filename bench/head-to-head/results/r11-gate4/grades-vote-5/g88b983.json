@@ -1,0 +1,40 @@
+{
+  "label": "g88b983",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed and a rejection test added."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration rewritten, Unreleased changelog entry added, docs updated, explicit test kept."
+    },
+    "4": {
+      "pass": false,
+      "why": "Corrects the premise but does not say the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, unittest and pytest run, and 12 passing reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

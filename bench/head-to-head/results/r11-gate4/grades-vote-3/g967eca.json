@@ -1,0 +1,39 @@
+{
+  "label": "g967eca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says a different change than the retry one is the likely cause and names Tomas's dedupe default change."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Does not mention the in-memory restart limit, the skipped test, or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text gives 'Oct 15 and Oct 22' and 'you shouldn't receive duplicates going forward'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show and listed tags and branches, enough to show the fix is untagged."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

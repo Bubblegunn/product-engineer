@@ -1,0 +1,39 @@
+{
+  "label": "g17a378",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls it a combination, but says the tidy commit removed the protection and is the likelier root cause."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the fix is unreleased and gives the DEDUPE_WINDOW_SECONDS=300 environment workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook line but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text is generic, with no dates, counts or promises."
+    },
+    "5": {
+      "pass": true,
+      "why": "Traced the history with git log -p and checked the tag list and the config at the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ga1e739",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's change to 0 in 2.3.0 as the cause and the retry change as not the main one."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and the wrong runbook, not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text gives 'October 15' as the date of the update and shows it as fact."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show, merge-base --is-ancestor and tag listing and branch containment."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

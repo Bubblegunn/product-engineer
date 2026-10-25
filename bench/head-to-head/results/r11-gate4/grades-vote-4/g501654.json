@@ -1,0 +1,39 @@
+{
+  "label": "g501654",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "package-lock.json and .nvmrc were not updated."
+    },
+    "2": {
+      "pass": false,
+      "why": "No CI, release or Docker file was changed."
+    },
+    "3": {
+      "pass": false,
+      "why": "The docs/install.md CI list still says 16."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line is under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "The search was limited to named files and missed the lockfile and the Dockerfile."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

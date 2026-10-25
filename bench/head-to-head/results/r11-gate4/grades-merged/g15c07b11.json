@@ -1,0 +1,32 @@
+{
+  "label": "g15c07b11",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies the Oct 14 tidy commit as the cause, with retries only making it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround of setting DEDUPE_WINDOW_SECONDS=300 in the environment."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text gives 'Oct 15 and Oct 22' and 'expect no more duplicates'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on the bug commit and listed tags; the fix's position was inferred from the log."
+    }
+  }
+}

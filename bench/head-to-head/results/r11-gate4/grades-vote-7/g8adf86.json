@@ -1,0 +1,39 @@
+{
+  "label": "g8adf86",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Gives Tomas's commit as the cause that let duplicates through and the retry change as only part of it."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The template text says 'you shouldn't see duplicates after that' and mentions last week."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran tag --contains on the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

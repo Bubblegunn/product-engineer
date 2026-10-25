@@ -1,0 +1,39 @@
+{
+  "label": "ge16896",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change contributed but wasn't the main cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but no env workaround is offered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, and the skipped test under #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'a software update on October 15' and implies repeats stop once it's live."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains, git log v2.3.0..main and rev-parse."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

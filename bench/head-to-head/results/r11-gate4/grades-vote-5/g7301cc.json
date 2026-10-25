@@ -1,0 +1,39 @@
+{
+  "label": "g7301cc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says PDF is in development, not merged into main, and not confirmed for Friday."
+    },
+    "2": {
+      "pass": false,
+      "why": "No 200-item figure."
+    },
+    "3": {
+      "pass": false,
+      "why": "Only says it can be switched on and off, with no FEATURE_PDF_EXPORT=1 deployment step."
+    },
+    "4": {
+      "pass": true,
+      "why": "Semicolon option is called in progress and not yet released."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, git log feature/pdf-export, git status and git diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X122",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

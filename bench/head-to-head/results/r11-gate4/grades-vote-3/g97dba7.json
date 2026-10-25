@@ -1,0 +1,40 @@
+{
+  "label": "g97dba7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, .env.example and docker-compose all set to 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs updated, including 25 MB x 8 = 200 MB in capacity.md."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s untouched; the answer says 200 MB exceeds the old 128 MB budget and explains the mem_limit raise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran pytest after the edits and reported 11 passing; git grep covered the whole repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

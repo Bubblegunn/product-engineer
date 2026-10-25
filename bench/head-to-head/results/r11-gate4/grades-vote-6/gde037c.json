@@ -1,0 +1,39 @@
+{
+  "label": "gde037c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 as the likely main cause and the retry change as a smaller contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the in-memory store, the wrong runbook, and the skipped test with #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'On Oct 15, a change...' and claims the cause is corrected."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran git tag and git branch -a; never checked containment of the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

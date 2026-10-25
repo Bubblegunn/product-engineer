@@ -1,0 +1,39 @@
+{
+  "label": "gae2c9b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Note has the cron schedule, --ay onceki, --kuru-calisma and the log path."
+    },
+    "2": {
+      "pass": false,
+      "why": "States send_email=false and that it is not sent, but never mentions the chore commit or Mert."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50 example, the skipped test and Mert's unmerged branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Env var, SMTP details and the missing password are covered, with no invented secret."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran git branch -a and git log --all, but never examined the history of config/report.ini."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g867f30",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says dedupe was switched off in 2.3.0 and the retry change was not the main cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment-variable workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the skipped test and issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text states 'October 15' and says the repeats are expected to stop."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains and git log v2.3.0..HEAD, and inspected the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g21dff7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says PDF isn't built and misses the unmerged branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "No 200-item limit."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions FEATURE_PDF_EXPORT=1 only as the docs' claim, not as default-off on the branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Semicolon is described as in progress and not used yet, with no invented date."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only ran git diff and git log on the current branch, with no branch inspection."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X122",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

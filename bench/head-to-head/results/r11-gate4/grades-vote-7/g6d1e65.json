@@ -1,0 +1,39 @@
+{
+  "label": "g6d1e65",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Correctly names Tomas's commit as the main cause and the retry change as a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is untagged but offers no env-var workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and runbook error but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text cites 'October 15' and says 'you shouldn't see repeats once it's live'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show, tag --contains and log v2.3.0..main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "ga10cb6",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says 'the retry change created the duplicates' and calls the theory partly right, so the user's guess is not corrected."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is unreleased but gives no DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Notes the in-memory store, the skipped persistence test and issue #41, and the wrong runbook line."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no count, no deployment date, no ETA and no 'no more duplicates' promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag, git describe and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

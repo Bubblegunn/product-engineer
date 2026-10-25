@@ -1,0 +1,40 @@
+{
+  "label": "gbb235b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "A `--no-ff --no-commit` merge was then committed as a merge commit."
+    },
+    "2": {
+      "pass": true,
+      "why": "The config duplicate was fixed and the changelog has both entries."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both files use proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only src, test and CHANGELOG.md were added; the README edit is uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped trustProxy and ran npm test after the final fix; the answer reports 16 passing and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gdceb9b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are consistent, the explicit test remains, and the Unreleased entry is added."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not mention that '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep and the tests, and reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

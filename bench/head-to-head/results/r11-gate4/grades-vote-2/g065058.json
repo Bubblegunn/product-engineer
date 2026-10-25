@@ -1,0 +1,40 @@
+{
+  "label": "g065058",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag definition and handling removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to the three explicit options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs and tests consistent, Unreleased changelog entry added with history kept, explicit-options test remains."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the flag wasn't unused and what was changed, but doesn't mention the incomplete --delimiter ';' replacement."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep first, tests run after editing, and the answer reports 11 passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g41f1b8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed; the CLI rejects it."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc replaced with a removal note, explicit test kept, changelog entry added."
+    },
+    "4": {
+      "pass": false,
+      "why": "Premise corrected, but incompleteness of --delimiter ';' not stated."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, unittest, reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

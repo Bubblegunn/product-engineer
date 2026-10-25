@@ -1,0 +1,40 @@
+{
+  "label": "ge92d77",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config, .env.example and compose all set to 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are consistent, with the 200 MB arithmetic."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated values untouched; the answer says 200 MB is over the old 256m budget and explains the mem_limit change."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran unittest, reported 11 of 11; grep -r over the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

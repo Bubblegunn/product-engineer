@@ -1,0 +1,39 @@
+{
+  "label": "g848b10",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the dedupe default change as why duplicates got through, with retries only contributing."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged but there is no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates or counts, and the notes say the affected count and other message types are unknown."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains 5b4a53d and rev-list on the tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

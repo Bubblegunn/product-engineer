@@ -1,0 +1,39 @@
+{
+  "label": "g30081b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's 503cc35 as the main cause and the retry change as a smaller contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "No env workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook, the skipped test at dedupe.test.js:24 and issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text gives 'On Oct 15' and says the cause is corrected, which the repo cannot show."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits and git tag, git branch -a and git log --all to place the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

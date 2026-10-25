@@ -1,0 +1,40 @@
+{
+  "label": "g1e56af",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and warning removed from cli.py; the new test confirms --legacy-csv is rejected as unrecognized."
+    },
+    "2": {
+      "pass": true,
+      "why": "Script and crontab both use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": false,
+      "why": "docs/migration.md still has the 0.6.0 section saying the flag works and to switch to --delimiter ';'."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the flag was still in use and what changed, but never says the documented --delimiter ';' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep before editing, make test after, and the final answer reports 12 passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g955aa8",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Server settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated values untouched; the answer says the peak is over the old 128 MB budget."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran the suite and smoke.sh, reported 11 passing; grep over the repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

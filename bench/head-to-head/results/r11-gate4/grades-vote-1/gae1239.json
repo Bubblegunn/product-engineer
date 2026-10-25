@@ -1,0 +1,40 @@
+{
+  "label": "gae1239",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit is a combined-diff merge containing the branch commits."
+    },
+    "2": {
+      "pass": true,
+      "why": "config.js and the CHANGELOG have the correct content and no markers."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both files were replaced with config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "README is still dirty, scratch.http untracked, and the merge touches only the four resolved files."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy, inspected ratelimit.js, ran npm test after the fix, and the answer reports 16 passing and the adaptation."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g995451",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The `--no-ff` merge produced a two-parent merge commit with Priya's four commits reachable."
+    },
+    "2": {
+      "pass": true,
+      "why": "The final config has nested proxy.trust, rateLimit and requestTimeoutMs with no trustProxy key, and the changelog lists both entries."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and its test both use config.proxy.trust in the merge diff."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only four files were staged; the README edit stays uncommitted and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped trustProxy and inspected ratelimit.js in the merged tree, ran npm test after resolving, and the answer reports 16 tests passing and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

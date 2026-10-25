@@ -1,0 +1,32 @@
+{
+  "label": "gab174b7f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full options."
+    },
+    "3": {
+      "pass": false,
+      "why": "The migration 0.6.0 section still says 'Switch to --delimiter ;' as the equivalent."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not mention that '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep and make test, and reports 12 passing."
+    }
+  }
+}

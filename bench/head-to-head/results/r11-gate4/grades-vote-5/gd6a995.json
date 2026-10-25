@@ -1,0 +1,39 @@
+{
+  "label": "gd6a995",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers the cron schedule, log path, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "States send_email=false and the setting to enable it, but names no commit or author."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50 example, the skipped test, the unmerged branch with Decimal, and the kurus drift."
+    },
+    "4": {
+      "pass": true,
+      "why": "Env variable required for cron, not in the repo; account and host given."
+    },
+    "5": {
+      "pass": false,
+      "why": "Ran git branch -a but did not examine the config history."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

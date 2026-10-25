@@ -1,0 +1,39 @@
+{
+  "label": "g64249e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Release commit has 2.4.0 in all three files."
+    },
+    "2": {
+      "pass": true,
+      "why": "The 2.4.0 section lists --tz and the extremes() fix, omits Parquet, and keeps an empty Unreleased."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated v2.4.0 tag was created on the release commit on top of HEAD; old tags untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "todo.md is still modified in the working tree and not in the commit; the stash was never touched."
+    },
+    "5": {
+      "pass": false,
+      "why": "Tests (pytest) ran only after the commit and tag, and there was no history check against v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X133",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

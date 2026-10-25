@@ -1,0 +1,39 @@
+{
+  "label": "gca7cfc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's tidy commit as the main cause and the retry change as secondary."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is untagged but offers no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Mentions the in-memory store and the wrong runbook, but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text gives 'Oct 15' dates and says 'a fix is ready', which is unverified."
+    },
+    "5": {
+      "pass": true,
+      "why": "Checked tag --contains on the release commit and the tag list, which show only v2.3.0 and an untagged fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

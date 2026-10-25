@@ -1,0 +1,40 @@
+{
+  "label": "ge23a6e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration doc says the flag is removed and to use all three options; explicit test kept; changelog entry added."
+    },
+    "4": {
+      "pass": true,
+      "why": "Corrects the premise and says the docs' --delimiter ';' was not enough for the importer."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep before editing, pytest after, reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

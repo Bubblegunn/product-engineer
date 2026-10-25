@@ -1,0 +1,39 @@
+{
+  "label": "g7854bf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the dedupe-off commit is the more likely cause and the retry change a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged, but no workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates or counts, and tells support to hold off on saying it's fixed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git tag --contains, git describe --tags and git log v2.3.0..main."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

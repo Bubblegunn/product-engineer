@@ -1,0 +1,39 @@
+{
+  "label": "g3de6f1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change was not the direct cause and names Tomas's 503cc35 default change."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'Between roughly Oct 15 and now'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains for both commits and git describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

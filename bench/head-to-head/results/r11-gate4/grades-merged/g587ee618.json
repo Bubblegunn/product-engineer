@@ -1,0 +1,32 @@
+{
+  "label": "g587ee618",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Merged in main with --no-ff --no-commit and then committed, giving a two-parent merge."
+    },
+    "2": {
+      "pass": true,
+      "why": "The copied resolved files have no markers and contain the required settings and entries."
+    },
+    "3": {
+      "pass": true,
+      "why": "No trustProxy reference remains and both files use config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only specific files were staged, and the README edit and scratch.http are uncommitted."
+    },
+    "5": {
+      "pass": true,
+      "why": "Grepped for trustProxy and ran npm test in the worktree and again in main, and the answer reports 16 passing and the adaptation."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gb27d7f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "States the retry change is not the main cause and names the Tomas config default change."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'a software update on October 15', which implies a deployment date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used branch --contains and merge-base --is-ancestor to check the fix against v2.3.0."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

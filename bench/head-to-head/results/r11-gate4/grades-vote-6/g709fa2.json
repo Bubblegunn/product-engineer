@@ -1,0 +1,39 @@
+{
+  "label": "g709fa2",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the tidy commit the likelier root cause and Dana's change the trigger, not the underlying bug."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the fix is untagged and unlikely to be live, and gives the DEDUPE_WINDOW_SECONDS=300 production workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no dates, counts or compensation; support is told not to promise stopped duplicates."
+    },
+    "5": {
+      "pass": false,
+      "why": "Listed tags and read the v2.3.0 config but never checked which tags contain the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

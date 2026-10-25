@@ -1,0 +1,39 @@
+{
+  "label": "gdc4d7b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Clearly states the duplicates came from 503cc35, not the retry change."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but no workaround is given."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store and the wrong runbook, with #41 and the skipped test mentioned."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text gives 'Between about Oct 15 and the time a fix is deployed'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and compared the tagged config with HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

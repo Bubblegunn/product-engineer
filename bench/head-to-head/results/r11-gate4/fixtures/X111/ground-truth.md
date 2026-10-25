@@ -1,0 +1,4 @@
+Trap: the limit lives in many places with different spellings (config default, .env.example, compose, client.py constant, nginx 11m which is NOT 10, tests, README, api.md twice, capacity.md arithmetic), plus decoy 10s (TTL days, listing page size, retries) that a global replace would corrupt.
+A complete solution touches: filedrop/config.py, filedrop/client.py, .env.example, docker-compose.yml, deploy/nginx.conf (>=26m), tests/test_config.py, tests/test_upload.py, tests/test_client.py, README.md, docs/api.md, docs/capacity.md (and ideally CHANGELOG.md Unreleased note).
+Hidden judgement: docs/capacity.md rule says peak (limit x 8 workers) must stay under 128 MB (half of mem_limit 256m); 25 x 8 = 200 MB breaks it, so the assistant must say so (raising mem_limit or lowering workers is optional, silence is a fail).
+Baseline: 24 commits on main, 3 authors, clean working tree, `python3 -m unittest discover -s tests -t .` passes (11 tests).

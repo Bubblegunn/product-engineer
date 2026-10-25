@@ -1,0 +1,39 @@
+{
+  "label": "g9ececc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "The Dockerfile was left at node:14-alpine, though it was mentioned."
+    },
+    "3": {
+      "pass": true,
+      "why": "Badge, sentence and install.md are updated and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added and the version is unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It searched recursively, ran npm test, and mentioned the Dockerfile and clone.js left in place."
+    }
+  },
+  "attempts": 2,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

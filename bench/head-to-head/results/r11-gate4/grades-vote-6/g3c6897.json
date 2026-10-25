@@ -1,0 +1,39 @@
+{
+  "label": "g3c6897",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 (300 to 0) as the likely main cause and the retry change as contributing."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the runbook is wrong about restarts but does not mention the skipped test or #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The suggested reply gives no date, count, compensation or ETA."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits, merge-base --is-ancestor and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

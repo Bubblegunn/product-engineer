@@ -1,0 +1,39 @@
+{
+  "label": "ge62c01",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change is not the main cause and the dedupe default change by Tomas in 2.3.0 is."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased per the runbook, but no environment-variable workaround is offered."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers in-memory store, restart, runbook wrong, and skipped test with issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no count, date or promise, and the answer says counts and logs were not checked."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag --contains, merge-base --is-ancestor and log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

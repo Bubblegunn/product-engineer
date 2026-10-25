@@ -1,0 +1,39 @@
+{
+  "label": "ge1338d",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says CSV works, PDF isn't merged and isn't ready for Friday, and the notes name the feature/pdf-export branch."
+    },
+    "2": {
+      "pass": false,
+      "why": "The 200-item limit never appears."
+    },
+    "3": {
+      "pass": false,
+      "why": "Only says 'can be switched on and off', with no FEATURE_PDF_EXPORT=1 or default-off."
+    },
+    "4": {
+      "pass": true,
+      "why": "Semicolon option is described as in progress and not yet released."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, git log feature/pdf-export, git status and git diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X122",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g3b2268",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Says the retry change 'made duplicates possible' and frames it as two changes combined, not clearly correcting the user's guess."
+    },
+    "2": {
+      "pass": false,
+      "why": "No environment-variable workaround is given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no date, count or promise, and the notes say not to claim reminders only without checking."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains and git rev-list on the tags, and inspected the commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

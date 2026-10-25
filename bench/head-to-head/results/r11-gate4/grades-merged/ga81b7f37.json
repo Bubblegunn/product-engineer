@@ -1,0 +1,32 @@
+{
+  "label": "ga81b7f37",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The merge commit is a diff --cc combined diff with the branch's four commits included."
+    },
+    "2": {
+      "pass": true,
+      "why": "config.js and the CHANGELOG are correct and free of markers; it grepped for markers explicitly."
+    },
+    "3": {
+      "pass": true,
+      "why": "Both ratelimit.js and the test were switched to config.proxy.trust."
+    },
+    "4": {
+      "pass": true,
+      "why": "README is still dirty and scratch.http untracked; only four specific files were staged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran grep for trustProxy and npm test after the fix, and the answer reports 16 passing and the rename."
+    }
+  }
+}

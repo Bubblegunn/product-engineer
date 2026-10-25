@@ -1,0 +1,39 @@
+{
+  "label": "gcc2729",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "docs/DEVIR_NOTU.md (ASCII Turkish) gives the cron entry, the log path, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": false,
+      "why": "Names Mert, 2026-08-11 and 'config temizligi' and contrasts with KURULUM.md, but never tells Selin to set it back to true; it only asks Burak to fill in the reason and whether to enable it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Gives the 267.5→2.67 example, float round, the skipped test, and the unmerged fix/kdv-yuvarlama branch; says totals can drift by a few kurus; does not name ROUND_HALF_UP, but the Decimal fix is implied by the branch."
+    },
+    "4": {
+      "pass": true,
+      "why": "Says RAPOR_SMTP_PAROLA is required, the password is not in the repo and crontab does not set it; gives the SMTP account and host; no invented secret."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show b4f95c8 -- config/report.ini and git branch -a before writing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

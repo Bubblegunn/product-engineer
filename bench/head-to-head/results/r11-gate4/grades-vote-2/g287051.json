@@ -1,0 +1,40 @@
+{
+  "label": "g287051",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed and the explicit options remain."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The migration text is cleaned up, the Unreleased changelog entry is added, and the explicit-options test remains."
+    },
+    "4": {
+      "pass": false,
+      "why": "It corrects the premise but never says the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and make test afterwards, and the answer reports 11 of 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

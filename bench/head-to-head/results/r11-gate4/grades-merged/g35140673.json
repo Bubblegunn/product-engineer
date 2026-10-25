@@ -1,0 +1,32 @@
+{
+  "label": "g35140673",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are consistent, the explicit test remains, and the Unreleased entry is added."
+    },
+    "4": {
+      "pass": false,
+      "why": "It does not mention that '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep and the unittest suite, and reports 11 passing."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g62ebe5",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the cause was Tomas's 503cc35 and not the retry change, with retries only a contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Unreleased fix is covered, but no DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "States the in-memory store, the wrong runbook, the skipped test and issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Support points cite 'between Oct 15 and the fix' and say duplicates 'should stop' once deployed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show on the commits, git tag --contains HEAD and v2.3.0 ancestry checks."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "gfbcd50",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says 2.3.0 turned off suppression and the retry change was not the main cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is untagged, but no workaround is offered."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the restart forgetting and wrong runbook but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'We have corrected the fault' and the write-up is framed around 15–22 October dates."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains and git log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

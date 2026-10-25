@@ -1,0 +1,40 @@
+{
+  "label": "ge8c438",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated correctly."
+    },
+    "3": {
+      "pass": true,
+      "why": "Migration now records the removal, changelog 0.8.0 entry added, docs updated, explicit test kept."
+    },
+    "4": {
+      "pass": false,
+      "why": "Does not say the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, make test and unittest run, and 11 passing reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

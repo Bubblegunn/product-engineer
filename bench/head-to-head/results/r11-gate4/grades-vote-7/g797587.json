@@ -1,0 +1,39 @@
+{
+  "label": "g797587",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's commit and the default change, and says the retry change is not the main cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is untagged but gives no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the runbook error and the dedupe.js comment but not the skipped test or #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text says 'We have corrected the fault', which is unverified."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran tag --contains and log v2.3.0..HEAD."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

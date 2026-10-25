@@ -1,0 +1,40 @@
+{
+  "label": "ga4ccfd",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag definition and its handling block are gone from cli.py, so argparse rejects it as unknown."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both the script and the crontab line now use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The legacy test is deleted, test_explicit_excel_options remains, migration.md is rewritten, and the changelog has a 0.8.0 entry with history intact."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the flag was still in use and what it changed, but never says the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then unittest and make test, and reported that all 11 tests pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

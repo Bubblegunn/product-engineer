@@ -1,0 +1,40 @@
+{
+  "label": "g8faacc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Config default, .env.example and compose are 25."
+    },
+    "2": {
+      "pass": false,
+      "why": "nginx was raised but MAX_CLIENT_BYTES in client.py was left at 10 MiB."
+    },
+    "3": {
+      "pass": false,
+      "why": "test_client.py and test_upload.py still use 10 MB boundaries."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s untouched; the answer discloses the 200 MB vs 128 MB capacity issue."
+    },
+    "5": {
+      "pass": true,
+      "why": "Searched the repo, ran unittest, and honestly reported 1 of 11 failing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

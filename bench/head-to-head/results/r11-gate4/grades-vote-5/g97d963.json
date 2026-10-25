@@ -1,0 +1,39 @@
+{
+  "label": "g97d963",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says a different change, the Tomas dedupe default, is the main cause and retries made it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround is given, only a note to check whether production sets it."
+    },
+    "3": {
+      "pass": false,
+      "why": "Never mentions the in-memory store or the skipped test."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text gives an Oct 15–22 window and says 'you shouldn't receive duplicates going forward'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, the tag list and rev-list on the tags."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

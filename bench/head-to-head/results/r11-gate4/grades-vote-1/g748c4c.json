@@ -1,0 +1,40 @@
+{
+  "label": "g748c4c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three server-side settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and the client limit is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated, including capacity.md at 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer says the rule breaks at 200 MB versus 128 MB."
+    },
+    "5": {
+      "pass": true,
+      "why": "Whole-repo grep, then unittest, with 11 passes reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

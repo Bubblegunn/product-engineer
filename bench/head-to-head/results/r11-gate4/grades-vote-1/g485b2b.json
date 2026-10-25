@@ -1,0 +1,40 @@
+{
+  "label": "g485b2b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three server-side settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are consistent, with the 200 MB arithmetic."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are kept, and the answer flags 200 MB against the old 128 MB budget."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide git grep, then pytest run, with 11 passes reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

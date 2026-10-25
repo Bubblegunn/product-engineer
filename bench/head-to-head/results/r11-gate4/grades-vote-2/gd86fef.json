@@ -1,0 +1,39 @@
+{
+  "label": "gd86fef",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says CSV is ready and PDF is not ready for Friday, and the answer says PDF is on unmerged feature/pdf-export and that the docs are wrong."
+    },
+    "2": {
+      "pass": true,
+      "why": "Draft says PDF fails on invoices over 200 line items because multi-page support is unfinished."
+    },
+    "3": {
+      "pass": false,
+      "why": "FEATURE_PDF_EXPORT and the off-by-default switch are never mentioned."
+    },
+    "4": {
+      "pass": false,
+      "why": "Semicolon option is omitted, but the draft adds an invented 'We'll confirm on Thursday' commitment."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a, git status, git diff and inspected feature/pdf-export."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X122",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

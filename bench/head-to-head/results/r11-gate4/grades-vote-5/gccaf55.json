@@ -1,0 +1,40 @@
+{
+  "label": "gccaf55",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag and warning block removed from cli.py; explicit options untouched."
+    },
+    "2": {
+      "pass": true,
+      "why": "Script and crontab both use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs updated, migration records removal, 0.8.0 changelog added, explicit-options test kept."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the flag was in use and what changed, but never says the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "git grep over the whole repo first, then ran tests (pytest) and reported 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

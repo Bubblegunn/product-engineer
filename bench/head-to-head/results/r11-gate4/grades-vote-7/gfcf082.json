@@ -1,0 +1,39 @@
+{
+  "label": "gfcf082",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": false,
+      "why": "Only package.json was changed; the lock file and .nvmrc were not."
+    },
+    "2": {
+      "pass": false,
+      "why": "No automation files were changed."
+    },
+    "3": {
+      "pass": false,
+      "why": "install.md still lists 16 in the CI sentence."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line is present and the version is unchanged."
+    },
+    "5": {
+      "pass": false,
+      "why": "Its searches covered only specific files and folders, not the whole repo."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

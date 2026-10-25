@@ -1,0 +1,32 @@
+{
+  "label": "g6b2cfd5e",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Attributes the cause to Tomas's dedupe change, with retry making it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround of setting DEDUPE_WINDOW_SECONDS=300; it only mentions release.sh."
+    },
+    "3": {
+      "pass": false,
+      "why": "Does not discuss the in-memory store, a restart, the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text states Oct 15–22 and 'you shouldn't receive duplicates going forward'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Listed tags and branches and compared commits; weak but sufficient."
+    }
+  }
+}

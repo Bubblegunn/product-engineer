@@ -1,0 +1,40 @@
+{
+  "label": "g52a685",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers are migrated to all three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "Docs, tests and changelog are consistent, and the migration note gives all three options."
+    },
+    "4": {
+      "pass": true,
+      "why": "It says the callers still used the flag, states the change, and notes the docs' '--delimiter ;' alone was not enough."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git grep over the tracked files, then pytest, and reported 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g08e158",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All three server settings are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client limit 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Final test_config only changes the default-limit test; docs and other tests updated."
+    },
+    "4": {
+      "pass": true,
+      "why": "The wrongly changed TTL test was reverted, unrelated 10s are intact, and the answer flags the capacity rule."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep, tests run, and the first failure and fix honestly reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "g2f48bb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Server default, .env.example and compose are 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and the client limit is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs are updated, with capacity.md showing 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "The TTL test was reverted after a failure, so unrelated 10s are intact, and the answer flags 200 MB over half of 256m."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and unittest after the edits, and the answer reports the real result including the one transient failure."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

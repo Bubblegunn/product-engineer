@@ -1,0 +1,39 @@
+{
+  "label": "ge5a0f4",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Dedupe turned off by Tomas's tidy commit, with the retry change as an aggravating factor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store but not the skipped test."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text includes 'you shouldn't see duplicates after that' once released, which is a promise of no further duplicates."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show and git tag --contains 5b4a53d."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

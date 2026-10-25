@@ -1,0 +1,39 @@
+{
+  "label": "gfa39d9",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the cause is the Tomas tidy commit, not the retry change, which only contributes."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test (issue #41)."
+    },
+    "4": {
+      "pass": false,
+      "why": "Support points say 'between Oct 15 and the fix' and 'once deployed, duplicates should stop'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show, tag --contains, merge-base and a config probe at the tag."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

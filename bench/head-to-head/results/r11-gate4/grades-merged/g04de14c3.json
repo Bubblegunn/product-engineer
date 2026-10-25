@@ -1,0 +1,32 @@
+{
+  "label": "g04de14c3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc all changed to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "release.yml and the Dockerfile were not changed."
+    },
+    "3": {
+      "pass": true,
+      "why": "README badge and sentence and docs/install.md updated; cron 16s untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "BREAKING line added under Unreleased and no version bump."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep, ran npm test and reported 10 passing, and said the engines-only assumption was wrong."
+    }
+  }
+}

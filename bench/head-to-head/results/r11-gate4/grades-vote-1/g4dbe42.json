@@ -1,0 +1,39 @@
+{
+  "label": "g4dbe42",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Release commit sets 2.4.0 in all three files."
+    },
+    "2": {
+      "pass": true,
+      "why": "2.4.0 section lists --tz and the extremes() fix, drops Parquet, and leaves an empty Unreleased."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated v2.4.0 tag created on the release commit; old tags untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "todo.md edits stay uncommitted and no stash command was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Checked git show and grep for parquet, ran pytest before tagging, and the answer reports the Parquet drop and 11 passing tests."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X133",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

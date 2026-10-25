@@ -1,0 +1,39 @@
+{
+  "label": "g7c77ab",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says probably not the retry change, and names the Tomas dedupe commit as the likely cause."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix may not be live but gives no workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the in-memory store, the wrong runbook line, and the skipped test (issue #41)."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'We found and fixed' and gives the 'Oct 15–22' window."
+    },
+    "5": {
+      "pass": false,
+      "why": "No tag --contains, describe or tag listing was run, so the fix's release status was not checked."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

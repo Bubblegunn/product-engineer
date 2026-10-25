@@ -1,0 +1,39 @@
+{
+  "label": "g5f74fb",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "package.json, package-lock.json and .nvmrc are all set to 18."
+    },
+    "2": {
+      "pass": false,
+      "why": "ci.yml was fixed, but release.yml still says 16 and the Dockerfile still says node:14."
+    },
+    "3": {
+      "pass": true,
+      "why": "The README badge and sentence and install.md all say 18, and the cron 16s are untouched."
+    },
+    "4": {
+      "pass": true,
+      "why": "The BREAKING line is present under Unreleased and the version is unchanged."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep, ran npm test after the edits, reported 10 passing, and said the engines-only assumption was wrong."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X112",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

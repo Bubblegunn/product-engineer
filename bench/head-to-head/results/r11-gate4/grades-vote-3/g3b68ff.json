@@ -1,0 +1,40 @@
+{
+  "label": "g3b68ff",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed from cli.py, and a test checks that it is rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use all three options."
+    },
+    "3": {
+      "pass": false,
+      "why": "The retained 0.6.0 section in migration.md still says to switch to `--delimiter ';'`, which violates the requirement."
+    },
+    "4": {
+      "pass": false,
+      "why": "It never says the documented '--delimiter ;' replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first, then make test, and reported 12 passed."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

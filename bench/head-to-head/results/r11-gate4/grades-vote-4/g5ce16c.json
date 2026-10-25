@@ -1,0 +1,39 @@
+{
+  "label": "g5ce16c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Pins the cause on Tomas's 503cc35 and says the retry change probably only made it worse."
+    },
+    "2": {
+      "pass": false,
+      "why": "States the fix is unreleased, but offers no DEDUPE_WINDOW_SECONDS=300 interim workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store and the wrong runbook, but omits the skipped test and issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer reply has no count, date, ETA or no-more-duplicates promise, and tells support to wait for confirmation."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the commits, git tag --contains and git describe."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

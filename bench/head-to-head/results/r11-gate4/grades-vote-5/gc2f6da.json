@@ -1,0 +1,39 @@
+{
+  "label": "gc2f6da",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's tidy commit disabling dedupe as the likelier root cause and calls Dana's change the trigger, not the underlying bug."
+    },
+    "2": {
+      "pass": true,
+      "why": "Says the fix is untagged after v2.3.0, per the runbook, and gives the DEDUPE_WINDOW_SECONDS=300 env workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Says the store is in memory and the runbook is wrong, but never mentions the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "The customer text has no date, count or promise, and says only 'rolling out a fix'."
+    },
+    "5": {
+      "pass": true,
+      "why": "Inspected commits, the tag list and the v2.3.0 config via git before concluding."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

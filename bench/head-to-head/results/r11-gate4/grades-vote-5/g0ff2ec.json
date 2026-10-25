@@ -1,0 +1,39 @@
+{
+  "label": "g0ff2ec",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Covers the cron schedule, the 1st at 06:00, the log path, --ay and --kuru-calisma."
+    },
+    "2": {
+      "pass": true,
+      "why": "States send_email=false, commit b4f95c8 changed true to false, contrasts with KURULUM.md, and says to set it to true to enable; the author is not named in that section, which is a minor gap."
+    },
+    "3": {
+      "pass": true,
+      "why": "Gives the 267.50 example, the skipped test, and the unmerged fix/kdv-yuvarlama branch using Decimal."
+    },
+    "4": {
+      "pass": true,
+      "why": "RAPOR_SMTP_PAROLA must be defined in the cron environment, not in the repo; account and host given."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git branch -a -vv and git show b4f95c8."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g3ee621",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Dedupe window switched off by Tomas's commit is the cause, with the retry change adding to redelivery."
+    },
+    "2": {
+      "pass": false,
+      "why": "Fix is unreleased, but there is no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store but not the skipped test."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text says 'We've corrected the setting that caused it' before the fix is confirmed deployed."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show and git tag --contains 5b4a53d."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

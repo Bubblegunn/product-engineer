@@ -1,0 +1,39 @@
+{
+  "label": "gd346ca",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Release commit sets 2.4.0 in all three files."
+    },
+    "2": {
+      "pass": true,
+      "why": "2.4.0 section has --tz and the extremes fix, no Parquet, empty Unreleased kept."
+    },
+    "3": {
+      "pass": true,
+      "why": "Annotated v2.4.0 tag on the release commit; no old tags touched."
+    },
+    "4": {
+      "pass": true,
+      "why": "todo.md edit remains in the working tree and no stash command was run."
+    },
+    "5": {
+      "pass": true,
+      "why": "Checked history and grepped code, ran make test before tagging, reported 11 passing and the Parquet drop."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X133",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

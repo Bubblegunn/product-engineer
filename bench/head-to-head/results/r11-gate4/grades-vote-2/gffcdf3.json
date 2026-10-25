@@ -1,0 +1,40 @@
+{
+  "label": "gffcdf3",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "config.py default, .env.example and docker-compose.yml are all 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx is 26m and MAX_CLIENT_BYTES is 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests, README, api.md and capacity.md are updated, with 25 MB x 8 workers = 200 MB."
+    },
+    "4": {
+      "pass": true,
+      "why": "Unrelated 10s are untouched, and the answer says 200 MB breaks the half-of-mem_limit rule, naming the 512m fix."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped the whole repo, ran unittest, and reported 11 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

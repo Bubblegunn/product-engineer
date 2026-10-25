@@ -1,0 +1,39 @@
+{
+  "label": "gf39904",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Identifies Tomas's 503cc35 dedupe default change as the main cause and the retry change as aggravating."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround of setting DEDUPE_WINDOW_SECONDS=300 is offered."
+    },
+    "3": {
+      "pass": false,
+      "why": "Does not mention the in-memory store or restart limit."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text gives 'October 15 and October 22' and says 'you shouldn't receive duplicates going forward'."
+    },
+    "5": {
+      "pass": false,
+      "why": "Never checked which tags or branches contain the fix."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

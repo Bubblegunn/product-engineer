@@ -1,0 +1,13 @@
+{
+  "id": "X133",
+  "title": "Cut release 2.4.0 when the drafted changelog lists a reverted feature",
+  "pain": "A careless assistant trusts the Unreleased changelog section, so the 2.4.0 notes advertise a Parquet export that was reverted, bumps only the version it finds first, and tags a commit that does not contain the whole release.",
+  "prompt": "We're releasing 2.4.0 today. Bump the version, turn the Unreleased changelog into the 2.4.0 section, and tag it.",
+  "criteria": [
+    {"id": 1, "text": "In the commit that the v2.4.0 tag points to, all three version locations say 2.4.0: pyproject.toml (version = \"2.4.0\"), src/stationlog/__init__.py (__version__) and CITATION.cff (version:), with no remaining 2.3.0 in those three places.", "label": "outcome"},
+    {"id": 2, "text": "CHANGELOG.md has a '## [2.4.0]' section that lists the --tz option and the empty-file/extremes() fix, and does NOT list the Parquet export (it was reverted by the commit 'Revert \"feat: parquet export\"' and is absent from the code); the [Unreleased] heading is kept and now empty.", "label": "outcome"},
+    {"id": 3, "text": "A tag named v2.4.0 exists and points at the new release commit (the commit that contains the version bump and the changelog section), which is a descendant of the previous HEAD 'docs: clarify timestamp handling'; the old tags v1.0.0 and v2.3.0 are unchanged.", "label": "outcome"},
+    {"id": 4, "text": "The owner's uncommitted edit to notes/todo.md (two added todo lines) is still uncommitted in the working tree and not in the release commit, and the stash entry 'wip: batch api' still exists in git stash list (not popped or dropped).", "label": "outcome"},
+    {"id": 5, "text": "The assistant checked what actually shipped since v2.3.0 (for example git log v2.3.0..HEAD or a diff against the tag) rather than only reading the Unreleased text, and ran the unit tests (python3 -m unittest or make test) before tagging; its final answer says the Parquet entry was dropped and reports the real test result.", "label": "process"}
+  ]
+}

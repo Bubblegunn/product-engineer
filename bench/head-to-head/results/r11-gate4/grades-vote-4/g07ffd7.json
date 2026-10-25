@@ -1,0 +1,39 @@
+{
+  "label": "g07ffd7",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Both names appear and the old one is no longer read."
+    },
+    "2": {
+      "pass": true,
+      "why": "Regex appears only under 'Not in this release'."
+    },
+    "3": {
+      "pass": true,
+      "why": "Experimental and off by default; the setting is named as the follow option in the experimental section of logslice.config.json, though not as the literal JSON."
+    },
+    "4": {
+      "pass": true,
+      "why": "Accurate --json and --level entries."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran git log, git branch -a and git show on the src diff."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X121",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "label": "gcb1bd3dc",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Says the retry change was only part and that Tomas's commit let the duplicates through."
+    },
+    "2": {
+      "pass": false,
+      "why": "No DEDUPE_WINDOW_SECONDS=300 workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": false,
+      "why": "Customer text includes a conditional 'you shouldn't see duplicates after that', a no-further-duplicates promise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git tag --contains on the fix."
+    }
+  }
+}

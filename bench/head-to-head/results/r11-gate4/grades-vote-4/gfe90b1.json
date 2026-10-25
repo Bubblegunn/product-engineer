@@ -1,0 +1,39 @@
+{
+  "label": "gfe90b1",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Note has the cron schedule, --ay onceki, --kuru-calisma and the log path."
+    },
+    "2": {
+      "pass": false,
+      "why": "States send_email=false but never names the chore commit or Mert as the one who set it."
+    },
+    "3": {
+      "pass": true,
+      "why": "Covers the 267.50 example, Decimal on the unmerged branch and the skipped test."
+    },
+    "4": {
+      "pass": true,
+      "why": "RAPOR_SMTP_PAROLA, the SMTP details and the missing password are covered, with no invented secret."
+    },
+    "5": {
+      "pass": false,
+      "why": "Only git log --stat plus the branch list were run, so the config diff was never examined."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X123",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

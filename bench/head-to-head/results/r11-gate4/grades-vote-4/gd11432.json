@@ -1,0 +1,40 @@
+{
+  "label": "gd11432",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "It ran git merge --no-ff --no-commit and then committed, producing a merge commit with two parents."
+    },
+    "2": {
+      "pass": true,
+      "why": "config.js and CHANGELOG.md are correctly resolved with no markers, and the final config.js has no top-level trustProxy."
+    },
+    "3": {
+      "pass": true,
+      "why": "ratelimit.js and its test were both switched to config.proxy.trust with sed."
+    },
+    "4": {
+      "pass": true,
+      "why": "Only four specific files were added, README.md stays modified and uncommitted, and scratch.http is untracked."
+    },
+    "5": {
+      "pass": true,
+      "why": "It grepped for trustProxy and inspected ratelimit.js before the sed fix and ran npm test after, and the final answer reports 16 passing tests and the rename."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X132",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X132 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,39 @@
+{
+  "label": "g8f000b",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names Tomas's chore commit (300→0, shipped in v2.3.0) as the main cause and treats the retry change as a smaller contributor."
+    },
+    "2": {
+      "pass": false,
+      "why": "Says the fix is untagged and may not be live, but never gives the DEDUPE_WINDOW_SECONDS=300 environment workaround."
+    },
+    "3": {
+      "pass": true,
+      "why": "Says the store is in memory, cites the skipped 'dedupe survives restart' test (issue #41), and calls the runbook line wrong."
+    },
+    "4": {
+      "pass": false,
+      "why": "The customer text states 'On Oct 15' as when the change happened, which implies a deployment date the repo cannot show."
+    },
+    "5": {
+      "pass": true,
+      "why": "Used git show and git log on the relevant commits and listed tags and branches; the fix's place relative to v2.3.0 was derived from that rather than a containment command."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

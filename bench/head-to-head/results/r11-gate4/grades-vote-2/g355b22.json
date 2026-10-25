@@ -1,0 +1,40 @@
+{
+  "label": "g355b22",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Flag definition and handling removed from cli.py."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers migrated to the three explicit options."
+    },
+    "3": {
+      "pass": false,
+      "why": "The 0.6.0 section of migration.md is unchanged and still says the flag works and to switch to --delimiter ';'."
+    },
+    "4": {
+      "pass": false,
+      "why": "Says the flag was still in use and what changed, but the final answer doesn't say the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "Recursive grep first, unittest run after editing, and the answer says the tests pass."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 1,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,40 @@
+{
+  "label": "gaa1a03",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "All server limits set to 25."
+    },
+    "2": {
+      "pass": true,
+      "why": "nginx 26m and client 25 MiB."
+    },
+    "3": {
+      "pass": true,
+      "why": "Tests and docs updated correctly."
+    },
+    "4": {
+      "pass": true,
+      "why": "The accidental TTL test change was reverted and the final diff leaves the 10s alone; the answer explains the capacity breach and the mem_limit raise."
+    },
+    "5": {
+      "pass": true,
+      "why": "Repo-wide grep and a unittest run after the fix; 11 tests passing reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X111",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X111 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

@@ -1,0 +1,32 @@
+{
+  "label": "g92a42eaf",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Names the dedupe default change as what let duplicates through, with retry making them possible."
+    },
+    "2": {
+      "pass": false,
+      "why": "No workaround given."
+    },
+    "3": {
+      "pass": false,
+      "why": "Notes the in-memory store but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no count, date or ETA, and it flags that other message types are unverified."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran tag --contains on the fix and rev-list on the tags."
+    }
+  }
+}

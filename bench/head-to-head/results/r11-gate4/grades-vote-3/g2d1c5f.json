@@ -1,0 +1,39 @@
+{
+  "label": "g2d1c5f",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "Calls the Tomas dedupe default the thing that turned duplicates on and the retry change only the setup."
+    },
+    "2": {
+      "pass": false,
+      "why": "States the fix is unreleased but gives no workaround."
+    },
+    "3": {
+      "pass": false,
+      "why": "Covers the in-memory store but not the skipped test or issue #41."
+    },
+    "4": {
+      "pass": true,
+      "why": "Customer text has no dates, counts or promises, and the notes say not to promise a fix date."
+    },
+    "5": {
+      "pass": true,
+      "why": "Ran git show on the commits and git tag --contains for both commits."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X124",
+    "sessions": 24,
+    "chunk": 1,
+    "chunks": 1
+  }
+}

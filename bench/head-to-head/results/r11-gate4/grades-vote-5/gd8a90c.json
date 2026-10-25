@@ -1,0 +1,40 @@
+{
+  "label": "gd8a90c",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag and its warning are removed from cli.py and the explicit options are untouched."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use --delimiter ';' --bom --newline crlf."
+    },
+    "3": {
+      "pass": true,
+      "why": "The explicit-options test remains, the docs are consistent, the changelog has an Unreleased removal entry, and the 0.6.0 migration text no longer says to use --delimiter ';'."
+    },
+    "4": {
+      "pass": false,
+      "why": "It says the jobs still used the flag and what it changed, but does not mention that the documented replacement was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "A recursive grep came first, make test ran after the edits, and 11 passing was reported."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}

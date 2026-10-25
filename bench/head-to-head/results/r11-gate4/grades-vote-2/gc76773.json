@@ -1,0 +1,40 @@
+{
+  "label": "gc76773",
+  "ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "grades": {
+    "1": {
+      "pass": true,
+      "why": "The flag is removed and a test confirms it is rejected."
+    },
+    "2": {
+      "pass": true,
+      "why": "Both callers use the full three options."
+    },
+    "3": {
+      "pass": true,
+      "why": "The docs are updated, the Unreleased changelog entry is added, and the explicit-options test remains."
+    },
+    "4": {
+      "pass": false,
+      "why": "It corrects the premise but never says the docs' '--delimiter ;' was incomplete."
+    },
+    "5": {
+      "pass": true,
+      "why": "It ran a recursive grep first and unittest afterwards, and the answer reports 12 passing."
+    }
+  },
+  "attempts": 1,
+  "joint": {
+    "task": "X113",
+    "sessions": 12,
+    "chunk": 2,
+    "chunks": 2
+  },
+  "note": "task X113 had 24 sessions, over 400000 characters of material, so it was split into 2 balanced chunks"
+}
