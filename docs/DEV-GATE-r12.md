@@ -1,0 +1,12 @@
+# Development gate 5, round r12 (protocol frozen 2026-10-25, before any session of this gate)
+
+Why: the r11 final on a sealed set (`results/r11-final/`) did not support "first" (ours 19.33, iso 19.67, interval [-0.61, +0.44]) after gate 4 had (41.33 against 35.33). The owner's order allows one more redesign iteration and one more gate with new writers, then a stop. The iteration is one general rule (commit `e16363fa`): when the premise of a request is off, do the part that can be undone and ask only before the irreversible; plus one phrase in the status rule. No checker changed. The twelve tasks of gate 4 and the six of the final are read material.
+
+## Tasks
+12 tasks from three NEW fresh Sonnet writers, each given only a plain description of a job and an empty directory: W14 requests whose wording hides a wrinkle (X151 to X154), W15 explaining the state of the work to other people (X161 to X164, one prompt in another language), W16 changes that must be applied consistently across the codebase (X171 to X174). Disclosure: the three job descriptions were written after the final's losses were read, so W14 and W16 are closer to the diagnosed classes than the descriptions of gate 4 were; the writers saw nothing of this code, its documents, any earlier task or the diagnosis. The controller has not read the task text nor the writers' closing messages ("done"); it saw counts only: 12 tasks, 60 criteria, 48 outcome, every fixture builds (exit 0; 20 to 30 commits; 21 to 32 tracked files), no secret-shaped string. Content hash (`sha256sum */* | sha256sum`, 16 hex): `20d475a0f7ec5c6f`.
+
+## Arms, runs, grading, pass rule
+As `docs/DEV-GATE-r11.md`, unchanged: ours at `e16363fa` (product), base, dod, dod-invoked, iso, iso-invoked, gwc, gwc-invoked; 3 runs; Sonnet `claude-sonnet-5-5`, Claude Code 2.1.308, three sessions at a time, subscription path with per-call HOME, work dirs under `/private/tmp`; five reason-first votes, 3-2 splits re-asked with seeds 6 and 7; **pass rule I1 only**: the lower bound of the 95% bootstrap interval (10000 resamples, seed 12345) of ours minus the best other arm per paired (task, run) cell is above 0. Reported, not gating: point estimate, per-writer totals, cost ratio, totals pooled with gate 4 and the final.
+
+## After the result
+This is the last gate of this programme run. Pass: write a Resume that says a launch claim still needs a final on a further sealed set from another new writer. Fail: diagnose, write a Resume, stop. No cell is shaped, dropped or re-graded to move a number.
