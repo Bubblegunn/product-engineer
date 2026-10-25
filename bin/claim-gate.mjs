@@ -141,7 +141,7 @@ export function readSession(lines) {
         // The write comes first: a command that redirects its own output is not evidence about later edits.
         // A test run that also writes a test file is a write to that path; the run that follows it is after the write.
         const touches = command.split(/[\s"'<>|;&=()]+/).filter((t) => t && isTestPath(t.replace(/^\.\//, "")));
-        if (BASH_WRITE.test(command) && !GIT_STATE.test(command) && (!TEST_RUN.test(command) || touches.length)) events.push({ kind: "write", path: "", text: "", touches });
+        if (BASH_WRITE.test(command) && !GIT_STATE.test(command) && (!TEST_RUN.test(command) || touches.length)) events.push({ kind: "write", path: "", text: "", touches, command });
         const ev = { kind: "bash", command };
         events.push(ev);
         if (b.id) bashById.set(b.id, ev);

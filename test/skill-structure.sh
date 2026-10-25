@@ -79,10 +79,11 @@ grep -qF 'Changes since v2.3.0' "$rn" || fail "$rn: rule 7 must show the range l
 grep -qF 'A version number goes on that line only' "$rn" || fail "$rn: rule 7 must keep version numbers on the range line"
 grep -qF 'git log' "$rn" || fail "$rn: rule 7 must check the range against git log"
 grep -qF 'faster' "$rn" || fail "$rn: rule 6 must name the unmeasured effect it forbids"
-# Round 3: the notes check comes first, and notes carry no code identifiers or file names.
+# Round 3: the notes check comes first. Round 11: customer notes keep the settings and numbers the reader acts on.
 [ "$(grep '^## ' "$rn" | head -1)" = "## Check before you save" ] || fail "$rn: the first section must be 'Check before you save'"
 grep -qF 'run `product-engineer notes <file>`' "$rn" || fail "$rn: the agent must run product-engineer notes <file>"
-grep -qF 'never contain code identifiers or file names' "$rn" || fail "$rn: notes never contain code identifiers or file names"
+grep -qF "leave out the code's inner workings" "$rn" || fail "$rn: customer notes leave out the code's inner workings"
+grep -qF 'They keep what the reader must type, change or check' "$rn" || fail "$rn: customer notes keep the names and numbers the reader must type, change or check"
 grep -q '^description:.*product-engineer notes' "$rn" || fail "$rn: the description must name the notes check"
 # The stubs check names the fallback first and the npx command from 0.8.0, and the commit split rule is kept.
 grep -qF '`product-engineer stubs` does this mechanically' skills/done-means-observed/SKILL.md || fail "done-means-observed must say product-engineer stubs does it mechanically"

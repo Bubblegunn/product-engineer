@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { verify, rangeOf, failingCount } from "../bin/verify.mjs";
+import { verify, rangeOf, failingCount, scopeChange } from "../bin/verify.mjs";
 import { readSession, REPLY_WHOLE } from "../bin/claim-gate.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -71,6 +71,62 @@ function releaseRepo(extra = {}) {
   commit(dir, "chore: remove old helper");
   return dir;
 }
+
+// The owner's unfinished work sits in the tree before the session starts and the session never opens it.
+function ownerWip() {
+  const dir = repo({
+    ...TESTED,
+    "src/api.js": "export function fetchUser(id) {\n  return db.get(id);\n}\n",
+    "src/page.js": "import { fetchUser } from './api.js';\nexport const show = (id) => fetchUser(id);\n",
+    "src/own.js": "export const own = 1;\n",
+  });
+  // The owner renames a function and leaves a TODO; page.js still uses the old name.
+  put(dir, { "src/api.js": "export function loadUser(id) {\n  // TODO finish the cache\n  return db.get(id);\n}\n" });
+  return dir;
+}
+
+test("scope: a finding about the owner's unfinished work in a file the session never wrote is not reported", () => {
+  const dir = ownerWip();
+  put(dir, { "src/own.js": "export const own = 2;\n" });
+  const f = verify({ cwd: dir, session: S([W(dir, "src/own.js"), B("npm test")]) });
+  assert.deepEqual(ids(f).filter((i) => ["names-dangling", "stubs-in-change", "twins-open"].includes(i)), [], JSON.stringify(f));
+  // The same tree with the session writing the owner's file: the findings are the session's own.
+  const f2 = verify({ cwd: dir, session: S([W(dir, "src/api.js"), B("npm test")]) });
+  assert.ok(ids(f2).includes("names-dangling"), JSON.stringify(f2));
+  assert.ok(ids(f2).includes("stubs-in-change"), JSON.stringify(f2));
+});
+
+test("scope: a write that names no path counts for the changed files its command mentions", () => {
+  const dir = ownerWip();
+  const shell = { kind: "write", path: "", text: "", touches: [], command: "sed -i 's/a/b/' src/api.js" };
+  put(dir, { "src/own.js": "export const own = 2;\n" });
+  assert.ok(ids(verify({ cwd: dir, session: S([W(dir, "src/own.js"), shell, B("npm test")]) })).includes("names-dangling"), "the sed target is in scope next to a written file");
+  assert.ok(!ids(verify({ cwd: dir, session: S([W(dir, "src/own.js"), B("npm test")]) })).includes("names-dangling"), "without it the owner's rename is out of scope");
+  // A path-less write that mentions no changed file leaves the change whole: nothing to scope by.
+  const blind = { kind: "write", path: "", text: "", touches: [], command: "cat > /tmp/x <<EOF" };
+  assert.ok(ids(verify({ cwd: dir, session: S([blind, B("npm test")]) })).includes("names-dangling"));
+});
+
+test("scope: a new file the owner staged and the session never wrote is not reported as unwired", () => {
+  const dir = repo({ ...TESTED, "src/app.js": "export const app = 1;\n", "src/other.js": "export const other = 1;\n" });
+  put(dir, { "src/ownernew.js": "export const fee = 1;\n" });
+  sh(dir, ["add", "src/ownernew.js"]);
+  put(dir, { "src/other.js": "export const other = 2;\n" });
+  assert.ok(!text(verify({ cwd: dir, session: S([W(dir, "src/other.js"), B("npm test")]) }), "unwired-file").includes("ownernew"));
+  assert.ok(text(verify({ cwd: dir, session: S([W(dir, "src/ownernew.js"), B("npm test")]) }), "unwired-file").includes("ownernew"));
+});
+
+test("scopeChange: keeps lines of written files, passes a baseline change through, keeps the change whole without a usable scope", () => {
+  const change = { range: "HEAD", removed: [{ path: "a.js", line: 1, text: "x" }, { path: "b.js", line: 1, text: "y" }], added: [{ path: "a.js", line: 1, text: "z" }, { path: "b.js", line: 1, text: "w" }] };
+  const narrowed = scopeChange(change, ["a.js"]);
+  assert.deepEqual(narrowed.removed.map((l) => l.path), ["a.js"]);
+  assert.deepEqual(narrowed.added.map((l) => l.path), ["a.js"]);
+  assert.equal(scopeChange({ ...change, baseline: true }, ["a.js"]).removed.length, 2);
+  assert.equal(scopeChange(change, []).removed.length, 2);
+  assert.equal(scopeChange(change, [], ["cat > /tmp/x"]).removed.length, 2);
+  assert.deepEqual(scopeChange(change, [], ["sed -i s/x/q/ ./b.js"]).removed.map((l) => l.path), ["b.js"]);
+  assert.equal(scopeChange(null, ["a.js"]), null);
+});
 
 test("tests-not-run: a source write after no test run is a finding, with the detected command", () => {
   const dir = repo({ ...TESTED, "src/a.js": "export const a = 1;\n" });

@@ -126,7 +126,7 @@ function readChange(top, session, sessionId) {
   const base = baselineRef(top, sessionId);
   if (base) {
     const patch = git(["diff", "-U0", "--no-color", "--no-ext-diff", "--no-renames", "--src-prefix=a/", "--dst-prefix=b/", base], top);
-    if (patch.trim()) return { range: "HEAD", ...parseChange(patch) };
+    if (patch.trim()) return { range: "HEAD", baseline: true, ...parseChange(patch) };
     if (!session.events.some((e) => e.kind === "bash" && GIT_COMMIT.test(e.command))) return null;
   }
   let range;
@@ -199,6 +199,27 @@ function repoPath(ctx, path) {
   const rel = relative(ctx.top, realOf(resolve(ctx.cwd, path)));
   if (!rel || rel === ".." || rel.startsWith("../") || isAbsolute(rel)) return null;
   return rel.split("\\").join("/");
+}
+
+/**
+ * The change narrowed to the files this session wrote. Without a recorded baseline the change is the working tree against
+ * HEAD, which also holds the owner's unfinished work in files the session never opened; a finding about those files is not
+ * about the session. A write that names no path (sed -i, a redirect, mv) is matched by the file names its command mentions;
+ * when such a write names no changed file, the change is kept whole rather than guessed. A change read from a baseline is
+ * already the session's own and is returned as it is.
+ */
+export function scopeChange(change, written, shellCommands = []) {
+  if (!change || change.baseline) return change;
+  const paths = new Set(written);
+  const changed = new Set([...change.removed, ...change.added].map((l) => l.path));
+  const mentioned = (p) => shellCommands.some((c) => c.split(/[\s"'<>|;&=()]+/).some((t) => t && (t.replace(/^\.\//, "") === p || p.endsWith(`/${t.replace(/^\.\//, "")}`))));
+  if (shellCommands.length) {
+    const hit = [...changed].filter(mentioned);
+    for (const p of hit) paths.add(p);
+  }
+  if (!paths.size) return change;
+  const keep = (l) => paths.has(l.path);
+  return { ...change, removed: change.removed.filter(keep), added: change.added.filter(keep), scope: paths };
 }
 
 /** The test command the repository has, or null. package.json wins; otherwise the test files name their runner. */
@@ -575,7 +596,7 @@ function unwiredFile(ctx) {
   const change = ctx.change();
   if (change) {
     const args = change.range === "HEAD" ? ["HEAD"] : ["HEAD~1", "HEAD"];
-    for (const p of git(["diff", "--name-only", "--diff-filter=A", "--no-renames", ...args], ctx.top).split("\n")) if (p) added.add(p);
+    for (const p of git(["diff", "--name-only", "--diff-filter=A", "--no-renames", ...args], ctx.top).split("\n")) if (p && (!change.scope || change.scope.has(p))) added.add(p);
   }
   for (const rel of untrackedWritten(ctx)) added.add(rel);
   const entries = entryPoints(ctx.top);
@@ -622,7 +643,10 @@ export function verify({ cwd = process.cwd(), session, limits = {}, answer, sess
       answer: typeof answer === "string" ? answer : String(session.last ?? ""),
       change: memo(() => {
         try {
-          return readChange(top, session, sessionId);
+          const change = readChange(top, session, sessionId);
+          const written = session.events.filter((e) => e.kind === "write" && e.path).map((e) => repoPath({ top, cwd }, e.path)).filter(Boolean);
+          const shell = session.events.filter((e) => e.kind === "write" && !e.path).flatMap((e) => (e.touches ?? []).concat(e.command ? [e.command] : []));
+          return scopeChange(change, written, shell);
         } catch {
           return null;
         }

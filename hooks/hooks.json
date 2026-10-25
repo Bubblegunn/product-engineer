@@ -21,6 +21,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/bin/pre-edit.mjs\"",
+            "timeout": 15
+          }
+        ]
       }
     ],
     "SessionStart": [

@@ -1,6 +1,6 @@
 ---
 name: release-notes
-description: Use when writing release notes, a changelog entry, a status update or a "what's new" message. For people who do not read code, notes never contain code identifiers or file names; for developers who integrate the product, the notes name each option, flag or function exactly. The agent runs `product-engineer notes <file>` (with `--audience developers` for developers) and fixes every error before saving. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
+description: Use when writing release notes, a changelog entry, a status update or a "what's new" message. For people who do not read code, notes leave out the code's inner workings but keep every setting, option, command, config file, limit and version the reader must type, change or check, in backticks inside a sentence that says what it does; for developers who integrate the product, the notes name each option, flag or function exactly. The agent runs `product-engineer notes <file>` (with `--audience developers` for developers) and fixes every error before saving. Makes the agent lead with what the reader can do now, keep one line per change, explain every term, count every number, state the range the notes cover, and list what is not in this release (that section is left out when it would be empty).
 license: MIT
 metadata:
   author: Efe Genc
@@ -18,8 +18,8 @@ it: release notes, changelog entries, status updates to a founder or a client, a
 
 ## Check before you save
 
-Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled. For each commit it flags as `type says ...` or `requirement change`, read the printed lines, decide whether the reader would notice the change, and write it as what the reader sees (a changed limit, a price, a new requirement), never as the commit title says. Each name under `names gone at` is a candidate renamed or removed option: confirm it in the diff before you write about it. Then check the saved file with `product-engineer notes <file> --range <tag>`. Customer notes never contain code identifiers or file names: no function, variable or module
-names, no paths, no backticks, no commit prefixes, no file with an extension. Commit hashes and
+Before writing, run `product-engineer range <tag>` and write nothing for a commit it lists as cancelled. For each commit it flags as `type says ...` or `requirement change`, read the printed lines, decide whether the reader would notice the change, and write it as what the reader sees (a changed limit, a price, a new requirement), never as the commit title says. Each name under `names gone at` is a candidate renamed or removed option: confirm it in the diff before you write about it. Then check the saved file with `product-engineer notes <file> --range <tag>`. Customer notes leave out the code's inner workings: no function, variable or module
+names, no source paths, no commit prefixes. They keep what the reader must type, change or check: a setting, option, command, config file, limit or version, written exactly in backticks inside a sentence that says what it does ("The retry setting `maxRetries` replaces `retryLimit`; set it to the number of attempts you want"). A name the checker flags that the reader needs stays; say so in your answer. Commit hashes and
 merge-commit boilerplate are errors for every audience. Write the
 notes to their file, then run `product-engineer notes <file>` (`npx product-engineer notes
 <file>` where it is not installed; from version 0.8.0). Fix every error it reports and run

@@ -441,11 +441,11 @@ export function valueChanges(removed, addedText) {
 }
 
 /** Lines in other files that still hold an old value next to the words of the line that changed it. */
-function staleValues(top, source, pairs, added) {
+function staleValues(top, source, pairs, added, { fileFilter = valueFile, singleWordLines = false } = {}) {
   const out = [];
   if (pairs.length === 0) return out;
   const re = pairs.map((p) => [p, new RegExp(`(?<![\\p{L}\\p{N}_$.])${p.from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}_$]|\\.\\d)`, "u")]);
-  for (const { path, buf } of searchedFiles(top, source, valueFile)) {
+  for (const { path, buf } of searchedFiles(top, source, fileFilter)) {
     const addedHere = added.get(path);
     const lines = buf.toString("utf8").split("\n");
     for (let i = 0; i < lines.length; i++) {
@@ -456,13 +456,118 @@ function staleValues(top, source, pairs, added) {
         if (!rx.test(t) || t.includes(p.to)) continue;
         const words = wordsOf(t);
         const shared = [...p.words].filter((w) => words.has(w)).length;
-        if (shared < MIN_SHARED) continue;
+        if (shared < MIN_SHARED && !(singleWordLines && [...p.words].some((w) => words.has(w) && (w.includes("_") || w.length >= 8)))) continue;
         if (path === p.source.path && i + 1 === p.source.line) continue;
         if (out.filter((x) => x.from === p.from).length < MAX_STALE) out.push({ from: p.from, to: p.to, path, line: i + 1, text: t, changed: `${p.source.path}:${p.source.line}` });
       }
     }
   }
   return out;
+}
+
+const PREVIEW_MAX_FILES = 3000;
+const PREVIEW_NAMES = 6;
+const PREVIEW_USES = 4;
+const PREVIEW_NUMBER_FILES = 6;
+const NAME_TOKEN = /(?<![\p{L}\p{N}_$])[\p{L}_$][\p{L}\p{N}_$]{3,}(?![\p{L}\p{N}_$])/gu;
+const COMMON = new Set([...KEYWORDS, "this", "self", "true", "false", "null", "undefined", "string", "number", "boolean", "object", "return", "export", "import", "default", "const", "function", "async", "await", "throw", "catch", "else", "then", "from", "with", "that", "have", "will", "data", "name", "type", "value", "values", "item", "items", "list", "result", "error", "test", "tests", "case", "while", "break", "continue", "static", "class", "extends", "super", "yield", "void", "length", "push", "args", "options", "config"]);
+
+const tokensIn = (text) => new Set([...text.matchAll(NAME_TOKEN)].map((m) => m[0]).filter((t) => !COMMON.has(t.toLowerCase())));
+
+/**
+ * What an edit that has not happened yet will leave behind. `removed` and `added` are the lines of one edit in one file
+ * (the text being replaced, the text replacing it). Looks at the working tree as it is now and returns the same kinds of
+ * candidate as `twins`: lines of the same shape as a removed line (twins), old values still written elsewhere (stale),
+ * and other lines that use a name the edit takes away (uses). Every candidate is a line to read, not a verdict.
+ */
+export function previewEdit({ path, removed, added, cwd = process.cwd(), maxFiles = PREVIEW_MAX_FILES }) {
+  const top = git(["rev-parse", "--show-toplevel"], cwd).trim();
+  const tracked = git(["ls-files", "-z"], top).split("\0").filter(Boolean);
+  if (tracked.length > maxFiles) return { skipped: `${tracked.length} tracked files (limit ${maxFiles})`, twins: [], stale: [], numbers: [], uses: [] };
+  const source = { kind: "tree" };
+  const removedLines = removed.map((text, i) => ({ path, line: -1 - i, text })).filter((r) => r.text.trim() !== "");
+  const addedLines = added.map((text) => ({ path, text })).filter((a) => a.text.trim() !== "");
+  const removedSet = new Set(removedLines.map((r) => r.text.trim()));
+  const here = (hit) => hit.path === path && removedSet.has(hit.text.trim());
+  // Twins: lines elsewhere with the shape of a removed code line.
+  const groups = new Map();
+  const bags = new Map();
+  const targets = [];
+  for (const r of removedLines) {
+    if (r.text.length > MAX_LINE || ignoredRemoval(path, r.text)) continue;
+    const text = r.text.trim();
+    const shape = shapeOf(text, extOf(path));
+    if (!significant(shape)) continue;
+    const bag = bagOf(shape);
+    targets.push({ text, shape, bag });
+    if (!groups.has(shape)) groups.set(shape, { twins: [] });
+    if (bag && !bags.has(bag)) bags.set(bag, { twins: [] });
+  }
+  if (groups.size > 0) scanFiles(top, source, { groups, bags, added: new Map(), names: new Set(), changed: new Set([path]) });
+  const strip = ({ path: p, line, text }) => ({ path: p, line, text });
+  const twinList = targets
+    .map((t) => ({ text: t.text, twins: groups.get(t.shape).twins.filter((x) => !here(x)).map(strip), loose: (t.bag ? bags.get(t.bag).twins.filter((x) => x.shape !== t.shape && !here(x)).slice(0, MAX_LOOSE) : []).map(strip) }))
+    .filter((t) => t.twins.length > 0 || t.loose.length > 0);
+  // Old values still written elsewhere.
+  const pairs = valueChanges(removedLines.filter((r) => !isTestPath(path)), addedLines);
+  const versionFile = (p) => valueFile(p) || /(^|\/)(\.nvmrc|\.node-version|\.python-version|\.ruby-version|\.tool-versions|Dockerfile[^/]*)$/.test(p);
+  const stale = staleValues(top, source, pairs, new Map(), { fileFilter: versionFile, singleWordLines: true }).filter((v) => !here(v));
+  // The same number with no shared words: weaker, so listed apart and only for numbers that carry a version or a limit.
+  const numbers = [];
+  const strong = new Set(stale.map((v) => `${v.path}:${v.line}`));
+  for (const p of pairs) {
+    const rx = new RegExp(`(?<![\\p{L}\\p{N}_$.])${p.from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}_$]|\\.\\d)`, "u");
+    let n = 0;
+    for (const { path: fp, buf } of searchedFiles(top, source, versionFile)) {
+      if (n >= PREVIEW_NUMBER_FILES) break;
+      const lines = buf.toString("utf8").split("\n");
+      const i = lines.findIndex((l, k) => l.trim().length > 0 && l.length <= MAX_LINE && rx.test(l) && !l.includes(p.to) && !strong.has(`${fp}:${k + 1}`) && !(fp === path && removedSet.has(l.trim())));
+      if (i < 0) continue;
+      n++;
+      numbers.push({ from: p.from, to: p.to, path: fp, line: i + 1, text: lines[i].trim() });
+    }
+  }
+  // Other uses of a name the edit takes away: a name that differs between a removed line and an added line of the same shape
+  // (a rename), or a name the removed lines declare that the added lines do not.
+  const uses = [];
+  if (!isDocPath(path) && !isLockPath(path)) {
+    const gone = [];
+    const addGone = (t) => { if (!gone.includes(t)) gone.push(t); };
+    const addedByShape = new Map();
+    for (const a of addedLines) {
+      const shape = shapeOf(a.text.trim(), extOf(path));
+      if (!addedByShape.has(shape)) addedByShape.set(shape, []);
+      addedByShape.get(shape).push(a.text);
+    }
+    for (const r of removedLines) {
+      if (COMMENT.test(r.text.trim())) continue;
+      const mates = addedByShape.get(shapeOf(r.text.trim(), extOf(path))) ?? [];
+      for (const mate of mates) {
+        const mateTokens = tokensIn(mate);
+        for (const t of tokensIn(r.text)) if (!mateTokens.has(t)) addGone(t);
+      }
+    }
+    const addedDeclared = new Set(addedLines.flatMap((a) => declaredIn(a.text)));
+    for (const r of removedLines) for (const d of declaredIn(r.text)) if (!addedDeclared.has(d)) addGone(d);
+    const names = gone.slice(0, PREVIEW_NAMES);
+    if (names.length) {
+      const counts = new Map();
+      for (const f of searchedFiles(top, source, scannable)) {
+        const lines = f.buf.toString("utf8").split("\n");
+        for (let i = 0; i < lines.length; i++) {
+          const t = lines[i].trim();
+          if (t.length === 0 || t.length > MAX_LINE) continue;
+          if (f.path === path && removedSet.has(t)) continue;
+          for (const name of names) {
+            if ((counts.get(name) ?? 0) >= PREVIEW_USES || !t.includes(name) || !wholeWord(name).test(t)) continue;
+            counts.set(name, (counts.get(name) ?? 0) + 1);
+            uses.push({ name, path: f.path, line: i + 1, text: t });
+          }
+        }
+      }
+    }
+  }
+  return { twins: twinList, stale, numbers, uses };
 }
 
 export function twins({ range, cwd = process.cwd() } = {}) {
